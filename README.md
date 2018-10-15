@@ -7,8 +7,8 @@ We divided the different protocols that we have created now in 2 groups. Setup t
 ### Basic setup
 These set of files are containing functions that provide a layer over DataSHIELD that allows researcheers to do their project setup very fast.
 
-- [connection.R](R/connection.R)
-- [summaries.R](R/summaries.R)
+- [connection](R/connection.R)
+- [summaries](R/summaries.R)
 
 ### Basic methods
 Specify some basic statistical methods
