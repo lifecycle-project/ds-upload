@@ -1,16 +1,16 @@
 # LifeCycle Analysis Protocols
-The idea here is to provide researchers with a list of functions that may be useful for various data manipulations/analyses, that the researcher can adapt to their own specific research question. These protocols are currently fairly simple, but we hope they will become more extensive as LifeCycle learns more about DataSHIELD. 
+These provide researchers with a list of standard functions for data manipulations and analyses in DataSHIELD; these can be adapted to each specific research question. The protocols are currently fairly simple, but will become more extensive as our experience of DataSHIELD develops.
 
 ## Protocols
-We divided the different protocols that we have created now in 2 groups. Setup the project and basic methods.
+There are two groups of protocols: *project setup* and *methods*.
 
-### Basic setup
+### Project setup
 These set of files are containing functions that provide a layer over DataSHIELD that allows researcheers to do their project setup very fast.
 
-- [connection](R/connection.R)
-- [summaries](R/summaries.R)
+- [connecting to the opal instances](R/connection.R)
+- [summarizing data](R/summaries.R)
 
-### Basic methods
-Specify some basic statistical methods
+### Methods
+Coding for standard data analysis in DataSHIELD.
 
 - [comparing two means](R/comparing_two_means.R)
