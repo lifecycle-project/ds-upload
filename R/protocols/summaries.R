@@ -1,12 +1,21 @@
+# Show summaries of what is in the different Opal servers
+
 #
-## what is there?
+## Include the "login" module to login the Opal servers here
+#
+source("login.R")
+
+#
+## What is there?
 #
 ds.ls()
 
 #
-## detail of table
+## Detail of table
 #
 ds.summary('D')
 
-# describe the studies:
+#
+## Describe the studies:
+#
 ds.dim(x='D')

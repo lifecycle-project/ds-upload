@@ -1,15 +1,19 @@
-# Load the necessary libraries
+# Comparing two means in DataSHIELD
 
-# General R-packages
+#
+## Load the general R-packages for comparing the means
+#
 library(metafor)
 
 #
-## Include connection.R
+## Include the "login" module to login the Opal servers here
 #
+source("login.R")
 
 #
-## Include summaries.R
+## (optional) Include "summaries" module to get summaries of data from Opal instances
 #
+# source("summaries.R")
 
 # the "combine" comand allows us to identify the total number of observations and variables pooled across 
 # all studies:
@@ -50,16 +54,24 @@ ds.cbind(x=c('D3', 'preg_smk_fact'), newobj = 'D4', datasources = opals)
 mean_by_class = ds.meanByClass(x='D4$ga_bj~D4$preg_smk_fact')
 mean_by_class
 
-#computation of the standard error of the mean among non-exposed:
+#
+## Computation of the standard error of the mean among non-exposed:
+#
 sem0 = as.numeric(gsub(".*\\((.*)\\).*", "\\1", mean_by_class[2,1]))/ sqrt(as.numeric(mean_by_class[1,1]))
 
-#95% confidence intervals of the mean
+#
+## 95% confidence intervals of the mean
+#
 CI_95_0 =  c(as.numeric(sub(" *\\(.*", "", mean_by_class[2,1])) - 2*sem0, as.numeric(sub(" *\\(.*", "", mean_by_class[2,1])) + 2*sem0)
 
-#computation of the standard error of the mean among exposed:
+#
+## Computation of the standard error of the mean among exposed:
+#
 sem1 = as.numeric(gsub(".*\\((.*)\\).*", "\\1", mean_by_class[2,2]))/ sqrt(as.numeric(mean_by_class[1,2]))
 
-#95% confidence intervals of the mean
+#
+## 95% confidence intervals of the mean
+#
 CI_95_1 =  c(as.numeric(sub(" *\\(.*", "", mean_by_class[2,2])) - 2*sem1, as.numeric(sub(" *\\(.*", "", mean_by_class[2,2])) + 2*sem1)
 
 CI_95_0
