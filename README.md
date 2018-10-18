@@ -7,10 +7,10 @@ There are two groups of protocols: *project setup* and *methods*.
 ### Project setup
 These set of files are containing functions that provide a layer over DataSHIELD that allows researcheers to do their project setup very fast.
 
-- [connecting to the opal instances](R/connection.R)
-- [summarizing data](R/summaries.R)
+- [connecting to the opal instances](R/protocols/connection.R)
+- [summarizing data](R/protocols/summaries.R)
 
 ### Methods
 Coding for standard data analysis in DataSHIELD.
 
-- [comparing two means](R/comparing_two_means.R)
+- [comparing two means](R/protocols/comparing_two_means.R)
