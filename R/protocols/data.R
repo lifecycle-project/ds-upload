@@ -1,18 +1,18 @@
-# Preprocess the data to use in DataSHIELD
 
-#
-## Include the "login" module to login the Opal servers here
-#
-source("connection.R")
+#' The "combine" comand allows us to identify the total number of observations and variables pooled across
+#' all studies:
+#'
+#' @return combinedSet a comnbined set across all studies
+#'
+#' @importFrom opal datashield
+#'
+#' @export
+lc.get-all-data <- local(function() {
+  ds.dim(x='D')
+  ds.dim('D', type='combine')
+  return D
+}
 
-#
-## Describe the studies:
-#
-ds.dim(x='D')
-
-# The "combine" comand allows us to identify the total number of observations and variables pooled across 
-# all studies:
-ds.dim('D', type='combine')
 
 #
 ## First step - limit to singleton pregnancies and live births

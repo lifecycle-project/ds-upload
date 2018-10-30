@@ -2,16 +2,6 @@
 # (which cannot be used as they are potentially disclosive)
 # in DataSHIELD to visualize correlation patterns 
 
-#
-## Include login.R
-#
-source("login.R")
-
-#
-## (optional) Include summaries.R
-#
-# source("summaries.R")
-
 # For e.g.:
 ds.contourPlot(x='D4$ga_bj', y='D4$agebirth_m_d')
 ds.heatmapPlot(x='D4$ga_bj', y='D4$agebirth_m_d')
