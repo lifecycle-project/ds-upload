@@ -10,8 +10,6 @@ B
 R/protocols/data.R,a/c/ac6c4242f968dbe581c68e8ea24417c44461f1ee
 C
 R/protocols/login.R,8/0/8041c09a0055b6e3dc0af5dd695c5598274548f5
-Q
-!R/protocols/comparing_two_means.R,f/9/f956d17dc852075356e55ab32d932fbfab5f93fc
 C
 R/protocols/plots.R,b/b/bbc2f7012715087791577b490c8865ae4d2ba10f
 G
@@ -20,3 +18,5 @@ F
 ANALYSIS_GUIDELINES.md,a/3/a38ab6bfe7df94dded646122aaa6cf3fecc67293
 D
 R/protocols/logout.R,9/f/9fbe2ab35510e75a68b0a85ad8f88e53392fd9c4
+C
+R/protocols/means.R,2/3/2378dbbd172536ca150431593c3b6ef49f02c289
