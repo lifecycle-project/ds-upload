@@ -10,14 +10,14 @@ library("devtools")
 
 # Install clientside package:
 
-install_github("datashield/dsBetaTestClient", ref = "0.2.0")
+install_github("datashield/dsBetaTestClient", ref = "master", force = TRUE)
 
 # setup credential object
-server <- c("opal")
-url <- c("https://opal.test.molgenis.org")
+server <- c("dnbc")
+url <- c("https://opal-dnbc.test.molgenis.org")
 username <- c("administrator")
-password <- c("?01LifeCycle!")
-table <- c("MAXIME_TEST.practicalexperiment3")
+password <- c("admin")
+table <- c("lifecycle_dnbc.1_0_non_repeated_measures")
 logindata <- data.frame(server,url,username,password,table)
 #logout just in case
 datashield.logout(opals)
@@ -25,6 +25,6 @@ datashield.logout(opals)
 opals <- datashield.login(logins=logindata,assign=TRUE)
 
 # install serverside package
-dsadmin.install_package(opals, 'dsBetaTest', githubusername='datashield', ref = '0.2.0')
+dsadmin.install_package(opals, 'dsBetaTest', githubusername='datashield', ref = 'master')
 
 library("dsBetaTestClient")

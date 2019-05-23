@@ -253,6 +253,31 @@ for(i in array){
   }
 }
 
+## Alternative script:  transform in long format:
+
+# vary <- list(paste("overweight_", array, sep = ""), 
+#              paste("height_", array, sep = ""),
+#              paste("weight_", array, sep = ""),
+#              paste("BMI_", array, sep = ""))
+# 
+# var_names <- c("overweight", "height", 'weight', "BMI")
+
+ds.summary('D')
+
+vary <- paste("D$overweight_", array, sep = "")
+
+var_names <- "D$overweight"
+
+drop_var <- c(paste("D$height_", array, sep = ""), paste("D$weight_", array, sep = ""), paste("D$BMI_", array, sep = ""))
+
+ds.reShape.o('D', varying = vary, direction = "long", newobj = 'D_long', timevar.name = "month", idvar.name = "cohort_id")
+
+ds.tapply.o("D$birth_weight", "D$sex", "sum")
+ds.tapply.o()
+# And use tapply to mark if overweight for a specific age group:
+
+ds.tapply.assign.o("D_long$overweight", "D_long$ID", FUN.name = "sum", newobj = "overweight_synth")
+
 ## Create a synthetic overweight variable:
 
 # Define the array:
