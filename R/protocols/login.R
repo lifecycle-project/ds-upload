@@ -24,5 +24,5 @@ local({
 lc.login <- local(function(cohorts, table, username, password) {
   login-data <- data.frame(lc.cohorts,lc.urls,lc.usernames,lc.passwords,lc.tables)
   servers <- datashield.login(logins=login-data,assign=TRUE)
-  #return servers
+  servers
 })

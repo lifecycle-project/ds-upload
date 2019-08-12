@@ -3,8 +3,6 @@
 #' @param input_path path for importfile
 #' @param username path to output directory
 #'
-#' @return the three data dictionaries
-#'
 #' @importFrom tidyverse
 #'
 #' @export
