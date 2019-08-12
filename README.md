@@ -7,5 +7,14 @@ There are two groups of protocols: *project setup* and *methods*.
 ### Project setup
 These set of files are containing functions that provide a layer over DataSHIELD that allows researcheers to do their project setup very fast.
 
-- [login to the opal instances](R/protocols/login.R)
-- [logout of the opal instances](R/protocols/logout.R)
+## Usage
+You can make use of the functions by including the package through the following code snippet|
+
+```R
+library(lifecycle)
+```
+
+At this moment the implemented functions at this moment are:
+
+- ```lc.login``` login from LifeCycle cohorts through DataSHIELD
+- ```lc.logout``` logout in LifeCycle cohorts through DataSHIELD

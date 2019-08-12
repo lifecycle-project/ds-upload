@@ -1,20 +1,5 @@
 # Comparing two means in DataSHIELD
 
-#
-## Load the general R-packages for comparing the means
-#
-library(metafor)
-
-#
-## Include the "login" module to login the Opal servers here
-#
-source("login.R")
-
-#
-## (optional) Include "summaries" module to get summaries of data from Opal instances
-#
-# source("summaries.R")
-
 # the "combine" comand allows us to identify the total number of observations and variables pooled across 
 # all studies:
 ds.dim('D', type='combine')
