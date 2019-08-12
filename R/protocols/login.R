@@ -10,8 +10,6 @@ local({
   lc.tables <- c("Project1.table1", "Project2.table2")
 }, lc.env)
 
-#' Login to a number of cohorts via DataSHIELD
-#'
 #' Login to a number of cohorts through DataSHIELD
 #'
 #' @param cohorts list of cohorts that you want to login to
@@ -26,6 +24,5 @@ local({
 lc.login <- local(function(cohorts, table, username, password) {
   login-data <- data.frame(lc.cohorts,lc.urls,lc.usernames,lc.passwords,lc.tables)
   servers <- datashield.login(logins=login-data,assign=TRUE)
-
-  return servers
-}
+  #return servers
+})

@@ -1,0 +1,19 @@
+Package: analysisProtocols
+Title: Protocols and sample analysis
+Version: 0.0.1
+Authors@R: person("Sido", "Haakma", email = "s.haakma@rug.nl",
+                  role = c("aut", "cre"))
+Description: Protocols and sample analysis
+Depends: R (>= 3.1.0)
+License: MIT License
+Imports:
+    opal,
+    datashieldclient,
+    dsBaseClient,
+    dsStatsClient,
+    dsGraphicsClient,
+    dsModellingClient,
+    metafor,
+    tidyverse
+LazyData: true
+    
