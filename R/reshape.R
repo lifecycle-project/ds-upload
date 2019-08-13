@@ -3,17 +3,28 @@
 #' @param input_path path for importfile
 #' @param username path to output directory
 #'
-#' @importFrom tidyverse
+#' @importFrom readr read_csv write_csv cols col_double
+#' @importFrom tidyr gather spread
+#' @importFrom dplyr %>% select
+#' @importFrom stringr str_extract
 #'
 #' @export
 lc.reshape <- local(function(input_path, output_path) {
 
-  ## Setup: Load data and set output directory
+  message("setup: load data and set output directory")
+  
   # Load the data
-  lc_data <- read_csv(input_path)
+  lc_data <- read_csv(input_path, col_types = cols(.default = col_double()))
   
   # Set directory to save the output
   save_directory <- output_path
+  
+  # determine filenames
+  file_prefix <- ''
+  file_ext <- '.csv'
+  file_non <- 'non_repeated_measures'
+  file_monthly = 'monthly_repeated_measures'
+  file_yearly = 'yearly_repeated_measures'
   
   # Set order of variables
   lc_variables <- c("mother_id", "preg_no", "child_no", "child_id", "cohort_id", "recruit_age",  "coh_country", "cohab_0",
@@ -195,7 +206,7 @@ lc.reshape <- local(function(input_path, output_path) {
   # check the list of variables in the original harmonized data)
   setdiff(lc_variables, names(lc_data))
   
-  #--------------------------------- Create data with unrepeated measures --------------------------------------------#
+  message("generating: create data with unrepeated measures")
   
   # Create vector of positions for the non_repeated variables in the data set
   non_repeated <- c(which(names(lc_data) %in% "mother_id") : which(names(lc_data) %in% "coh_country"), 
@@ -210,7 +221,7 @@ lc.reshape <- local(function(input_path, output_path) {
   write_csv(non_repeated_measures, paste(save_directory,"1_0_non_repeated_measures.csv", sep="")) ## exports data as a csv file
   
   
-  #--------------------------------- Yearly-repeated measures --------------------------------------------------------#
+  message("generating: yearly-repeated measures")
   
   # Select only those variables, that are repeated yearly
   yearly_repeated <- c(which(names(lc_data) %in% "mother_id") : which(names(lc_data) %in% "coh_country"), 
@@ -248,11 +259,9 @@ lc.reshape <- local(function(input_path, output_path) {
   rm(long_1, test)
   
   # Write as csv
-  write_csv(long_yearly, paste(save_directory,"1_0_yearly_repeated_measures.csv", sep="")) ## exports data as a csv file
+  write_csv(long_yearly, paste(save_directory, file_prefix+file_yearly+file_ext, sep="")) ## exports data as a csv file
   
-  
-  
-  #--------------------------------- Monthly-repeated measures --------------------------------------------------------#
+  message("generating: monthly-repeated measures")
   
   # Select only those variables with monthly repeated measures
   monthly_repeated <- c(which(names(lc_data) %in% "mother_id") : which(names(lc_data) %in% "coh_country"), 
@@ -283,9 +292,7 @@ lc.reshape <- local(function(input_path, output_path) {
   rm(long_1, test)
   
   # Write as csv
-  write_csv(long_monthly, paste(save_directory,"1_0_monthly_repeated_measures.csv", sep="")) ## exports data as a csv file
+  write_csv(long_monthly, paste(save_directory, file_prefix+file_monthly+file_ext, sep="")) ## exports data as a csv file
   
-  
-  
-  print("#---------------------------Reshaping succesfully finished --------------------------------#")
+  message("reshaping succesfully finished")
 })

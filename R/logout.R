@@ -1,6 +1,6 @@
 #' Logout of backend sessions in DataSHIELD
 #'
-#' @importFrom opal datashield
+#' @importFrom opal datashield.logout
 #'
 #' @export
 lc.logout <- local(function() {

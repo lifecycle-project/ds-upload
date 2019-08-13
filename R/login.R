@@ -18,7 +18,7 @@ local({
 #'
 #' @return opals list of logged in cophorts
 #'
-#' @importFrom opal datashield
+#' @importFrom opal datashield.logout
 #'
 #' @export
 lc.login <- local(function(cohorts, table, username, password) {
