@@ -20,7 +20,8 @@ At this moment the implemented functions at this moment are:
 ### Releases
 Releasing the artifact can be done by curling to the following address:
 
-```url -v --user 'user:password' --upload-file lifecycleProject_0.2.0.tar.gz https://registry.molgenis.org/repository/r-hosted/src/contrib/lifecycleProject_0.2.0.tar.gz 
+```curl -v --user 'user:password' --upload-file lifecycleProject_0.2.0.tar.gz https://registry.molgenis.org/repository/r-hosted/src/contrib/lifecycleProject_0.2.0.tar.gz 
+```
 
 ## Sample analysis
 The output of our R-group sessions are available here. Under ```R/sample_analysis/#cohort#``` you can find the scripts and under ```R/sample_analysis/#cohort#/data``` you can find the corresponding data. sets. Sometimes there is a dictionaries folder as well under data, which contains the dictionary.
