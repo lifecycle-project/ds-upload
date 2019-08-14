@@ -1,6 +1,6 @@
-Package: lifecycle
+Package: lifecycleProject
 Title: Protocols and sample analysis
-Version: 0.0.1
+Version: 0.2.0
 Authors@R: person("Sido", "Haakma", email = "s.haakma@rug.nl",
                   role = c("aut", "cre"))
 Description: Protocols and sample analysis
