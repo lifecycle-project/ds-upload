@@ -20,7 +20,8 @@ At this moment the implemented functions at this moment are:
 ### Releases
 Releasing the artifact can be done by curling to the following address:
 
-```curl -v --user 'user:password' --upload-file lifecycleProject_0.2.0.tar.gz https://registry.molgenis.org/repository/r-hosted/src/contrib/lifecycleProject_0.2.0.tar.gz 
+```bash
+curl -v --user 'user:password' --upload-file lifecycleProject_0.2.0.tar.gz https://registry.molgenis.org/repository/r-hosted/src/contrib/lifecycleProject_0.2.0.tar.gz 
 ```
 
 ## Sample analysis
