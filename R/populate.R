@@ -16,11 +16,21 @@ lc.populate <- local(function() {
   if(hostname == '') hostname == 'http://localhost'
   if(username == '') username <- 'administrator'
   if(dictVersion == '') dictVersion <- '1'
-  uploadDirectory <- paste('/home/',username,sep="")
   
-  dict_source_yearly_repeated <- paste('dictionaries/', dictVersion, '/', dictVersion, '_monthly_repeated_measures.xlsx', sep = "")
-  dict_source_monthly_repeated <- paste('dictionaries/', dictVersion, '/', dictVersion, '_yearly_repeated_measures.xlsx', sep = "")
-  dict_source_non_repeated <- paste('dictionaries/',dictVersion, '/', dictVersion, '_non_repeated_measures.xlsx', sep = "")
+  downloadBaseDir <- paste('https://github.com/sidohaakma/analysis-protocols/blob/master/R/data/dictionaries/', dictVersion, '/', sep = '')
+  
+  dict_source_file_non_repeated <- paste(dictVersion, '_non_repeated_measures.xlsx', sep = '')
+  dict_source_file_monthly_repeated <- paste(dictVersion, '_monthly_repeated_measures.xlsx', sep = '')
+  dict_source_file_yearly_repeated <- paste(dictVersion, '_yearly_repeated_measures.xlsx', sep = '')
+  
+  download.file(paste(downloadBaseDir, dict_source_file_non_repeated, sep = ''), destfile=dict_source_file_non_repeated, method="libcurl")
+  download.file(paste(downloadBaseDir, dict_source_file_monthly_repeated, sep = ''), destfile=dict_source_file_monthly_repeated, method="libcurl")
+  download.file(paste(downloadBaseDir, dict_source_file_yearly_repeated, sep = ''), destfile=dict_source_file_yearly_repeated, method="libcurl")
+  
+  uploadDirectory <- paste('/home/',username,sep="")
+  dict_source_yearly_repeated <- paste(getwd(), '/', dict_source_file_yearly_repeated, sep = '')
+  dict_source_monthly_repeated <- paste(getwd(), '/', dict_source_file_monthly_repeated, sep = '')
+  dict_source_non_repeated <- paste(getwd(), '/', dict_source_file_non_repeated, sep = '')
   
   message(paste('Login to: "', hostname, '"'))
   cohortHost <- opal.login(username = username, password = password, url = hostname)
