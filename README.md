@@ -5,10 +5,19 @@ These provide researchers with a list of standard functions for data manipulatio
 We are trying to build a meta package for the LifeCycle project to ease the administration within scripts to setup the connections and assigning the data.
 
 ### Usage
-You can make use of the functions by including the package through the following code snippet|
+
+> note: prerequisites are R-packages Opal, MetaFor and Dplyr.
+  You can install Opal by executing: ```install.packages('opal', repos=c('https://cloud.r-project.org/', 'https://cran.obiba.org'), dependencies=TRUE)```
+  You can install these by ```install.packages(c('metafor','dplyr'))```
+  
+> note: if you are installing Opal on Windows please execute: ```install.packages(c('RCurl', 'rjson'), repos=c('https://cloud.r-project.org/', 'https://www.stats.ox.ac.uk/pub/RWin/'))```
+  and then execute: ```install.packages('opal', repos='https://cran.obiba.org', type='source')```.
+  Check for more information: http://opaldoc.obiba.org/en/latest/r-user-guide/datashield.html
+
+You can install the package
 
 ```R
-install.packages("lifecycleProject", dependencies = TRUE, repos='https://registry.molgenis.org/repository/R/')
+install.packages("lifecycleProject", repos='https://registry.molgenis.org/repository/R/', dependencies = TRUE)
 library(lifecycleProject)
 ```
 
