@@ -1,4 +1,17 @@
 # Versions of data dictionaries
+We define here in what versions of the data dictionaries contains which tables.
+
+Filenames contain the minor versions as well. The tablenames are more stable and contain only the major version.
+
+*Example filenames*
+* 1_1_non_repeated_measures.xlsx
+* 1_1_monthly_repeated_measures.xlsx
+* 1_1_yearly_repeated_measures.xlsx
+
+*Table names*
+* 1_non_repeated_measures
+* 1_monthly_repeated_measures
+* 1_yearly_repeated_measuress
 
 ## 1.1
 Additional variables from WP3 and changes in the lifecycle variables.
@@ -8,7 +21,7 @@ Additional variables from WP3 and changes in the lifecycle variables.
 **LifeCycle variables**
 * art --> variable_id changed from **art** to **mar**
 
-  >note: be adviced: all harmonisations of all cohorts need te upload this variable again with the new name
+  >**be adviced**: all harmonisations of all cohorts need te upload this variable again with the new name
 * preg_plan --> values updated from ( 0 = No (not planned) / 1 = Yes (Planned, partly planned)) to ( 1 = Yes (Planned, partly planned) / 2 = No (not planned))
 
 **EUSILC variables (task 3.1.1)**
@@ -32,13 +45,13 @@ Additional variables from WP3 and changes in the lifecycle variables.
 | reledu_fa    | Father’s educational selectivity | decimal     |
 
 ### Tables
-- 1_1_non_repeated_measures
+- 1_non_repeated_measures
 
 ## 1.0
 ### Content
 - Includes all lifecycle variables harmonised by all cohorts
 
 ### Tables
-- 1_0_non_repeated_measures
-- 1_0_monthly_repeated_measures
-- 1_0_yearly_repeated_measures
+- 1_non_repeated_measures
+- 1_monthly_repeated_measures
+- 1_yearly_repeated_measures

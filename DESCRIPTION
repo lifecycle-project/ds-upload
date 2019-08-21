@@ -12,6 +12,8 @@ Imports:
     metafor,
     tidyr,
     dplyr,
-    readr
+    readr,
+    data.table,
+    foreign
 LazyData: true
 RoxygenNote: 6.1.1

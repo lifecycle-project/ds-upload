@@ -1,25 +1,28 @@
 #' Populate your Opal instance with the new version of the data dictionary
 #'
+#' @param hostname specify hostname of Opal instance
+#' @param username specify username (of administrator) of Opal instance
+#' @param password specify password (of administrator) of Opal instance
+#' @param createProject create the 'lifecycle'-project in Opal instance
+#' @param dictVersion dictionary version
+#'
 #' @import opal
 #'
 #' @export
-lc.populate <- local(function() {
+lc.populate <- local(function(hostname, username, password, createProject, dictVersion) {
   message('######################################################')
   message('  Start importing data dictionaries                   ')
   message('######################################################')
   
-  hostname <- readline('- Hostname (http://localhost): ')
-  username <- readline('- Username (administrator): ')
-  password <- readline('- Password: ')
-  projectBootstrapEnabled <- readline('- Create project (no): ')
-  dictVersion <- readline('- Version of data dictionary (1): ')
+  if (missing(hostname)) hostname <- readline('- Hostname (http://localhost): ')
+  if (missing(username)) username <- readline('- Username (administrator): ')
+  if (missing(password)) password <- readline('- Password: ')
+  if (missing(createProject)) createProject <- readline('- Create project (no): ')
+  if (missing(dictVersion)) dictVersion <- readline('- Version of data dictionary (1): ')
   
-  if(password == '') {
-    message('- Please fill in the password')
-  }
-  if(hostname == '') hostname == 'http://localhost'
-  if(username == '') username <- 'administrator'
-  if(dictVersion == '') dictVersion <- '1'
+  if (hostname == '') hostname <- 'http://localhost'
+  if (username == '') username <- 'administrator'
+  if (dictVersion == '') dictVersion <- '1'
   
   message('------------------------------------------------------')
   message(paste('  Login to: "', hostname, '"', sep = ''))
@@ -50,7 +53,7 @@ lc.dict.download <- function(dictVersion) {
   message(paste('* Download: ', dict_source_file_yearly_repeated, sep = ''))
   download.file(paste(downloadBaseDir, dict_source_file_yearly_repeated, '?raw=true', sep = ''), destfile=dict_source_file_yearly_repeated, method="libcurl", quiet = TRUE)
   
-  message("  Succefully downloaded dictionaries")
+  message("  Successfully downloaded dictionaries")
 }
 
 lc.dict.upload <- function(cohortHost, username, dictVersion) {

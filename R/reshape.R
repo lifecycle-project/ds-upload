@@ -1,30 +1,50 @@
 #' Reshape Script for R: LifeCycle Harmonized Data
 #'
+#' @param input_format possible input formats are CSV, STATA and SPSS (default = CSV)
 #' @param input_path path for importfile
-#' @param username path to output directory
+#' @param output_path path to output directory
 #'
 #' @importFrom readr read_csv write_csv cols col_double
 #' @importFrom tidyr gather spread
 #' @importFrom dplyr %>% select
 #' @importFrom stringr str_extract
+#' @importFrom foreign read.dta read.spss
 #'
 #' @export
-lc.reshape <- local(function(input_path, output_path) {
+lc.reshape <- local(function(input_format, input_path, output_path) {
 
-  message("setup: load data and set output directory")
+  message('######################################################')
+  message('  Start reshaping data                                ')
+  message('######################################################')
+  message("* setup: load data and set output directory")
+  
+  if(missing(input_format)) input_format <- readline('- input format (csv,stata,spss) default=csv')
+  if (input_format == '') input_format <- 'csv'
+  
+  if(missing(input_path)) input_path <- readline('- specify input path for your data')
   
   # Load the data
-  lc_data <- read_csv(input_path, col_types = cols(.default = col_double()))
+  if (input_format == 'stata') lc_data <- read.dta(input_path, col_types = cols(.default = col_double()))
+  else if (input_format == 'spss') lc_data <- read.spss(input_path, col_types = cols(.default = col_double()))
+  else lc_data <- read_csv(input_path, col_types = cols(.default = col_double()))
   
   # Set directory to save the output
-  save_directory <- output_path
+  if(missing(output_path)) output_path <- getwd()
   
   # determine filenames
   file_prefix <- ''
   file_ext <- '.csv'
+  file_version <- '1'
   file_non <- 'non_repeated_measures'
   file_monthly = 'monthly_repeated_measures'
   file_yearly = 'yearly_repeated_measures'
+  
+  # Numerical extraction function
+  # Number at the end of the string: Indicates year. We need to extract this to create the age_years variable.
+  # This is the function to do so.
+  numextract <- function(string) { 
+    str_extract(string, "\\d*$") 
+  }
   
   # Set order of variables
   lc_variables <- c("mother_id", "preg_no", "child_no", "child_id", "cohort_id", "recruit_age",  "coh_country", "cohab_0",
@@ -201,6 +221,8 @@ lc.reshape <- local(function(input_path, output_path) {
                     "famsize_adult8", "famsize_adult9",  "famsize_adult10", "famsize_adult11", "famsize_adult12", "famsize_adult13", "famsize_adult14",
                     "famsize_adult15", "famsize_adult16", "famsize_adult17")
   
+  # Reorder the data set based on the variable vector above
+  lc_data <- lc_data[,lc_variables]
   
   # Check which variables are missing in the study as compared to the full variable list (if character(0), continue, otherwise
   # check the list of variables in the original harmonized data)
@@ -218,10 +240,17 @@ lc.reshape <- local(function(input_path, output_path) {
   non_repeated_measures <- lc_data[,non_repeated]
   
   # Write as csv   
-  write_csv(non_repeated_measures, paste(save_directory,"1_0_non_repeated_measures.csv", sep="")) ## exports data as a csv file
+  # Write as csv
+  262
+  
+  write_csv(non_repeated_measures, paste(output_path, file_prefix, '_', file_version, '_', file_non, file_ext, sep="")) ## exports data as a csv file
+  
+  # Remove the data frames from memory
+  rm(non_repeated, non_repeated_measures)
   
   
   message("generating: yearly-repeated measures")
+  
   
   # Select only those variables, that are repeated yearly
   yearly_repeated <- c(which(names(lc_data) %in% "mother_id") : which(names(lc_data) %in% "coh_country"), 
@@ -229,14 +258,8 @@ lc.reshape <- local(function(input_path, output_path) {
                        which(names(lc_data) %in% "occup_f1_0") : which(names(lc_data) %in% "edu_f2_fath17"), 
                        which(names(lc_data) %in% "childcare_0") :  which(names(lc_data) %in% "famsize_adult17")) 
   
-  # select the non-repeated measures from the full data set
+  # Select the non-repeated measures from the full data set
   yearly_repeated_measures <- lc_data[,yearly_repeated]
-  
-  # Number at the end of the string: Indicates year. We need to extract this to create the age_years variable.
-  # This is the function to do so.
-  numextract <- function(string){ 
-    str_extract(string, "\\d*$") 
-  } 
   
   # First re-arrange the whole data set to long format, unspecific for variable
   long_1 <- yearly_repeated_measures %>% 
@@ -248,18 +271,39 @@ lc.reshape <- local(function(input_path, output_path) {
   # Here we remove the year indicator from the original variable name
   long_1$variable_trunc <- gsub('[[:digit:]]+$', '', long_1$orig_var)
   
-  test <- long_1 %>%
-    select(-orig_var) %>%
-    spread(key=variable_trunc, value=cohab_ )
+  # Use the data.table package for spreading the data again, as tidyverse runs into memory issues 
+  long_2 <- dcast(long_1, mother_id + child_id + age_years + preg_no + child_no + cohort_id + coh_country ~ variable_trunc, value.var = "cohab_")
+  
+  # Create a row_id so there is a unique identifier for the rows
+  long_2$row_id <- c(1:length(long_2$child_id))
   
   # Arrange the variable names based on the original order
-  long_yearly <- test[,c("child_id", "age_years", "mother_id", unique(long_1$variable_trunc))]
+  long_yearly <- long_2[,c("row_id", "child_id", "age_years", "mother_id", "preg_no", "child_no", "cohort_id", "coh_country", unique(long_1$variable_trunc))]
   
-  # Remove the intermediate data sets that are stored in memory
-  rm(long_1, test)
+  # As the data table is still too big for opal, remove those
+  # rows, that have only missing values, but keep all rows at age_years=0, so
+  # no child_id get's lost:
+  
+  # Subset of data with age_years = 0
+  zero_year <- long_yearly %>%
+    filter(age_years %in% 0)
+  
+  # Subset of data with age_years > 0
+  later_year <- long_yearly %>%
+    filter(age_years > 0)
+  
+  # Remove all the rows that are missing only
+  later_year <- later_year[rowSums(is.na(later_year[,unique(long_1$variable_trunc)])) < 
+                             length(later_year[,unique(long_1$variable_trunc)]),]
+  
+  # Bind the 0 year and older data sets together 
+  long_yearly <- rbind(zero_year,later_year)
   
   # Write as csv
-  write_csv(long_yearly, paste(save_directory, file_prefix+file_yearly+file_ext, sep="")) ## exports data as a csv file
+  write_csv(long_yearly, paste(output_path, file_prefix, '_', file_version, '_', file_yearly, file_ext, sep="")) ## exports data as a csv file
+  
+  # Remove the intermediate data sets that are stored in memory
+  rm(long_1, long_2, later_year, zero_year,long_yearly,yearly_repeated_measures, yearly_repeated)
   
   message("generating: monthly-repeated measures")
   
@@ -281,18 +325,41 @@ lc.reshape <- local(function(input_path, output_path) {
   # Here we remove the year indicator from the original variable name
   long_1$variable_trunc <- gsub('[[:digit:]]+$', '', long_1$orig_var)
   
-  test <- long_1 %>%
-    select(-orig_var) %>%
-    spread(key=variable_trunc, value=height_ )#, drop=FALSE)
+  # Use the data.table package for spreading the data again, as tidyverse ruins into memory issues 
+  long_2 <- dcast(long_1, mother_id + child_id + age_years + age_months + preg_no + child_no + cohort_id + coh_country ~ variable_trunc, value.var = "height_")
+  
+  # Create a row_id so there is a unique identifier for the rows
+  long_2$row_id <- c(1:length(long_2$child_id))
   
   # Arrange the variable names based on the original order
-  long_monthly <- test[,c("child_id", "age_years", "age_months", "mother_id", unique(long_1$variable_trunc))]
+  long_monthly <- long_2[,c("row_id", "child_id", "age_years", "age_months", "mother_id", "preg_no", "child_no", "cohort_id", "coh_country", unique(long_1$variable_trunc))]
   
-  # Remove the intermediate data sets that are stored in memory
-  rm(long_1, test)
+  # As the data table is still too big for opal, remove those
+  # rows, that have only missing values, but keep all rows at age_years=0, so
+  # no child_id get's lost:
+  
+  # Subset of data with age_years = 0
+  zero_monthly <- long_monthly %>%
+    filter(age_years %in% 0)
+  
+  # Subset of data with age_years > 0
+  later_monthly <- long_monthly %>%
+    filter(age_years > 0)
+  
+  # Remove all the rows that are missing only: rowSums and is.na combined indicate if 0 or all columns are NA (4), and
+  # remove the rows with rowSum values of 4
+  later_monthly <- later_monthly[rowSums(is.na(later_monthly[,unique(long_1$variable_trunc)])) < 
+                                   length(later_monthly[,unique(long_1$variable_trunc)]),]
+  
+  # Bind the 0 year and older data sets together 
+  long_monthly <- rbind(zero_monthly,later_monthly)
   
   # Write as csv
-  write_csv(long_monthly, paste(save_directory, file_prefix+file_monthly+file_ext, sep="")) ## exports data as a csv file
+  write_csv(long_yearly, paste(output_path, file_prefix, '_', file_version, '_', file_monthly, file_ext, sep="")) ## exports data as a csv file
+  
+  # Remove the intermediate data sets that are stored in memory
+  rm(long_1, long_2, zero_monthly, long_monthly, monthly_repeated, monthly_repeated_measures)
   
   message("reshaping succesfully finished")
+  
 })

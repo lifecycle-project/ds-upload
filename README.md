@@ -7,14 +7,44 @@ We are trying to build a meta package for the LifeCycle project to ease the admi
 ### Usage
 
 > note: prerequisites are R-packages Opal, MetaFor and Dplyr.
-  You can install Opal by executing: ```install.packages('opal', repos=c('https://cloud.r-project.org/', 'https://cran.obiba.org'), dependencies=TRUE)```
+  You can install Opal by executing: 
   You can install these by ```install.packages(c('metafor','dplyr'))```
   
-> note: if you are installing Opal on Windows please execute: ```install.packages(c('RCurl', 'rjson'), repos=c('https://cloud.r-project.org/', 'https://www.stats.ox.ac.uk/pub/RWin/'))```
-  and then execute: ```install.packages('opal', repos='https://cran.obiba.org', type='source')```.
-  Check for more information: http://opaldoc.obiba.org/en/latest/r-user-guide/datashield.html
 
-You can install the package
+#### Prerequisites
+You need these packages to can make use of the LifeCycle R-package.
+```    
+opal,
+metafor,
+tidyr,
+dplyr,
+readr,
+data.table,
+foreign
+```
+
+> For Opal reference documentation check: http://opaldoc.obiba.org/en/latest/r-user-guide/datashield.html
+
+**For Windows**
+Install the Opal package. By installing ```RCurl, rjson``` first.
+```R install.packages(c('RCurl', 'rjson'), repos=c('https://cloud.r-project.org/', 'https://www.stats.ox.ac.uk/pub/RWin/'))```
+
+Then execute:
+```R install.packages('opal', repos='https://cran.obiba.org', type='source')```.
+
+Install remaining packages by executing:
+```R install.packages(c('metafor', 'tidyr', 'dplyr', 'readr', 'data.table', 'foreign'), repos=c('https://cloud.r-project.org/', 'https://www.stats.ox.ac.uk/pub/RWin/'))```
+
+**For Mac**
+Install Opal by executing:
+```install.packages('opal', repos=c('https://cloud.r-project.org/', 'https://cran.obiba.org'), dependencies=TRUE)```
+
+Install remaing packages by executing:
+```R install.packages(c('metafor', 'tidyr', 'dplyr', 'readr', 'data.table', 'foreign'), repos=c('https://cloud.r-project.org/'))```
+
+
+**LifeCycle R-package installation**
+You can install the package by executing the following command:
 
 ```R
 install.packages("lifecycleProject", repos='https://registry.molgenis.org/repository/R/', dependencies = TRUE)
