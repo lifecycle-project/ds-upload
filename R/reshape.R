@@ -9,6 +9,8 @@
 #' @importFrom dplyr %>% select
 #' @importFrom stringr str_extract
 #' @importFrom foreign read.dta read.spss
+#' @importFrom maditr dcast
+#' @importFrom data.table as.data.table
 #'
 #' @export
 lc.reshape <- local(function(input_format, input_path, output_path) {
@@ -18,10 +20,10 @@ lc.reshape <- local(function(input_format, input_path, output_path) {
   message('######################################################')
   message("* setup: load data and set output directory")
   
-  if(missing(input_format)) input_format <- readline('- input format (csv,stata,spss) default=csv')
+  if(missing(input_format)) input_format <- readline('- input format (csv,stata,spss) default=csv: ')
   if (input_format == '') input_format <- 'csv'
   
-  if(missing(input_path)) input_path <- readline('- specify input path for your data')
+  if(missing(input_path)) input_path <- readline('- specify input path (for your data): ')
   
   # Load the data
   if (input_format == 'stata') lc_data <- read.dta(input_path, col_types = cols(.default = col_double()))
@@ -228,7 +230,7 @@ lc.reshape <- local(function(input_format, input_path, output_path) {
   # check the list of variables in the original harmonized data)
   setdiff(lc_variables, names(lc_data))
   
-  message("generating: create data with unrepeated measures")
+  message("* generating: non-repeated measures")
   
   # Create vector of positions for the non_repeated variables in the data set
   non_repeated <- c(which(names(lc_data) %in% "mother_id") : which(names(lc_data) %in% "coh_country"), 
@@ -240,17 +242,12 @@ lc.reshape <- local(function(input_format, input_path, output_path) {
   non_repeated_measures <- lc_data[,non_repeated]
   
   # Write as csv   
-  # Write as csv
-  262
-  
   write_csv(non_repeated_measures, paste(output_path, file_prefix, '_', file_version, '_', file_non, file_ext, sep="")) ## exports data as a csv file
   
   # Remove the data frames from memory
   rm(non_repeated, non_repeated_measures)
   
-  
-  message("generating: yearly-repeated measures")
-  
+  message("* generating: yearly-repeated measures")
   
   # Select only those variables, that are repeated yearly
   yearly_repeated <- c(which(names(lc_data) %in% "mother_id") : which(names(lc_data) %in% "coh_country"), 
@@ -305,7 +302,7 @@ lc.reshape <- local(function(input_format, input_path, output_path) {
   # Remove the intermediate data sets that are stored in memory
   rm(long_1, long_2, later_year, zero_year,long_yearly,yearly_repeated_measures, yearly_repeated)
   
-  message("generating: monthly-repeated measures")
+  message('* generating: monthly-repeated measures')
   
   # Select only those variables with monthly repeated measures
   monthly_repeated <- c(which(names(lc_data) %in% "mother_id") : which(names(lc_data) %in% "coh_country"), 
@@ -360,6 +357,8 @@ lc.reshape <- local(function(input_format, input_path, output_path) {
   # Remove the intermediate data sets that are stored in memory
   rm(long_1, long_2, zero_monthly, long_monthly, monthly_repeated, monthly_repeated_measures)
   
-  message("reshaping succesfully finished")
+  message('######################################################')
+  message('  Reshaping successfully finished                     ')
+  message('######################################################')
   
 })
