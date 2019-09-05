@@ -1,6 +1,6 @@
 Package: lifecycleProject
 Title: Protocols and sample analysis
-Version: 0.3.0
+Version: 0.4.0
 Authors@R: person("Sido", "Haakma", email = "s.haakma@rug.nl",
                   role = c("aut", "cre"))
 Description: Protocols and sample analysis
@@ -13,11 +13,14 @@ Imports:
     tidyr,
     dplyr,
     readr,
+    stringr,
+    sas7bdat,
     data.table,
     foreign,
     maditr,
     tidyverse,
     gmodels,
-    plotly
+    plotly,
+    mailR
 LazyData: true
 RoxygenNote: 6.1.1

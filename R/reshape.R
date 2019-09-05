@@ -11,23 +11,25 @@
 #' @importFrom foreign read.dta read.spss
 #' @importFrom maditr dcast
 #' @importFrom data.table as.data.table
+#' @importFrom sas7bdat read.sas7bdat
 #'
 #' @export
-lc.reshape <- local(function(input_format, input_path, output_path) {
+lc.reshape <- function(input_format, input_path, output_path) {
 
   message('######################################################')
   message('  Start reshaping data                                ')
   message('######################################################')
   message("* setup: load data and set output directory")
   
-  if(missing(input_format)) input_format <- readline('- input format (csv,stata,spss) default=csv: ')
-  if (input_format == '') input_format <- 'csv'
+  if(missing(input_format)) input_format <- readline('- Input format (possible formats are csv,stata,spss or sass | default = csv): ')
+  if(input_format == '') input_format <- 'csv'
   
-  if(missing(input_path)) input_path <- readline('- specify input path (for your data): ')
+  if(missing(input_path)) input_path <- readline('- Specify input path (for your data): ')
   
   # Load the data
   if (input_format == 'stata') lc_data <- read.dta(input_path, col_types = cols(.default = col_double()))
   else if (input_format == 'spss') lc_data <- read.spss(input_path, col_types = cols(.default = col_double()))
+  else if (input_format == 'sass') lc_data <- read.sas7bdat(input_path)
   else lc_data <- read_csv(input_path, col_types = cols(.default = col_double()))
   
   # Set directory to save the output
@@ -284,7 +286,7 @@ lc.reshape <- local(function(input_format, input_path, output_path) {
   # Subset of data with age_years = 0
   zero_year <- long_yearly %>%
     filter(age_years %in% 0)
-  
+
   # Subset of data with age_years > 0
   later_year <- long_yearly %>%
     filter(age_years > 0)
@@ -361,4 +363,4 @@ lc.reshape <- local(function(input_format, input_path, output_path) {
   message('  Reshaping successfully finished                     ')
   message('######################################################')
   
-})
+}

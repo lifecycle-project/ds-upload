@@ -1,8 +1,5 @@
-
+# Use environment to store some path variables to use in different functions
 lifecycleProject.globals <- new.env()
-
-
-
 
 #' Populate your Opal instance with the new version of the data dictionary
 #'
@@ -17,7 +14,7 @@ lifecycleProject.globals <- new.env()
 #' @import opal
 #'
 #' @export
-lc.populate <- local(function(hostname, username, password, createProject, dictVersion, cohortId, dataVersion, dataChanges) {
+lc.populate <- function(hostname, username, password, createProject, dictVersion, cohortId, dataVersion, dataChanges) {
   message('######################################################')
   message('  Start importing data dictionaries                   ')
   message('######################################################')
@@ -53,14 +50,11 @@ lc.populate <- local(function(hostname, username, password, createProject, dictV
   
   lc.dict.download(dictVersion, cohortId, dataVersion)
   lc.dict.upload(cohortHost, username)
+  lc.dict.notify(cohortId, dataVersion, dataChanges)
 
-  #message('######################################################')
-  #message('  Importing data dictionaries finished                ')
-  #message('######################################################')
-  
-})
+}
 
-lc.dict.download <- function(dictVersion, cohortId, dataVersion) {
+lc.dict.download <- local(function(dictVersion, cohortId, dataVersion) {
   message('------------------------------------------------------')
   message("  Start download dictionaries")
   downloadBaseDir <- paste('https://github.com/sidohaakma/analysis-protocols/blob/master/R/data/dictionaries/', dictVersion, '/', sep = '')
@@ -88,21 +82,59 @@ lc.dict.upload <- function(cohortHost, username) {
   message('  Start uploading dictionaries')
   uploadDirectory <- paste('/home/',username,sep="")
   
-  message(paste('* Upload: ', paste(getwd(), '/', lifecycleProject.globals$dict_dest_non_repeated, sep = ''), sep = ''))
-  opal.file_upload(opal = cohortHost, source = paste(getwd(), '/', lifecycleProject.globals$dict_dest_non_repeated), destination = uploadDirectory)
+  message(paste('* Upload: ', paste(getwd(), '/', lifecycleProject.globals$dict_dest_file_non_repeated, sep = ''), sep = ''))
+  opal.file_upload(opal = cohortHost, source = paste(getwd(), '/', lifecycleProject.globals$dict_dest_file_non_repeated, sep = ''), destination = uploadDirectory)
   message(paste('* Upload: ', paste(getwd(), '/', lifecycleProject.globals$dict_dest_file_monthly_repeated, sep = ''), sep = ''))
-  opal.file_upload(opal = cohortHost, source = paste(getwd(), '/', lifecycleProject.globals$dict_dest_monthly_repeated, sep = ''), destination = uploadDirectory)
-  message(paste('* Upload: ', paste(getwd(), '/', lifecycleProject.globals$dict_dest_yearly_repeated, sep = ''), sep = ''))
-  opal.file_upload(opal = cohortHost, source = paste(getwd(), '/', lifecycleProject.globals$dict_dest_yearly_repeated, sep = ''), destination = uploadDirectory)
+  opal.file_upload(opal = cohortHost, source = paste(getwd(), '/', lifecycleProject.globals$dict_dest_file_monthly_repeated, sep = ''), destination = uploadDirectory)
+  message(paste('* Upload: ', paste(getwd(), '/', lifecycleProject.globals$dict_dest_file_yearly_repeated, sep = ''), sep = ''))
+  opal.file_upload(opal = cohortHost, source = paste(getwd(), '/', lifecycleProject.globals$dict_dest_file_yearly_repeated, sep = ''), destination = uploadDirectory)
   
-  unlink(dict_dest_file_non_repeated)
-  unlink(dict_dest_file_monthly_repeated)
-  unlink(dict_dest_file_yearly_repeated)
+  unlink(lifecycleProject.globals$dict_dest_file_non_repeated)
+  unlink(lifecycleProject.globals$dict_dest_file_monthly_repeated)
+  unlink(lifecycleProject.globals$dict_dest_file_yearly_repeated)
   
   message('  Succesfully uploaded dictionaries')
-}
+})
 
-lc.dict.import <- function() {
+lc.dict.import <- local(function() {
   message('------------------------------------------------------')
   message('* Start importing dictionaries')
-}
+  #TODO: implement importing the dictionaries (version 1.0)
+})
+
+lc.dict.notify <- local(function(cohortId, dataVersion, dataChanges) {
+  sender <- "lifecycleProject@gmail.com"
+  recipients <- c("s.haakma@rug.nl")
+  
+  emailSubject = paste('New upload for cohort: [ ', cohortId, ' ] version: [ ', dataVersion, ' ]', sep = '')
+  emailContent = paste('There is a new data upload into Opal for cohort: [ ', cohortId, ' ]\n',
+                        'The new version of the data is: [ ', dataVersion, ' ] \n',
+                        'The changes that are made are: [ ', dataChanges, ' ]', sep = '')
+  
+  #send.mail(
+  #  from = sender, 
+  #  to = recipients, 
+  # subject = emailSubject,
+  #  Sys.Date(),
+  #  "{}", 
+  #  body = emailContent, 
+  #  encoding = "utf-8", 
+  #  smtp = list(
+  #    host.name = "smtp.gmail.com", 
+  #    port = 465, 
+  #    user.name=sender, 
+  #    passwd="djkacLKaa", 
+  #    ssl=TRUE),
+  #  authenticate = TRUE, 
+  #  send = TRUE, 
+  #  html = TRUE, 
+  #  inline = TRUE)
+  
+  message('------------------------------------------------------')
+  message("  Notify LifeCycle project")
+  message("")
+  message("  Example email message")
+  message(paste(emailSubject , '\n\n', emailContent, sep = ''))
+  message("")
+  message("  LifeCycle project notified")
+})
