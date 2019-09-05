@@ -16,26 +16,38 @@ You need these packages to can make use of the LifeCycle R-package.
 * readr
 * data.table
 * foreign
+* maditr
 
 > For Opal reference documentation check: http://opaldoc.obiba.org/en/latest/r-user-guide/datashield.html
 
 **For Windows**
 
 Install the Opal package. By installing ```RCurl, rjson``` first.
-```R install.packages(c('RCurl', 'rjson'), repos=c('https://cloud.r-project.org/', 'https://www.stats.ox.ac.uk/pub/RWin/'))```
+```R 
+install.packages(c('RCurl', 'rjson'), repos=c('https://cloud.r-project.org/', 'https://www.stats.ox.ac.uk/pub/RWin/'))
+```
 
-Then execute: ```R install.packages('opal', repos='https://cran.obiba.org', type='source')```.
+Then execute: 
+```R 
+install.packages('opal', repos='https://cran.obiba.org', type='source')
+```
 
 Install remaining packages by executing:
-```R install.packages(c('metafor', 'tidyr', 'dplyr', 'readr', 'data.table', 'foreign'), repos=c('https://cloud.r-project.org/', 'https://www.stats.ox.ac.uk/pub/RWin/'))```
+```R 
+install.packages(c('metafor', 'tidyr', 'dplyr', 'readr', 'data.table', 'foreign', 'maditr'), repos=c('https://cloud.r-project.org/', 'https://www.stats.ox.ac.uk/pub/RWin/'))
+```
 
 **For Mac**
 
 Install Opal by executing:
-```install.packages('opal', repos=c('https://cloud.r-project.org/', 'https://cran.obiba.org'), dependencies=TRUE)```
+```R 
+install.packages('opal', repos=c('https://cloud.r-project.org/', 'https://cran.obiba.org'), dependencies=TRUE)
+```
 
 Install remaing packages by executing:
-```R install.packages(c('metafor', 'tidyr', 'dplyr', 'readr', 'data.table', 'foreign'), repos=c('https://cloud.r-project.org/'))```
+```R 
+install.packages(c('metafor', 'tidyr', 'dplyr', 'readr', 'data.table', 'foreign', 'maditr', 'tidyverse', 'gmodels', 'plotly'), repos=c('https://cloud.r-project.org/'))
+```
 
 **LifeCycle R-package installation**
 

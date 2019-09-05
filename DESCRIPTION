@@ -4,7 +4,7 @@ Version: 0.3.0
 Authors@R: person("Sido", "Haakma", email = "s.haakma@rug.nl",
                   role = c("aut", "cre"))
 Description: Protocols and sample analysis
-Depends: R (>= 3.1.0)
+Depends: R (>= 3.5.2)
 License: MIT License
 Encoding: UTF-8
 Imports:
@@ -15,6 +15,9 @@ Imports:
     readr,
     data.table,
     foreign,
-    maditr
+    maditr,
+    tidyverse,
+    gmodels,
+    plotly
 LazyData: true
 RoxygenNote: 6.1.1
