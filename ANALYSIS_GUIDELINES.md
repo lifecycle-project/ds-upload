@@ -44,6 +44,6 @@ You should maintain the following directory structure:
   - research_question_module_3.R
 - README.md
 
-You can add a README to explain what you are doing on a research level explaining what question you are trying to answer and on a technical level to explain how to use the script.
+You can add a README.md to explain what you are doing on a research level explaining what question you are trying to answer and on a technical level to explain how to use the script.
 
 All owners, that will be all people who are attached to the lifecycle-project organisation, can create new repoistories and add code.

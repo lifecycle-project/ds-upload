@@ -1,20 +1,6 @@
 # Versions of data dictionaries
 We define here in what versions of the data dictionaries contains which tables.
 
-The version-scheme is as follows:
-
-data-scheme-major.data-scheme-minor.cohort.data-major.data-minor.tablename
-
-*Examples*
-* 1_1_dnbc_1_0_non_repeated_measures.xlsx
-* 1_1_dnbc_1_0_monthly_repeated_measures.xlsx
-* 1_1_dnbc_1_0_yearly_repeated_measures.xlsx
-
-*Table names*
-* 1_1_dnbc_1_0_non_repeated_measures
-* 1_1_dnbc_1_0_monthly_repeated_measures
-* 1_1_dnbc_1_0_yearly_repeated_measuress
-
 ## 1.1
 **lifecycleProject R-package version 0.3.0**
 

@@ -5,18 +5,29 @@ These provide researchers with a list of standard functions for data manipulatio
 We are trying to build a meta package for the LifeCycle project to ease the administration within scripts to setup the connections and assigning the data.
 
 ### Usage
+At this moment the implemented functions at this moment are:
 
+- ```lc.reshape``` performing the reshape of the data dictionaries for LifeCycle
+- ```lc.populate``` populate the datadictionaries for LifeCycle
+
+
+### Installation
 **Prerequisites**
 You need these packages to can make use of the LifeCycle R-package.
 
-* opal,
+* opal
 * metafor
 * tidyr
 * dplyr
 * readr
+* stringr
 * data.table
 * foreign
 * maditr
+* tidyverse
+* gmodels
+* plotly
+* mailR
 
 > For Opal reference documentation check: http://opaldoc.obiba.org/en/latest/r-user-guide/datashield.html
 
@@ -34,7 +45,7 @@ install.packages('opal', repos='https://cran.obiba.org', type='source')
 
 Install remaining packages by executing:
 ```R 
-install.packages(c('metafor', 'tidyr', 'dplyr', 'readr', 'data.table', 'foreign', 'maditr'), repos=c('https://cloud.r-project.org/', 'https://www.stats.ox.ac.uk/pub/RWin/'))
+install.packages(c('metafor', 'tidyr', 'dplyr', 'readr', 'stringr', 'data.table', 'foreign', 'maditr', 'tidyverse', 'gmodels', 'plotly', 'mailR'), repos=c('https://cloud.r-project.org/', 'https://www.stats.ox.ac.uk/pub/RWin/'))
 ```
 
 **For Mac**
@@ -46,11 +57,10 @@ install.packages('opal', repos=c('https://cloud.r-project.org/', 'https://cran.o
 
 Install remaing packages by executing:
 ```R 
-install.packages(c('metafor', 'tidyr', 'dplyr', 'readr', 'data.table', 'foreign', 'maditr', 'tidyverse', 'gmodels', 'plotly'), repos=c('https://cloud.r-project.org/'))
+install.packages(c('metafor', 'tidyr', 'dplyr', 'readr', 'stringr', 'data.table', 'foreign', 'maditr', 'tidyverse', 'gmodels', 'plotly', 'mailR'), repos=c('https://cloud.r-project.org/'))
 ```
 
-**LifeCycle R-package installation**
-
+**Install LifeCycle package**
 You can install the package by executing the following command:
 
 ```R
@@ -58,16 +68,11 @@ install.packages("lifecycleProject", repos='https://registry.molgenis.org/reposi
 library(lifecycleProject)
 ```
 
-At this moment the implemented functions at this moment are:
-
-- ```lc.reshape``` performing the reshape of the data dictionaries for LifeCycle
-- ```lc.populate``` populate the datadictionaries for LifeCycle
-
 ### Releases
 Releasing the artifact can be done by curling to the following address:
 
 ```bash
-curl -v --user 'user:password' --upload-file lifecycleProject_0.2.0.tar.gz https://registry.molgenis.org/repository/r-hosted/src/contrib/lifecycleProject_0.2.0.tar.gz 
+curl -v --user 'user:password' --upload-file lifecycleProject_0.3.0.tar.gz https://registry.molgenis.org/repository/r-hosted/src/contrib/lifecycleProject_0.3.0.tar.gz 
 ```
 
 ## Analysis guidelines
