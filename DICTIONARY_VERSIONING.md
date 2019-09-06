@@ -2,7 +2,7 @@
 
 There are 2 kinds of versioning in the naming scheme of the Opal tables.
 
-First of all the data dictionary versioning and second the versioning of the data dictionaries. We are using an implementation of semantic versioning (https://semver.org). A better explanation on using semantic versioning in data can be found here: https://medium.com/data-architect/semantic-versioning-for-data-products-2b060962093.
+First of all the data dictionary versioning and second the versioning of the data dictionaries. We are using an implementation of semantic versioning (https://semver.org). A better explanation on using semantic versioning in data can be found here  https://medium.com/data-architect/semantic-versioning-for-data-products-2b060962093.
 
 
 ## Versioning
@@ -13,7 +13,7 @@ We now can distinguish 3 tables for the core-variables and the variables harmoni
 
 The version-scheme is as follows:
 
-data-dictionary-major.data-dictionary-minor.cohort.data-major.data-minor.tablename
+**dictionary-major.dictionary-minor.cohort.data-major.data-minor.tablename**
 
 *Examples*
 * 1_1_dnbc_1_0_non_repeated_measures.xlsx
@@ -26,7 +26,7 @@ data-dictionary-major.data-dictionary-minor.cohort.data-major.data-minor.tablena
 * 1_1_dnbc_1_0_yearly_repeated_measuress
 
 
-### Dictionary (data dictionary / data scheme)
+### Dictionary
 We are using semantic versioning in the data dictionary in LifeCycle. The implementation we now use is:
 
 * **Major**

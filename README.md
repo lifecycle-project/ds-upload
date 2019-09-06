@@ -61,6 +61,7 @@ install.packages(c('metafor', 'tidyr', 'dplyr', 'readr', 'stringr', 'data.table'
 ```
 
 **Install LifeCycle package**
+
 You can install the package by executing the following command:
 
 ```R

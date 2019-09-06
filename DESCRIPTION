@@ -21,6 +21,7 @@ Imports:
     tidyverse,
     gmodels,
     plotly,
+    rJava,
     mailR
 LazyData: true
 RoxygenNote: 6.1.1
