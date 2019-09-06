@@ -12,7 +12,7 @@ We now can distinguish 3 tables for the core-variables and the variables harmoni
 
 The version-scheme is as follows:
 
-**dictionary-major.dictionary-minor.cohort.data-major.data-minor.tablename**
+**dictionary-major . dictionary-minor . cohort . data-major . data-minor . tablename**
 
 *Examples*
 * 1_1_dnbc_1_0_non_repeated_measures.xlsx
