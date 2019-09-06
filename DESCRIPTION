@@ -8,7 +8,7 @@ Depends: R (>= 3.5.2)
 License: MIT License
 Encoding: UTF-8
 Imports:
-    opal,
+    opalr,
     metafor,
     tidyr,
     dplyr,
@@ -19,9 +19,8 @@ Imports:
     foreign,
     maditr,
     tidyverse,
+    ggplot2,
     gmodels,
-    plotly,
-    rJava,
-    mailR
+    plotly
 LazyData: true
 RoxygenNote: 6.1.1

@@ -1,9 +1,8 @@
 # Dictionary and data versioning in Opal table names
 
-There are 2 kinds of versioning in the naming scheme of the Opal tables.
+There are 2 kinds of versioning in the LifeCycle project.
 
-First of all the data dictionary versioning and second the versioning of the data dictionaries. We are using an implementation of semantic versioning (https://semver.org). A better explanation on using semantic versioning in data can be found here  https://medium.com/data-architect/semantic-versioning-for-data-products-2b060962093.
-
+First of all the data dictionary versioning and second the versioning of the data itself. We are using an implementation of semantic versioning ([semantic versioning](https://semver.org)). A better explanation on using semantic versioning in data can be found here: [semantic versioning for data products](https://medium.com/data-architect/semantic-versioning-for-data-products-2b060962093).
 
 ## Versioning
 We now can distinguish 3 tables for the core-variables and the variables harmonized in WP3.
@@ -24,7 +23,6 @@ The version-scheme is as follows:
 * 1_1_dnbc_1_0_non_repeated_measures
 * 1_1_dnbc_1_0_monthly_repeated_measures
 * 1_1_dnbc_1_0_yearly_repeated_measuress
-
 
 ### Dictionary
 We are using semantic versioning in the data dictionary in LifeCycle. The implementation we now use is:
@@ -54,6 +52,15 @@ Check: [dictionary changelog](./changelogs/DICTIONARY_CHANGELOG.md)
 Check the changelog/data directory for cohort specifics.
 
 ## Opal upload
+>**IMPORTANT**: Check the instruction video [here](https://youtube.com)
+
 You need to use the lifecycleProject package to upload your data. To install it check: [install lifecycleProject](README.md#Installation).
 
+You can run:
 
+```R
+library(lifecycleProject)
+lc.reshape.core()
+```
+
+This will create a project and import the data dictionaries.

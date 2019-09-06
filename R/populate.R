@@ -92,11 +92,6 @@ lc.dict.import <- local(function() {
   #TODO: implement importing the dictionaries (version 1.0)
 })
 
-#' Notifying the LifeCycle project
-#' 
-#' @import rJava
-#' @importFrom mailR send.mail
-#' 
 lc.dict.notify <- local(function(cohortId, dataVersion, dataChanges) {
   message('------------------------------------------------------')
   message("  Notify LifeCycle project")

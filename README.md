@@ -7,27 +7,27 @@ We are trying to build a meta package for the LifeCycle project to ease the admi
 ### Usage
 At this moment the implemented functions at this moment are:
 
-- ```lc.reshape``` performing the reshape of the data dictionaries for LifeCycle
-- ```lc.populate``` populate the datadictionaries for LifeCycle
-
+- ```lc.reshape.core``` performing the reshape of the data dictionaries for LifeCycle (only core variables)
+- ```lc.populate.core``` populate the datadictionaries for LifeCycle
 
 ### Installation
 **Prerequisites**
 You need these packages to can make use of the LifeCycle R-package.
 
-* opal
+* opalr
 * metafor
 * tidyr
 * dplyr
 * readr
 * stringr
+* sas7bdat
 * data.table
 * foreign
 * maditr
 * tidyverse
+* ggplot2
 * gmodels
 * plotly
-* mailR
 
 > For Opal reference documentation check: http://opaldoc.obiba.org/en/latest/r-user-guide/datashield.html
 
@@ -40,12 +40,12 @@ install.packages(c('RCurl', 'rjson'), repos=c('https://cloud.r-project.org/', 'h
 
 Then execute: 
 ```R 
-install.packages('opal', repos='https://cran.obiba.org', type='source')
+install.packages('opalr', repos='https://cran.obiba.org', type='source')
 ```
 
 Install remaining packages by executing:
 ```R 
-install.packages(c('metafor', 'tidyr', 'dplyr', 'readr', 'stringr', 'data.table', 'foreign', 'maditr', 'tidyverse', 'gmodels', 'plotly', 'mailR'), repos=c('https://cloud.r-project.org/', 'https://www.stats.ox.ac.uk/pub/RWin/'))
+install.packages(c('metafor', 'tidyr', 'dplyr', 'readr', 'stringr', 'sas7bdat', 'data.table', 'foreign', 'maditr', 'tidyverse', 'gmodels', 'ggplot2', 'plotly'), repos=c('https://cloud.r-project.org/', 'https://www.stats.ox.ac.uk/pub/RWin/'))
 ```
 
 **For Mac**
@@ -57,7 +57,7 @@ install.packages('opal', repos=c('https://cloud.r-project.org/', 'https://cran.o
 
 Install remaing packages by executing:
 ```R 
-install.packages(c('metafor', 'tidyr', 'dplyr', 'readr', 'stringr', 'data.table', 'foreign', 'maditr', 'tidyverse', 'gmodels', 'plotly', 'mailR'), repos=c('https://cloud.r-project.org/'))
+install.packages(c('metafor', 'tidyr', 'dplyr', 'readr', 'stringr', 'sas7bdat', 'data.table', 'foreign', 'maditr', 'tidyverse', 'gmodels', 'ggplot2', 'plotly'), repos=c('https://cloud.r-project.org/'))
 ```
 
 **Install LifeCycle package**

@@ -49,15 +49,15 @@ numextract <- local(function(string) {
   as.numeric(str_extract(string, "\\d*$") )
 })
 
-
 #' Run checks on metadata variables in LifeCycle
 #' It involves variables 1-7
+#' 
+#' @param lc_data core variables from LifeCycle
 #' 
 #' @importFrom gmodels CrossTable
 #' @importFrom plotly ggplotly
 #' @importFrom ggplot2 theme_set
 #' 
-#' @export
 lc.quality.local.core.meta <- function(lc_data) {
   lc_data <- read_csv("path/to/data.csv")
   
@@ -160,16 +160,16 @@ lc.quality.local.core.meta <- function(lc_data) {
   # 380=Italy, 528=Netherlands, 578=Norway, 724=Spain, 826=United Kingdom
 }
 
-
-
 #' Part of maternal characteristics
 #' Social charasteristics
 #' Involves variables 8-17
 #' 
-#' @importFrom gmodels CrossTable
+#' @param lc_data core variables from LifeCycle
 #' 
-#' @export
-lc.quality.local.core.maternal.social.char <- function() {
+#' @importFrom gmodels CrossTable
+#' @importFrom plotly ggplotly
+#' 
+lc.quality.local.core.maternal.social.char <- function(lc_data) {
   #  8. COHABITATION STATUS ('cohab_0-17')
   # * NB! Mother's partner can be the biological partner, a new partner or a parther of the same gender
   
@@ -433,8 +433,12 @@ lc.quality.local.core.maternal.social.char <- function() {
 #' Health related characteristics 
 #' This involes variables 18-31
 #' 
-#' @export
-lc.quality.local.core.maternal.health.char <- function() {
+#' @param lc_data core variables from LifeCycle
+#' 
+#' @importFrom gmodels CrossTable
+#' @importFrom plotly ggplotly
+#' 
+lc.quality.local.core.maternal.health.char <- function(lc_data) {
   # 18. PRE-PREGNANCY WEIGHT
   # a. ('prepreg_weight')
   # * NB! If pre-pregnancy weight is not available, use early pregnancy weight closest to conception, limited to 1st trimester (<12 weeks). 
@@ -767,8 +771,11 @@ lc.quality.local.core.maternal.health.char <- function() {
 #' Lifestyle charasteristics 
 #' This involves variables 32-38
 #' 
-#' @export
-lc.quality.local.core.maternal.lifestyle.char <- function() {
+#' @param lc_data core variables from LifeCycle
+#' 
+#' @importFrom gmodels CrossTable
+#' 
+lc.quality.local.core.maternal.lifestyle.char <- function(lc_data) {
   # 32. PRE-PREGNANCY SMOKING
   # a. ('prepreg_smk')
   # * Check for correct type [binary], number [two] and definition of categories [smoking BEFORE pregnancy; 0=No, 1=Yes]
@@ -1004,8 +1011,11 @@ lc.quality.local.core.maternal.lifestyle.char <- function() {
 #' Obstetric charasteristics 
 #' This involves variables 39-45
 #' 
-#' @export
-lc.quality.local.core.maternal.obstetric.char <- function() {
+#' @param lc_data core variables from LifeCycle
+#' 
+#' @importFrom gmodels CrossTable
+#' 
+lc.quality.local.core.maternal.obstetric.char <- function(lc_data) {
   #  39. MATERNAL PARITY ('parity_m')
   # * NB! Please, check that your coding match that still birth is defined as death of a foetus at or after 22 completed weeks of gestation
   # * NB! If both birth medical registry data (BMR) and self-reported data (SP) are available, then BMR is prioritized!
@@ -2638,7 +2648,6 @@ lc.quality.local.core.child.exposure.lifestyle.environ.char <- function() {
   #  * 1. Use the most exposed - e.g. if exposed (mental_exp=1) and unexposed (mental_exp=0), use exposed 
   #  * 2. Use the measure closest to the child's first (not latter) birthday, e.g. for mental_exp0 use the measure clostest to child's birth and for mental_exp1 use the measure closest to child's first birthday
 }
-
 
 #' Household characteristics
 #' Involves variables 116-115
