@@ -4,39 +4,42 @@ lifecycle.globals <- new.env()
 #' Populate your Opal instance with the new version of the data dictionary
 #' Involves only the core variables
 #'
-#' @param createProject create the 'lifecycle'-project in Opal instance
-#' @param dictVersion dictionary version (data scheme version)
-#' @param cohortId cohort identifier (based upon identifiers in catalogue)
+#' @param createProject create the 'lifecycle'-project in Opal instance (default = false)
+#' @param dictVersion dictionary version (default = 1_0)
+#' @param cohortId cohort identifier (possible values are: 'dnbc', 'gecko', 'alspac', 'genr', 'moba', 'sws', 'bib', 'chop', 'elfe', 'eden', 'ninfea', 'hbcs', 'inma', 'isglobal', 'nfbc66', 'nfbc86', 'raine', 'rhea')
 #' @param dataVersion version of the data (specific to the cohort)
 #'
-#' @import opal
+#' @import opalr
 #'
 #' @export
-lc.populate.core <- function(createProject, dictVersion, cohortId, dataVersion, dataChanges) {
+lc.populate.core <- function(createProject = FALSE, dictVersion = '1_0', cohortId, dataVersion, dataChanges) {
   message('######################################################')
   message('  Start importing data dictionaries                   ')
   message('######################################################')
-  if(!exists('hostname', envir = lifecycle.globals)) stop('Please run lc.login')
-  if(!exists('username', envir = lifecycle.globals)) stop('Please run lc.login')
   
-  if(missing(createProject)) createProject <- readline('- Create project (default == no): ')
-  if(missing(dictVersion)) dictVersion <- readline('- Specify version of data dictionary (default == 1_0): ')
+  if(!exists('hostname', envir = lifecycle.globals)) stop('You need to login first, please run lc.login')
+  if(!exists('username', envir = lifecycle.globals)) stop('You need to login first, please run lc.login')
+  
   if(missing(cohortId)) cohortId <- readline('- Specify cohort identifier (e.g. dnbc): ')
-  if(missing(dataVersion)) dataVersion <- readline('- Specify version of cohort data upload (e.g. 1_0): ')
-  if(missing(dataChanges)) dataChanges <- readline('- Specify changes in data upload version (e.g. "new participants added": ')
-  if(dictVersion == '') dictVersion <- '1_0'
-  
   if(cohortId == '') {
     stop("No cohort identifier is specified! Program is terminated.", call. = FALSE)
+  } else {
+    if(!(cohortId %in% lifecycle.globals$cohorts)) {
+      stop('Cohort: [ ', cohortId, ' ] is not know LifeCycle project. Please choose from: [ ', paste(lifecycle.globals$cohorts, collapse = ', '), ' ]')
+    }
   }
   
+  if(missing(dataVersion)) dataVersion <- readline('- Specify version of cohort data upload (e.g. 1_0): ')
   if(dataVersion == '') {
     stop("No data version is specified! Program is terminated.", call. = FALSE)
   }
   
+  if(missing(dataChanges)) dataChanges <- readline('- Specify changes in data upload version (e.g. "new participants added": ')
   if(dataChanges == '') {
     stop("No changes in data are specified! Program is terminated.", call. = FALSE)
   }
+  
+  if(dictVersion == '') dictVersion <- '1_0'
   
   lc.dict.download(dictVersion, cohortId, dataVersion)
   lc.dict.upload()

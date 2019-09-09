@@ -1,11 +1,11 @@
 Package: lifecycleProject
 Title: Protocols and sample analysis
-Version: 0.4.0
+Version: 0.5.0
 Authors@R: person("Sido", "Haakma", email = "s.haakma@rug.nl",
                   role = c("aut", "cre"))
-Description: Protocols and sample analysis
+Description: This package contains standardised ways to upload versioned data dictionaries. To perform the local tasks it also provides functions to reshape and check the qualityof your local data. 
 Depends: R (>= 3.5.2)
-License: MIT License
+License: GPL-3
 Encoding: UTF-8
 Imports:
     opalr,

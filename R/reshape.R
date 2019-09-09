@@ -1,8 +1,9 @@
 #' Reshape Script for R: LifeCycle Harmonized Data
 #'
-#' @param input_format possible input formats are CSV, STATA and SPSS (default = CSV)
+#' @param upload_to_opal do you want automatically upload the files to your opal (default = true)
+#' @param input_format possible formats are CSV,STATA,SPSS or SASS (default = CSV)
 #' @param input_path path for importfile
-#' @param output_path path to output directory
+#' @param output_path path to output directory (default = your working directory)
 #'
 #' @importFrom readr read_csv write_csv cols col_double
 #' @importFrom tidyr gather spread
@@ -14,34 +15,34 @@
 #' @importFrom sas7bdat read.sas7bdat
 #'
 #' @export
-lc.reshape.core <- function(input_format, input_path, output_path) {
+lc.reshape.core <- function(upload_to_opal = TRUE, input_format = 'CSV', input_path, output_path = getwd()) {
 
+  input_formats <- c('CSV', 'STATA', 'SPSS', 'SASS')
+  
   message('######################################################')
   message('  Start reshaping data                                ')
   message('######################################################')
   message("* setup: load data and set output directory")
   
-  if(!exists('hostname', envir = lifecycle.globals)) stop('You need to login first, please run lc.login')
-  if(!exists('username', envir = lifecycle.globals)) stop('You need to login first, please run lc.login')
-  
-  if(missing(input_format)) input_format <- readline('- Input format (possible formats are csv,stata,spss or sass | default = csv): ')
-  if(input_format == '') input_format <- 'csv'
+  if (upload_to_opal) {
+    if(!exists('hostname', envir = lifecycle.globals)) stop('You need to login first, please run lc.login')
+    if(!exists('username', envir = lifecycle.globals)) stop('You need to login first, please run lc.login')
+  }
   
   if(missing(input_path)) input_path <- readline('- Specify input path (for your data): ')
-  
-  # Load the data
-  if (input_format == 'stata') lc_data <- read.dta(input_path)
-  else if (input_format == 'spss') lc_data <- read.spss(input_path)
-  else if (input_format == 'sass') lc_data <- read.sas7bdat(input_path)
-  else lc_data <- read_csv(input_path, col_types = cols(.default = col_double()))
-  
-  # Set directory to save the output
-  if(output_path == '') output_path <- getwd()
+  if (input_format %in% input_formats) {
+    if (input_format == 'STATA') lc_data <- read.dta(input_path)
+    else if (input_format == 'SPSS') lc_data <- read.spss(input_path)
+    else if (input_format == 'SASS') lc_data <- read.sas7bdat(input_path)
+    else lc_data <- read_csv(input_path, col_types = cols(.default = col_double()))
+  } else {
+    stop(paste(input_format, ' is not a valid input format, Possible input formats are: CSV, STATA, SPSS or SASS'))
+  }
   
   # determine filenames
   file_prefix <- ''
   file_ext <- '.csv'
-  file_version <- '1'
+  file_version <- '1_0'
   file_non <- 'non_repeated_measures'
   file_monthly = 'monthly_repeated_measures'
   file_yearly = 'yearly_repeated_measures'
@@ -362,23 +363,25 @@ lc.reshape.core <- function(input_format, input_path, output_path) {
   # Remove the intermediate data sets that are stored in memory
   rm(long_1, long_2, zero_monthly, long_monthly, monthly_repeated, monthly_repeated_measures)
 
-  message('------------------------------------------------------')
-  message('  Start uploading data files')
-  
-  uploadDirectory <- paste('/home/', lifecycle.globals$username, sep = '')
-  
-  message(paste('* Upload: ', paste(getwd(), '/', file_prefix, '_', file_version, '_', file_non, file_ext, sep = ''), sep = ''))
-  opal.file_upload(opal = lifecycle.globals$opal, source = paste(getwd(), '/', file_prefix, '_', file_version, '_', file_non, file_ext, sep = ''), destination = uploadDirectory)
-  message(paste('* Upload: ', paste(getwd(), '/', file_prefix, '_', file_version, '_', file_monthly, file_ext, sep = ''), sep = ''))
-  opal.file_upload(opal = lifecycle.globals$opal, source = paste(getwd(), '/', file_prefix, '_', file_version, '_', file_monthly, file_ext, sep = ''), destination = uploadDirectory)
-  message(paste('* Upload: ', paste(getwd(), '/', file_prefix, '_', file_version, '_', file_yearly, file_ext, sep = ''), sep = ''))
-  opal.file_upload(opal = lifecycle.globals$opal, source = paste(getwd(), '/', file_prefix, '_', file_version, '_', file_yearly, file_ext, sep = ''), destination = uploadDirectory)
-  
-  unlink(paste(getwd(), '/', file_prefix, '_', file_version, '_', file_non, file_ext, sep = ''))
-  unlink(paste(getwd(), '/', file_prefix, '_', file_version, '_', file_monthly, file_ext, sep = ''))
-  unlink(paste(getwd(), '/', file_prefix, '_', file_version, '_', file_yearly, file_ext, sep = ''))
-  
-  message('  Succesfully uploaded dictionaries')
+  if(upload_to_opal) {
+    message('------------------------------------------------------')
+    message('  Start uploading data files')
+    
+    uploadDirectory <- paste('/home/', lifecycle.globals$username, sep = '')
+    
+    message(paste('* Upload: ', paste(getwd(), '/', file_prefix, '_', file_version, '_', file_non, file_ext, sep = ''), sep = ''))
+    opal.file_upload(opal = lifecycle.globals$opal, source = paste(getwd(), '/', file_prefix, '_', file_version, '_', file_non, file_ext, sep = ''), destination = uploadDirectory)
+    message(paste('* Upload: ', paste(getwd(), '/', file_prefix, '_', file_version, '_', file_monthly, file_ext, sep = ''), sep = ''))
+    opal.file_upload(opal = lifecycle.globals$opal, source = paste(getwd(), '/', file_prefix, '_', file_version, '_', file_monthly, file_ext, sep = ''), destination = uploadDirectory)
+    message(paste('* Upload: ', paste(getwd(), '/', file_prefix, '_', file_version, '_', file_yearly, file_ext, sep = ''), sep = ''))
+    opal.file_upload(opal = lifecycle.globals$opal, source = paste(getwd(), '/', file_prefix, '_', file_version, '_', file_yearly, file_ext, sep = ''), destination = uploadDirectory)
+    
+    unlink(paste(getwd(), '/', file_prefix, '_', file_version, '_', file_non, file_ext, sep = ''))
+    unlink(paste(getwd(), '/', file_prefix, '_', file_version, '_', file_monthly, file_ext, sep = ''))
+    unlink(paste(getwd(), '/', file_prefix, '_', file_version, '_', file_yearly, file_ext, sep = ''))
+    
+    message('  Succesfully uploaded dictionaries')
+  }
 
   message('######################################################')
   message('  Reshaping successfully finished                     ')
