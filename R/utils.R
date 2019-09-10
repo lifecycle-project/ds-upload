@@ -2,7 +2,7 @@
 lifecycle.globals <- new.env()
 
 lifecycle.globals$cohorts <- c('dnbc', 'gecko', 'alspac', 'genr', 'moba', 'sws', 'bib', 'chop', 'elfe', 'eden', 'ninfea', 'hbcs', 'inma', 'isglobal', 'nfbc66', 'nfbc86', 'raine', 'rhea')
-lifecycle.globals$dictionarie <- c('1_0', '1_1')
+lifecycle.globals$dictionaries <- c('1_0', '1_1')
 
 #' Login into the opal instance and 
 #' 
@@ -14,7 +14,7 @@ lifecycle.globals$dictionarie <- c('1_0', '1_1')
 #' 
 #' @export
 #' 
-lc.login <- function(hostname, username = 'administrator', password) {
+lc.login <- local(function(hostname, username = 'administrator', password) {
   if(missing(hostname)) hostname <- readline('- Hostname (e.g. https://my-own-opal.org): ')
   if(missing(password)) password <- readline('- Password: ')
   
@@ -25,4 +25,4 @@ lc.login <- function(hostname, username = 'administrator', password) {
   message(paste('  Login to: "', lifecycle.globals$hostname, '"', sep = ''))
   lifecycle.globals$opal <- opal.login(username = lifecycle.globals$username, password = lifecycle.globals$password, url = lifecycle.globals$hostname)
   message(paste('  Logged on to: "', lifecycle.globals$hostname, '"', sep = ''))
-}
+})

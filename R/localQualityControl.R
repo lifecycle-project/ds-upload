@@ -58,7 +58,7 @@ numextract <- local(function(string) {
 #' @importFrom plotly ggplotly
 #' @importFrom ggplot2 theme_set
 #' 
-lc.quality.local.core.meta <- function(lc_data) {
+lc.quality.local.core.meta <- local(function(lc_data) {
   lc_data <- read_csv("path/to/data.csv")
   
   theme_set(theme_minimal())
@@ -158,7 +158,7 @@ lc.quality.local.core.meta <- function(lc_data) {
   
   # 36=Australia, 208=Denmark, 246=Finland, 250=France, 276=Germany, 300=Greece
   # 380=Italy, 528=Netherlands, 578=Norway, 724=Spain, 826=United Kingdom
-}
+})
 
 #' Part of maternal characteristics
 #' Social charasteristics
@@ -169,7 +169,7 @@ lc.quality.local.core.meta <- function(lc_data) {
 #' @importFrom gmodels CrossTable
 #' @importFrom plotly ggplotly
 #' 
-lc.quality.local.core.maternal.social.char <- function(lc_data) {
+lc.quality.local.core.maternal.social.char <- local(function(lc_data) {
   #  8. COHABITATION STATUS ('cohab_0-17')
   # * NB! Mother's partner can be the biological partner, a new partner or a parther of the same gender
   
@@ -427,7 +427,7 @@ lc.quality.local.core.maternal.social.char <- function(lc_data) {
        category_numbers=table(lc_data$death_m_age),
        summary_stats=summarizeR(lc_data, "death_m_age")) 
 
-}
+})
 
 #' Part of maternal characteristics
 #' Health related characteristics 
@@ -438,7 +438,7 @@ lc.quality.local.core.maternal.social.char <- function(lc_data) {
 #' @importFrom gmodels CrossTable
 #' @importFrom plotly ggplotly
 #' 
-lc.quality.local.core.maternal.health.char <- function(lc_data) {
+lc.quality.local.core.maternal.health.char <- local(function(lc_data) {
   # 18. PRE-PREGNANCY WEIGHT
   # a. ('prepreg_weight')
   # * NB! If pre-pregnancy weight is not available, use early pregnancy weight closest to conception, limited to 1st trimester (<12 weeks). 
@@ -765,7 +765,7 @@ lc.quality.local.core.maternal.health.char <- function(lc_data) {
   # * Check internal validity, e.g.:
   CrossTable(lc_data$ppd, lc_data$mental_exp0)
 
-}
+})
 
 #' Part of maternal characteristics
 #' Lifestyle charasteristics 
@@ -775,7 +775,7 @@ lc.quality.local.core.maternal.health.char <- function(lc_data) {
 #' 
 #' @importFrom gmodels CrossTable
 #' 
-lc.quality.local.core.maternal.lifestyle.char <- function(lc_data) {
+lc.quality.local.core.maternal.lifestyle.char <- local(function(lc_data) {
   # 32. PRE-PREGNANCY SMOKING
   # a. ('prepreg_smk')
   # * Check for correct type [binary], number [two] and definition of categories [smoking BEFORE pregnancy; 0=No, 1=Yes]
@@ -1005,7 +1005,7 @@ lc.quality.local.core.maternal.lifestyle.char <- function(lc_data) {
     summary_stats = summarizeR(lc_data, "folic_post12")
   )
 
-}
+})
 
 #' Part of maternal characteristics
 #' Obstetric charasteristics 
@@ -1015,7 +1015,7 @@ lc.quality.local.core.maternal.lifestyle.char <- function(lc_data) {
 #' 
 #' @importFrom gmodels CrossTable
 #' 
-lc.quality.local.core.maternal.obstetric.char <- function(lc_data) {
+lc.quality.local.core.maternal.obstetric.char <- local(function(lc_data) {
   #  39. MATERNAL PARITY ('parity_m')
   # * NB! Please, check that your coding match that still birth is defined as death of a foetus at or after 22 completed weeks of gestation
   # * NB! If both birth medical registry data (BMR) and self-reported data (SP) are available, then BMR is prioritized!
@@ -1117,7 +1117,7 @@ lc.quality.local.core.maternal.obstetric.char <- function(lc_data) {
     summary_stats = summarizeR(lc_data, "plac_abrup")
   )
 
-}
+})
 
 
 #' Part of paternal characteristics
@@ -1125,7 +1125,7 @@ lc.quality.local.core.maternal.obstetric.char <- function(lc_data) {
 #' Involves variables 46-67
 #' 
 #' @export
-lc.quality.local.core.paternal.socio.demo.char <- function() {
+lc.quality.local.core.paternal.socio.demo.char <- local(function() {
   #  46. PATERNAL OCCUPATIONAL STATUS, PRIMARY FATHER [CORE] ('occup_f1_0-17')
   # * NB! If a cohort does not have data specifying whether the father is employed or self-employed, categorise the father as employed; the variable will be partially harmonised! 
   # * If variable is partially harmonised, please check you have documented the reason for this accordingly in detail in the Online Catalogue under the 'match'
@@ -1630,14 +1630,14 @@ lc.quality.local.core.paternal.socio.demo.char <- function() {
   CrossTable(lc_data$death_p_fath, lc_data$cob_p_fath)
   CrossTable(lc_data$death_p_fath, lc_data$edu_f1_fath0)
   CrossTable(lc_data$death_p_fath, lc_data$ethn_p_fath) 
-}
+})
 
 #' Part of paternal characteristics
 #' Paternal health-related characteristics
 #' Involves variables 68-76
 #' 
 #' @export
-lc.quality.local.core.paternal.health.related.char <- function() {
+lc.quality.local.core.paternal.health.related.char <- local(function() {
   #  68. PATERNAL WEIGHT, PRIMARY FATHER ('weight_f1')
   # * NB! Use measured weight if available, AND... note in the Online Catalogue when data was recorded, i.e. at which follow-up.
   # * If variable is partially harmonised, please check you have documented this accordingly in the online catalogue under 'match'
@@ -1765,14 +1765,14 @@ lc.quality.local.core.paternal.health.related.char <- function() {
   # * Check internal validity, e.g.:
   CrossTable(lc_data$psych_bf, lc_data$mental_exp0) 
 
-}
+})
 
 #' Part of paternal characteristics
 #' Paternal lifestyle characteristics
 #' Involves variables 77-78
 #' 
 #' @export
-lc.quality.local.core.paternal.lifestyle.char <- function() {
+lc.quality.local.core.paternal.lifestyle.char <- local(function() {
   #  77. PATERNAL SMOKING DURING PREGNANCY 
   # a. ('smk_p')
   # * Check for correct type [binary], number [two] and definition of categories [smoking during pregnancy; 0=No, 1=Yes]
@@ -1809,14 +1809,14 @@ lc.quality.local.core.paternal.lifestyle.char <- function() {
   
   # * Check internal validity, e.g.:
   CrossTable(lc_data$smk_fath, lc_data$cob_p_fath)
-}
+})
 
 #' Part of child characteristics
 #' Child birth outcomes
 #' Involves variables 79-97
 #' 
 #' @export
-lc.quality.local.core.child.birth.out <- function() {
+lc.quality.local.core.child.birth.out <- local(function() {
   #------------------------------------------------------------------------------------------------#
   # 79. BIRTH MONTH ('birth_month')
   # * Check for correct type [catgorical], number [twelve] and definition of categories [calender month, 1-12]
@@ -2178,14 +2178,14 @@ lc.quality.local.core.child.birth.out <- function() {
   )
   
   # * If reasonable, please check the distribution against any previously reported distribution of [sibling position] in your cohort
-}
+})
 
 #' Part of child characteristics
 #' Child health-related characteristics
 #' Involves variables 98-103
 #' 
 #' @export
-lc.quality.local.core.child.health.related.char <- function() {
+lc.quality.local.core.child.health.related.char <- local(function() {
   #------------------------------------------------------------------------------------------------#
   # 98. DEATH OF CHILD ('death_child')
   # * Check for correct type [binary], number [two] and definition of categories [Death of child, 0=No, 1=Yes]
@@ -2361,14 +2361,14 @@ lc.quality.local.core.child.health.related.char <- function() {
   }        
   # * Replicate example from '8. Cohab_0-17' to check that date of collection corresponds to the exact age-band (do this for all age-bands where you have data) 
   # * NB! If more than one measure declared within the period, use the measure clostest to the lowest cut-off, e.g. for weight_age0 use the measure closest to the value '0' and for weight_age1 use the measure closest to the value '30')
-}
+})
 
 #' Part of child characteristics
 #' Child exposures/lifestyle/environment
 #' Involves variables 104-115
 #' 
 #' @export
-lc.quality.local.core.child.exposure.lifestyle.environ.char <- function() {
+lc.quality.local.core.child.exposure.lifestyle.environ.char <- local(function() {
   # 104. EXCLUSIVE BREAST-FEEDING ('breastfed_excl')
   # * NB! Upper limit of 6 months; durations greater than 6 months assigned the value 6 months. Children never breastfed will have a duration of 0 months!
   
@@ -2647,13 +2647,13 @@ lc.quality.local.core.child.exposure.lifestyle.environ.char <- function() {
   # ** NB! If more than one measure declared within the period, use the following priorization; 
   #  * 1. Use the most exposed - e.g. if exposed (mental_exp=1) and unexposed (mental_exp=0), use exposed 
   #  * 2. Use the measure closest to the child's first (not latter) birthday, e.g. for mental_exp0 use the measure clostest to child's birth and for mental_exp1 use the measure closest to child's first birthday
-}
+})
 
 #' Household characteristics
 #' Involves variables 116-115
 #' 
 #' @export
-lc.quality.local.core.household.char <- function() {
+lc.quality.local.core.household.char <- local(function() {
   # 116. HOUSEHOLD INCOME [CORE] ('hhincome_0-17')
   # * NB! Income categorised into quartiles (low, medium-low, medium-high, high) based on the national household income distribution in the year of follow-up. 
   
@@ -2771,4 +2771,4 @@ lc.quality.local.core.household.char <- function() {
   
   # * Replicate example from '8. Cohab_0-17' to check that date of collection corresponds to the exact age-band (do this for all age-bands where you have data) 
   # ** NB! If more than one measure declared within the period, use the measure closest to the child's first birthday, e.g. for famsize_adult0 use the measure closest to child's birth and for famsize_adult1 use the measure closest to child's first birthday)
-}
+})

@@ -1,6 +1,7 @@
 #' Reshape Script for R: LifeCycle Harmonized Data
 #'
 #' @param upload_to_opal do you want automatically upload the files to your opal (default = true)
+#' @param data_version version of the data you are going to upload into Opal
 #' @param input_format possible formats are CSV,STATA,SPSS or SASS (default = CSV)
 #' @param input_path path for importfile
 #' @param output_path path to output directory (default = your working directory)
@@ -15,7 +16,7 @@
 #' @importFrom sas7bdat read.sas7bdat
 #'
 #' @export
-lc.reshape.core <- function(upload_to_opal = TRUE, input_format = 'CSV', input_path, output_path = getwd()) {
+lc.reshape.core <- local(function(upload_to_opal = TRUE, data_version, input_format = 'CSV', input_path, output_path = getwd()) {
 
   input_formats <- c('CSV', 'STATA', 'SPSS', 'SASS')
   
@@ -386,5 +387,5 @@ lc.reshape.core <- function(upload_to_opal = TRUE, input_format = 'CSV', input_p
   message('######################################################')
   message('  Reshaping successfully finished                     ')
   message('######################################################')
-}
+})
 
