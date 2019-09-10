@@ -5,7 +5,7 @@ lifecycle.globals <- new.env()
 #' Involves only the core variables
 #'
 #' @param createProject create the 'lifecycle'-project in Opal instance (default = false)
-#' @param dictVersion dictionary version (default = 1_0)
+#' @param dictVersion dictionary version (possible dictionaries are: 1_0, 1_1 / default = 1_0)
 #' @param cohortId cohort identifier (possible values are: 'dnbc', 'gecko', 'alspac', 'genr', 'moba', 'sws', 'bib', 'chop', 'elfe', 'eden', 'ninfea', 'hbcs', 'inma', 'isglobal', 'nfbc66', 'nfbc86', 'raine', 'rhea')
 #' @param dataVersion version of the data (specific to the cohort)
 #'
@@ -30,6 +30,9 @@ lc.populate.core <- function(createProject = FALSE, dictVersion = '1_0', cohortI
   }
   
   if(missing(dataVersion)) dataVersion <- readline('- Specify version of cohort data upload (e.g. 1_0): ')
+  if(!(dataVersion %in% lifecycle.globals$dictionaries)) {
+    stop('Version: [ ', dataVersion ,' ] is not available in published data dictionaries. Possible dictionaries are: ', paste(lifecycle.globals$dictionaries, collapse = ', '))
+  }
   if(dataVersion == '') {
     stop("No data version is specified! Program is terminated.", call. = FALSE)
   }
