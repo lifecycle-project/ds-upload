@@ -2,6 +2,7 @@
 lifecycle.globals <- new.env()
 
 lifecycle.globals$cohorts <- c('dnbc', 'gecko', 'alspac', 'genr', 'moba', 'sws', 'bib', 'chop', 'elfe', 'eden', 'ninfea', 'hbcs', 'inma', 'isglobal', 'nfbc66', 'nfbc86', 'raine', 'rhea')
+lifecycle.globals$dictionarie <- c('1_0', '1_1')
 
 #' Login into the opal instance and 
 #' 
