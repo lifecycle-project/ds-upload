@@ -40,7 +40,7 @@ lc.reshape.core <- function(upload_to_opal = TRUE, input_format = 'CSV', input_p
   }
   
   # determine filenames
-  file_prefix <- ''
+  file_prefix <- format(Sys.time(), "%Y-%m-%d_%H-%M-%S")
   file_ext <- '.csv'
   file_version <- '1_0'
   file_non <- 'non_repeated_measures'
