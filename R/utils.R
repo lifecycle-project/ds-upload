@@ -1,7 +1,10 @@
 # Use environment to store some path variables to use in different functions
 lifecycle.globals <- new.env()
 
-lifecycle.globals$cohorts <- c('dnbc', 'gecko', 'alspac', 'genr', 'moba', 'sws', 'bib', 'chop', 'elfe', 'eden', 'ninfea', 'hbcs', 'inma', 'isglobal', 'nfbc66', 'nfbc86', 'raine', 'rhea')
+cohorts <- c('dnbc', 'gecko', 'alspac', 'genr', 'moba', 'sws', 'bib', 'chop', 'elfe', 'eden', 'ninfea', 'hbcs', 'inma', 'isglobal', 'nfbc66', 'nfbc86', 'raine', 'rhea')
+cohort_urls <- c('https://opal.sund.ku.dk', 'https://opal.gcc.rug.nl', '', 'https://opal.erasmusmc.nl', 'https://moba.nhn.no', 'https://opal.mrc.soton.ac.uk:8443', '', 'https://lifecycle-project.med.uni-muenchen.de', 'https://elfe-opal.sicopre.elfe-france.fr', '', 'https://www.lifecycle-ninfea.unito.it', '', '', 'https://opal.isglobal.org', '', '', 'https://opal.gohad.uwa.edu.au', '')
+lifecycle.globals$cohorts <- setNames(as.list(cohort_urls), cohorts)
+lifecycle.globals$cohort_ids <- cohorts
 lifecycle.globals$dictionaries <- c('1_0', '1_1')
 
 #' Login into the opal instance and 
@@ -25,4 +28,8 @@ lc.login <- local(function(hostname, username = 'administrator', password) {
   message(paste('  Login to: "', lifecycle.globals$hostname, '"', sep = ''))
   lifecycle.globals$opal <- opal.login(username = lifecycle.globals$username, password = lifecycle.globals$password, url = lifecycle.globals$hostname)
   message(paste('  Logged on to: "', lifecycle.globals$hostname, '"', sep = ''))
+})
+
+lc.login.all <- local(function() {
+  
 })

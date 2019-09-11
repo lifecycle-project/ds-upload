@@ -24,8 +24,8 @@ lc.populate.core <- local(function(create_project = FALSE, dict_version = '1_0',
   if(cohort_id == '') {
     stop("No cohort identifier is specified! Program is terminated.", call. = FALSE)
   } else {
-    if(!(cohort_id %in% lifecycle.globals$cohorts)) {
-      stop('Cohort: [ ', cohort_id, ' ] is not know LifeCycle project. Please choose from: [ ', paste(lifecycle.globals$cohorts, collapse = ', '), ' ]')
+    if(!(cohort_id %in% lifecycle.globals$cohort_ids)) {
+      stop('Cohort: [ ', cohort_id, ' ] is not know LifeCycle project. Please choose from: [ ', paste(lifecycle.globals$cohort_ids, collapse = ', '), ' ]')
     }
   }
   
@@ -44,16 +44,46 @@ lc.populate.core <- local(function(create_project = FALSE, dict_version = '1_0',
   
   if(dict_version == '') dict_version <- '1_0'
   
+  if(create_project) {
+    lc.dict.project.create(dict_version) 
+  }
+  
   lc.dict.download(dict_version, cohort_id, data_version)
   lc.dict.upload()
+  lc.dict.import(dict_version, cohort_id, data_version)
   lc.dict.notify(cohort_id, data_version, data_changes)
 
 })
 
+#' Create the project with data dictionary version in between
+#'
+#' @param dict_version dictionary version (possible dictionaries are: 1_0, 1_1 / default = 1_0)
+#' 
+#' @importFrom dplyr between
+#'
+lc.dict.project.create <- local(function(dict_version) {
+  message('------------------------------------------------------')
+  message(paste('  Start creating the project version: [ ', dict_version, ' ]', sep = ''))
+  lifecycle.globals$project <- paste('lifecycle_dict_', dict_version, sep = '')
+  projects <- opal.projects(lifecycle.globals$opal)
+  if(!(lifecycle.globals$project %in% projects$name)) {
+    json <- sprintf('{"database":"%s","description":"%s","name":"%s","title":"%s"}', 'opal_data', paste('LifeCycle project for data dictionary version: [ ', lifecycle.globals$project,' ]', sep = ''), lifecycle.globals$project, lifecycle.globals$project)
+    opal.post(lifecycle.globals$opal, 'projects', body = json, contentType = 'application/x-protobuf+json', function(){print(response)})
+  } else {
+    message(paste('* Project: [ ', lifecycle.globals$project,' ] already exists', sep = ''))
+  }
+})
+
+#' Download all released data dictionaries
+#' 
+#' @param dict_version dictionary version (possible dictionaries are: 1_0, 1_1 / default = 1_0)
+#' @param cohort_id cohort identifier (possible values are: 'dnbc', 'gecko', 'alspac', 'genr', 'moba', 'sws', 'bib', 'chop', 'elfe', 'eden', 'ninfea', 'hbcs', 'inma', 'isglobal', 'nfbc66', 'nfbc86', 'raine', 'rhea')
+#' @param data_version version of the data (specific to the cohort)
+#' 
 lc.dict.download <- local(function(dict_version, cohort_id, data_version) {
   message('------------------------------------------------------')
-  message("  Start download dictionaries")
-  download_base_dir <- paste('https://github.com/sidohaakma/analysis-protocols/blob/master/R/data/dictionaries/', dict_version, '/', sep = '')
+  message('  Start download dictionaries')
+  download_base_dir <- paste('https://github.com/lifecycle-project/analysis-protocols/blob/master/R/data/dictionaries/', dict_version, '/', sep = '')
   
   dict_source_file_non_repeated <- paste(dict_version, '_non_repeated_measures.xlsx', sep = '')
   dict_source_file_monthly_repeated <- paste(dict_version, '_monthly_repeated_measures.xlsx', sep = '')
@@ -70,7 +100,7 @@ lc.dict.download <- local(function(dict_version, cohort_id, data_version) {
   message(paste('* Download: ', dict_source_file_yearly_repeated, sep = ''))
   download.file(paste(download_base_dir, dict_source_file_yearly_repeated, '?raw=true', sep = ''), destfile=lifecycle.globals$dict_dest_file_yearly_repeated, method="libcurl", quiet = TRUE)
   
-  message("  Successfully downloaded dictionaries")
+  message('  Successfully downloaded dictionaries')
 })
 
 lc.dict.upload <- local(function() {
@@ -85,18 +115,60 @@ lc.dict.upload <- local(function() {
   message(paste('* Upload: ', paste(getwd(), '/', lifecycle.globals$dict_dest_file_yearly_repeated, sep = ''), sep = ''))
   opal.file_upload(opal = lifecycle.globals$opal, source = paste(getwd(), '/', lifecycle.globals$dict_dest_file_yearly_repeated, sep = ''), destination = upload_directory)
   
-  unlink(lifecycle.globals$dict_dest_file_non_repeated)
-  unlink(lifecycle.globals$dict_dest_file_monthly_repeated)
-  unlink(lifecycle.globals$dict_dest_file_yearly_repeated)
+  #unlink(lifecycle.globals$dict_dest_file_non_repeated)
+  #unlink(lifecycle.globals$dict_dest_file_monthly_repeated)
+  #unlink(lifecycle.globals$dict_dest_file_yearly_repeated)
   
   message('  Succesfully uploaded dictionaries')
 })
 
-lc.dict.import <- local(function() {
+#' Import the tables into Opal
+#' 
+#' @param dict_version dictionary version (possible dictionaries are: 1_0, 1_1 / default = 1_0)
+#' @param cohort_id cohort identifier (possible values are: 'dnbc', 'gecko', 'alspac', 'genr', 'moba', 'sws', 'bib', 'chop', 'elfe', 'eden', 'ninfea', 'hbcs', 'inma', 'isglobal', 'nfbc66', 'nfbc86', 'raine', 'rhea')
+#' @param data_version version of the data (specific to the cohort)
+#' 
+#' @importFrom opalr opal.post
+#' 
+lc.dict.import <- local(function(dict_version, cohort_id, data_version) {
   message('------------------------------------------------------')
-  message('* Start importing dictionaries')
-  opal.
-  #TODO: implement importing the dictionaries (version 1.0)
+  message('  Start importing dictionaries')
+  
+  dict_table_non_repeated <- paste(dict_version, '_', cohort_id, '_', data_version, '_non_repeated_measures', sep = '')
+  dict_table_monthly_repeated <- paste(dict_version, '_', cohort_id, '_', data_version,'_monthly_repeated_measures', sep = '')
+  dict_table_yearly_repeated <- paste(dict_version, '_', cohort_id, '_', data_version, '_yearly_repeated_measures', sep = '')
+  
+  json_non_repeated <- sprintf('{"entityType":"Participant","name":"%s"}', dict_table_non_repeated)
+  json_monthly_repeated <- sprintf('{"entityType":"Participant","name":"%s"}', dict_table_monthly_repeated)
+  json_yearly_repeated <- sprintf('{"entityType":"Participant","name":"%s"}', dict_table_yearly_repeated)
+  
+  tables <- opal.tables(lifecycle.globals$opal, lifecycle.globals$project)
+  
+  if(!(dict_table_non_repeated %in% tables$name)) {
+    message(paste('* Create table: [ ', dict_table_non_repeated,' ]', sep = ''))
+    opal.post(lifecycle.globals$opal, 'datasource', lifecycle.globals$project, 'tables', body=json_non_repeated, contentType = 'application/x-protobuf+json')
+  } else {
+    message(paste('* Table: [ ', dict_table_non_repeated,' ] already exists', sep = ''))
+  }
+  if(!(dict_table_monthly_repeated %in% tables$name)) {
+    message(paste('* Create table: [', dict_table_monthly_repeated,']', sep = ''))
+    opal.post(lifecycle.globals$opal, 'datasource', lifecycle.globals$project, 'tables', body=json_monthly_repeated, contentType = 'application/x-protobuf+json')
+  } else {
+    message(paste('* Table: [ ', dict_table_monthly_repeated,' ] already exists', sep = ''))
+  }
+  if(!(dict_table_yearly_repeated %in% tables$name)) {
+    message(paste('* Create table: [', dict_table_yearly_repeated,']', sep = ''))
+    opal.post(lifecycle.globals$opal, 'datasource', lifecycle.globals$project, 'tables', body=json_yearly_repeated, contentType = 'application/x-protobuf+json')
+  } else {
+    message(paste('* Table: [ ', dict_table_yearly_repeated,' ] already exists', sep = ''))
+  }
+  
+  sprintf('{"entityType":"Participant","isNewVariable":true,"isRepeatable":false,"name":"test","valueType":"integer"}')
+  opal.post(lifecycle.globals$opal, 'datasource', 'lifecycle_dict_1_0', 'table', '1_0_dnbc_1_0_monthly_repeated_measures', 'variables', body='[{"entityType":"Participant","isNewVariable":true,"isRepeatable":false,"name":"test","valueType":"integer"}]', contentType = 'application/x-protobuf+json')
+  
+  
+  #opal.post()
+  #df <- read.xlsx("<name and extension of your file>", sheetIndex = 1)
 })
 
 lc.dict.notify <- local(function(cohort_id, data_version, data_changes) {

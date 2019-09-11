@@ -7,8 +7,10 @@ We are trying to build a meta package for the LifeCycle project to ease the admi
 ### Usage
 At this moment the implemented functions at this moment are:
 
-- ```lc.reshape.core``` performing the reshape of the data dictionaries for LifeCycle (only core variables)
 - ```lc.populate.core``` populate the datadictionaries for LifeCycle
+- ```lc.reshape.core``` performing the reshape of the data dictionaries for LifeCycle (only core variables)
+- ```lc.quality.```
+
 
 ### Installation
 **Prerequisites**
@@ -52,7 +54,7 @@ install.packages(c('metafor', 'tidyr', 'dplyr', 'readr', 'stringr', 'sas7bdat', 
 
 Install Opal by executing:
 ```R 
-install.packages('opal', repos=c('https://cloud.r-project.org/', 'https://cran.obiba.org'), dependencies=TRUE)
+install.packages('opalr', repos=c('https://cloud.r-project.org/', 'https://cran.obiba.org'), dependencies=TRUE)
 ```
 
 Install remaing packages by executing:
