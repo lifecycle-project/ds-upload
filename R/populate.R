@@ -112,6 +112,7 @@ lc.dict.download <- local(function(dict_version, cohort_id, data_version) {
 #' 
 #' @importFrom opalr opal.post
 #' @importFrom openxlsx read.xlsx
+#' @importFrom dplyr select
 #' 
 lc.dict.import <- local(function(dict_version, cohort_id, data_version) {
   message('------------------------------------------------------')
@@ -152,15 +153,19 @@ lc.dict.import <- local(function(dict_version, cohort_id, data_version) {
   
   variables_non_repeated_measures$entityType <- 'Participant'
   variables_non_repeated_measures$isRepeatable <- FALSE
+  variables_non_repeated_measures$attributes <- data.frame(namespace = '', name= 'label', locale = '', value = variables_non_repeated_measures$label)
+  variables_non_repeated_measures <- select(variables_non_repeated_measures, -c(label))
   
   variables_monthly_repeated_measures$entityType <- 'Participant'
   variables_monthly_repeated_measures$isRepeatable <- FALSE
+  variables_monthly_repeated_measures$attributes <- data.frame(namespace = '', name= 'label', locale = '', value = variables_monthly_repeated_measures$label)
+  variables_monthly_repeated_measures <- select(variables_monthly_repeated_measures, -c(label))
   
   variables_yearly_repeated_measures$entityType <- 'Participant'
   variables_yearly_repeated_measures$isRepeatable <- FALSE
-  
-  print(variables_non_repeated_measures)
-  
+  variables_yearly_repeated_measures$attributes <- data.frame(namespace = '', name= 'label', locale = '', value = variables_yearly_repeated_measures$label)
+  variables_yearly_repeated_measures <- select(variables_yearly_repeated_measures, -c(label))
+    
   message(paste('* Import variables into: [', dict_table_non_repeated,']', sep = ''))
   opal.post(lifecycle.globals$opal, 'datasource', lifecycle.globals$project, 'table', dict_table_non_repeated, 'variables', body=toJSON(variables_non_repeated_measures), contentType = 'application/x-protobuf+json')  
   message(paste('* Import variables into: [', dict_table_monthly_repeated,']', sep = ''))
