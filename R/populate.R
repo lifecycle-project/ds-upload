@@ -150,21 +150,23 @@ lc.dict.import <- local(function(dict_version, cohort_id, data_version) {
   variables_monthly_repeated_measures <- read.xlsx(paste(getwd(), '/', lifecycle.globals$dict_dest_file_monthly_repeated, sep = ''))
   variables_yearly_repeated_measures <- read.xlsx(paste(getwd(), '/', lifecycle.globals$dict_dest_file_yearly_repeated, sep = ''))
   
-  variables_non_repeated$entityType <- 'Participant'
-  variables_non_repeated$isRepeatable <- FALSE
+  variables_non_repeated_measures$entityType <- 'Participant'
+  variables_non_repeated_measures$isRepeatable <- FALSE
   
-  variables_monthly_repeated$entityType <- 'Participant'
-  variables_monthly_repeated$isRepeatable <- FALSE
+  variables_monthly_repeated_measures$entityType <- 'Participant'
+  variables_monthly_repeated_measures$isRepeatable <- FALSE
   
-  variables_yearly_repeated$entityType <- 'Participant'
-  variables_yearly_repeated$isRepeatable <- FALSE
+  variables_yearly_repeated_measures$entityType <- 'Participant'
+  variables_yearly_repeated_measures$isRepeatable <- FALSE
+  
+  print(variables_non_repeated_measures)
   
   message(paste('* Import variables into: [', dict_table_non_repeated,']', sep = ''))
-  opal.post(lifecycle.globals$opal, 'datasource', lifecycle.globals$project, 'table', dict_table_non_repeated, 'variables', body=toJSON(variables_non_repeated), contentType = 'application/x-protobuf+json')  
+  opal.post(lifecycle.globals$opal, 'datasource', lifecycle.globals$project, 'table', dict_table_non_repeated, 'variables', body=toJSON(variables_non_repeated_measures), contentType = 'application/x-protobuf+json')  
   message(paste('* Import variables into: [', dict_table_monthly_repeated,']', sep = ''))
-  opal.post(lifecycle.globals$opal, 'datasource', lifecycle.globals$project, 'table', dict_table_yearly_repeated, 'variables', body=toJSON(variables_yearly_repeated), contentType = 'application/x-protobuf+json')  
+  opal.post(lifecycle.globals$opal, 'datasource', lifecycle.globals$project, 'table', dict_table_yearly_repeated, 'variables', body=toJSON(variables_monthly_repeated_measures), contentType = 'application/x-protobuf+json')  
   message(paste('* Import variables into: [', dict_table_yearly_repeated,']', sep = ''))
-  opal.post(lifecycle.globals$opal, 'datasource', lifecycle.globals$project, 'table', dict_table_monthly_repeated, 'variables', body=toJSON(variables_monthly_repeated), contentType = 'application/x-protobuf+json')  
+  opal.post(lifecycle.globals$opal, 'datasource', lifecycle.globals$project, 'table', dict_table_monthly_repeated, 'variables', body=toJSON(variables_yearly_repeated_measures), contentType = 'application/x-protobuf+json')  
   
   message('* Remove the tables from workspace')
   unlink(lifecycle.globals$dict_dest_file_non_repeated)
