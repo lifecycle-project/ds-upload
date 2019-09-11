@@ -25,11 +25,13 @@ You need these packages to can make use of the LifeCycle R-package.
 * sas7bdat
 * data.table
 * foreign
-* maditr
 * tidyverse
 * ggplot2
 * gmodels
 * plotly
+* httr
+* openxslx 
+* jsonlite
 
 > For Opal reference documentation check: http://opaldoc.obiba.org/en/latest/r-user-guide/datashield.html
 
@@ -47,7 +49,7 @@ install.packages('opalr', repos='https://cran.obiba.org', type='source')
 
 Install remaining packages by executing:
 ```R 
-install.packages(c('metafor', 'tidyr', 'dplyr', 'readr', 'stringr', 'sas7bdat', 'data.table', 'foreign', 'maditr', 'tidyverse', 'gmodels', 'ggplot2', 'plotly', 'httr', 'openxslx', 'jsonlite'), repos=c('https://cloud.r-project.org/', 'https://www.stats.ox.ac.uk/pub/RWin/'))
+install.packages(c('metafor', 'tidyr', 'dplyr', 'readr', 'stringr', 'sas7bdat', 'data.table', 'foreign', 'tidyverse', 'gmodels', 'ggplot2', 'plotly', 'httr', 'openxslx', 'jsonlite'), repos=c('https://cloud.r-project.org/', 'https://www.stats.ox.ac.uk/pub/RWin/'))
 ```
 
 **For Mac**
@@ -59,7 +61,7 @@ install.packages('opalr', repos=c('https://cloud.r-project.org/', 'https://cran.
 
 Install remaing packages by executing:
 ```R 
-install.packages(c('metafor', 'tidyr', 'dplyr', 'readr', 'stringr', 'sas7bdat', 'data.table', 'foreign', 'maditr', 'tidyverse', 'gmodels', 'ggplot2', 'plotly', 'httr', 'openxslx', 'jsonlite'), repos=c('https://cloud.r-project.org/'))
+install.packages(c('metafor', 'tidyr', 'dplyr', 'readr', 'stringr', 'sas7bdat', 'data.table', 'foreign', 'tidyverse', 'gmodels', 'ggplot2', 'plotly', 'httr', 'openxslx', 'jsonlite'), repos=c('https://cloud.r-project.org/'))
 ```
 
 **Install LifeCycle package**
