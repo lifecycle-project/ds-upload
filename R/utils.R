@@ -30,6 +30,15 @@ lc.login <- local(function(hostname, username = 'administrator', password) {
   message(paste('  Logged on to: "', lifecycle.globals$hostname, '"', sep = ''))
 })
 
-lc.login.all <- local(function() {
-  
-})
+#' Numerical extraction function
+#' Number at the end of the string: Indicates year. We need to extract this to create the age_years variable.
+#' This is the function to do so.
+#' 
+#' @param input_string convert this string into an integer value
+#' 
+#' @importFrom stringr str_extract
+#' 
+#' @export
+numextract <- function(input_string) { 
+  str_extract(input_string, "\\d*$") 
+}

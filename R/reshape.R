@@ -9,10 +9,8 @@
 #' @importFrom readr read_csv write_csv cols col_double
 #' @importFrom tidyr gather spread
 #' @importFrom dplyr %>% select
-#' @importFrom stringr str_extract
 #' @importFrom foreign read.dta read.spss
-#' @importFrom maditr dcast
-#' @importFrom data.table as.data.table
+#' @importFrom data.table as.data.table dcast
 #' @importFrom sas7bdat read.sas7bdat
 #'
 #' @export
@@ -48,13 +46,7 @@ lc.reshape.core <- local(function(upload_to_opal = TRUE, data_version, input_for
   file_monthly = 'monthly_repeated_measures'
   file_yearly = 'yearly_repeated_measures'
   
-  # Numerical extraction function
-  # Number at the end of the string: Indicates year. We need to extract this to create the age_years variable.
-  # This is the function to do so.
-  numextract <- function(string) { 
-    str_extract(string, "\\d*$") 
-  }
-  
+
   # Set order of variables
   lc_variables <- c("mother_id", "preg_no", "child_no", "child_id", "cohort_id", "recruit_age",  "coh_country", "cohab_0",
                     "cohab_1", "cohab_2", "cohab_3", "cohab_4", "cohab_5", "cohab_6", "cohab_7", "cohab_8", "cohab_9", "cohab_10", "cohab_11", 
@@ -249,7 +241,7 @@ lc.reshape.core <- local(function(upload_to_opal = TRUE, data_version, input_for
   non_repeated_measures <- lc_data[,non_repeated]
   
   # Write as csv   
-  write_csv(non_repeated_measures, paste(output_path, file_prefix, '_', file_version, '_', file_non, file_ext, sep="")) ## exports data as a csv file
+  write_csv(non_repeated_measures, paste(output_path, '/', file_prefix, '_', file_version, '_', file_non, file_ext, sep="")) ## exports data as a csv file
   
   # Remove the data frames from memory
   rm(non_repeated, non_repeated_measures)
@@ -289,12 +281,10 @@ lc.reshape.core <- local(function(upload_to_opal = TRUE, data_version, input_for
   # no child_id get's lost:
   
   # Subset of data with age_years = 0
-  zero_year <- long_yearly %>%
-    filter(age_years %in% 0)
+  zero_year <- long_yearly %>% filter(age_years %in% 0)
 
   # Subset of data with age_years > 0
-  later_year <- long_yearly %>%
-    filter(age_years > 0)
+  later_year <- long_yearly %>% filter(age_years > 0)
   
   # Remove all the rows that are missing only
   later_year <- later_year[rowSums(is.na(later_year[,unique(long_1$variable_trunc)])) < 
@@ -304,7 +294,7 @@ lc.reshape.core <- local(function(upload_to_opal = TRUE, data_version, input_for
   long_yearly <- rbind(zero_year,later_year)
   
   # Write as csv
-  write_csv(long_yearly, paste(output_path, file_prefix, '_', file_version, '_', file_yearly, file_ext, sep="")) ## exports data as a csv file
+  write_csv(long_yearly, paste(output_path, '/', file_prefix, '_', file_version, '_', file_yearly, file_ext, sep="")) ## exports data as a csv file
   
   # Remove the intermediate data sets that are stored in memory
   rm(long_1, long_2, later_year, zero_year,long_yearly,yearly_repeated_measures, yearly_repeated)
@@ -359,33 +349,111 @@ lc.reshape.core <- local(function(upload_to_opal = TRUE, data_version, input_for
   long_monthly <- rbind(zero_monthly,later_monthly)
   
   # Write as csv
-  write_csv(long_yearly, paste(output_path, file_prefix, '_', file_version, '_', file_monthly, file_ext, sep="")) ## exports data as a csv file
+  write_csv(long_monthly, paste(output_path, '/', file_prefix, '_', file_version, '_', file_monthly, file_ext, sep="")) ## exports data as a csv file
   
   # Remove the intermediate data sets that are stored in memory
   rm(long_1, long_2, zero_monthly, long_monthly, monthly_repeated, monthly_repeated_measures)
 
   if(upload_to_opal) {
-    message('------------------------------------------------------')
-    message('  Start uploading data files')
-    
-    uploadDirectory <- paste('/home/', lifecycle.globals$username, sep = '')
-    
-    message(paste('* Upload: ', paste(getwd(), '/', file_prefix, '_', file_version, '_', file_non, file_ext, sep = ''), sep = ''))
-    opal.file_upload(opal = lifecycle.globals$opal, source = paste(getwd(), '/', file_prefix, '_', file_version, '_', file_non, file_ext, sep = ''), destination = uploadDirectory)
-    message(paste('* Upload: ', paste(getwd(), '/', file_prefix, '_', file_version, '_', file_monthly, file_ext, sep = ''), sep = ''))
-    opal.file_upload(opal = lifecycle.globals$opal, source = paste(getwd(), '/', file_prefix, '_', file_version, '_', file_monthly, file_ext, sep = ''), destination = uploadDirectory)
-    message(paste('* Upload: ', paste(getwd(), '/', file_prefix, '_', file_version, '_', file_yearly, file_ext, sep = ''), sep = ''))
-    opal.file_upload(opal = lifecycle.globals$opal, source = paste(getwd(), '/', file_prefix, '_', file_version, '_', file_yearly, file_ext, sep = ''), destination = uploadDirectory)
-    
-    unlink(paste(getwd(), '/', file_prefix, '_', file_version, '_', file_non, file_ext, sep = ''))
-    unlink(paste(getwd(), '/', file_prefix, '_', file_version, '_', file_monthly, file_ext, sep = ''))
-    unlink(paste(getwd(), '/', file_prefix, '_', file_version, '_', file_yearly, file_ext, sep = ''))
-    
-    message('  Succesfully uploaded dictionaries')
+    lc.reshape.core.upload(file_prefix, file_version, file_ext)
   }
-
+  
+  
   message('######################################################')
   message('  Reshaping successfully finished                     ')
   message('######################################################')
+})
+
+#' Uploading the generated data files
+#' 
+#' @param file_prefix a date to prefix the file with
+#' @param file_version the data release version
+#' @param file_ext this is default CSV
+#' 
+#' @importFrom opalr opal.file_upload
+#' @importFrom jsonlite toJSON
+#' 
+lc.reshape.core.upload <- local(function(file_prefix, file_version, file_ext) {
+  message('------------------------------------------------------')
+  message('  Start uploading data files')
+    
+  file_non <- 'non_repeated_measures'
+  file_monthly = 'monthly_repeated_measures'
+  file_yearly = 'yearly_repeated_measures'
+  
+  upload_directory <- paste('/home/', lifecycle.globals$username, sep = '')
+  message(paste('* Upload: ', paste(getwd(), '/', file_prefix, '_', file_version, '_', file_non, file_ext, sep = ''), sep = ''))
+    
+  opal.file_upload(opal = lifecycle.globals$opal, source = paste(getwd(), '/', file_prefix, '_', file_version, '_', file_non, file_ext, sep = ''), destination = upload_directory)
+  message(paste('* Upload: ', paste(getwd(), '/', file_prefix, '_', file_version, '_', file_monthly, file_ext, sep = ''), sep = ''))
+  opal.file_upload(opal = lifecycle.globals$opal, source = paste(getwd(), '/', file_prefix, '_', file_version, '_', file_monthly, file_ext, sep = ''), destination = upload_directory)
+  message(paste('* Upload: ', paste(getwd(), '/', file_prefix, '_', file_version, '_', file_yearly, file_ext, sep = ''), sep = ''))
+  opal.file_upload(opal = lifecycle.globals$opal, source = paste(getwd(), '/', file_prefix, '_', file_version, '_', file_yearly, file_ext, sep = ''), destination = upload_directory)
+    
+  unlink(paste(getwd(), '/', file_prefix, '_', file_version, '_', file_non, file_ext, sep = ''))
+  unlink(paste(getwd(), '/', file_prefix, '_', file_version, '_', file_monthly, file_ext, sep = ''))
+  unlink(paste(getwd(), '/', file_prefix, '_', file_version, '_', file_yearly, file_ext, sep = ''))
+    
+  message('  Succesfully uploaded the data files')
+})
+
+#' Importing generated data files
+#' 
+#' @param file_prefix a date to prefix the file with
+#' @param file_version the data release version
+#' @param file_ext this is default CSV
+#' 
+#' @importFrom opalr opal.post
+#' @importFrom opalr opal.get
+#' @importFrom jsonlite toJSON
+#' 
+lc.reshape.core.import <- local(function(file_prefix, file_version, file_ext) {
+  
+  message('------------------------------------------------------')
+  message('  Start importing data files')
+  
+  file_non <- 'non_repeated_measures'
+  file_monthly = 'monthly_repeated_measures'
+  file_yearly = 'yearly_repeated_measures'
+  
+  projects <- opal.projects(lifecycle.globals$opal)
+  project <- readline(paste('Which project you want to upload into: [ ', paste0(projects$name, collapse = ', '), ' ]: ', sep = ''))
+  
+  if(!(project %in% projects$name)) {
+    stop(paste('Invalid projectname: [ ', project,' ]', sep = ''))
+  }
+  
+  tables <- opal.tables(lifecycle.globals$opal, project)
+  
+  non_repeated_table <- ''
+  monthly_repeated_table <- ''
+  yearly_repeated_table <- ''
+  if('non' %in% tables$name) {
+    non_repeated_table = table 
+  } 
+  if('monthly' %in% tables$name) {
+    monthly_repeated_table = table
+  } 
+  if('yearly' %in% tables$name) {
+    yearly_repeated_table = table
+  }
+  
+  data_non_repeated_measures <- read.csv(paste(getwd(), '/', file_prefix, '_', file_version, '_', file_non, file_ext, sep = ''))
+  data_monthly_repeated_measures <- read.csv(paste(getwd(), '/', file_prefix, '_', file_version, '_', file_monthly, file_ext, sep = ''))
+  data_yearly_repeated_measures <- read.csv(paste(getwd(), '/', file_prefix, '_', file_version, '_', file_yearly, file_ext, sep = ''))
+    
+  message(paste('* Import: ', paste(getwd(), '/', file_prefix, '_', file_version, '_', file_non, file_ext, sep = ''), sep = ''))
+  opal.post(lifecycle.globals$opal, 'datasource', lifecycle.globals$project, 'table', non_repeated_table, 'variables', body=toJSON(data_non_repeated_measures), contentType = 'application/x-protobuf+json')  
+  message(paste('* Import: ', paste(getwd(), '/', file_prefix, '_', file_version, '_', file_monthly, file_ext, sep = ''), sep = ''))
+  opal.post(lifecycle.globals$opal, 'datasource', lifecycle.globals$project, 'table', non_repeated_table, 'variables', body=toJSON(data_non_repeated_measures), contentType = 'application/x-protobuf+json')  
+  message(paste('* Import: ', paste(getwd(), '/', file_prefix, '_', file_version, '_', file_yearly, file_ext, sep = ''), sep = ''))
+  opal.post(lifecycle.globals$opal, 'datasource', lifecycle.globals$project, 'table', non_repeated_table, 'variables', body=toJSON(data_yearly_repeated_measures), contentType = 'application/x-protobuf+json')  
+  
+  unlink(paste(getwd(), '/', file_prefix, '_', file_version, '_', file_non, file_ext, sep = ''))
+  unlink(paste(getwd(), '/', file_prefix, '_', file_version, '_', file_monthly, file_ext, sep = ''))
+  unlink(paste(getwd(), '/', file_prefix, '_', file_version, '_', file_yearly, file_ext, sep = ''))
+    
+  message('  Succesfully imported the files')
+  
 })
 

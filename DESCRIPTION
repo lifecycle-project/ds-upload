@@ -17,7 +17,6 @@ Imports:
     sas7bdat,
     data.table,
     foreign,
-    maditr,
     tidyverse,
     ggplot2,
     gmodels,
