@@ -22,6 +22,8 @@ Imports:
     ggplot2,
     gmodels,
     plotly,
-    httr
+    httr,
+    openxlsx,
+    jsonlite
 LazyData: true
 RoxygenNote: 6.1.1

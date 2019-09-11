@@ -49,10 +49,11 @@ lc.populate.core <- local(function(create_project = FALSE, dict_version = '1_0',
   }
   
   lc.dict.download(dict_version, cohort_id, data_version)
-  lc.dict.upload()
   lc.dict.import(dict_version, cohort_id, data_version)
-  lc.dict.notify(cohort_id, data_version, data_changes)
-
+  
+  message('######################################################')
+  message('  Importing data dictionaries has finished            ')
+  message('######################################################')
 })
 
 #' Create the project with data dictionary version in between
@@ -68,7 +69,7 @@ lc.dict.project.create <- local(function(dict_version) {
   projects <- opal.projects(lifecycle.globals$opal)
   if(!(lifecycle.globals$project %in% projects$name)) {
     json <- sprintf('{"database":"%s","description":"%s","name":"%s","title":"%s"}', 'opal_data', paste('LifeCycle project for data dictionary version: [ ', lifecycle.globals$project,' ]', sep = ''), lifecycle.globals$project, lifecycle.globals$project)
-    opal.post(lifecycle.globals$opal, 'projects', body = json, contentType = 'application/x-protobuf+json', function(){print(response)})
+    opal.post(lifecycle.globals$opal, 'projects', body = json, contentType = 'application/x-protobuf+json')
   } else {
     message(paste('* Project: [ ', lifecycle.globals$project,' ] already exists', sep = ''))
   }
@@ -103,25 +104,6 @@ lc.dict.download <- local(function(dict_version, cohort_id, data_version) {
   message('  Successfully downloaded dictionaries')
 })
 
-lc.dict.upload <- local(function() {
-  message('------------------------------------------------------')
-  message('  Start uploading dictionaries')
-  upload_directory <- paste('/home/', lifecycle.globals$username, sep="")
-  
-  message(paste('* Upload: ', paste(getwd(), '/', lifecycle.globals$dict_dest_file_non_repeated, sep = ''), sep = ''))
-  opal.file_upload(opal = lifecycle.globals$opal, source = paste(getwd(), '/', lifecycle.globals$dict_dest_file_non_repeated, sep = ''), destination = upload_directory)
-  message(paste('* Upload: ', paste(getwd(), '/', lifecycle.globals$dict_dest_file_monthly_repeated, sep = ''), sep = ''))
-  opal.file_upload(opal = lifecycle.globals$opal, source = paste(getwd(), '/', lifecycle.globals$dict_dest_file_monthly_repeated, sep = ''), destination = upload_directory)
-  message(paste('* Upload: ', paste(getwd(), '/', lifecycle.globals$dict_dest_file_yearly_repeated, sep = ''), sep = ''))
-  opal.file_upload(opal = lifecycle.globals$opal, source = paste(getwd(), '/', lifecycle.globals$dict_dest_file_yearly_repeated, sep = ''), destination = upload_directory)
-  
-  #unlink(lifecycle.globals$dict_dest_file_non_repeated)
-  #unlink(lifecycle.globals$dict_dest_file_monthly_repeated)
-  #unlink(lifecycle.globals$dict_dest_file_yearly_repeated)
-  
-  message('  Succesfully uploaded dictionaries')
-})
-
 #' Import the tables into Opal
 #' 
 #' @param dict_version dictionary version (possible dictionaries are: 1_0, 1_1 / default = 1_0)
@@ -129,6 +111,7 @@ lc.dict.upload <- local(function() {
 #' @param data_version version of the data (specific to the cohort)
 #' 
 #' @importFrom opalr opal.post
+#' @importFrom openxlsx read.xlsx
 #' 
 lc.dict.import <- local(function(dict_version, cohort_id, data_version) {
   message('------------------------------------------------------')
@@ -163,44 +146,30 @@ lc.dict.import <- local(function(dict_version, cohort_id, data_version) {
     message(paste('* Table: [ ', dict_table_yearly_repeated,' ] already exists', sep = ''))
   }
   
-  sprintf('{"entityType":"Participant","isNewVariable":true,"isRepeatable":false,"name":"test","valueType":"integer"}')
-  opal.post(lifecycle.globals$opal, 'datasource', 'lifecycle_dict_1_0', 'table', '1_0_dnbc_1_0_monthly_repeated_measures', 'variables', body='[{"entityType":"Participant","isNewVariable":true,"isRepeatable":false,"name":"test","valueType":"integer"}]', contentType = 'application/x-protobuf+json')
+  variables_non_repeated_measures <- read.xlsx(paste(getwd(), '/', lifecycle.globals$dict_dest_file_non_repeated, sep = ''))
+  variables_monthly_repeated_measures <- read.xlsx(paste(getwd(), '/', lifecycle.globals$dict_dest_file_monthly_repeated, sep = ''))
+  variables_yearly_repeated_measures <- read.xlsx(paste(getwd(), '/', lifecycle.globals$dict_dest_file_yearly_repeated, sep = ''))
   
+  variables_non_repeated$entityType <- 'Participant'
+  variables_non_repeated$isRepeatable <- FALSE
   
-  #opal.post()
-  #df <- read.xlsx("<name and extension of your file>", sheetIndex = 1)
-})
-
-lc.dict.notify <- local(function(cohort_id, data_version, data_changes) {
-  message('------------------------------------------------------')
-  message("  Notify LifeCycle project")
+  variables_monthly_repeated$entityType <- 'Participant'
+  variables_monthly_repeated$isRepeatable <- FALSE
   
-  sender <- "euchild.lifecycle.project@gmail.com"
-  recipients <- c("s.haakma@rug.nl")
+  variables_yearly_repeated$entityType <- 'Participant'
+  variables_yearly_repeated$isRepeatable <- FALSE
   
-  emailSubject = paste('New upload for cohort: [ ', cohort_id, ' ] version: [ ', data_version, ' ]', sep = '')
-  emailContent = paste('There is a new data upload into Opal for cohort: [ ', cohort_id, ' ]\n',
-                        'The new version of the data is: [ ', data_version, ' ] \n',
-                        'The changes that are made are: [ ', data_changes, ' ]', sep = '')
+  message(paste('* Import variables into: [', dict_table_non_repeated,']', sep = ''))
+  opal.post(lifecycle.globals$opal, 'datasource', lifecycle.globals$project, 'table', dict_table_non_repeated, 'variables', body=toJSON(variables_non_repeated), contentType = 'application/x-protobuf+json')  
+  message(paste('* Import variables into: [', dict_table_monthly_repeated,']', sep = ''))
+  opal.post(lifecycle.globals$opal, 'datasource', lifecycle.globals$project, 'table', dict_table_yearly_repeated, 'variables', body=toJSON(variables_yearly_repeated), contentType = 'application/x-protobuf+json')  
+  message(paste('* Import variables into: [', dict_table_yearly_repeated,']', sep = ''))
+  opal.post(lifecycle.globals$opal, 'datasource', lifecycle.globals$project, 'table', dict_table_monthly_repeated, 'variables', body=toJSON(variables_monthly_repeated), contentType = 'application/x-protobuf+json')  
   
-  #send.mail(
-  #  from = sender, 
-  #  to = recipients, 
-  # subject = emailSubject,
-  #  Sys.Date(),
-  #  "{}", 
-  #  body = emailContent, 
-  #  encoding = "utf-8", 
-  #  smtp = list(
-  #    host.name = "smtp.gmail.com", 
-  #    port = 578, 
-  #    user.name=sender, 
-  #    passwd="?2017LifeCycle!", 
-  #    ssl=TRUE),
-  #  authenticate = TRUE, 
-  #  send = TRUE, 
-  #  html = TRUE, 
-  #  inline = TRUE)
+  message('* Remove the tables from workspace')
+  unlink(lifecycle.globals$dict_dest_file_non_repeated)
+  unlink(lifecycle.globals$dict_dest_file_monthly_repeated)
+  unlink(lifecycle.globals$dict_dest_file_yearly_repeated)
   
-  message("  LifeCycle project notified")
+  message('  All dictionaries are populated correctly')
 })

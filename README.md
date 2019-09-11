@@ -9,7 +9,7 @@ At this moment the implemented functions at this moment are:
 
 - ```lc.populate.core``` populate the datadictionaries for LifeCycle
 - ```lc.reshape.core``` performing the reshape of the data dictionaries for LifeCycle (only core variables)
-- ```lc.quality.```
+- ```lc.quality.local.core.meta``` performing local quality checks on the harmonised data regarding the metadata
 
 
 ### Installation
@@ -47,7 +47,7 @@ install.packages('opalr', repos='https://cran.obiba.org', type='source')
 
 Install remaining packages by executing:
 ```R 
-install.packages(c('metafor', 'tidyr', 'dplyr', 'readr', 'stringr', 'sas7bdat', 'data.table', 'foreign', 'maditr', 'tidyverse', 'gmodels', 'ggplot2', 'plotly'), repos=c('https://cloud.r-project.org/', 'https://www.stats.ox.ac.uk/pub/RWin/'))
+install.packages(c('metafor', 'tidyr', 'dplyr', 'readr', 'stringr', 'sas7bdat', 'data.table', 'foreign', 'maditr', 'tidyverse', 'gmodels', 'ggplot2', 'plotly', 'httr', 'openxslx', 'jsonlite'), repos=c('https://cloud.r-project.org/', 'https://www.stats.ox.ac.uk/pub/RWin/'))
 ```
 
 **For Mac**
@@ -59,7 +59,7 @@ install.packages('opalr', repos=c('https://cloud.r-project.org/', 'https://cran.
 
 Install remaing packages by executing:
 ```R 
-install.packages(c('metafor', 'tidyr', 'dplyr', 'readr', 'stringr', 'sas7bdat', 'data.table', 'foreign', 'maditr', 'tidyverse', 'gmodels', 'ggplot2', 'plotly'), repos=c('https://cloud.r-project.org/'))
+install.packages(c('metafor', 'tidyr', 'dplyr', 'readr', 'stringr', 'sas7bdat', 'data.table', 'foreign', 'maditr', 'tidyverse', 'gmodels', 'ggplot2', 'plotly', 'httr', 'openxslx', 'jsonlite'), repos=c('https://cloud.r-project.org/'))
 ```
 
 **Install LifeCycle package**
@@ -75,7 +75,7 @@ library(lifecycleProject)
 Releasing the artifact can be done by curling to the following address:
 
 ```bash
-curl -v --user 'user:password' --upload-file lifecycleProject_0.3.0.tar.gz https://registry.molgenis.org/repository/r-hosted/src/contrib/lifecycleProject_0.3.0.tar.gz 
+curl -v --user 'user:password' --upload-file lifecycleProject_0.6.0.tar.gz https://registry.molgenis.org/repository/r-hosted/src/contrib/lifecycleProject_0.6.0.tar.gz 
 ```
 
 ## Analysis guidelines
