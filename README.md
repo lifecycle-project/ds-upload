@@ -12,7 +12,7 @@ At this moment the implemented functions at this moment are:
 - ```lc.quality.local.core.meta``` performing local quality checks on the harmonised data regarding the metadata
 
 ### Installation
-**Prerequisites**
+#### Prerequisites
 You need these packages to can make use of the LifeCycle R-package.
 
 * opalr (>= 1.2.0),
@@ -32,7 +32,7 @@ You need these packages to can make use of the LifeCycle R-package.
 
 > For Opal reference documentation check: http://opaldoc.obiba.org/en/latest/r-user-guide/datashield.html
 
-**For Windows**
+#### For Windows
 
 Install the Opal package. By installing ```RCurl, rjson``` first.
 ```R 
@@ -51,7 +51,7 @@ install.packages(c('metafor', 'tidyr', 'dplyr', 'readr', 'stringr', 'sas7bdat', 
 
 This may take a while
 
-**For Mac**
+#### For Mac
 
 Install Opal by executing:
 ```R 
@@ -63,7 +63,7 @@ Install remaing packages by executing:
 install.packages(c('metafor', 'tidyr', 'dplyr', 'readr', 'stringr', 'sas7bdat', 'data.table', 'foreign', 'tidyverse', 'gmodels', 'ggplot2', 'plotly', 'httr', 'openxslx', 'jsonlite'), repos=c('https://cloud.r-project.org/'))
 ```
 
-**Install LifeCycle package**
+#### Install LifeCycle package
 
 You can install the package by executing the following command:
 

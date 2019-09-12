@@ -27,8 +27,10 @@ lc.populate.core <- local(function(dict_version = '1_0', cohort_id, data_version
   }
   
   if(missing(dict_version)) data_version <- readline('- Specify version of cohort data upload (e.g. 1_0): ')
-  if(!(data_version %in% lifecycle.globals$dictionaries)) {
-    stop('Version: [ ', data_version ,' ] is not available in published data dictionaries. Possible dictionaries are: ', paste(lifecycle.globals$dictionaries, collapse = ', '))
+  if(dict_version != '' && !(dict_version %in% lifecycle.globals$dictionaries)) {
+    stop('Version: [ ', dict_version ,' ] is not available in published data dictionaries. Possible dictionaries are: ', paste(lifecycle.globals$dictionaries, collapse = ', '))
+  } else {
+    if(dict_version == '') dict_version <- '1_0'
   }
   if(data_version == '') {
     stop("No data version is specified! Program is terminated.", call. = FALSE)
@@ -38,8 +40,6 @@ lc.populate.core <- local(function(dict_version = '1_0', cohort_id, data_version
   if(data_changes == '') {
     stop("No changes in data are specified! Program is terminated.", call. = FALSE)
   }
-  
-  if(dict_version == '') dict_version <- '1_0'
   
   lc.dict.project.create(dict_version) 
   lc.dict.download(dict_version, cohort_id, data_version)

@@ -467,6 +467,5 @@ lc.reshape.core.import <- local(function(file_prefix, file_version, file_name) {
   unlink(paste(getwd(), '/', file_prefix, '_', file_version, '_', file_name, file_ext, sep = ''))
     
   message('  Succesfully imported the files')
-  
 })
 
