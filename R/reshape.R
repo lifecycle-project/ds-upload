@@ -286,7 +286,7 @@ lc.reshape.core.generate.yearly.repeated <- local(function(lc_data, upload_to_op
   file_name <- 'yearly_repeated_measures'
   
   # Select only those variables, that are repeated yearly
-  yearly_repeated <- c(which(names(lc_data) %in% "mother_id") : which(names(lc_data) %in% "coh_country"), 
+  yearly_repeated <- c(which(names(lc_data) %in% "child_id"), 
                        which(names(lc_data) %in% "cohab_0") : which(names(lc_data) %in% "edu_m_17"), 
                        which(names(lc_data) %in% "occup_f1_0") : which(names(lc_data) %in% "edu_f2_fath17"), 
                        which(names(lc_data) %in% "childcare_0") :  which(names(lc_data) %in% "famsize_adult17")) 
@@ -305,19 +305,19 @@ lc.reshape.core.generate.yearly.repeated <- local(function(lc_data, upload_to_op
   long_1$variable_trunc <- gsub('[[:digit:]]+$', '', long_1$orig_var)
   
   # Use the data.table package for spreading the data again, as tidyverse runs into memory issues 
-  long_2 <- dcast(long_1, mother_id + child_id + age_years + preg_no + child_no + cohort_id + coh_country ~ variable_trunc, value.var = "cohab_")
+  long_2 <- dcast(long_1, child_id + age_years ~ variable_trunc, value.var = "cohab_")
   
   # Create a row_id so there is a unique identifier for the rows
   long_2$row_id <- c(1:length(long_2$child_id))
   
   # Arrange the variable names based on the original order
-  long_yearly <- long_2[,c("row_id", "child_id", "age_years", "mother_id", "preg_no", "child_no", "cohort_id", "coh_country", unique(long_1$variable_trunc))]
+  long_yearly <- long_2[,c("row_id", "child_id", "age_years", unique(long_1$variable_trunc))]
   
   # As the data table is still too big for opal, remove those
   # rows, that have only missing values, but keep all rows at age_years=0, so
   # no child_id get's lost:
   
-  # Subset of data with age_years = 0
+  # Subset of data with age_years = 0 
   zero_year <- long_yearly %>% filter(age_years %in% 0)
   
   # Subset of data with age_years > 0
@@ -356,7 +356,7 @@ lc.reshape.core.generate.monthly.repeated <- local(function(lc_data, upload_to_o
   message('* Generating: monthly-repeated measures')
   
   # Select only those variables with monthly repeated measures
-  monthly_repeated <- c(which(names(lc_data) %in% "mother_id") : which(names(lc_data) %in% "coh_country"), 
+  monthly_repeated <- c(which(names(lc_data) %in% "child_id"), 
                         which(names(lc_data) %in% "height_0") : which(names(lc_data) %in% "weight_age215"))
   
   # Select the non-repeated measures from the full data set
@@ -367,32 +367,32 @@ lc.reshape.core.generate.monthly.repeated <- local(function(lc_data, upload_to_o
     gather(orig_var, height_, height_0:weight_age215, na.rm=FALSE)
   
   # Create the age_years and age_months variables with the regular expression extraction of the year
-  long_1$age_years  <- as.numeric(numextract(long_1$orig_var))/12
+  long_1$age_years  <- as.integer(as.numeric(numextract(long_1$orig_var))/12)
   long_1$age_months <- as.numeric(numextract(long_1$orig_var))
   
   # Here we remove the year indicator from the original variable name
   long_1$variable_trunc <- gsub('[[:digit:]]+$', '', long_1$orig_var)
   
   # Use the data.table package for spreading the data again, as tidyverse ruins into memory issues 
-  long_2 <- dcast(long_1, mother_id + child_id + age_years + age_months + preg_no + child_no + cohort_id + coh_country ~ variable_trunc, value.var = "height_")
+  long_2 <- dcast(long_1, child_id + age_years + age_months ~ variable_trunc, value.var = "height_")
   
   # Create a row_id so there is a unique identifier for the rows
   long_2$row_id <- c(1:length(long_2$child_id))
   
   # Arrange the variable names based on the original order
-  long_monthly <- long_2[,c("row_id", "child_id", "age_years", "age_months", "mother_id", "preg_no", "child_no", "cohort_id", "coh_country", unique(long_1$variable_trunc))]
+  long_monthly <- long_2[,c("row_id", "child_id", "age_years", "age_months", unique(long_1$variable_trunc))]
   
   # As the data table is still too big for opal, remove those
   # rows, that have only missing values, but keep all rows at age_years=0, so
   # no child_id get's lost:
   
-  # Subset of data with age_years = 0
+  # Subset of data with age_months = 0
   zero_monthly <- long_monthly %>%
-    filter(age_years %in% 0)
+    filter(age_months %in% 0)
   
-  # Subset of data with age_years > 0
+  # Subset of data with age_months > 0
   later_monthly <- long_monthly %>%
-    filter(age_years > 0)
+    filter(age_months > 0)
   
   # Remove all the rows that are missing only: rowSums and is.na combined indicate if 0 or all columns are NA (4), and
   # remove the rows with rowSum values of 4
