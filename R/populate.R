@@ -7,6 +7,7 @@ lifecycle.globals <- new.env()
 #' @param dict_version dictionary version (possible dictionaries are: 1_0, 1_1 / default = 1_0)
 #' @param cohort_id cohort identifier (possible values are: 'dnbc', 'gecko', 'alspac', 'genr', 'moba', 'sws', 'bib', 'chop', 'elfe', 'eden', 'ninfea', 'hbcs', 'inma', 'isglobal', 'nfbc66', 'nfbc86', 'raine', 'rhea')
 #' @param data_version version of the data (specific to the cohort)
+#' @param data_changes comments about the data changes in the release being done
 #'
 #' @export
 lc.populate.core <- local(function(dict_version = '1_0', cohort_id, data_version, data_changes) {
@@ -75,6 +76,8 @@ lc.dict.project.create <- local(function(dict_version) {
 #' @param dict_version dictionary version (possible dictionaries are: 1_0, 1_1 / default = 1_0)
 #' @param cohort_id cohort identifier (possible values are: 'dnbc', 'gecko', 'alspac', 'genr', 'moba', 'sws', 'bib', 'chop', 'elfe', 'eden', 'ninfea', 'hbcs', 'inma', 'isglobal', 'nfbc66', 'nfbc86', 'raine', 'rhea')
 #' @param data_version version of the data (specific to the cohort)
+#' 
+#' @importFrom utils download.file
 #' 
 lc.dict.download <- local(function(dict_version, cohort_id, data_version) {
   message('------------------------------------------------------')
@@ -146,7 +149,7 @@ lc.dict.import <- local(function(dict_version, cohort_id, data_version) {
   
   categories_non_repeated_measures <- read.xlsx(paste(getwd(), '/', lifecycle.globals$dict_dest_file_non_repeated, sep = ''), sheet = 2)
   categories_monthly_repeated_measures <- read.xlsx(paste(getwd(), '/', lifecycle.globals$dict_dest_file_monthly_repeated, sep = ''), sheet = 2)
-  categories_yearly_repeated_measures <- ?read.xlsx(paste(getwd(), '/', lifecycle.globals$dict_dest_file_yearly_repeated, sep = ''), sheet = 2)
+  categories_yearly_repeated_measures <- read.xlsx(paste(getwd(), '/', lifecycle.globals$dict_dest_file_yearly_repeated, sep = ''), sheet = 2)
   
   lc.populate.core.upload(dict_table_non_repeated, variables_non_repeated_measures, categories_non_repeated_measures, lifecycle.globals$dict_dest_file_non_repeated)
   lc.populate.core.upload(dict_table_monthly_repeated, variables_monthly_repeated_measures, categories_monthly_repeated_measures, lifecycle.globals$dict_dest_file_monthly_repeated)
@@ -157,6 +160,11 @@ lc.dict.import <- local(function(dict_version, cohort_id, data_version) {
 
 #' Match the categories with the variables to be import them
 #' Import the variables
+#' 
+#' @param table dictionary to upload to Opal
+#' @param variables dictionary variables to upload
+#' @param categories dictionary categories to upload
+#' @param source_file source file for the dictionaries
 #'
 #' @importFrom opalr opal.post
 #' @importFrom dplyr select

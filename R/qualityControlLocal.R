@@ -23,26 +23,6 @@
 #' If that is the case, just make sure the variable exists in your data set and move on to the 
 #' next.
 
-#' This function creates a summary table
-#' 
-summarizeR <- local(function(df, .var) {
-  
-  .var <- sym(.var)
-  
-  data_summary <- df %>%
-    dplyr::summarise(variable=paste(.var),
-                     min = min(!! .var, na.rm = TRUE),
-                     max = max(!! .var, na.rm = TRUE),
-                     median = median(!! .var, na.rm = TRUE),
-                     mean = mean(!! .var, na.rm = TRUE),
-                     n=n(),
-                     missing=sum(is.na(!! .var))
-    )
-  
-  return(data_summary)
-  
-})
-
 #' Run checks on metadata variables in LifeCycle
 #' It involves variables 1-7
 #' 
@@ -50,7 +30,8 @@ summarizeR <- local(function(df, .var) {
 #' 
 #' @importFrom gmodels CrossTable
 #' @importFrom plotly ggplotly
-#' @importFrom ggplot2 theme_set
+#' @importFrom ggplot2 theme_set theme_minimal geom_bar
+#' @importFrom dplyr count arrange group_by row_number
 #' 
 lc.quality.local.core.meta <- local(function(lc_data) {
   lc_data <- read_csv("path/to/data.csv")
@@ -121,7 +102,7 @@ lc.quality.local.core.meta <- local(function(lc_data) {
     select(child_id) %>%
     group_by(child_id) %>%
     mutate(n=row_number()) %>%
-    plyr::count(.,"n")                   # n should = 1 for all children (i.e. as it is unique)
+    count(.,"n")                   # n should = 1 for all children (i.e. as it is unique)
   
   # * Check for correct number of ID's in the cohort (the ID corresponds to mothers in the cohort)
   list(data_type=class(lc_data$child_id),
@@ -162,6 +143,8 @@ lc.quality.local.core.meta <- local(function(lc_data) {
 #' 
 #' @importFrom gmodels CrossTable
 #' @importFrom plotly ggplotly
+#' @importFrom ggplot2 geom_point
+#' @importFrom dplyr select_if mutate group_by arrange lag
 #' 
 lc.quality.local.core.maternal.social.char <- local(function(lc_data) {
   #  8. COHABITATION STATUS ('cohab_0-17')
@@ -197,7 +180,7 @@ lc.quality.local.core.maternal.social.char <- local(function(lc_data) {
   
   CrossTable(lc_data$cohab_1, lc_data$height_age1)
   ..
-  Crosstable(lc_data$cohab_17,  "<age_18>")
+  CrossTable(lc_data$cohab_17,  "<age_18>")
   
   #    							INCORRECT														     CORRECT
   #
@@ -431,6 +414,7 @@ lc.quality.local.core.maternal.social.char <- local(function(lc_data) {
 #' 
 #' @importFrom gmodels CrossTable
 #' @importFrom plotly ggplotly
+#' @importFrom ggplot2 geom_point theme_minimal
 #' 
 lc.quality.local.core.maternal.health.char <- local(function(lc_data) {
   # 18. PRE-PREGNANCY WEIGHT
@@ -1113,19 +1097,28 @@ lc.quality.local.core.maternal.obstetric.char <- local(function(lc_data) {
 
 })
 
-
 #' Part of paternal characteristics
 #' Paternal socio-demographic characteristics
 #' Involves variables 46-67
 #' 
+#' @section Warning:
+#' \enumerate{
+#'   \item 46 - occup_f1_?
+#'         
+#'         If a cohort does not have data specifying whether the father is employed or self-employed, categorise the father as employed; the variable will be partially harmonised!. If variable is partially harmonised, please check you have documented the reason for this accordingly in detail in the Online Catalogue under the 'match'. Check for correct type [categorical], number [six] and definition of categories [1=Empl, 2=Self-empl, 3=Unempl, 4=Stud, 5=Domest, 6=Inactive].Also, check for correct number of time bands [eightteen, 0-17]
+#'   \item 47 - occup_f1_fath?
+#'   
+#'         Check for correct type [categorical], number [four] and definition of categories [Type of father; 1=Biological father, 2=Social father, 3=Social mother, 4=Unknown]. Also, check for correct number of time bands [eightteen, 0-17]
+#' }
+#' 
+#' @param lc_data core variables from LifeCycle
+#' 
+#' @importFrom gmodels CrossTable
+#' 
 #' @export
-lc.quality.local.core.paternal.socio.demo.char <- local(function() {
+lc.quality.local.core.paternal.socio.demo.char <- local(function(lc_data) {
   #  46. PATERNAL OCCUPATIONAL STATUS, PRIMARY FATHER [CORE] ('occup_f1_0-17')
-  # * NB! If a cohort does not have data specifying whether the father is employed or self-employed, categorise the father as employed; the variable will be partially harmonised! 
-  # * If variable is partially harmonised, please check you have documented the reason for this accordingly in detail in the Online Catalogue under the 'match'
   
-  # * Check for correct type [categorical], number [six] and definition of categories [1=Empl, 2=Self-empl, 3=Unempl, 4=Stud, 5=Domest, 6=Inactive]
-  # * Also, check for correct number of time bands [eightteen, 0-17]
   occup_f1_ <- c(which(names(lc_data) %in% "occup_f1_0") : which(names(lc_data) %in% "occup_f1_17")) 
   
   lc_data[,occup_f1_] %>%
@@ -1153,8 +1146,6 @@ lc.quality.local.core.paternal.socio.demo.char <- local(function() {
   
   #------------------------------------------------------------------------------------------------#
   # 47. TYPE OF FATHER, PRIMARY FATHER'S OCCUPATIONAL STATUS [CORE] ('occup_f1_fath0-17')
-  # * Check for correct type [categorical], number [four] and definition of categories [Type of father; 1=Biological father, 2=Social father, 3=Social mother, 4=Unknown]
-  # * Also, check for correct number of time bands [eightteen, 0-17]
   occup_f1_fath <- c(which(names(lc_data) %in% "occup_f1_fath0") : which(names(lc_data) %in% "occup_f1_fath17"))
   
   lc_data[,occup_f1_fath] %>%
@@ -1630,8 +1621,13 @@ lc.quality.local.core.paternal.socio.demo.char <- local(function() {
 #' Paternal health-related characteristics
 #' Involves variables 68-76
 #' 
-#' @export
-lc.quality.local.core.paternal.health.related.char <- local(function() {
+#' @param lc_data core variables from LifeCycle
+#' 
+#' @importFrom gmodels CrossTable
+#' @importFrom plotly ggplotly
+#' @importFrom ggplot2 geom_point geom_boxplot
+#' 
+lc.quality.local.core.paternal.health.related.char <- local(function(lc_data) {
   #  68. PATERNAL WEIGHT, PRIMARY FATHER ('weight_f1')
   # * NB! Use measured weight if available, AND... note in the Online Catalogue when data was recorded, i.e. at which follow-up.
   # * If variable is partially harmonised, please check you have documented this accordingly in the online catalogue under 'match'
@@ -1765,8 +1761,12 @@ lc.quality.local.core.paternal.health.related.char <- local(function() {
 #' Paternal lifestyle characteristics
 #' Involves variables 77-78
 #' 
-#' @export
-lc.quality.local.core.paternal.lifestyle.char <- local(function() {
+#' @param lc_data core variables from LifeCycle
+#' 
+#' @importFrom gmodels CrossTable
+#' @importFrom plotly ggplotly
+#' 
+lc.quality.local.core.paternal.lifestyle.char <- local(function(lc_data) {
   #  77. PATERNAL SMOKING DURING PREGNANCY 
   # a. ('smk_p')
   # * Check for correct type [binary], number [two] and definition of categories [smoking during pregnancy; 0=No, 1=Yes]
@@ -1809,8 +1809,14 @@ lc.quality.local.core.paternal.lifestyle.char <- local(function() {
 #' Child birth outcomes
 #' Involves variables 79-97
 #' 
-#' @export
-lc.quality.local.core.child.birth.out <- local(function() {
+#' @param lc_data core variables from LifeCycle
+#' 
+#' @importFrom gmodels CrossTable
+#' @importFrom plotly ggplotly
+#' @importFrom ggplot2 ggplot aes geom_point geom_boxplot
+#' @importFrom dplyr filter
+#' 
+lc.quality.local.core.child.birth.out <- local(function(lc_data) {
   #------------------------------------------------------------------------------------------------#
   # 79. BIRTH MONTH ('birth_month')
   # * Check for correct type [catgorical], number [twelve] and definition of categories [calender month, 1-12]
@@ -2178,8 +2184,14 @@ lc.quality.local.core.child.birth.out <- local(function() {
 #' Child health-related characteristics
 #' Involves variables 98-103
 #' 
-#' @export
-lc.quality.local.core.child.health.related.char <- local(function() {
+#' @param lc_data core variables from LifeCycle
+#' 
+#' @importFrom gmodels CrossTable
+#' @importFrom plotly ggplotly
+#' @importFrom ggplot2 geom_point
+#' @importFrom dplyr select_if mutate group_by arrange lag
+#' 
+lc.quality.local.core.child.health.related.char <- local(function(lc_data) {
   #------------------------------------------------------------------------------------------------#
   # 98. DEATH OF CHILD ('death_child')
   # * Check for correct type [binary], number [two] and definition of categories [Death of child, 0=No, 1=Yes]
@@ -2361,8 +2373,12 @@ lc.quality.local.core.child.health.related.char <- local(function() {
 #' Child exposures/lifestyle/environment
 #' Involves variables 104-115
 #' 
-#' @export
-lc.quality.local.core.child.exposure.lifestyle.environ.char <- local(function() {
+#' @param lc_data core variables from LifeCycle
+#' 
+#' @importFrom gmodels CrossTable
+#' @importFrom plotly ggplotly
+#' 
+lc.quality.local.core.child.exposure.lifestyle.environ.char <- local(function(lc_data) {
   # 104. EXCLUSIVE BREAST-FEEDING ('breastfed_excl')
   # * NB! Upper limit of 6 months; durations greater than 6 months assigned the value 6 months. Children never breastfed will have a duration of 0 months!
   
@@ -2646,8 +2662,12 @@ lc.quality.local.core.child.exposure.lifestyle.environ.char <- local(function() 
 #' Household characteristics
 #' Involves variables 116-115
 #' 
-#' @export
-lc.quality.local.core.household.char <- local(function() {
+#' @param lc_data core variables from LifeCycle
+#' 
+#' @importFrom gmodels CrossTable
+#' @importFrom plotly ggplotly
+#' 
+lc.quality.local.core.household.char <- local(function(lc_data) {
   # 116. HOUSEHOLD INCOME [CORE] ('hhincome_0-17')
   # * NB! Income categorised into quartiles (low, medium-low, medium-high, high) based on the national household income distribution in the year of follow-up. 
   

@@ -8,7 +8,7 @@ Description: This package contains standardised ways to upload and import versio
   check the quality of your data. It also can reshape the data into Opal format when you use other tools
   to harmonise your data.
 Depends: 
-  R (>= 3.5.2)
+  R (>= 3.5.0)
 Imports:
   opalr (>= 1.2.0),
   dplyr,
@@ -23,7 +23,8 @@ Imports:
   openxlsx,
   plotly,
   gmodels,
-  ggplot2
+  ggplot2,
+  utils
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

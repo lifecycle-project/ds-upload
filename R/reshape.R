@@ -276,7 +276,7 @@ lc.reshape.core.gerenate.non.repeated <- local(function(lc_data, upload_to_opal,
 #' @param file_name non-repeated, monthly-repeated or yearly-repeated
 #'
 #' @importFrom readr write_csv
-#' @importFrom dplyr %>%
+#' @importFrom dplyr %>% filter
 #' @importFrom data.table dcast
 #' @importFrom tidyr gather spread
 #' 
@@ -348,7 +348,7 @@ lc.reshape.core.generate.yearly.repeated <- local(function(lc_data, upload_to_op
 #' @param file_name non-repeated, monthly-repeated or yearly-repeated
 #'
 #' @importFrom readr write_csv
-#' @importFrom dplyr %>%
+#' @importFrom dplyr %>% filter
 #' @importFrom data.table dcast
 #' @importFrom tidyr gather spread
 #' 
@@ -434,8 +434,10 @@ lc.reshape.core.upload <- local(function(file_prefix, file_version, file_name) {
 #' @param file_version the data release version
 #' @param file_name name of the data file
 #' 
+#' @importFrom readr read_csv
 #' @importFrom opalr opal.post
-#' @importFrom opalr opal.get
+#' @importFrom opalr opal.projects
+#' @importFrom opalr opal.tables
 #' @importFrom jsonlite toJSON
 #' 
 lc.reshape.core.import <- local(function(file_prefix, file_version, file_name) {
@@ -459,7 +461,7 @@ lc.reshape.core.import <- local(function(file_prefix, file_version, file_name) {
     table = tables$name 
   } 
   
-  data <- read.csv(paste(getwd(), '/', file_prefix, '_', file_version, '_', file_name, file_ext, sep = ''))
+  data <- read_csv(paste(getwd(), '/', file_prefix, '_', file_version, '_', file_name, file_ext, sep = ''))
     
   message(paste('* Import: ', paste(getwd(), '/', file_prefix, '_', file_version, '_', file_name, file_ext, sep = ''), sep = ''))
   opal.post(lifecycle.globals$opal, 'datasource', lifecycle.globals$project, 'table', table_name, 'variables', body=toJSON(data_non_repeated_measures), contentType = 'application/x-protobuf+json')  
