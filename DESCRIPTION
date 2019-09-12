@@ -1,28 +1,30 @@
 Package: lifecycleProject
 Title: Protocols and sample analysis
-Version: 0.7.0
+Version: 0.8.0
 Authors@R: person("Sido", "Haakma", email = "s.haakma@rug.nl",
                   role = c("aut", "cre"))
-Description: This package contains standardised ways to upload versioned data dictionaries. To perform the local tasks it also provides functions to reshape and check the qualityof your local data. 
-Depends: R (>= 3.5.2)
+Description: This package contains standardised ways to upload and import versioned data dictionaries. 
+  To check if your data is correct it contains als a number of local functions which can be performed to
+  check the quality of your data. It also can reshape the data into Opal format when you use other tools
+  to harmonise your data.
+Depends: 
+  R (>= 3.5.2)
+Imports:
+  opalr (>= 1.2.0),
+  dplyr,
+  tidyr,
+  httr,
+  jsonlite,
+  stringr,
+  data.table,
+  readr,
+  sas7bdat,
+  foreign,
+  openxlsx,
+  plotly,
+  gmodels,
+  ggplot2
 License: GPL-3
 Encoding: UTF-8
-Imports:
-    opalr,
-    metafor,
-    tidyr,
-    dplyr,
-    readr,
-    stringr,
-    sas7bdat,
-    data.table,
-    foreign,
-    tidyverse,
-    ggplot2,
-    gmodels,
-    plotly,
-    httr,
-    openxlsx,
-    jsonlite
 LazyData: true
 RoxygenNote: 6.1.1

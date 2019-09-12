@@ -16,22 +16,20 @@ At this moment the implemented functions at this moment are:
 **Prerequisites**
 You need these packages to can make use of the LifeCycle R-package.
 
-* opalr
-* metafor
-* tidyr
-* dplyr
-* readr
-* stringr
-* sas7bdat
-* data.table
-* foreign
-* tidyverse
+* opalr (>= 1.2.0),
+* dplyr,
+* tidyr,
+* httr,
+* jsonlite,
+* stringr,
+* data.table,
+* readr,
+* sas7bdat,
+* foreign,
+* openxlsx,
+* plotly,
+* gmodels,
 * ggplot2
-* gmodels
-* plotly
-* httr
-* openxslx 
-* jsonlite
 
 > For Opal reference documentation check: http://opaldoc.obiba.org/en/latest/r-user-guide/datashield.html
 

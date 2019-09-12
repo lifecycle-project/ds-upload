@@ -43,12 +43,6 @@ summarizeR <- local(function(df, .var) {
   
 })
 
-#' Number at the end of the variables indicates year or month. 
-#' We need to extract this to create the age_years variable.
-numextract <- local(function(string) { 
-  as.numeric(str_extract(string, "\\d*$") )
-})
-
 #' Run checks on metadata variables in LifeCycle
 #' It involves variables 1-7
 #' 
