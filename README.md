@@ -11,7 +11,6 @@ At this moment the implemented functions at this moment are:
 - ```lc.reshape.core``` performing the reshape of the data dictionaries for LifeCycle (only core variables)
 - ```lc.quality.local.core.meta``` performing local quality checks on the harmonised data regarding the metadata
 
-
 ### Installation
 **Prerequisites**
 You need these packages to can make use of the LifeCycle R-package.
@@ -37,18 +36,20 @@ You need these packages to can make use of the LifeCycle R-package.
 
 Install the Opal package. By installing ```RCurl, rjson``` first.
 ```R 
-install.packages(c('RCurl', 'rjson'), repos=c('https://cloud.r-project.org/', 'https://www.stats.ox.ac.uk/pub/RWin/'))
+install.packages(c('httr', 'rjson'), repos=c('https://cloud.r-project.org/', 'https://www.stats.ox.ac.uk/pub/RWin/'))
 ```
 
 Then execute: 
 ```R 
-install.packages('opalr', repos='https://cran.obiba.org', type='source')
+install.packages('opalr', repos=c('https://cloud.r-project.org', 'https://www.stats.ox.ac.uk/pub/RWin/'))
 ```
 
 Install remaining packages by executing:
 ```R 
-install.packages(c('metafor', 'tidyr', 'dplyr', 'readr', 'stringr', 'sas7bdat', 'data.table', 'foreign', 'tidyverse', 'gmodels', 'ggplot2', 'plotly', 'httr', 'openxslx', 'jsonlite'), repos=c('https://cloud.r-project.org/', 'https://www.stats.ox.ac.uk/pub/RWin/'))
+install.packages(c('metafor', 'tidyr', 'dplyr', 'readr', 'stringr', 'sas7bdat', 'data.table', 'foreign', 'tidyverse', 'gmodels', 'ggplot2', 'plotly', 'openxslx', 'jsonlite'), repos=c('https://cloud.r-project.org/', 'https://www.stats.ox.ac.uk/pub/RWin/'))
 ```
+
+This may take a while
 
 **For Mac**
 

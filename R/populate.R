@@ -105,9 +105,7 @@ lc.dict.download <- local(function(dict_version, cohort_id, data_version) {
 #' @param cohort_id cohort identifier (possible values are: 'dnbc', 'gecko', 'alspac', 'genr', 'moba', 'sws', 'bib', 'chop', 'elfe', 'eden', 'ninfea', 'hbcs', 'inma', 'isglobal', 'nfbc66', 'nfbc86', 'raine', 'rhea')
 #' @param data_version version of the data (specific to the cohort)
 #' 
-#' @importFrom opalr opal.post
 #' @importFrom openxlsx read.xlsx
-#' @importFrom dplyr select
 #' 
 lc.dict.import <- local(function(dict_version, cohort_id, data_version) {
   message('------------------------------------------------------')
@@ -150,35 +148,46 @@ lc.dict.import <- local(function(dict_version, cohort_id, data_version) {
   categories_monthly_repeated_measures <- read.xlsx(paste(getwd(), '/', lifecycle.globals$dict_dest_file_monthly_repeated, sep = ''), sheet = 2)
   categories_yearly_repeated_measures <- ?read.xlsx(paste(getwd(), '/', lifecycle.globals$dict_dest_file_yearly_repeated, sep = ''), sheet = 2)
   
-  variables_non_repeated_measures$entityType <- 'Participant'
-  variables_non_repeated_measures$isRepeatable <- FALSE
-  variables_non_repeated_measures$attributes <- data.frame(namespace = '', name= 'label', locale = '', value = variables_non_repeated_measures$label)
-  variables_non_repeated_measures <- select(variables_non_repeated_measures, -c(label))
-  
-  variables_monthly_repeated_measures$entityType <- 'Participant'
-  variables_monthly_repeated_measures$isRepeatable <- FALSE
-  variables_monthly_repeated_measures$attributes <- data.frame(namespace = '', name= 'label', locale = '', value = variables_monthly_repeated_measures$label)
-  variables_monthly_repeated_measures <- select(variables_monthly_repeated_measures, -c(label))
-  
-  variables_yearly_repeated_measures$entityType <- 'Participant'
-  variables_yearly_repeated_measures$isRepeatable <- FALSE
-  variables_yearly_repeated_measures$attributes <- data.frame(namespace = '', name= 'label', locale = '', value = variables_yearly_repeated_measures$label)
-  variables_yearly_repeated_measures <- select(variables_yearly_repeated_measures, -c(label))
-  
-  
-  variables_non_repeated_measures$categories <- categories
-    
-  message(paste('* Import variables into: [ ', dict_table_non_repeated,' ]', sep = ''))
-  opal.post(lifecycle.globals$opal, 'datasource', lifecycle.globals$project, 'table', dict_table_non_repeated, 'variables', body=toJSON(variables_non_repeated_measures), contentType = 'application/x-protobuf+json')  
-  message(paste('* Import variables into: [ ', dict_table_monthly_repeated,' ]', sep = ''))
-  opal.post(lifecycle.globals$opal, 'datasource', lifecycle.globals$project, 'table', dict_table_yearly_repeated, 'variables', body=toJSON(variables_monthly_repeated_measures), contentType = 'application/x-protobuf+json')  
-  message(paste('* Import variables into: [ ', dict_table_yearly_repeated,' ]', sep = ''))
-  opal.post(lifecycle.globals$opal, 'datasource', lifecycle.globals$project, 'table', dict_table_monthly_repeated, 'variables', body=toJSON(variables_yearly_repeated_measures), contentType = 'application/x-protobuf+json')  
-  
-  message('* Remove the tables from workspace')
-  unlink(lifecycle.globals$dict_dest_file_non_repeated)
-  unlink(lifecycle.globals$dict_dest_file_monthly_repeated)
-  unlink(lifecycle.globals$dict_dest_file_yearly_repeated)
-  
+  lc.populate.core.upload(dict_table_non_repeated, variables_non_repeated_measures, categories_non_repeated_measures, lifecycle.globals$dict_dest_file_non_repeated)
+  lc.populate.core.upload(dict_table_monthly_repeated, variables_monthly_repeated_measures, categories_monthly_repeated_measures, lifecycle.globals$dict_dest_file_monthly_repeated)
+  lc.populate.core.upload(dict_table_yearly_repeated, variables_yearly_repeated_measures, categories_yearly_repeated_measures, lifecycle.globals$dict_dest_file_yearly_repeated)
+
   message('  All dictionaries are populated correctly')
+})
+
+#' Match the categories with the variables to be import them
+#' Import the variables
+#'
+#' @importFrom opalr opal.post
+#' @importFrom dplyr select
+#'
+lc.populate.core.upload <- local(function(table, variables, categories, source_file) {
+  
+  message(paste('* Matched categories for table: [ ', table,' ]', sep = ''))
+  variables$entityType <- 'Participant'
+  variables$isRepeatable <- FALSE
+  variables$attributes <- data.frame(namespace = '', name= 'label', locale = '', value = variables$label)
+  variables <- select(variables, -c(label))
+  
+  #for(name in variables$name) {
+  #  index <- which(name == variables$name)
+  #  categories_raw <- categories[which(categories$variable == name),]
+  #  if(nrow(categories_raw) != 0) {
+  #    attributes <- select(categories_raw,c(name,label))
+  #    names(attributes)[2] <- 'value'
+  #    attributes$name <- 'label'
+  #    categories_match <- select(categories_raw,c(name))
+  #    categories_match$name <-as.character(categories_match$name)
+  #    categories_match$isMissing <- FALSE
+  #    categories_match$attributes <- attributes
+  #    variables[index]$categories <- categories_match
+  #  } else {
+  #    next
+  #  }
+  # }
+  
+  message(paste('* Import variables into: [ ', table,' ]', sep = ''))
+  opal.post(lifecycle.globals$opal, 'datasource', lifecycle.globals$project, 'table', table, 'variables', body=toJSON(variables), contentType = 'application/x-protobuf+json')  
+  message(paste('* Remove the table: [', source_file,']', sep = ''))
+  unlink(source_file)
 })
