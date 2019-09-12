@@ -8,8 +8,6 @@ lifecycle.globals <- new.env()
 #' @param cohort_id cohort identifier (possible values are: 'dnbc', 'gecko', 'alspac', 'genr', 'moba', 'sws', 'bib', 'chop', 'elfe', 'eden', 'ninfea', 'hbcs', 'inma', 'isglobal', 'nfbc66', 'nfbc86', 'raine', 'rhea')
 #' @param data_version version of the data (specific to the cohort)
 #'
-#' @import opalr
-#'
 #' @export
 lc.populate.core <- local(function(dict_version = '1_0', cohort_id, data_version, data_changes) {
   message('######################################################')
@@ -57,6 +55,7 @@ lc.populate.core <- local(function(dict_version = '1_0', cohort_id, data_version
 #' @param dict_version dictionary version (possible dictionaries are: 1_0, 1_1 / default = 1_0)
 #' 
 #' @importFrom dplyr between
+#' @importFrom opalr opal.post
 #'
 lc.dict.project.create <- local(function(dict_version) {
   message('------------------------------------------------------')
@@ -143,9 +142,13 @@ lc.dict.import <- local(function(dict_version, cohort_id, data_version) {
     message(paste('* Table: [ ', dict_table_yearly_repeated,' ] already exists', sep = ''))
   }
   
-  variables_non_repeated_measures <- read.xlsx(paste(getwd(), '/', lifecycle.globals$dict_dest_file_non_repeated, sep = ''))
-  variables_monthly_repeated_measures <- read.xlsx(paste(getwd(), '/', lifecycle.globals$dict_dest_file_monthly_repeated, sep = ''))
-  variables_yearly_repeated_measures <- read.xlsx(paste(getwd(), '/', lifecycle.globals$dict_dest_file_yearly_repeated, sep = ''))
+  variables_non_repeated_measures <- read.xlsx(paste(getwd(), '/', lifecycle.globals$dict_dest_file_non_repeated, sep = ''), sheet = 1)
+  variables_monthly_repeated_measures <- read.xlsx(paste(getwd(), '/', lifecycle.globals$dict_dest_file_monthly_repeated, sep = ''), sheet = 1)
+  variables_yearly_repeated_measures <- read.xlsx(paste(getwd(), '/', lifecycle.globals$dict_dest_file_yearly_repeated, sep = ''), sheet = 1)
+  
+  categories_non_repeated_measures <- read.xlsx(paste(getwd(), '/', lifecycle.globals$dict_dest_file_non_repeated, sep = ''), sheet = 2)
+  categories_monthly_repeated_measures <- read.xlsx(paste(getwd(), '/', lifecycle.globals$dict_dest_file_monthly_repeated, sep = ''), sheet = 2)
+  categories_yearly_repeated_measures <- ?read.xlsx(paste(getwd(), '/', lifecycle.globals$dict_dest_file_yearly_repeated, sep = ''), sheet = 2)
   
   variables_non_repeated_measures$entityType <- 'Participant'
   variables_non_repeated_measures$isRepeatable <- FALSE
@@ -161,6 +164,9 @@ lc.dict.import <- local(function(dict_version, cohort_id, data_version) {
   variables_yearly_repeated_measures$isRepeatable <- FALSE
   variables_yearly_repeated_measures$attributes <- data.frame(namespace = '', name= 'label', locale = '', value = variables_yearly_repeated_measures$label)
   variables_yearly_repeated_measures <- select(variables_yearly_repeated_measures, -c(label))
+  
+  
+  variables_non_repeated_measures$categories <- categories
     
   message(paste('* Import variables into: [ ', dict_table_non_repeated,' ]', sep = ''))
   opal.post(lifecycle.globals$opal, 'datasource', lifecycle.globals$project, 'table', dict_table_non_repeated, 'variables', body=toJSON(variables_non_repeated_measures), contentType = 'application/x-protobuf+json')  
