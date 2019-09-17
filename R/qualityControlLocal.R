@@ -417,6 +417,11 @@ lc.quality.local.core.maternal.social.char <- local(function(lc_data) {
 #' @importFrom ggplot2 geom_point theme_minimal
 #' 
 lc.quality.local.core.maternal.health.char <- local(function(lc_data) {
+  # workaround to avoid glpobal variable warnings, check: https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
+  prepreg_weight <- NULL 
+  
+  
+  
   # 18. PRE-PREGNANCY WEIGHT
   # a. ('prepreg_weight')
   # * NB! If pre-pregnancy weight is not available, use early pregnancy weight closest to conception, limited to 1st trimester (<12 weeks). 
@@ -1817,6 +1822,9 @@ lc.quality.local.core.paternal.lifestyle.char <- local(function(lc_data) {
 #' @importFrom dplyr filter
 #' 
 lc.quality.local.core.child.birth.out <- local(function(lc_data) {
+  # workaround to avoid glpobal variable warnings, check: https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
+  ga_lmp <-ga_us <- ga_mr <- ga_bj <- outcome <- birth_weight <- birth_length <- birth_head_circum <- plac_weight <- weight_who_ga <- . <- NULL
+  
   #------------------------------------------------------------------------------------------------#
   # 79. BIRTH MONTH ('birth_month')
   # * Check for correct type [catgorical], number [twelve] and definition of categories [calender month, 1-12]
@@ -2192,6 +2200,9 @@ lc.quality.local.core.child.birth.out <- local(function(lc_data) {
 #' @importFrom dplyr select_if mutate group_by arrange lag
 #' 
 lc.quality.local.core.child.health.related.char <- local(function(lc_data) {
+  # workaround to avoid glpobal variable warnings, check: https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
+  birth_length <- height_0 <- child_id <- coh_country <- height_215 <- orig_var <- variable_trunc <- age_months <- prev <- height_diff <- birth_weight <- . <- NULL
+  
   #------------------------------------------------------------------------------------------------#
   # 98. DEATH OF CHILD ('death_child')
   # * Check for correct type [binary], number [two] and definition of categories [Death of child, 0=No, 1=Yes]

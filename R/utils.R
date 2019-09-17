@@ -39,16 +39,18 @@ lc.login <- local(function(hostname, username = 'administrator', password) {
 #' @importFrom stringr str_extract
 #' 
 #' @export
-numextract <- function(input_string) { 
+numextract <- local(function(input_string) { 
   str_extract(input_string, "\\d*$") 
-}
+})
 
 #' This function creates a summary table
 #' 
 #' @param df data frame to summarise
 #' @param .var variable to summarise
 #' 
-#' @importFrom dplyr summarise
+#' @importFrom dplyr summarise n
+#' @importFrom rlang sym
+#' @importFrom stats median
 #' 
 #' @return a summary of the data
 #' 
@@ -67,8 +69,6 @@ summarizeR <- local(function(df, .var) {
                      n=n(),
                      missing=sum(is.na(!! .var))
     )
-  
   return(data_summary)
-  
 })
 

@@ -57,7 +57,7 @@ lc.reshape.core <- local(function(upload_to_opal = TRUE, data_version, input_for
                     "prepreg_dia", "preg_dia", "preg_thyroid", "preg_fever", "preeclam", "preg_ht", "asthma_m", "prepreg_psych", 
                     "preg_psych", "ppd", "prepreg_smk", "prepreg_cig",  "smk_t1", "smk_t2", "smk_t3", "preg_smk", "preg_cig", "prepreg_alc", 
                     "prepreg_alc_unit", "preg_alc",  "preg_alc_unit",  "alc_t1", "alc_t2", "alc_t3", "folic_prepreg", "folic_preg12", 
-                    "folic_post12", "parity_m", "preg_plan", "mar", "ivf",  "outcome", "mode_delivery", "plac_abrup", "occup_f1_0", 
+                    "folic_post12", "parity_m", "preg_plan", "art", "ivf",  "outcome", "mode_delivery", "plac_abrup", "occup_f1_0", 
                     "occup_f1_1", "occup_f1_2", "occup_f1_3", "occup_f1_4", "occup_f1_5", "occup_f1_6", "occup_f1_7", "occup_f1_8", 
                     "occup_f1_9", "occup_f1_10", "occup_f1_11", "occup_f1_12", "occup_f1_13", "occup_f1_14", "occup_f1_15", "occup_f1_16", 
                     "occup_f1_17", "occup_f1_fath0", "occup_f1_fath1", "occup_f1_fath2", "occup_f1_fath3", "occup_f1_fath4", "occup_f1_fath5", 
@@ -353,6 +353,7 @@ lc.reshape.core.generate.yearly.repeated <- local(function(lc_data, upload_to_op
 #' @importFrom tidyr gather spread
 #' 
 lc.reshape.core.generate.monthly.repeated <- local(function(lc_data, upload_to_opal, output_path, file_prefix, file_version, file_name) {
+  
   message('* Generating: monthly-repeated measures')
   
   # Select only those variables with monthly repeated measures
@@ -464,7 +465,7 @@ lc.reshape.core.import <- local(function(file_prefix, file_version, file_name) {
   data <- read_csv(paste(getwd(), '/', file_prefix, '_', file_version, '_', file_name, file_ext, sep = ''))
     
   message(paste('* Import: ', paste(getwd(), '/', file_prefix, '_', file_version, '_', file_name, file_ext, sep = ''), sep = ''))
-  opal.post(lifecycle.globals$opal, 'datasource', lifecycle.globals$project, 'table', table_name, 'variables', body=toJSON(data_non_repeated_measures), contentType = 'application/x-protobuf+json')  
+  opal.post(lifecycle.globals$opal, 'datasource', lifecycle.globals$project, 'table', table_name, 'variables', body=toJSON(data), contentType = 'application/x-protobuf+json')  
   
   unlink(paste(getwd(), '/', file_prefix, '_', file_version, '_', file_name, file_ext, sep = ''))
     

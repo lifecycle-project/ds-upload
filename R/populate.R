@@ -151,9 +151,9 @@ lc.dict.import <- local(function(dict_version, cohort_id, data_version) {
   categories_monthly_repeated_measures <- read.xlsx(paste(getwd(), '/', lifecycle.globals$dict_dest_file_monthly_repeated, sep = ''), sheet = 2)
   categories_yearly_repeated_measures <- read.xlsx(paste(getwd(), '/', lifecycle.globals$dict_dest_file_yearly_repeated, sep = ''), sheet = 2)
   
-  lc.populate.core.upload(dict_table_non_repeated, variables_non_repeated_measures, categories_non_repeated_measures, lifecycle.globals$dict_dest_file_non_repeated)
-  lc.populate.core.upload(dict_table_monthly_repeated, variables_monthly_repeated_measures, categories_monthly_repeated_measures, lifecycle.globals$dict_dest_file_monthly_repeated)
-  lc.populate.core.upload(dict_table_yearly_repeated, variables_yearly_repeated_measures, categories_yearly_repeated_measures, lifecycle.globals$dict_dest_file_yearly_repeated)
+  lc.populate.core.match.categories(dict_table_non_repeated, variables_non_repeated_measures, categories_non_repeated_measures, lifecycle.globals$dict_dest_file_non_repeated)
+  lc.populate.core.match.categories(dict_table_monthly_repeated, variables_monthly_repeated_measures, categories_monthly_repeated_measures, lifecycle.globals$dict_dest_file_monthly_repeated)
+  lc.populate.core.match.categories(dict_table_yearly_repeated, variables_yearly_repeated_measures, categories_yearly_repeated_measures, lifecycle.globals$dict_dest_file_yearly_repeated)
 
   message('  All dictionaries are populated correctly')
 })
@@ -169,7 +169,9 @@ lc.dict.import <- local(function(dict_version, cohort_id, data_version) {
 #' @importFrom opalr opal.post
 #' @importFrom dplyr select
 #'
-lc.populate.core.upload <- local(function(table, variables, categories, source_file) {
+lc.populate.core.match.categories <- local(function(table, variables, categories, source_file) {
+  # workaround to avoid glpobal variable warnings, check: https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
+  label <- NULL
   
   message(paste('* Matched categories for table: [ ', table,' ]', sep = ''))
   variables$entityType <- 'Participant'
