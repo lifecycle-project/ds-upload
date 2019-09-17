@@ -19,6 +19,7 @@ lifecycle.globals$dictionaries <- c('1_0', '1_1')
 #' 
 lc.login <- local(function(hostname, username = 'administrator', password) {
   if(missing(hostname)) hostname <- readline('- Hostname (e.g. https://my-own-opal.org): ')
+  if(missing(hostname) && missing(password))
   if(missing(password)) password <- readline('- Password: ')
   
   lifecycle.globals$hostname <- hostname

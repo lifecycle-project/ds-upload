@@ -61,7 +61,7 @@ lc.populate.core <- local(function(dict_version = '1_0', cohort_id, data_version
 lc.dict.project.create <- local(function(dict_version) {
   message('------------------------------------------------------')
   message(paste('  Start creating the project version: [ ', dict_version, ' ]', sep = ''))
-  lifecycle.globals$project <- paste('lifecycle_dict_', dict_version, sep = '')
+  lifecycle.globals$project <- paste('lifecycle_', dict_version, sep = '')
   projects <- opal.projects(lifecycle.globals$opal)
   if(!(lifecycle.globals$project %in% projects$name)) {
     json <- sprintf('{"database":"%s","description":"%s","name":"%s","title":"%s"}', 'opal_data', paste('LifeCycle project for data dictionary version: [ ', lifecycle.globals$project,' ]', sep = ''), lifecycle.globals$project, lifecycle.globals$project)
@@ -108,15 +108,15 @@ lc.dict.download <- local(function(dict_version, cohort_id, data_version) {
 #' @param cohort_id cohort identifier (possible values are: 'dnbc', 'gecko', 'alspac', 'genr', 'moba', 'sws', 'bib', 'chop', 'elfe', 'eden', 'ninfea', 'hbcs', 'inma', 'isglobal', 'nfbc66', 'nfbc86', 'raine', 'rhea')
 #' @param data_version version of the data (specific to the cohort)
 #' 
-#' @importFrom openxlsx read.xlsx
+#' @importFrom readxl readxl_example read_excel
 #' 
 lc.dict.import <- local(function(dict_version, cohort_id, data_version) {
   message('------------------------------------------------------')
   message('  Start importing dictionaries')
   
-  dict_table_non_repeated <- paste(dict_version, '_', cohort_id, '_', data_version, '_non_repeated_measures', sep = '')
-  dict_table_monthly_repeated <- paste(dict_version, '_', cohort_id, '_', data_version,'_monthly_repeated_measures', sep = '')
-  dict_table_yearly_repeated <- paste(dict_version, '_', cohort_id, '_', data_version, '_yearly_repeated_measures', sep = '')
+  dict_table_non_repeated <- paste(dict_version, '_', cohort_id, '_', data_version, '_non_repeated', sep = '')
+  dict_table_monthly_repeated <- paste(dict_version, '_', cohort_id, '_', data_version,'_monthly_repeated', sep = '')
+  dict_table_yearly_repeated <- paste(dict_version, '_', cohort_id, '_', data_version, '_yearly_repeated', sep = '')
   
   json_non_repeated <- sprintf('{"entityType":"Participant","name":"%s"}', dict_table_non_repeated)
   json_monthly_repeated <- sprintf('{"entityType":"Participant","name":"%s"}', dict_table_monthly_repeated)
@@ -143,13 +143,22 @@ lc.dict.import <- local(function(dict_version, cohort_id, data_version) {
     message(paste('* Table: [ ', dict_table_yearly_repeated,' ] already exists', sep = ''))
   }
   
-  variables_non_repeated_measures <- read.xlsx(paste(getwd(), '/', lifecycle.globals$dict_dest_file_non_repeated, sep = ''), sheet = 1)
-  variables_monthly_repeated_measures <- read.xlsx(paste(getwd(), '/', lifecycle.globals$dict_dest_file_monthly_repeated, sep = ''), sheet = 1)
-  variables_yearly_repeated_measures <- read.xlsx(paste(getwd(), '/', lifecycle.globals$dict_dest_file_yearly_repeated, sep = ''), sheet = 1)
+  example_variables_non_repeated_measures <- readxl_example(paste(getwd(), '/', lifecycle.globals$dict_dest_file_non_repeated, sep = ''))
+  example_variables_monthly_repeated_measures <- readxl_example(paste(getwd(), '/', lifecycle.globals$dict_dest_file_monthly_repeated, sep = ''))
+  example_variables_yearly_repeated_measures <- readxl_example(paste(getwd(), '/', lifecycle.globals$dict_dest_file_yearly_repeated, sep = ''))
   
-  categories_non_repeated_measures <- read.xlsx(paste(getwd(), '/', lifecycle.globals$dict_dest_file_non_repeated, sep = ''), sheet = 2)
-  categories_monthly_repeated_measures <- read.xlsx(paste(getwd(), '/', lifecycle.globals$dict_dest_file_monthly_repeated, sep = ''), sheet = 2)
-  categories_yearly_repeated_measures <- read.xlsx(paste(getwd(), '/', lifecycle.globals$dict_dest_file_yearly_repeated, sep = ''), sheet = 2)
+  variables_non_repeated_measures <- read_excel(example_variables_non_repeated_measures, sheet = 1)
+  variables_yearly_repeated_measures <- read_excel(example_variables_yearly_repeated_measures, sheet = 1)
+  variables_monthly_repeated_measures <- read_excel(example_variables_monthly_measures, sheet = 1)
+  
+  example_categories_non_repeated_measures <- readxl_example(paste(getwd(), '/', lifecycle.globals$dict_dest_file_non_repeated, sep = ''))
+  example_categories_monthly_repeated_measures <- readxl_example(paste(getwd(), '/', lifecycle.globals$dict_dest_file_monthly_repeated, sep = ''))
+  example_categories_yearly_repeated_measures <- readxl_example(paste(getwd(), '/', lifecycle.globals$dict_dest_file_yearly_repeated, sep = ''))
+  
+  categories_non_repeated_measures <- read_excel(example_categories_non_repeated_measures, sheet = 2)
+  categories_monthly_repeated_measures <- read_excel(example_categories_yearly_repeated_measures, sheet = 2)
+  categories_yearly_repeated_measures <- read_excel(example_categories_monthly_repeated_measures, sheet = 2)
+  
   
   lc.populate.core.match.categories(dict_table_non_repeated, variables_non_repeated_measures, categories_non_repeated_measures, lifecycle.globals$dict_dest_file_non_repeated)
   lc.populate.core.match.categories(dict_table_monthly_repeated, variables_monthly_repeated_measures, categories_monthly_repeated_measures, lifecycle.globals$dict_dest_file_monthly_repeated)
