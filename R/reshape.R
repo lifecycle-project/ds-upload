@@ -2,7 +2,7 @@
 #'
 #' @param upload_to_opal do you want automatically upload the files to your opal (default = true)
 #' @param data_version version of the data you are going to upload into Opal
-#' @param input_format possible formats are CSV,STATA,SPSS or SASS (default = CSV)
+#' @param input_format possible formats are CSV,STATA,SPSS or SAS (default = CSV)
 #' @param input_path path for importfile
 #' @param output_path path to output directory (default = your working directory)
 #'
