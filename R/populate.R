@@ -173,12 +173,12 @@ lc.populate.core.match.categories <- local(function(table, variables, categories
   # workaround to avoid glpobal variable warnings, check: https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
   label <- NULL
   
-  message(paste('* Matched categories for table: [ ', table,' ]', sep = ''))
   variables$entityType <- 'Participant'
   variables$isRepeatable <- FALSE
   variables$attributes <- data.frame(namespace = '', name= 'label', locale = '', value = variables$label)
   variables <- select(variables, -c(label))
   
+  #message(paste('* Matched categories for table: [ ', table,' ]', sep = ''))
   #for(name in variables$name) {
   #  index <- which(name == variables$name)
   #  categories_raw <- categories[which(categories$variable == name),]
