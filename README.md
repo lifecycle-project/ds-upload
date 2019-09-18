@@ -80,3 +80,27 @@ curl -v --user 'user:password' --upload-file lifecycleProject_0.6.0.tar.gz https
 
 ## Analysis guidelines
 Please check: [analysis guidelines](ANALYSIS_GUIDELINES.md)
+
+## Adding new dictionaries (data schemes)
+When you add new dictionaries you need to place them in ```R/data/dictionaries/x_x```.
+
+For WP1 these 3 tables are namespaces this way:
+- 1_0_non_repeated.xslx
+- 1_0_yearly_repeated.xslx
+- 1_0_monthly_repeated.xslx
+
+For WP3 variables are placed within the same tables.
+
+For WP4, 5 and 6 these tables are created:
+- 1_0_outcome_non_repeated.xslx
+- 1_0_outcome_yearly_repeated.xslx
+- 1_0_outcome_monthly_repeated.xslx
+
+You need to place them into ```R/data/dictionaries/x_x``` as well. 
+
+Finally you need to amend ```R/utils.R``` and add your version.
+
+```
+lifecycle.globals$dictionaries <- c('1_0', 'x_x')
+```
+
