@@ -93,11 +93,11 @@ lc.dict.download <- local(function(dict_version, cohort_id, data_version) {
   lifecycle.globals$dict_dest_file_yearly_repeated <- paste(dict_version, '_', cohort_id, '_', data_version, '_yearly_repeated.xlsx', sep = '')
   
   message(paste('* Download: [ ', dict_source_file_non_repeated, ' ]', sep = ''))
-  download.file(paste(download_base_dir, dict_source_file_non_repeated, '?raw=true', sep = ''), destfile=lifecycle.globals$dict_dest_file_non_repeated, method="libcurl", quiet = TRUE)
+  download.file(paste(download_base_dir, dict_source_file_non_repeated, '?raw=true', sep = ''), destfile=lifecycle.globals$dict_dest_file_non_repeated, mode = "wb", method="libcurl", quiet = TRUE)
   message(paste('* Download: [ ', dict_source_file_monthly_repeated, ' ]', sep = ''))
-  download.file(paste(download_base_dir, dict_source_file_monthly_repeated, '?raw=true', sep = ''), destfile=lifecycle.globals$dict_dest_file_monthly_repeated, method="libcurl", quiet = TRUE)
+  download.file(paste(download_base_dir, dict_source_file_monthly_repeated, '?raw=true', sep = ''), destfile=lifecycle.globals$dict_dest_file_monthly_repeated, mode = "wb", method="libcurl", quiet = TRUE)
   message(paste('* Download: [ ', dict_source_file_yearly_repeated, ' ]', sep = ''))
-  download.file(paste(download_base_dir, dict_source_file_yearly_repeated, '?raw=true', sep = ''), destfile=lifecycle.globals$dict_dest_file_yearly_repeated, method="libcurl", quiet = TRUE)
+  download.file(paste(download_base_dir, dict_source_file_yearly_repeated, '?raw=true', sep = ''), destfile=lifecycle.globals$dict_dest_file_yearly_repeated, mode = "wb", method="libcurl", quiet = TRUE)
   
   message('  Successfully downloaded dictionaries')
 })
@@ -108,7 +108,7 @@ lc.dict.download <- local(function(dict_version, cohort_id, data_version) {
 #' @param cohort_id cohort identifier (possible values are: 'dnbc', 'gecko', 'alspac', 'genr', 'moba', 'sws', 'bib', 'chop', 'elfe', 'eden', 'ninfea', 'hbcs', 'inma', 'isglobal', 'nfbc66', 'nfbc86', 'raine', 'rhea')
 #' @param data_version version of the data (specific to the cohort)
 #' 
-#' @importFrom readxl readxl_example read_excel
+#' @importFrom readxl read_xlsx
 #' 
 lc.dict.import <- local(function(dict_version, cohort_id, data_version) {
   message('------------------------------------------------------')
@@ -143,13 +143,13 @@ lc.dict.import <- local(function(dict_version, cohort_id, data_version) {
     message(paste('* Table: [ ', dict_table_yearly_repeated,' ] already exists', sep = ''))
   }
   
-  variables_non_repeated_measures <- read_excel(path = paste(getwd(), '/', lifecycle.globals$dict_dest_file_non_repeated, sep = ''), sheet = 1)
-  variables_yearly_repeated_measures <- read_excel(path = paste(getwd(), '/', lifecycle.globals$dict_dest_file_monthly_repeated, sep = ''), sheet = 1)
-  variables_monthly_repeated_measures <- read_excel(path = paste(getwd(), '/', lifecycle.globals$dict_dest_file_yearly_repeated, sep = ''), sheet = 1)
+  variables_non_repeated_measures <- read_xlsx(path = paste(getwd(), '/', lifecycle.globals$dict_dest_file_non_repeated, sep = ''), sheet = 1)
+  variables_yearly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', lifecycle.globals$dict_dest_file_monthly_repeated, sep = ''), sheet = 1)
+  variables_monthly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', lifecycle.globals$dict_dest_file_yearly_repeated, sep = ''), sheet = 1)
   
-  categories_non_repeated_measures <- read_excel(path = paste(getwd(), '/', lifecycle.globals$dict_dest_file_non_repeated, sep = ''), sheet = 2)
-  categories_monthly_repeated_measures <- read_excel(path = paste(getwd(), '/', lifecycle.globals$dict_dest_file_yearly_repeated, sep = ''), sheet = 2)
-  categories_yearly_repeated_measures <- read_excel(path = paste(getwd(), '/', lifecycle.globals$dict_dest_file_monthly_repeated, sep = ''), sheet = 2)
+  categories_non_repeated_measures <- read_xlsx(path = paste(getwd(), '/', lifecycle.globals$dict_dest_file_non_repeated, sep = ''), sheet = 2)
+  categories_monthly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', lifecycle.globals$dict_dest_file_yearly_repeated, sep = ''), sheet = 2)
+  categories_yearly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', lifecycle.globals$dict_dest_file_monthly_repeated, sep = ''), sheet = 2)
   
   lc.populate.core.match.categories(dict_table_non_repeated, variables_non_repeated_measures, categories_non_repeated_measures, lifecycle.globals$dict_dest_file_non_repeated)
   lc.populate.core.match.categories(dict_table_monthly_repeated, variables_monthly_repeated_measures, categories_monthly_repeated_measures, lifecycle.globals$dict_dest_file_monthly_repeated)

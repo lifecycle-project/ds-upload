@@ -1,6 +1,6 @@
 Package: lifecycleProject
 Title: Protocols and Sample analysis
-Version: 0.9.3
+Version: 0.9.7
 Authors@R: person("Sido", "Haakma", email = "s.haakma@rug.nl",
                   role = c("aut", "cre"))
 Description: We supply standardised ways to upload and import versioned data dictionaries. 
