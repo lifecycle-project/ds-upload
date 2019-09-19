@@ -73,13 +73,14 @@ library(lifecycleProject)
 Releasing the artifact can be done by curling to the following address:
 
 **For source packages**
+
 ```bash
 curl -v --user 'user:password' --upload-file lifecycleProject_0.6.0.tar.gz https://registry.molgenis.org/repository/r-hosted/src/contrib/lifecycleProject_0.6.0.tar.gz 
 ```
 
 > So just to be short: https://registry.molgenis.org/repository/r-hosted/src/contrib/*package_version*.tar.gz 
-
 **For binary packages**
+
 First upload the source package to https://win-builder.r-project.org/
 Then download the zip-file build bij win-builder. Then upload it into the registry by executing this command:
 
