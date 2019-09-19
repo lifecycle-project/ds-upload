@@ -1,9 +1,9 @@
 Package: lifecycleProject
-Title: Protocols and sample analysis
+Title: Protocols and Sample analysis
 Version: 0.9.3
 Authors@R: person("Sido", "Haakma", email = "s.haakma@rug.nl",
                   role = c("aut", "cre"))
-Description: This package contains standardised ways to upload and import versioned data dictionaries. 
+Description: We supply standardised ways to upload and import versioned data dictionaries. 
   To check if your data is correct it contains als a number of local functions which can be performed to
   check the quality of your data. It also can reshape the data into Opal format when you use other tools
   to harmonise your data.

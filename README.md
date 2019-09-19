@@ -32,7 +32,6 @@ You need these packages to can make use of the LifeCycle R-package.
 > For Opal reference documentation check: http://opaldoc.obiba.org/en/latest/r-user-guide/datashield.html
 
 #### For Windows
-
 Install the Opal package. By installing ```RCurl, rjson``` first.
 ```R 
 install.packages(c('httr', 'rjson'), repos=c('https://cloud.r-project.org/', 'https://www.stats.ox.ac.uk/pub/RWin/'))
@@ -51,7 +50,6 @@ install.packages(c('metafor', 'tidyr', 'dplyr', 'readr', 'stringr', 'readxl', 'd
 This may take a while
 
 #### For Mac
-
 Install Opal by executing:
 ```R 
 install.packages('opalr', repos=c('https://cloud.r-project.org/', 'https://cran.obiba.org'), dependencies=TRUE)
@@ -67,7 +65,7 @@ install.packages(c('metafor', 'tidyr', 'dplyr', 'readr', 'stringr', 'readxl', 'd
 You can install the package by executing the following command:
 
 ```R
-install.packages("lifecycleProject", type = 'source', repos='https://registry.molgenis.org/repository/R/', dependencies = TRUE)
+install.packages("lifecycleProject", repos='https://registry.molgenis.org/repository/R/', dependencies = TRUE)
 library(lifecycleProject)
 ```
 
