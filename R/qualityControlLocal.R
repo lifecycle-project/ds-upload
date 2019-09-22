@@ -34,6 +34,9 @@
 #' @importFrom dplyr count arrange group_by row_number
 #' 
 lc.quality.local.core.meta <- local(function(lc_data) {
+  # workaround to avoid glpobal variable warnings, check: https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
+  lifecyclelc_data <- birth_month <- birth_year <- mother_id <- dob <- preg_no <- child_id <- . <- NULL
+  
   lc_data <- read_csv("path/to/data.csv")
   
   theme_set(theme_minimal())
@@ -147,6 +150,9 @@ lc.quality.local.core.meta <- local(function(lc_data) {
 #' @importFrom dplyr select_if mutate group_by arrange lag
 #' 
 lc.quality.local.core.maternal.social.char <- local(function(lc_data) {
+  # workaround to avoid glpobal variable warnings, check: https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
+  contains <- child_id <- coh_country <- edu_m_0 <- edu_m_17 <- orig_var <- edu_m_ <- variable_trunc <- age_years <- prev <- edu_diff <- agebirth_m_d <- agebirth_m_y <- . <- .. <- NULL
+  
   #  8. COHABITATION STATUS ('cohab_0-17')
   # * NB! Mother's partner can be the biological partner, a new partner or a parther of the same gender
   
@@ -418,9 +424,7 @@ lc.quality.local.core.maternal.social.char <- local(function(lc_data) {
 #' 
 lc.quality.local.core.maternal.health.char <- local(function(lc_data) {
   # workaround to avoid glpobal variable warnings, check: https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
-  prepreg_weight <- NULL 
-  
-  
+  agebirth_m_y <- height_m <- latepreg_weight <- preg_gain <- gain2 <- prepreg_weight <- NULL 
   
   # 18. PRE-PREGNANCY WEIGHT
   # a. ('prepreg_weight')
@@ -1633,6 +1637,10 @@ lc.quality.local.core.paternal.socio.demo.char <- local(function(lc_data) {
 #' @importFrom ggplot2 geom_point geom_boxplot
 #' 
 lc.quality.local.core.paternal.health.related.char <- local(function(lc_data) {
+  # workaround to avoid glpobal variable warnings, check: https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
+  weight_f1 <- agebirth_p_y <- height_f1 <- NULL
+  
+  
   #  68. PATERNAL WEIGHT, PRIMARY FATHER ('weight_f1')
   # * NB! Use measured weight if available, AND... note in the Online Catalogue when data was recorded, i.e. at which follow-up.
   # * If variable is partially harmonised, please check you have documented this accordingly in the online catalogue under 'match'

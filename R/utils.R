@@ -39,7 +39,6 @@ lc.login <- local(function(hostname, username = 'administrator', password) {
 #' 
 #' @importFrom stringr str_extract
 #' 
-#' @export
 numextract <- local(function(input_string) { 
   str_extract(input_string, "\\d*$") 
 })
@@ -54,8 +53,6 @@ numextract <- local(function(input_string) {
 #' @importFrom stats median
 #' 
 #' @return a summary of the data
-#' 
-#' @export
 #' 
 summarizeR <- local(function(df, .var) {
   

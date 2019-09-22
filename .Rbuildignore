@@ -1,3 +1,7 @@
 data/
+changelogs/
+ANALYSIS_GUIDELINES.md
+DICTIONARY_VERSIONING.md
+TROUBLESHOOTING.md
 ^.*\.Rproj$
 ^\.Rproj\.user$
