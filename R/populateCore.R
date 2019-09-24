@@ -7,10 +7,12 @@ lifecycle.globals <- new.env()
 #' @param dict_version dictionary version (possible dictionaries are: 1_0, 1_1 / default = 1_0)
 #' @param cohort_id cohort identifier (possible values are: 'dnbc', 'gecko', 'alspac', 'genr', 'moba', 'sws', 'bib', 'chop', 'elfe', 'eden', 'ninfea', 'hbcs', 'inma', 'isglobal', 'nfbc66', 'nfbc86', 'raine', 'rhea')
 #' @param data_version version of the data (specific to the cohort)
-#' @param data_changes comments about the data changes in the release being done
+#'
+#' @examples 
+#' lc.populate.core(dict_version = '1_1', cohort_id = 'dnbc', data_version = '1_0')
 #'
 #' @export
-lc.populate.core <- local(function(dict_version = '1_0', cohort_id, data_version, data_changes) {
+lc.populate.core <- local(function(dict_version = '1_0', cohort_id, data_version) {
   message('######################################################')
   message('  Start importing data dictionaries                   ')
   message('######################################################')
@@ -35,11 +37,6 @@ lc.populate.core <- local(function(dict_version = '1_0', cohort_id, data_version
   }
   if(data_version == '') {
     stop("No data version is specified! Program is terminated.", call. = FALSE)
-  }
-  
-  if(missing(data_changes)) data_changes <- readline('- Specify changes in data upload version (e.g. "new participants added": ')
-  if(data_changes == '') {
-    stop("No changes in data are specified! Program is terminated.", call. = FALSE)
   }
   
   lc.dict.project.create(dict_version) 

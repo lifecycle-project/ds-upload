@@ -5,9 +5,14 @@
 #' @param input_format possible formats are CSV,STATA,SPSS or SAS (default = CSV)
 #' @param input_path path for importfile
 #' @param output_path path to output directory (default = your working directory)
-#'
-#' @importFrom readr read_csv cols col_double
-#' @importFrom haven read_dta read_sas read_spss
+#' 
+#' @examples 
+#' lc.reshape.core(
+#'   upload_to_opal = FALSE, 
+#'   data_version = '1_0', 
+#'   input_format = 'SPSS', 
+#'   input_path = 'C:\MyDocuments\source_file.sav', 
+#'   output_path = 'C:\MyDocuments\output_file.csv')
 #'
 #' @export
 lc.reshape.core <- local(function(upload_to_opal = TRUE, data_version, input_format = 'CSV', input_path, output_path = getwd()) {
@@ -23,18 +28,7 @@ lc.reshape.core <- local(function(upload_to_opal = TRUE, data_version, input_for
     if(!exists('username', envir = lifecycle.globals)) stop('You need to login first, please run lc.login')
   }
   
-  if(missing(input_path)) {
-    input_path <- readline('- Specify input path (for your data): ')
-    input_format <- readline('- Specify input format (possible formats: CSV,STATA,SPSS or SAS - default = CSV): ')
-  }
-  if (input_format %in% input_formats) {
-    if (input_format == 'STATA') lc_data <- read_dta(input_path)
-    else if (input_format == 'SPSS') lc_data <- read_spss(input_path)
-    else if (input_format == 'SAS') lc_data <- read_sas(input_path)
-    else lc_data <- read_csv(input_path, col_types = cols(.default = col_double()))
-  } else {
-    stop(paste(input_format, ' is not a valid input format, Possible input formats are: CSV, STATA, SPSS or SAS'))
-  }
+  lc_data <- lc.read.source.file(input_path, input_format)
   
   file_prefix <- format(Sys.time(), "%Y-%m-%d_%H-%M-%S")
   if(missing(data_version)) {

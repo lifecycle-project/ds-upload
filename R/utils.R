@@ -3,39 +3,12 @@ lifecycle.globals <- new.env()
 
 cohorts <- c('dnbc', 'gecko', 'alspac', 'genr', 'moba', 'sws', 'bib', 'chop', 'elfe', 'eden', 'ninfea', 'hbcs', 'inma', 'isglobal', 'nfbc66', 'nfbc86', 'raine', 'rhea')
 cohort_urls <- c('https://opal.sund.ku.dk', 'https://opal.gcc.rug.nl', '', 'https://opal.erasmusmc.nl', 'https://moba.nhn.no', 'https://opal.mrc.soton.ac.uk:8443', '', 'https://lifecycle-project.med.uni-muenchen.de', 'https://elfe-opal.sicopre.elfe-france.fr', '', 'https://www.lifecycle-ninfea.unito.it', '', '', 'https://opal.isglobal.org', '', '', 'https://opal.gohad.uwa.edu.au', '')
-input_formats <- c('CSV', 'STATA', 'SPSS', 'SASS')
-variable_category <- c('ALL','META','MATERNAL','PATERNAL','CHILD','HOUSEHOLD')
+
+lifecycle.globals$input_formats <- c('CSV', 'STATA', 'SPSS', 'SASS')
+lifecycle.globals$variable_category <- c('ALL','META','MATERNAL','PATERNAL','CHILD','HOUSEHOLD')
 lifecycle.globals$cohorts <- setNames(as.list(cohort_urls), cohorts)
 lifecycle.globals$cohort_ids <- cohorts
 lifecycle.globals$dictionaries <- c('1_0')
-
-#' Login into the opal instance and 
-#' 
-#' @param hostname specify hostname of Opal instance
-#' @param username specify username (of administrator) of Opal instance (default = administrator)
-#' @param password specify password (of administrator) of Opal instance
-#' 
-#' @importFrom opalr opal.login
-#' 
-#' @example 
-#' 
-#'   lc.login(hostname = 'https://my-own-opal.org', password = 'my-password')
-#' 
-#' @export
-#' 
-lc.login <- local(function(hostname, username = 'administrator', password) {
-  if(missing(hostname)) hostname <- readline('- Hostname (e.g. https://my-own-opal.org): ')
-  if(missing(hostname) && missing(password)) username <- readline('- Username: ')
-  if(missing(password)) password <- readline('- Password: ')
-  
-  lifecycle.globals$hostname <- hostname
-  lifecycle.globals$username <- username
-  lifecycle.globals$password <- password
-  
-  message(paste('  Login to: "', lifecycle.globals$hostname, '"', sep = ''))
-  lifecycle.globals$opal <- opal.login(username = lifecycle.globals$username, password = lifecycle.globals$password, url = lifecycle.globals$hostname)
-  message(paste('  Logged on to: "', lifecycle.globals$hostname, '"', sep = ''))
-})
 
 #' Numerical extraction function
 #' Number at the end of the string: Indicates year. We need to extract this to create the age_years variable.
@@ -76,3 +49,31 @@ summarizeR <- local(function(df, .var) {
   return(data_summary)
 })
 
+#' Read the input file from different sources
+#' 
+#' @param input_format possible formats are CSV,STATA,SPSS or SAS (default = CSV)
+#' @param input_path path for importfile
+#' 
+#' @importFrom readr read_csv cols col_double
+#' @importFrom haven read_dta read_sas read_spss
+#' 
+#' @return dataframe with source data
+#'  
+lc.read.source.file <- local(function(input_path, input_format = 'CSV') {
+  lc_data <- NULL
+  
+  if(missing(input_path)) {
+    input_path <- readline('- Specify input path (for your data): ')
+    input_format <- readline('- Specify input format (possible formats: CSV,STATA,SPSS or SAS - default = CSV): ')
+  }
+  if (input_format %in% lifecycle.globals$input_formats) {
+    if (input_format == 'STATA') lc_data <- read_dta(input_path)
+    else if (input_format == 'SPSS') lc_data <- read_spss(input_path)
+    else if (input_format == 'SAS') lc_data <- read_sas(input_path)
+    else lc_data <- read_csv(input_path, col_types = cols(.default = col_double()))
+  } else {
+    stop(paste(input_format, ' is not a valid input format, Possible input formats are: ', lifecycle.globals$input_formats, sep = ','))
+  }
+  
+  return(lc_data)
+})
