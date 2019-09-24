@@ -144,12 +144,12 @@ lc.dict.import <- local(function(dict_version, cohort_id, data_version) {
   }
   
   variables_non_repeated_measures <- read_xlsx(path = paste(getwd(), '/', lifecycle.globals$dict_dest_file_non_repeated, sep = ''), sheet = 1)
-  variables_yearly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', lifecycle.globals$dict_dest_file_monthly_repeated, sep = ''), sheet = 1)
-  variables_monthly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', lifecycle.globals$dict_dest_file_yearly_repeated, sep = ''), sheet = 1)
+  variables_yearly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', lifecycle.globals$dict_dest_file_yearly_repeated, sep = ''), sheet = 1)
+  variables_monthly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', lifecycle.globals$dict_dest_file_monthly_repeated, sep = ''), sheet = 1)
   
   categories_non_repeated_measures <- read_xlsx(path = paste(getwd(), '/', lifecycle.globals$dict_dest_file_non_repeated, sep = ''), sheet = 2)
-  categories_monthly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', lifecycle.globals$dict_dest_file_yearly_repeated, sep = ''), sheet = 2)
-  categories_yearly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', lifecycle.globals$dict_dest_file_monthly_repeated, sep = ''), sheet = 2)
+  categories_monthly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', lifecycle.globals$dict_dest_file_monthly_repeated, sep = ''), sheet = 2)
+  categories_yearly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', lifecycle.globals$dict_dest_file_yearly_repeated, sep = ''), sheet = 2)
   
   lc.populate.core.match.categories(dict_table_non_repeated, variables_non_repeated_measures, categories_non_repeated_measures, lifecycle.globals$dict_dest_file_non_repeated)
   lc.populate.core.match.categories(dict_table_monthly_repeated, variables_monthly_repeated_measures, categories_monthly_repeated_measures, lifecycle.globals$dict_dest_file_monthly_repeated)
