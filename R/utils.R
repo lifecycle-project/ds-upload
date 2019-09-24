@@ -3,6 +3,8 @@ lifecycle.globals <- new.env()
 
 cohorts <- c('dnbc', 'gecko', 'alspac', 'genr', 'moba', 'sws', 'bib', 'chop', 'elfe', 'eden', 'ninfea', 'hbcs', 'inma', 'isglobal', 'nfbc66', 'nfbc86', 'raine', 'rhea')
 cohort_urls <- c('https://opal.sund.ku.dk', 'https://opal.gcc.rug.nl', '', 'https://opal.erasmusmc.nl', 'https://moba.nhn.no', 'https://opal.mrc.soton.ac.uk:8443', '', 'https://lifecycle-project.med.uni-muenchen.de', 'https://elfe-opal.sicopre.elfe-france.fr', '', 'https://www.lifecycle-ninfea.unito.it', '', '', 'https://opal.isglobal.org', '', '', 'https://opal.gohad.uwa.edu.au', '')
+input_formats <- c('CSV', 'STATA', 'SPSS', 'SASS')
+variable_category <- c('ALL','META','MATERNAL','PATERNAL','CHILD','HOUSEHOLD')
 lifecycle.globals$cohorts <- setNames(as.list(cohort_urls), cohorts)
 lifecycle.globals$cohort_ids <- cohorts
 lifecycle.globals$dictionaries <- c('1_0')
@@ -15,11 +17,15 @@ lifecycle.globals$dictionaries <- c('1_0')
 #' 
 #' @importFrom opalr opal.login
 #' 
+#' @example 
+#' 
+#'   lc.login(hostname = 'https://my-own-opal.org', password = 'my-password')
+#' 
 #' @export
 #' 
 lc.login <- local(function(hostname, username = 'administrator', password) {
   if(missing(hostname)) hostname <- readline('- Hostname (e.g. https://my-own-opal.org): ')
-  if(missing(hostname) && missing(password))
+  if(missing(hostname) && missing(password)) username <- readline('- Username: ')
   if(missing(password)) password <- readline('- Password: ')
   
   lifecycle.globals$hostname <- hostname
