@@ -11,8 +11,6 @@
 #'
 #' @export
 lc.reshape.core <- local(function(upload_to_opal = TRUE, data_version, input_format = 'CSV', input_path, output_path = getwd()) {
-
-  input_formats <- c('CSV', 'STATA', 'SPSS', 'SASS')
   
   message('######################################################')
   message('  Start reshaping data                                ')
@@ -25,7 +23,10 @@ lc.reshape.core <- local(function(upload_to_opal = TRUE, data_version, input_for
     if(!exists('username', envir = lifecycle.globals)) stop('You need to login first, please run lc.login')
   }
   
-  if(missing(input_path)) input_path <- readline('- Specify input path (for your data): ')
+  if(missing(input_path)) {
+    input_path <- readline('- Specify input path (for your data): ')
+    input_format <- readline('- Specify input format (possible formats: CSV,STATA,SPSS or SAS - default = CSV): ')
+  }
   if (input_format %in% input_formats) {
     if (input_format == 'STATA') lc_data <- read_dta(input_path)
     else if (input_format == 'SPSS') lc_data <- read_spss(input_path)
@@ -217,12 +218,14 @@ lc.reshape.core <- local(function(upload_to_opal = TRUE, data_version, input_for
                     "famsize_adult8", "famsize_adult9",  "famsize_adult10", "famsize_adult11", "famsize_adult12", "famsize_adult13", "famsize_adult14",
                     "famsize_adult15", "famsize_adult16", "famsize_adult17")
   
-  # Reorder the data set based on the variable vector above
-  lc_data <- lc_data[,lc_variables]
-  
   # Check which variables are missing in the study as compared to the full variable list (if character(0), continue, otherwise
   # check the list of variables in the original harmonized data)
-  setdiff(lc_variables, names(lc_data))
+  missing <- setdiff(lc_variables, names(lc_data))
+  # Ammend the data with columns
+  lc_data[missing] <- NA
+  
+  # Reorder the data set based on the variable vector above
+  lc_data <- lc_data[,lc_variables]
   
   lc.reshape.core.generate.non.repeated(lc_data, upload_to_opal, output_path, file_prefix, file_version, 'non_repeated_measures')
   lc.reshape.core.generate.yearly.repeated(lc_data, upload_to_opal, output_path, file_prefix, file_version, 'yearly_repeated_measures')
