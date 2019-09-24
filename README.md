@@ -7,9 +7,12 @@ We are trying to build a meta package for the LifeCycle project to ease the admi
 ### Usage
 At this moment the implemented functions at this moment are:
 
-- ```lc.populate.core``` populate the datadictionaries for LifeCycle
+- ```lc.login``` login to your Opal instance
+- ```lc.populate.core``` populate the data dictionaries for LifeCycle
 - ```lc.reshape.core``` performing the reshape of the data dictionaries for LifeCycle (only core variables)
-- ```lc.quality.local.core.meta``` performing local quality checks on the harmonised data regarding the metadata
+- ```lc.quality.local.core``` performing local quality checks on the harmonised data regarding the metadata
+
+For further detail check: https://github.com/lifecycle-project/analysis-protocols/wiki/LifeCycle-variables
 
 ### Installation
 
@@ -17,7 +20,6 @@ You can install the package by executing the following command:
 
 ```R
 install.packages("lifecycleProject", repos='https://registry.molgenis.org/repository/R/', dependencies = TRUE)
-library(lifecycleProject)
 ```
 
 ### Releases
@@ -26,7 +28,7 @@ Releasing the artifact can be done by curling to the following address:
 **For source packages**
 
 ```bash
-curl -v --user 'user:password' --upload-file lifecycleProject_0.9.7.tar.gz https://registry.molgenis.org/repository/r-hosted/src/contrib/lifecycleProject_0.9.7.tar.gz 
+curl -v --user 'user:password' --upload-file lifecycleProject_0.9.8.tar.gz https://registry.molgenis.org/repository/r-hosted/src/contrib/lifecycleProject_0.9.8.tar.gz 
 ```
 
 > So just to be short: https://registry.molgenis.org/repository/r-hosted/src/contrib/*package_version*.tar.gz 
@@ -36,12 +38,10 @@ First upload the source package to https://win-builder.r-project.org/
 Then download the zip-file build bij win-builder. Then upload it into the registry by executing this command:
 
 ```bash
-curl -v --user 'user:password' --upload-file lifecycleProject_0.9.7.zip https://registry.molgenis.org/repository/r-hosted/bin/windows/contrib/3.6/lifecycleProject_0.9.7.zip
+curl -v --user 'user:password' --upload-file lifecycleProject_0.9.8.zip https://registry.molgenis.org/repository/r-hosted/bin/windows/contrib/3.6/lifecycleProject_0.9.8.zip
 ```
 
 >So just to be short: https://registry.molgenis.org/repository/r-hosted/bin/windows/contrib/*r-version*/*package_version*.zip
-
-
 
 ## Analysis guidelines
 Please check: [analysis guidelines](ANALYSIS_GUIDELINES.md)

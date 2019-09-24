@@ -4,8 +4,8 @@ Version: 0.9.8
 Authors@R: person("Sido", "Haakma", email = "s.haakma@rug.nl",
                   role = c("aut", "cre"))
 Description: We supply standardised ways to upload and import versioned data dictionaries. 
-  To check if your data is correct it contains als a number of local functions which can be performed to
-  check the quality of your data. It also can reshape the data into Opal format when you use other tools
+  To check if your data is correct it contains a number of local functions which can be performed to
+  check the quality of your data as well. It also can reshape the data into Opal format when you use other tools
   to harmonise your data.
 Depends: 
   R (>= 3.6.0)

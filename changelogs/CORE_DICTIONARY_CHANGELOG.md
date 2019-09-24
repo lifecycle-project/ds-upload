@@ -2,22 +2,11 @@
 We define here in what versions of the data dictionaries contains which tables.
 
 ## 1.1
-**lifecycleProject R-package version >= 0.3.0**
+**lifecycleProject R-package version >= 1.0.0**
 
 Additional variables from WP3 and changes in the lifecycle variables.
 
 ### Content
-
-**LifeCycle variables**
-* art --> variable_id changed from **art** to **mar**
->**be adviced**: all harmonisations of all cohorts need te upload this variable again with the new name
-
-* preg_plan --> values updated from ( 0 = No (not planned) / 1 = Yes (Planned, partly planned)) to ( 1 = Yes (Planned, partly planned) / 2 = No (not planned))
-
-* cob_p --> changed values
-  * 0) Born in country of cohort
-  * 1) Born in EU country (outside cohort country)
-  * 2) Born in other country
 
 **EUSILC variables (task 3.1.1)**
 
@@ -39,18 +28,28 @@ Additional variables from WP3 and changes in the lifecycle variables.
 | reledu_mo	   | Mother’s educational selectivity | decimal     |
 | reledu_fa    | Father’s educational selectivity | decimal     |
 
-
-
 ### Tables
-- 1_1_non_repeated_measures
+- 1_1_cohort_id_x_x_non_repeated_measures
 
 ## 1.0
-**lifecycleProject R-package version >= 0.1.0**
+**lifecycleProject R-package version >= 0.9.8**
 
 ### Content
-- Includes all lifecycle variables harmonised by all cohorts
+
+**LifeCycle variables**
+Includes all lifecycle variables harmonised by all cohorts
+
+* art --> variable_id changed from **art** to **mar**
+>**be adviced**: all harmonisations of all cohorts need te upload this variable again with the new name
+
+* preg_plan --> values updated from ( 0 = No (not planned) / 1 = Yes (Planned, partly planned)) to ( 1 = Yes (Planned, partly planned) / 2 = No (not planned))
+
+* cob_p --> changed values
+  * 0) Born in country of cohort
+  * 1) Born in EU country (outside cohort country)
+  * 2) Born in other country
 
 ### Tables
-- 1_0_non_repeated_measures
-- 1_0_monthly_repeated_measures
-- 1_0_yearly_repeated_measures
+- 1_0_cohort_id_x_x_non_repeated_measures
+- 1_0_cohort_id_x_x_monthly_repeated_measures
+- 1_0_cohort_id_x_x_yearly_repeated_measures
