@@ -22,27 +22,6 @@ You can install the package by executing the following command:
 install.packages("lifecycleProject", repos='https://registry.molgenis.org/repository/R/', dependencies = TRUE)
 ```
 
-### Releases
-Releasing the artifact can be done by curling to the following address:
-
-**For source packages**
-
-```bash
-curl -v --user 'user:password' --upload-file lifecycleProject_0.9.8.tar.gz https://registry.molgenis.org/repository/r-hosted/src/contrib/lifecycleProject_0.9.8.tar.gz 
-```
-
-> So just to be short: https://registry.molgenis.org/repository/r-hosted/src/contrib/*package_version*.tar.gz 
-**For binary packages**
-
-First upload the source package to https://win-builder.r-project.org/
-Then download the zip-file build bij win-builder. Then upload it into the registry by executing this command:
-
-```bash
-curl -v --user 'user:password' --upload-file lifecycleProject_0.9.8.zip https://registry.molgenis.org/repository/r-hosted/bin/windows/contrib/3.6/lifecycleProject_0.9.8.zip
-```
-
->So just to be short: https://registry.molgenis.org/repository/r-hosted/bin/windows/contrib/*r-version*/*package_version*.zip
-
 ## Analysis guidelines
 Please check: [analysis guidelines](ANALYSIS_GUIDELINES.md)
 
@@ -69,3 +48,24 @@ Finally you need to amend ```R/utils.R``` and add your version.
 lifecycle.globals$dictionaries <- c('1_0', 'x_x')
 ```
 
+## Releases
+Releasing the artifact can be done by curling to the following address:
+
+**For source packages**
+
+```bash
+curl -v --user 'user:password' --upload-file lifecycleProject_0.9.8.tar.gz https://registry.molgenis.org/repository/r-hosted/src/contrib/lifecycleProject_0.9.8.tar.gz 
+```
+
+> So just to be short: https://registry.molgenis.org/repository/r-hosted/src/contrib/*package_version*.tar.gz 
+
+**For binary packages**
+
+First upload the source package to https://win-builder.r-project.org/
+Then download the zip-file build bij win-builder. Then upload it into the registry by executing this command:
+
+```bash
+curl -v --user 'user:password' --upload-file lifecycleProject_0.9.8.zip https://registry.molgenis.org/repository/r-hosted/bin/windows/contrib/3.6/lifecycleProject_0.9.8.zip
+```
+
+>So just to be short: https://registry.molgenis.org/repository/r-hosted/bin/windows/contrib/*r-version*/*package_version*.zip
