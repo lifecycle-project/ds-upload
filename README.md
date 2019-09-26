@@ -2,18 +2,18 @@
 These provide researchers with a list of standard functions for data manipulations and analyses in DataSHIELD; these can be adapted to each specific research question. The protocols are currently fairly simple, but will become more extensive as our experience of DataSHIELD develops.
 
 ## Protocols
-We are trying to build a meta package for the LifeCycle project to ease the administration within scripts to setup the connections and assigning the data.
+We are trying to build a meta package for the LifeCycle project to aid data mangers and researchers in the initial stages of uploading data to Opal and assigning data in R/DataSHIELD.
 
 ### Usage
-At this moment the implemented functions at this moment are:
+The current functions available to data managers and researchers are:
 
-- ```lc.populate.core``` populate the datadictionaries for LifeCycle
-- ```lc.reshape.core``` performing the reshape of the data dictionaries for LifeCycle (only core variables)
-- ```lc.quality.local.core.meta``` performing local quality checks on the harmonised data regarding the metadata
+- ```lc.populate.core``` populates the data dictionaries for LifeCycle
+- ```lc.reshape.core``` separates non-repeated and repeated measure varables; reshapes repeated measures to long format (WP1)
+- ```lc.quality.local.core.meta``` performs local quality checks on harmonised data
 
 ### Installation
 **Prerequisites**
-You need these packages to can make use of the LifeCycle R-package.
+The following R packages are required to run the LifeCycle R-package:
 
 * opalr (>= 1.2.0),
 * dplyr,
