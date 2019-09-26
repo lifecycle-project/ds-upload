@@ -36,7 +36,6 @@
 #'   input_path = 'C:\MyDocuments\source_file.sav', 
 #'   variable_category = 'CHILD')
 #' 
-#' @export
 lc.quality.local.core <- local(function(input_format = 'CSV', input_path, variable_category = 'ALL') {
   
   message('######################################################')
@@ -218,7 +217,7 @@ lc.quality.local.core.maternal.social.char <- local(function(lc_data) {
   # * Check that date of collection corresponds to the exact age-band (for all time bands with cohort-specific data) // Se ILLUSTRATED example:
   CrossTable(lc_data$cohab_0, lc_data$weight_age0)
   
-  CrossTable(lc_data$cohab_0, lc_data$age_6m) # where <age_6m> is the cohort-specific variable for age of the child at a FU occurring around the first year of life; 
+  CrossTable(lc_data$cohab_0, "<age_m6>") # where <age_6m> is the cohort-specific variable for age of the child at a FU occurring around the first year of life; 
   # age range at this FU =   3 - 28 months
   
   CrossTable(lc_data$cohab_1, lc_data$height_age1)
