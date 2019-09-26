@@ -1163,8 +1163,7 @@ lc.quality.local.core.maternal.obstetric.char <- local(function(lc_data) {
 #' @param lc_data core variables from LifeCycle
 #' 
 #' @importFrom gmodels CrossTable
-#' 
-#' @export
+#'
 lc.quality.local.core.paternal.socio.demo.char <- local(function(lc_data) {
   message("- Paternal - social demographic characteristics")
   #  46. PATERNAL OCCUPATIONAL STATUS, PRIMARY FATHER [CORE] ('occup_f1_0-17')
