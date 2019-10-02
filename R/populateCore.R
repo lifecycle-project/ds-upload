@@ -29,7 +29,7 @@ lc.populate.core <- local(function(dict_version = '1_0', cohort_id, data_version
     }
   }
   
-  if(missing(dict_version)) data_version <- readline('- Specify version of cohort data upload (e.g. 1_0): ')
+  if(missing(data_version)) data_version <- readline('- Specify version of cohort data upload (e.g. 1_0): ')
   if(dict_version != '' && !(dict_version %in% lifecycle.globals$dictionaries)) {
     stop('Version: [ ', dict_version ,' ] is not available in published data dictionaries. Possible dictionaries are: ', paste(lifecycle.globals$dictionaries, collapse = ', '))
   } else {
@@ -164,10 +164,10 @@ lc.dict.import <- local(function(dict_version, cohort_id, data_version) {
 #' @param source_file source file for the dictionaries
 #'
 #' @importFrom opalr opal.post
-#' @importFrom dplyr select
+#' @importFrom dplyr select %>% nest_join rename
 #'
 lc.populate.core.match.categories <- local(function(table, variables, categories, source_file) {
-  # workaround to avoid glpobal variable warnings, check: https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
+  # workaround to avoid global variable warnings, check: https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
   label <- NULL
   
   variables$entityType <- 'Participant'
@@ -175,23 +175,13 @@ lc.populate.core.match.categories <- local(function(table, variables, categories
   variables$attributes <- data.frame(namespace = '', name= 'label', locale = '', value = variables$label)
   variables <- select(variables, -c(label))
   
-  #message(paste('* Matched categories for table: [ ', table,' ]', sep = ''))
-  #for(name in variables$name) {
-  #  index <- which(name == variables$name)
-  #  categories_raw <- categories[which(categories$variable == name),]
-  #  if(nrow(categories_raw) != 0) {
-  #    attributes <- select(categories_raw,c(name,label))
-  #    names(attributes)[2] <- 'value'
-  #    attributes$name <- 'label'
-  #    categories_match <- select(categories_raw,c(name))
-  #    categories_match$name <-as.character(categories_match$name)
-  #    categories_match$isMissing <- FALSE
-  #    categories_match$attributes <- attributes
-  #    variables[index]$categories <- categories_match
-  #  } else {
-  #    next
-  #  }
-  # }
+  message(paste('* Matched categories for table: [ ', table,' ]', sep = ''))
+  
+  categories <- transform(categories, name = as.character(name))
+  categories$attributes <- data.frame(namespace = '', name= 'label', locale = '', value = categories$label)
+  categories <- select(categories, -c(label, missing))
+  categories$isMissing <- TRUE
+  variables <- variables %>% nest_join(categories, by = c('name' = 'variable'))
   
   message(paste('* Import variables into: [ ', table,' ]', sep = ''))
   opal.post(lifecycle.globals$opal, 'datasource', lifecycle.globals$project, 'table', table, 'variables', body=toJSON(variables), contentType = 'application/x-protobuf+json')  
