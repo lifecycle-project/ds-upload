@@ -179,8 +179,8 @@ lc.populate.core.match.categories <- local(function(table, variables, categories
   
   categories <- transform(categories, name = as.character(name))
   categories$attributes <- data.frame(namespace = '', name= 'label', locale = '', value = categories$label)
+  categories$isMissing <- catagories$missing
   categories <- select(categories, -c(label, missing))
-  categories$isMissing <- TRUE
   variables <- variables %>% nest_join(categories, by = c('name' = 'variable'))
   
   message(paste('* Import variables into: [ ', table,' ]', sep = ''))
