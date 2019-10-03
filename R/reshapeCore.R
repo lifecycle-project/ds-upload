@@ -255,6 +255,8 @@ lc.reshape.core.generate.non.repeated <- local(function(lc_data, upload_to_opal,
   # select the non-repeated measures from the full data set
   non_repeated_measures <- lc_data[,non_repeated]
   
+  non_repeated_measures <- non_repeated_measures[,colSums(is.na(non_repeated_measures))<nrow(non_repeated_measures)]
+  
   # Write as csv   
   write_csv(non_repeated_measures, paste(output_path, '/', file_prefix, '_', file_version, '_', file_name, '.csv', sep="")) ## exports data as a csv file
   
@@ -331,6 +333,8 @@ lc.reshape.core.generate.yearly.repeated <- local(function(lc_data, upload_to_op
   # Bind the 0 year and older data sets together 
   long_yearly <- rbind(zero_year,later_year)
   
+  long_yearly <- long_yearly[,colSums(is.na(long_yearly))<nrow(long_yearly)]
+  
   # Write as csv
   write_csv(long_yearly, paste(output_path, '/', file_prefix, '_', file_version, '_', file_name, '.csv', sep=""))
   
@@ -405,6 +409,8 @@ lc.reshape.core.generate.monthly.repeated <- local(function(lc_data, upload_to_o
   
   # Bind the 0 year and older data sets together 
   long_monthly <- rbind(zero_monthly,later_monthly)
+  
+  long_monthly <- long_monthly[,colSums(is.na(long_monthly))<nrow(long_monthly)]
   
   # Write as csv
   write_csv(long_monthly, paste(output_path, '/', file_prefix, '_', file_version, '_', file_name, '.csv', sep="")) ## exports data as a csv file
