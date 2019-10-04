@@ -175,12 +175,11 @@ lc.populate.core.match.categories <- local(function(table, variables, categories
   variables$attributes <- data.frame(namespace = '', name= 'label', locale = '', value = variables$label)
   variables <- select(variables, -c(label))
   
-  message(paste('* Matched categories for table: [ ', table,' ]', sep = ''))
-  
-  categories <- transform(categories, name = as.character(name))
-  categories$attributes <- data.frame(namespace = '', name= 'label', locale = '', value = categories$label)
-  categories <- select(categories, -c(label))
   if (nrow(categories) > 0) {
+    message(paste('* Matched categories for table: [ ', table,' ]', sep = ''))
+    categories <- transform(categories, name = as.character(name))
+    categories$attributes <- data.frame(namespace = '', name= 'label', locale = '', value = categories$label)
+    categories <- select(categories, -c(label))
     variables <- variables %>% nest_join(categories, by = c('name' = 'variable'))
   }
   
