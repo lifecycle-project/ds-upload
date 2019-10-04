@@ -180,7 +180,9 @@ lc.populate.core.match.categories <- local(function(table, variables, categories
   categories <- transform(categories, name = as.character(name))
   categories$attributes <- data.frame(namespace = '', name= 'label', locale = '', value = categories$label)
   categories <- select(categories, -c(label))
-  variables <- variables %>% nest_join(categories, by = c('name' = 'variable'))
+  if (nrow(categories) > 0) {
+    variables <- variables %>% nest_join(categories, by = c('name' = 'variable'))
+  }
   
   message(paste('* Import variables into: [ ', table,' ]', sep = ''))
   opal.post(lifecycle.globals$opal, 'datasource', lifecycle.globals$project, 'table', table, 'variables', body=toJSON(variables), contentType = 'application/x-protobuf+json')  

@@ -258,7 +258,7 @@ lc.reshape.core.generate.non.repeated <- local(function(lc_data, upload_to_opal,
   non_repeated_measures <- non_repeated_measures[,colSums(is.na(non_repeated_measures))<nrow(non_repeated_measures)]
   
   # Write as csv   
-  write_csv(non_repeated_measures, paste(output_path, '/', file_prefix, '_', file_version, '_', file_name, '.csv', sep="")) ## exports data as a csv file
+  write_csv(non_repeated_measures, paste(output_path, '/', file_prefix, '_', file_version, '_', file_name, '.csv', sep=""), na = "")
   
   if(upload_to_opal) {
     lc.reshape.core.upload(file_prefix, file_version, file_name)
@@ -333,10 +333,10 @@ lc.reshape.core.generate.yearly.repeated <- local(function(lc_data, upload_to_op
   # Bind the 0 year and older data sets together 
   long_yearly <- rbind(zero_year,later_year)
   
+  # strip fully na columns
   long_yearly <- long_yearly[,colSums(is.na(long_yearly))<nrow(long_yearly)]
   
-  # Write as csv
-  write_csv(long_yearly, paste(output_path, '/', file_prefix, '_', file_version, '_', file_name, '.csv', sep=""))
+  write_csv(long_yearly, paste(output_path, '/', file_prefix, '_', file_version, '_', file_name, '.csv', sep=""), na = "")
   
   if(upload_to_opal) {
     lc.reshape.core.upload(file_prefix, file_version, file_name)
@@ -410,10 +410,10 @@ lc.reshape.core.generate.monthly.repeated <- local(function(lc_data, upload_to_o
   # Bind the 0 year and older data sets together 
   long_monthly <- rbind(zero_monthly,later_monthly)
   
+  # strip completely missing columns
   long_monthly <- long_monthly[,colSums(is.na(long_monthly))<nrow(long_monthly)]
   
-  # Write as csv
-  write_csv(long_monthly, paste(output_path, '/', file_prefix, '_', file_version, '_', file_name, '.csv', sep="")) ## exports data as a csv file
+  write_csv(long_monthly, paste(output_path, '/', file_prefix, '_', file_version, '_', file_name, '.csv', sep=""), na = "")
   
   if(upload_to_opal) {
     lc.reshape.core.upload(file_prefix, file_version, file_name)
