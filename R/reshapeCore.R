@@ -32,9 +32,12 @@ lc.reshape.core <- local(function(upload_to_opal = TRUE, data_version, input_for
   
   file_prefix <- format(Sys.time(), "%Y-%m-%d_%H-%M-%S")
   if(missing(data_version)) {
-    file_version <- '1_0'
-  } else {
+    data_version <- readline('- Specify version of cohort data upload (e.g. 1_0): ')
+  }
+  if(checkVersion(data_version)) {
     file_version <- data_version
+  } else {
+    stop("The data version does not match syntax: 'number_number'! Program is terminated.", call. = FALSE)
   }
   
   # Set order of variables

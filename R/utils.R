@@ -49,6 +49,15 @@ summarizeR <- local(function(df, .var) {
   return(data_summary)
 })
 
+#'
+#' Check if the given version matches the syntax number . underscore . number
+#' 
+#' @importFrom stringr str_detect
+#'
+checkVersion <- local(function(version) {
+  return(str_detect(version, "\\d+\\_\\d+"))
+})
+
 #' Read the input file from different sources
 #' 
 #' @param input_format possible formats are CSV,STATA,SPSS or SAS (default = CSV)

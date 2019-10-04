@@ -35,8 +35,8 @@ lc.populate.core <- local(function(dict_version = '1_0', cohort_id, data_version
   } else {
     if(dict_version == '') dict_version <- '1_0'
   }
-  if(data_version == '') {
-    stop("No data version is specified! Program is terminated.", call. = FALSE)
+  if(data_version == '' || !checkVersion(data_version)) {
+    stop("No data version is specified or the data version does not match syntax: 'number_number'! Program is terminated.", call. = FALSE)
   }
   
   lc.dict.project.create(dict_version) 
