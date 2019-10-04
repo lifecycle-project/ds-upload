@@ -2,7 +2,7 @@
 We define here in what versions of the data dictionaries contains which tables.
 
 ## 1.1
-**lifecycleProject R-package version >= 1.0.0**
+**lifecycleProject R-package version >= 1.1.0**
 
 Additional variables from WP3 and changes in the lifecycle variables.
 
@@ -32,7 +32,7 @@ Additional variables from WP3 and changes in the lifecycle variables.
 - 1_1_cohort_id_x_x_non_repeated_measures
 
 ## 1.0
-**lifecycleProject R-package version >= 0.9.8**
+**lifecycleProject R-package version >= 1.0.0**
 
 ### Content
 
