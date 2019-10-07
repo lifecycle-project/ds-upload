@@ -41,7 +41,7 @@ lc.reshape.core <- local(function(upload_to_opal = TRUE, data_version, input_for
   }
   
   # Set order of variables
-  lc_variables <- c("mother_id", "preg_no", "child_no", "child_id", "cohort_id", "recruit_age",  "coh_country", "cohab_0",
+  lc_variables <- c("child_id", "mother_id", "preg_no", "child_no", "cohort_id", "recruit_age",  "coh_country", "cohab_0",
                     "cohab_1", "cohab_2", "cohab_3", "cohab_4", "cohab_5", "cohab_6", "cohab_7", "cohab_8", "cohab_9", "cohab_10", "cohab_11", 
                     "cohab_12", "cohab_13", "cohab_14", "cohab_15", "cohab_16", "cohab_17", "occup_m_0", "occup_m_1", "occup_m_2", 
                     "occup_m_3", "occup_m_4", "occup_m_5", "occup_m_6", "occup_m_7", "occup_m_8", "occup_m_9", "occup_m_10", "occup_m_11",
@@ -250,7 +250,7 @@ lc.reshape.core.generate.non.repeated <- local(function(lc_data, upload_to_opal,
   message("* Generating: non-repeated measures")
   
   # Create vector of positions for the non_repeated variables in the data set
-  non_repeated <- c(which(names(lc_data) %in% "mother_id") : which(names(lc_data) %in% "coh_country"), 
+  non_repeated <- c(which(names(lc_data) %in% "child_id") : which(names(lc_data) %in% "coh_country"), 
                     which(names(lc_data) %in% "cob_m") : which(names(lc_data) %in% "plac_abrup"), 
                     which(names(lc_data) %in% "cob_p") : which(names(lc_data) %in% "death_child_age"),
                     which(names(lc_data) %in% "breastfed_excl") : which(names(lc_data) %in% "childcare_intro"))
