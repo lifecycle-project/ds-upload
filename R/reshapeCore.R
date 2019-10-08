@@ -260,6 +260,9 @@ lc.reshape.core.generate.non.repeated <- local(function(lc_data, upload_to_opal,
   
   non_repeated_measures <- non_repeated_measures[,colSums(is.na(non_repeated_measures))<nrow(non_repeated_measures)]
   
+  # add row_id again to preserve child_id
+  non_repeated_measures <- data.frame(row_id = c(1:length(non_repeated_measures$child_id)), non_repeated_measures)
+  
   # Write as csv   
   write_csv(non_repeated_measures, paste(output_path, '/', file_prefix, '_', file_version, '_', file_name, '.csv', sep=""), na = "")
   
