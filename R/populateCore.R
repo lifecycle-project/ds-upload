@@ -30,8 +30,8 @@ lc.populate.core <- local(function(dict_version = '1_0', cohort_id, data_version
   }
   
   if(missing(data_version)) data_version <- readline('- Specify version of cohort data upload (e.g. 1_0): ')
-  if(dict_version != '' && !(dict_version %in% lifecycle.globals$dictionaries)) {
-    stop('Version: [ ', dict_version ,' ] is not available in published data dictionaries. Possible dictionaries are: ', paste(lifecycle.globals$dictionaries, collapse = ', '))
+  if(dict_version != '' && !(dict_version %in% lifecycle.globals$dictionaries_core)) {
+    stop('Version: [ ', dict_version ,' ] is not available in published data dictionaries. Possible dictionaries are: ', paste(lifecycle.globals$dictionaries_core, collapse = ', '))
   } else {
     if(dict_version == '') dict_version <- '1_0'
   }
@@ -79,7 +79,7 @@ lc.dict.project.create <- local(function(dict_version) {
 lc.dict.download <- local(function(dict_version, cohort_id, data_version) {
   message('------------------------------------------------------')
   message('  Start download dictionaries')
-  download_base_dir <- paste('https://github.com/lifecycle-project/analysis-protocols/blob/master/R/data/dictionaries/', dict_version, '/', sep = '')
+  download_base_dir <- paste('https://github.com/lifecycle-project/analysis-protocols/blob/master/R/data/dictionaries/core/', dict_version, '/', sep = '')
   
   dict_source_file_non_repeated <- paste(dict_version, '_non_repeated.xlsx', sep = '')
   dict_source_file_monthly_repeated <- paste(dict_version, '_monthly_repeated.xlsx', sep = '')
