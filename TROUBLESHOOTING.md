@@ -1,5 +1,5 @@
 # TROUBLESHOOTING
-All kinds of stuff can go wrong 
+All kinds of stuff can go wrong. This a collection of scenario's where you might run into and possible solutions.
 
 ## Install R
 You need to have R installed on your system. This differs per operating system. 
