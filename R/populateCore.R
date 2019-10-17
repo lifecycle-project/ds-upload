@@ -7,12 +7,13 @@ lifecycle.globals <- new.env()
 #' @param dict_version dictionary version (possible dictionaries are: 1_0, 1_1 / default = 1_0)
 #' @param cohort_id cohort identifier (possible values are: 'dnbc', 'gecko', 'alspac', 'genr', 'moba', 'sws', 'bib', 'chop', 'elfe', 'eden', 'ninfea', 'hbcs', 'inma', 'isglobal', 'nfbc66', 'nfbc86', 'raine', 'rhea')
 #' @param data_version version of the data (specific to the cohort)
+#' @param database_name the database name specified in your Opal instance (defaults to 'opal_data')
 #'
 #' @examples 
 #' lc.populate.core(dict_version = '1_1', cohort_id = 'dnbc', data_version = '1_0')
 #'
 #' @export
-lc.populate.core <- local(function(dict_version = '1_0', cohort_id, data_version) {
+lc.populate.core <- local(function(dict_version = '1_0', cohort_id, data_version, database_name = 'opal_data') {
   message('######################################################')
   message('  Start importing data dictionaries                   ')
   message('######################################################')
@@ -39,7 +40,7 @@ lc.populate.core <- local(function(dict_version = '1_0', cohort_id, data_version
     stop("No data version is specified or the data version does not match syntax: 'number_number'! Program is terminated.", call. = FALSE)
   }
   
-  lc.dict.project.create(dict_version) 
+  lc.dict.project.create(dict_version, database_name) 
   lc.dict.download(dict_version, cohort_id, data_version)
   lc.dict.import(dict_version, cohort_id, data_version)
   
@@ -51,17 +52,18 @@ lc.populate.core <- local(function(dict_version = '1_0', cohort_id, data_version
 #' Create the project with data dictionary version in between
 #'
 #' @param dict_version dictionary version (possible dictionaries are: 1_0, 1_1 / default = 1_0)
+#' @param database_name the database name of the Opal instance (default = opal_data)
 #' 
 #' @importFrom dplyr between
 #' @importFrom opalr opal.post
 #'
-lc.dict.project.create <- local(function(dict_version) {
+lc.dict.project.create <- local(function(dict_version, database_name) {
   message('------------------------------------------------------')
   message(paste('  Start creating the project version: [ ', dict_version, ' ]', sep = ''))
   lifecycle.globals$project <- paste('lifecycle_', dict_version, sep = '')
   projects <- opal.projects(lifecycle.globals$opal)
   if(!(lifecycle.globals$project %in% projects$name)) {
-    json <- sprintf('{"database":"%s","description":"%s","name":"%s","title":"%s"}', 'opal_data', paste('LifeCycle project for data dictionary version: [ ', lifecycle.globals$project,' ]', sep = ''), lifecycle.globals$project, lifecycle.globals$project)
+    json <- sprintf('{"database":"%s","description":"%s","name":"%s","title":"%s"}', database_name, paste('LifeCycle project for data dictionary version: [ ', lifecycle.globals$project,' ]', sep = ''), lifecycle.globals$project, lifecycle.globals$project)
     opal.post(lifecycle.globals$opal, 'projects', body = json, contentType = 'application/x-protobuf+json')
   } else {
     message(paste('* Project: [ ', lifecycle.globals$project,' ] already exists', sep = ''))

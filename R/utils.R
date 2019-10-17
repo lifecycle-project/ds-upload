@@ -8,7 +8,7 @@ lifecycle.globals$input_formats <- c('CSV', 'STATA', 'SPSS', 'SASS')
 lifecycle.globals$variable_category <- c('ALL','META','MATERNAL','PATERNAL','CHILD','HOUSEHOLD')
 lifecycle.globals$cohorts <- setNames(as.list(cohort_urls), cohorts)
 lifecycle.globals$cohort_ids <- cohorts
-lifecycle.globals$dictionaries <- c('1_0', '1_1')
+lifecycle.globals$dictionaries_core <- c('1_0', '1_1')
 
 #' Numerical extraction function
 #' Number at the end of the string: Indicates year. We need to extract this to create the age_years variable.
