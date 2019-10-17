@@ -52,6 +52,8 @@ summarizeR <- local(function(df, .var) {
 #'
 #' Check if the given version matches the syntax number . underscore . number
 #' 
+#' @param version the version input of the user
+#' 
 #' @importFrom stringr str_detect
 #'
 checkVersion <- local(function(version) {

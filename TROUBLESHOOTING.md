@@ -36,7 +36,17 @@ updateR()
 You will get a wizard, please choose all the defaults and proceed with the installation.
 
 **For Mac**
+You can use ```updateR```. Install it via the following commands:
 
+```
+install.packages('devtools') #assuming it is not already installed
+library(devtools)
+install_github('andreacirilloac/updateR')
+library(updateR)
+updateR(admin_password = 'Admin user password')
+```
+
+>**reference**: for more information check: http://www.andreacirillo.com/2018/03/10/updater-package-update-r-version-with-a-function-on-mac-osx/
 
 # Package won't install
 
@@ -88,3 +98,16 @@ Install remaing packages by executing:
 install.packages(c('metafor', 'tidyr', 'dplyr', 'readr', 'stringr', 'readxl', 'data.table', 'haven', 'gmodels', 'ggplot2', 'plotly', 'httr', 'openxslx', 'jsonlite'), repos=c('https://cloud.r-project.org/'))
 ```
 
+## Error's when running the program
+Error's can occur during the method calls in the lifecycleProject package.
+
+#### attributes are not identical across measure variables; they will be dropped
+When this message occurs it means the the types of the vectors concerning the yearly or monthly repeated measures are different. The reshape function will resolve this, but it is wise to check your dataset for these differences.
+
+For instance:
+
+```
+weight_01 == integer
+...
+wieght_04 == decimal
+```
