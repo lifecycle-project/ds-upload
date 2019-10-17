@@ -3,7 +3,6 @@
 #' 
 #' @importFrom httr GET
 #' 
-#' @export
 lc.quality.central.servers.version <- function() {
   for (cohort_url in lifecycle.globals$cohorts) {
     if (cohort_url != '') {
