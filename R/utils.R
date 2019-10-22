@@ -4,7 +4,7 @@ lifecycle.globals <- new.env()
 cohorts <- c('dnbc', 'gecko', 'alspac', 'genr', 'moba', 'sws', 'bib', 'chop', 'elfe', 'eden', 'ninfea', 'hbcs', 'inma', 'isglobal', 'nfbc66', 'nfbc86', 'raine', 'rhea')
 cohort_urls <- c('https://opal.sund.ku.dk', 'https://opal.gcc.rug.nl', '', 'https://opal.erasmusmc.nl', 'https://moba.nhn.no', 'https://opal.mrc.soton.ac.uk:8443', '', 'https://lifecycle-project.med.uni-muenchen.de', 'https://elfe-opal.sicopre.elfe-france.fr', '', 'https://www.lifecycle-ninfea.unito.it', '', '', 'https://opal.isglobal.org', '', '', 'https://opal.gohad.uwa.edu.au', '')
 
-lifecycle.globals$input_formats <- c('CSV', 'STATA', 'SPSS', 'SASS')
+lifecycle.globals$input_formats <- c('CSV', 'STATA', 'SPSS', 'SAS')
 lifecycle.globals$variable_category <- c('ALL','META','MATERNAL','PATERNAL','CHILD','HOUSEHOLD')
 lifecycle.globals$cohorts <- setNames(as.list(cohort_urls), cohorts)
 lifecycle.globals$cohort_ids <- cohorts
