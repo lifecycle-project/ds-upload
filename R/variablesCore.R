@@ -1,13 +1,13 @@
 #' List all primary keys for all tables in LifeCycle dictionaries  
 #'   
-#' @returns list with primary keys 
+#' @return list with primary keys 
 lc.variables.primary.keys <- local(function() {
   return(c("child_id"))
 })
 
 #' List all measures for non repeated meaures for the core variables
 #'
-#' @returns list with non repeated measures for the core variables
+#' @return list with non repeated measures for the core variables
 lc.variables.core.non.repeated <- local(function() {
   return(c("mother_id", "preg_no", "child_no", "cohort_id", "recruit_age",  "coh_country", "cob_m", "ethn1_m", "ethn2_m", "ethn3_m", "agebirth_m_y", "agebirth_m_d", 
            "death_m", "death_m_age", "prepreg_weight", "prepreg_weight_mes", "prepreg_weight_ga",  "latepreg_weight", 
@@ -28,7 +28,7 @@ lc.variables.core.non.repeated <- local(function() {
 
 #' List all measures for yearly repeated meaures for the core variables
 #'
-#' @returns list with yearly repeated measures for the core variables
+#' @return list with yearly repeated measures for the core variables
 lc.variables.core.yearly.repeated <- local(function() {
   return(c("cohab_0", "cohab_1", "cohab_2", "cohab_3", "cohab_4", "cohab_5", "cohab_6", "cohab_7", "cohab_8", "cohab_9", "cohab_10", "cohab_11", 
            "cohab_12", "cohab_13", "cohab_14", "cohab_15", "cohab_16", "cohab_17", "occup_m_0", "occup_m_1", "occup_m_2", 
@@ -90,7 +90,7 @@ lc.variables.core.yearly.repeated <- local(function() {
 
 #' List all measures for monthly repeated meaures for the core variables
 #'
-#' @returns list with monthly repeated measures for the core variables
+#' @return list with monthly repeated measures for the core variables
 lc.variables.core.monthly.repeated <- local(function() {
   return(c("height_0", "height_1", "height_2", "height_3", "height_4", "height_5", "height_6", "height_7", 
            "height_8", "height_9", "height_10", "height_11", "height_12", "height_13", "height_14", "height_15", "height_16", "height_17", 
