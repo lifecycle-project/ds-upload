@@ -60,7 +60,7 @@ lc.populate.outcome <- local(function(dict_version = '1_0', cohort_id, data_vers
 lc.dict.project.create <- local(function(dict_version, database_name) {
   message('------------------------------------------------------')
   message(paste('  Start creating the project version: [ ', dict_version, ' ]', sep = ''))
-  lifecycle.globals$project_outcome <- paste('lifecycle_outcome', dict_version, sep = '')
+  lifecycle.globals$project_outcome <- paste('lifecycle_outcome_', dict_version, sep = '')
   projects <- opal.projects(lifecycle.globals$opal)
   if(!(lifecycle.globals$project_outcome %in% projects$name)) {
     json <- sprintf('{"database":"%s","description":"%s","name":"%s","title":"%s"}', database_name, paste('LifeCycle project for data dictionary version: [ ', lifecycle.globals$project_outcome,' ]', sep = ''), lifecycle.globals$project_outcome, lifecycle.globals$project_outcome)
