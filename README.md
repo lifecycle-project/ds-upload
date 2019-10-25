@@ -24,15 +24,18 @@ install.packages("lifecycleProject", repos='https://registry.molgenis.org/reposi
 ## Analysis guidelines
 Please check: [analysis guidelines](ANALYSIS_GUIDELINES.md)
 
-## Adding new dictionaries (data schemes)
+## Adding new variables
+When you need to add new variables you need to perform 2 steps:
+- Adding the new variables to the dictionaries
+- Reshaping your data to Opal format
+
+### Adding new dictionaries (data schemes)
 When you add new dictionaries you need to place them in ```R/data/dictionaries/x_x```.
 
-For WP1 these 3 tables are namespaces this way:
+For WP1 and 3 these 3 tables are namespaces this way:
 - 1_0_non_repeated.xslx
 - 1_0_yearly_repeated.xslx
 - 1_0_monthly_repeated.xslx
-
-For WP3 variables are placed within the same tables.
 
 For WP4, 5 and 6 these tables are created:
 - 1_0_outcome_non_repeated.xslx
@@ -41,11 +44,31 @@ For WP4, 5 and 6 these tables are created:
 
 You need to place them into ```R/data/dictionaries/x_x``` as well. 
 
-Finally you need to amend ```R/utils.R``` and add your version.
+Then you need to amend ```R/utils.R``` and add your version.
 
 ```
-lifecycle.globals$dictionaries <- c('1_0', 'x_x')
+lifecycle.globals$dictionaries_core <- c('1_0', 'x_x')
+
+# or for outcome
+
+lifecycle.globals$dictionaries_outcome <- c('1_0', 'x_x')
 ```
+
+Finally you need to amend the changelogs.
+
+- WP1 and 3: CORE_DICTIONARY_CHANGELOG.md
+- WP4, 5 and 6: OUTCOME_DICTIONARY_CHANGELOG.md
+
+### Reshaping your data to Opal format
+When you are done with the dictionaries you need to amend the variables in the ```variablesCore.R``` for the WP1 and 3 variables and ```variablesOutcome.R``` for the WP4,5 qnd 6 variables.
+
+Both files are devided in three functions:
+
+- yearly repeated
+- monthly repeated
+- non repeated
+
+You can amend the variables where they need to be placed regarding the harmonisation manual.
 
 ## Releases
 Releasing the artifact can be done by curling to the following address:
