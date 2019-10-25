@@ -60,13 +60,13 @@ lc.populate.outcome <- local(function(dict_version = '1_0', cohort_id, data_vers
 lc.dict.project.create <- local(function(dict_version, database_name) {
   message('------------------------------------------------------')
   message(paste('  Start creating the project version: [ ', dict_version, ' ]', sep = ''))
-  lifecycle.globals$project <- paste('lifecycle_', dict_version, sep = '')
+  lifecycle.globals$project_outcome <- paste('lifecycle_outcome', dict_version, sep = '')
   projects <- opal.projects(lifecycle.globals$opal)
-  if(!(lifecycle.globals$project %in% projects$name)) {
-    json <- sprintf('{"database":"%s","description":"%s","name":"%s","title":"%s"}', database_name, paste('LifeCycle project for data dictionary version: [ ', lifecycle.globals$project,' ]', sep = ''), lifecycle.globals$project, lifecycle.globals$project)
+  if(!(lifecycle.globals$project_outcome %in% projects$name)) {
+    json <- sprintf('{"database":"%s","description":"%s","name":"%s","title":"%s"}', database_name, paste('LifeCycle project for data dictionary version: [ ', lifecycle.globals$project_outcome,' ]', sep = ''), lifecycle.globals$project_outcome, lifecycle.globals$project_outcome)
     opal.post(lifecycle.globals$opal, 'projects', body = json, contentType = 'application/x-protobuf+json')
   } else {
-    message(paste('* Project: [ ', lifecycle.globals$project,' ] already exists', sep = ''))
+    message(paste('* Project: [ ', lifecycle.globals$project_outcome,' ] already exists', sep = ''))
   }
 })
 
@@ -113,31 +113,31 @@ lc.dict.import <- local(function(dict_version, cohort_id, data_version) {
   message('------------------------------------------------------')
   message('  Start importing dictionaries')
   
-  dict_table_non_repeated <- paste(dict_version, '_', cohort_id, '_', data_version, 'outcome_non_repeated', sep = '')
-  dict_table_monthly_repeated <- paste(dict_version, '_', cohort_id, '_', data_version,'outcome_monthly_repeated', sep = '')
-  dict_table_yearly_repeated <- paste(dict_version, '_', cohort_id, '_', data_version, 'outcome_yearly_repeated', sep = '')
+  dict_table_non_repeated <- paste(dict_version, '_', cohort_id, '_', data_version, '_outcome_non_repeated', sep = '')
+  dict_table_monthly_repeated <- paste(dict_version, '_', cohort_id, '_', data_version,'_outcome_monthly_repeated', sep = '')
+  dict_table_yearly_repeated <- paste(dict_version, '_', cohort_id, '_', data_version, '_outcome_yearly_repeated', sep = '')
   
   json_non_repeated <- sprintf('{"entityType":"Participant","name":"%s"}', dict_table_non_repeated)
   json_monthly_repeated <- sprintf('{"entityType":"Participant","name":"%s"}', dict_table_monthly_repeated)
   json_yearly_repeated <- sprintf('{"entityType":"Participant","name":"%s"}', dict_table_yearly_repeated)
   
-  tables <- opal.tables(lifecycle.globals$opal, lifecycle.globals$project)
+  tables <- opal.tables(lifecycle.globals$opal, lifecycle.globals$project_outcome)
   
   if(!(dict_table_non_repeated %in% tables$name)) {
     message(paste('* Create table: [ ', dict_table_non_repeated,' ]', sep = ''))
-    opal.post(lifecycle.globals$opal, 'datasource', lifecycle.globals$project, 'tables', body=json_non_repeated, contentType = 'application/x-protobuf+json')
+    opal.post(lifecycle.globals$opal, 'datasource', lifecycle.globals$project_outcome, 'tables', body=json_non_repeated, contentType = 'application/x-protobuf+json')
   } else {
     message(paste('* Table: [ ', dict_table_non_repeated,' ] already exists', sep = ''))
   }
   if(!(dict_table_monthly_repeated %in% tables$name)) {
     message(paste('* Create table: [ ', dict_table_monthly_repeated,' ]', sep = ''))
-    opal.post(lifecycle.globals$opal, 'datasource', lifecycle.globals$project, 'tables', body=json_monthly_repeated, contentType = 'application/x-protobuf+json')
+    opal.post(lifecycle.globals$opal, 'datasource', lifecycle.globals$project_outcome, 'tables', body=json_monthly_repeated, contentType = 'application/x-protobuf+json')
   } else {
     message(paste('* Table: [ ', dict_table_monthly_repeated,' ] already exists', sep = ''))
   }
   if(!(dict_table_yearly_repeated %in% tables$name)) {
     message(paste('* Create table: [ ', dict_table_yearly_repeated,' ]', sep = ''))
-    opal.post(lifecycle.globals$opal, 'datasource', lifecycle.globals$project, 'tables', body=json_yearly_repeated, contentType = 'application/x-protobuf+json')
+    opal.post(lifecycle.globals$opal, 'datasource', lifecycle.globals$project_outcome, 'tables', body=json_yearly_repeated, contentType = 'application/x-protobuf+json')
   } else {
     message(paste('* Table: [ ', dict_table_yearly_repeated,' ] already exists', sep = ''))
   }
@@ -186,7 +186,7 @@ lc.populate.outcome.match.categories <- local(function(table, variables, categor
   }
   
   message(paste('* Import variables into: [ ', table,' ]', sep = ''))
-  opal.post(lifecycle.globals$opal, 'datasource', lifecycle.globals$project, 'table', table, 'variables', body=toJSON(variables), contentType = 'application/x-protobuf+json')  
+  opal.post(lifecycle.globals$opal, 'datasource', lifecycle.globals$project_outcome, 'table', table, 'variables', body=toJSON(variables), contentType = 'application/x-protobuf+json')  
   message(paste('* Remove the table: [', source_file,']', sep = ''))
   unlink(source_file)
 })
