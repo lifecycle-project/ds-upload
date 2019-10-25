@@ -21,7 +21,9 @@ lc.variables.core.non.repeated <- local(function() {
            "height_f1_fath", "dia_bf", "asthma_bf", "psych_bf", "smk_p", "smk_cig_p", "smk_fath", "birth_month", "birth_year", 
            "apgar",  "neo_unit",  "sex", "plurality", "ga_lmp", "ga_us", "ga_mr", "ga_bj", "birth_weight", "birth_length", "birth_head_circum", 
            "weight_who_ga", "plac_weight",  "con_anomalies",  "major_con_anomalies", "cer_palsy", "sibling_pos", "death_child", 
-           "death_child_age", "breastfed_excl", "breastfed_any", "breastfed_ever", "solid_food", "childcare_intro"))
+           "death_child_age", "breastfed_excl", "breastfed_any", "breastfed_ever", "solid_food", "childcare_intro", "sleept_psc",
+           "sleeptage_psc", "outdoorp_psc", "outdoorage_psc", "tv_psc", "screenoth_psc", "screenage_psc", "patternA_snackscreen_psc",
+           "patternB_psc"))
 })
 
 #' List all measures for yearly repeated meaures for the core variables
