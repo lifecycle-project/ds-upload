@@ -32,7 +32,7 @@ Additional variables from WP3 and changes in the lifecycle variables.
 - 1_1_cohort_id_x_x_non_repeated_measures
 
 ## 1.0
-**lifecycleProject R-package version >= 1.0.3**
+**lifecycleProject R-package version >= 1.0.4**
 
 ### Content
 
