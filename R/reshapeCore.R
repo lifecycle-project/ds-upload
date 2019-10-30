@@ -118,7 +118,7 @@ lc.reshape.core.generate.yearly.repeated <- local(function(lc_data, upload_to_op
   
   # First re-arrange the whole data set to long format, unspecific for variable
   long_1 <- yearly_repeated_measures %>% 
-    gather(orig_var, cohab_, cohab_0:famsize_adult17, na.rm=FALSE)
+    gather(orig_var, cohab_, lc.variables.core.yearly.repeated(), na.rm=FALSE)
   
   # Create the age_years variable with the regular expression extraction of the year
   long_1$age_years <- as.numeric(numextract(long_1$orig_var))
