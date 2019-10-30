@@ -106,7 +106,7 @@ lc.reshape.core.generate.non.repeated <- local(function(lc_data, upload_to_opal,
 #' 
 lc.reshape.core.generate.yearly.repeated <- local(function(lc_data, upload_to_opal, output_path, file_prefix, file_version, file_name) {
   # workaround to avoid glpobal variable warnings, check: https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
-  orig_var <- cohab_ <- cohab_0 <- famsize_adult17 <- age_years <- NULL
+  orig_var <- cohab_ <- age_years <- NULL
   
   message("* Generating: yearly-repeated measures")
   
@@ -178,7 +178,7 @@ lc.reshape.core.generate.yearly.repeated <- local(function(lc_data, upload_to_op
 #' 
 lc.reshape.core.generate.monthly.repeated <- local(function(lc_data, upload_to_opal, output_path, file_prefix, file_version, file_name) {
   # workaround to avoid glpobal variable warnings, check: https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
-  orig_var <- height_ <- height_0 <- weight_age215 <- age_months <- NULL
+  orig_var <- height_ <- age_months <- NULL
   
   message('* Generating: monthly-repeated measures')
   
@@ -188,7 +188,7 @@ lc.reshape.core.generate.monthly.repeated <- local(function(lc_data, upload_to_o
   
   # First re-arrange the whole data set to long format, unspecific for variable
   long_1 <- monthly_repeated_measures %>% 
-    gather(orig_var, height_, height_0:weight_age215, na.rm=FALSE)
+    gather(orig_var, height_, lc.variables.core.monthly.repeated(), na.rm=FALSE)
   
   # Create the age_years and age_months variables with the regular expression extraction of the year
   long_1$age_years  <- as.integer(as.numeric(numextract(long_1$orig_var))/12)
