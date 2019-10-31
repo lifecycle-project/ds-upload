@@ -1,0 +1,34 @@
+#Assigning data in DataSHIELD
+
+#LOAD PACKAGES
+library(opal)
+library(dsBaseClient)
+library(dsStatsClient)
+library(dsGraphicsClient)
+library(dsModellingClient)
+library(datashieldclient)
+#@Sido: are there any other packages we need?
+
+#SET UP YOUR LOGIN DATA
+server <- c("...", "...") # a name you give your servers, for e.g. DNBC, NINFEA etc.
+url <- c(“https://...”, “https://...”) # the url(s) of the Opal server(s) you want to assign data from
+username <- c("...", "...") # the user assigned permission to the data
+password <- c("...", "...") # the password attached to this user
+table <- c("lifecycle_1_0.1_0_dnbc_1_0_yearly_repeated","lifecycle_1_0.1_0_dnbc_1_0_non_repeated") # details of the table(s) you want to assign from (e.g.s given) 
+
+#LOGIN
+datashield.logout(opals) #logout of any opals you're connected to
+logindata <- data.frame(server, url, username, password, table) # creates a data frame with your login credentials
+
+opals <- datashield.login(logins=logindata, assign=T) # creates an object called “opals” that calls the datashield.login function to login to the Opal servers
+
+
+#ASSIGN VARIABLES: 
+#for e.g...
+#gestational age and sex (non-repeated measures table):
+myvar_nonrep <- list("child_id", "ga_bj", "sex")
+datashield.assign(opals, "DSnonrep", "lifecycle.1_0_non_repeated_measures", variables=myvar_nonrep)
+
+#maternal education (yearly-repeated measures table):
+myvar_yearly <- list("child_id", "age_years", "edu_m_")
+datashield.assign(opals, "DSyrrep", "lifecycle_1_0.1_0_dnbc_1_0_yearly_repeated", variables = myvar_yearly)
