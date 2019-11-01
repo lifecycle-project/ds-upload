@@ -1,13 +1,13 @@
 #' List all primary keys for all tables in LifeCycle dictionaries  
 #'   
-#' @returns list with primary keys 
+#' @return list with primary keys 
 lc.variables.primary.keys <- local(function() {
   return(c("child_id"))
 })
 
 #' List all measures for non repeated meaures for the outcome variables
 #'
-#' @returns list with non repeated measures for the outcome variables
+#' @return list with non repeated measures for the outcome variables
 lc.variables.outcome.non.repeated <- local(function() {
   return(c(
     "glucose_cord", "haem_cord", "hba1c_cord", "insulin_cord", "crp_cord", "il6_cord", "adipo_cord", 
@@ -17,7 +17,7 @@ lc.variables.outcome.non.repeated <- local(function() {
 
 #' List all measures for yearly repeated meaures for the outcome variables
 #'
-#' @returns list with yearly repeated measures for the outcome variables
+#' @return list with yearly repeated measures for the outcome variables
 lc.variables.outcome.yearly.repeated <- local(function() {
   return(c(
   ))
@@ -25,7 +25,7 @@ lc.variables.outcome.yearly.repeated <- local(function() {
 
 #' List all measures for weekly repeated pregnancy measures for the outcome variables
 #'
-#' @returns list with weekly repeated pregnancy measures for the outcome variables
+#' @return list with weekly repeated pregnancy measures for the outcome variables
 lc.variables.outcome.weekly.repeated <- local(function() {
   return(as.vector(outer(c(
     'm_sbp_', 'm_dbp_', 'm_crp_', 'm_glucose_', 'm_haem_', 'm_hba1c_', 'm_insulin_',
@@ -36,7 +36,7 @@ lc.variables.outcome.weekly.repeated <- local(function() {
 
 #' List all measures for monthly repeated meaures for the outcome variables
 #'
-#' @returns list with monthly repeated measures for the outcome variables
+#' @return list with monthly repeated measures for the outcome variables
 lc.variables.outcome.monthly.repeated <- local(function() {
   return(as.vector(outer(c(
     'heightmes_', 'weightmes_', 
