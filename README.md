@@ -9,7 +9,9 @@ At this moment the implemented functions at this moment are:
 
 - ```lc.login``` login to your Opal instance
 - ```lc.populate.core``` populate the data dictionaries for LifeCycle
+- ```lc.populate.outcome``` populate the data dictionaries for LifeCycle
 - ```lc.reshape.core``` performing the reshape of the data dictionaries for LifeCycle (only core variables)
+- ```lc.reshape.outcome``` performing the reshape of the data dictionaries for LifeCycle (only core variables)
 
 For further detail check: https://github.com/lifecycle-project/analysis-protocols/wiki/LifeCycle-variables
 
