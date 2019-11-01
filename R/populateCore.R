@@ -44,7 +44,7 @@ lc.populate.core <- local(function(dict_version = '1_0', cohort_id, data_version
   project <- paste('lifecycle_', dict_kind, '_', dict_version, sep = '')
   
   lc.dict.project.create(dict_version, dict_kind, project, database_name)
-  lc.dict.core.download(dict_version, cohort_id, data_version)
+  lc.dict.download(dict_version, dict_kind, cohort_id, data_version)
   lc.dict.import(project, dict_version, dict_kind, cohort_id, data_version)
   
   message('######################################################')
@@ -52,33 +52,4 @@ lc.populate.core <- local(function(dict_version = '1_0', cohort_id, data_version
   message('######################################################')
 })
 
-#' Download all released data dictionaries
-#' 
-#' @param dict_version dictionary version (possible dictionaries are: 1_0, 1_1 / default = 1_0)
-#' @param cohort_id cohort identifier (possible values are: 'dnbc', 'gecko', 'alspac', 'genr', 'moba', 'sws', 'bib', 'chop', 'elfe', 'eden', 'ninfea', 'hbcs', 'inma', 'isglobal', 'nfbc66', 'nfbc86', 'raine', 'rhea')
-#' @param data_version version of the data (specific to the cohort)
-#' 
-#' @importFrom utils download.file
-#' 
-lc.dict.core.download <- local(function(dict_version, cohort_id, data_version) {
-  message('------------------------------------------------------')
-  message('  Start download dictionaries')
-  download_base_dir <- paste('https://github.com/lifecycle-project/analysis-protocols/blob/master/R/data/dictionaries/core/', dict_version, '/', sep = '')
-  
-  dict_source_file_non_repeated <- paste(dict_version, '_non_repeated.xlsx', sep = '')
-  dict_source_file_monthly_repeated <- paste(dict_version, '_monthly_repeated.xlsx', sep = '')
-  dict_source_file_yearly_repeated <- paste(dict_version, '_yearly_repeated.xlsx', sep = '')
-  
-  lifecycle.globals$dict_dest_file_non_repeated <- paste(dict_version, '_', cohort_id, '_', data_version, '_non_repeated.xlsx', sep = '')
-  lifecycle.globals$dict_dest_file_monthly_repeated <- paste(dict_version, '_', cohort_id, '_', data_version,'_monthly_repeated.xlsx', sep = '')
-  lifecycle.globals$dict_dest_file_yearly_repeated <- paste(dict_version, '_', cohort_id, '_', data_version, '_yearly_repeated.xlsx', sep = '')
-  
-  message(paste('* Download: [ ', dict_source_file_non_repeated, ' ]', sep = ''))
-  download.file(paste(download_base_dir, dict_source_file_non_repeated, '?raw=true', sep = ''), destfile=lifecycle.globals$dict_dest_file_non_repeated, mode = "wb", method="libcurl", quiet = TRUE)
-  message(paste('* Download: [ ', dict_source_file_monthly_repeated, ' ]', sep = ''))
-  download.file(paste(download_base_dir, dict_source_file_monthly_repeated, '?raw=true', sep = ''), destfile=lifecycle.globals$dict_dest_file_monthly_repeated, mode = "wb", method="libcurl", quiet = TRUE)
-  message(paste('* Download: [ ', dict_source_file_yearly_repeated, ' ]', sep = ''))
-  download.file(paste(download_base_dir, dict_source_file_yearly_repeated, '?raw=true', sep = ''), destfile=lifecycle.globals$dict_dest_file_yearly_repeated, mode = "wb", method="libcurl", quiet = TRUE)
-  
-  message('  Successfully downloaded dictionaries')
-})
+
