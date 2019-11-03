@@ -62,8 +62,8 @@ lc.dict.project.create <- local(function(dict_version, dict_kind = 'core', proje
 lc.dict.download <- local(function(dict_version, dict_kind, cohort_id, data_version) {
   message('------------------------------------------------------')
   message('  Start download dictionaries')
-  download_base_dir <- paste('https://github.com/lifecycle-project/analysis-protocols/blob/master/R/data/dictionaries/', dict_kind ,'/', dict_version, '/', sep = '')
-  
+  packageTag <- packageVersion('lifecycleProject')
+  download_base_dir <- paste('https://github.com/lifecycle-project/analysis-protocols/blob/', packageTag,'/R/data/dictionaries/', dict_kind ,'/', dict_version, '/', sep = '')
   dict_source_file_non_repeated <- paste(dict_version, '_non_repeated.xlsx', sep = '')
   dict_source_file_monthly_repeated <- paste(dict_version, '_monthly_repeated.xlsx', sep = '')
   dict_source_file_yearly_repeated <- paste(dict_version, '_yearly_repeated.xlsx', sep = '')
