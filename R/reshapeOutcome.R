@@ -166,7 +166,7 @@ lc.reshape.outcome.generate.non.repeated <- local(
     )
   
   if(upload_to_opal) {
-    lc.reshape.outcome.upload(
+    lc.reshape.upload(
       file_prefix, 
       dict_kind,
       file_version, 
@@ -271,7 +271,7 @@ lc.reshape.outcome.generate.yearly.repeated <- local(
     )
   
   if(upload_to_opal) {
-    lc.reshape.outcome.upload(
+    lc.reshape.upload(
       file_prefix, 
       dict_kind, 
       file_version, 
@@ -374,7 +374,7 @@ lc.reshape.outcome.generate.monthly.repeated <- local(
     )
   
   if(upload_to_opal) {
-    lc.reshape.outcome.upload(
+    lc.reshape.upload(
       file_prefix, 
       dict_kind,
       file_version, 

@@ -79,6 +79,7 @@ lc.reshape.core.generate.non.repeated <- local(function(lc_data, upload_to_opal,
   non_repeated <- c(lc.variables.primary.keys(), lc.variables.core.non.repeated())
   non_repeated_measures <- lc_data[,non_repeated]
   
+  # strip the rows with na values
   non_repeated_measures <- non_repeated_measures[,colSums(is.na(non_repeated_measures))<nrow(non_repeated_measures)]
   
   # add row_id again to preserve child_id
@@ -104,7 +105,7 @@ lc.reshape.core.generate.non.repeated <- local(function(lc_data, upload_to_opal,
 #' @param file_name non-repeated, monthly-repeated or yearly-repeated
 #'
 #' @importFrom readr write_csv
-#' @importFrom dplyr %>% filter
+#' @importFrom dplyr %>% filter select_if
 #' @importFrom data.table dcast
 #' @importFrom tidyr gather spread
 #' 
@@ -122,7 +123,7 @@ lc.reshape.core.generate.yearly.repeated <- local(function(lc_data, upload_to_op
   
   # First re-arrange the whole data set to long format, unspecific for variable
   long_1 <- yearly_repeated_measures %>% 
-    gather(orig_var, cohab_, lc.variables.core.yearly.repeated(), na.rm=FALSE)
+    gather(orig_var, cohab_, lc.variables.core.yearly.repeated(), na.rm=TRUE)
   
   # Create the age_years variable with the regular expression extraction of the year
   long_1$age_years <- as.numeric(numextract(long_1$orig_var))
@@ -149,15 +150,8 @@ lc.reshape.core.generate.yearly.repeated <- local(function(lc_data, upload_to_op
   # Subset of data with age_years > 0
   later_year <- long_yearly %>% filter(age_years > 0)
   
-  # Remove all the rows that are missing only
-  later_year <- later_year[rowSums(is.na(later_year[,unique(long_1$variable_trunc)])) < 
-                             length(later_year[,unique(long_1$variable_trunc)]),]
-  
   # Bind the 0 year and older data sets together 
   long_yearly <- rbind(zero_year,later_year)
-  
-  # strip fully na columns
-  long_yearly <- long_yearly[,colSums(is.na(long_yearly))<nrow(long_yearly)]
   
   write_csv(long_yearly, paste(output_path, '/', file_prefix, '_', dict_kind, '_', file_version, '_', file_name, '.csv', sep=""), na = "")
   
@@ -193,7 +187,7 @@ lc.reshape.core.generate.monthly.repeated <- local(function(lc_data, upload_to_o
   
   # First re-arrange the whole data set to long format, unspecific for variable
   long_1 <- monthly_repeated_measures %>% 
-    gather(orig_var, height_, lc.variables.core.monthly.repeated(), na.rm=FALSE)
+    gather(orig_var, height_, lc.variables.core.monthly.repeated(), na.rm=TRUE)
   
   # Create the age_years and age_months variables with the regular expression extraction of the year
   long_1$age_years  <- as.integer(as.numeric(numextract(long_1$orig_var))/12)
@@ -230,9 +224,6 @@ lc.reshape.core.generate.monthly.repeated <- local(function(lc_data, upload_to_o
   
   # Bind the 0 year and older data sets together 
   long_monthly <- rbind(zero_monthly,later_monthly)
-  
-  # strip completely missing columns
-  long_monthly <- long_monthly[,colSums(is.na(long_monthly))<nrow(long_monthly)]
   
   write_csv(long_monthly, paste(output_path, '/', file_prefix, '_', dict_kind, '_', file_version, '_', file_name, '.csv', sep=""), na = "")
   
