@@ -171,6 +171,6 @@ lc.populate.match.categories <- local(function(project, table, variables, catego
   
   message(paste('* Import variables into: [ ', table,' ]', sep = ''))
   opal.post(lifecycle.globals$opal, 'datasource', project, 'table', table, 'variables', body=toJSON(variables), contentType = 'application/x-protobuf+json')  
-  message(paste('* Remove the table: [', source_file,']', sep = ''))
-  unlink(source_file)
+#  message(paste('* Remove the table: [', source_file,']', sep = ''))
+#  unlink(source_file)
 })
