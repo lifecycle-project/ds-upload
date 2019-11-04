@@ -40,7 +40,7 @@ lc.populate.outcome <- local(function(dict_version = '1_0', cohort_id, data_vers
     stop("No data version is specified or the data version does not match syntax: 'number_number'! Program is terminated.", call. = FALSE)
   }
   
-  lc.dict.project.create(dict_version, database_name) 
+  lc.dict.project.create(dict_version, database_name, cohort_id) 
   lc.dict.download(dict_version, cohort_id, data_version)
   lc.dict.import(dict_version, cohort_id, data_version)
   
@@ -57,10 +57,10 @@ lc.populate.outcome <- local(function(dict_version = '1_0', cohort_id, data_vers
 #' @importFrom dplyr between
 #' @importFrom opalr opal.post
 #'
-lc.dict.project.create <- local(function(dict_version, database_name) {
+lc.dict.project.create <- local(function(dict_version, database_name, cohort_id) {
   message('------------------------------------------------------')
   message(paste('  Start creating the project version: [ ', dict_version, ' ]', sep = ''))
-  lifecycle.globals$project_outcome <- paste('lifecycle_outcome_', dict_version, sep = '')
+  lifecycle.globals$project_outcome <- paste('lifecycle_outcome_', dict_version, '_', cohort_id, sep = '')
   projects <- opal.projects(lifecycle.globals$opal)
   if(!(lifecycle.globals$project_outcome %in% projects$name)) {
     json <- sprintf('{"database":"%s","description":"%s","name":"%s","title":"%s"}', database_name, paste('LifeCycle project for data dictionary version: [ ', lifecycle.globals$project_outcome,' ]', sep = ''), lifecycle.globals$project_outcome, lifecycle.globals$project_outcome)
