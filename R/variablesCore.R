@@ -207,7 +207,7 @@ lc.variables.core.yearly.repeated <- local(function() {
            "uvddc_y1", "uvddc_y2", "uvddc_y3", "uvddc_y4", "uvddc_y5", "uvddc_y6", "uvddc_y7", "uvddc_y8", "uvddc_y9", "uvddc_y10", "uvddc_y11", "uvddc_y12", 
            "uvdec_y1", "uvdec_y2", "uvdec_y3", "uvdec_y4", "uvdec_y5", "uvdec_y6", "uvdec_y7", "uvdec_y8", "uvdec_y9", "uvdec_y10", "uvdec_y11", "uvdec_y12", 
            "uvdvc_y1", "uvdvc_y2", "uvdvc_y3", "uvdvc_y4", "uvdvc_y5", "uvdvc_y6", "uvdvc_y7", "uvdvc_y8", "uvdvc_y9", "uvdvc_y10", "uvdvc_y11", "uvdvc_y12", 
-           "lst_y1", "lst_y2", "lst_y3", "lst_y4" ))
+           "lst_y1", "lst_y2", "lst_y3", "lst_y4","lst_y5", "lst_y6", "lst_y7", "lst_y8","lst_y9", "lst_y10", "lst_y11", "lst_y12" ))
 })
 
 #' List all measures for monthly repeated meaures for the core variables
