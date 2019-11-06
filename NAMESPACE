@@ -2,7 +2,9 @@
 
 export(lc.login)
 export(lc.populate.core)
+export(lc.populate.outcome)
 export(lc.reshape.core)
+export(lc.reshape.outcome)
 importFrom(data.table,dcast)
 importFrom(dplyr,"%>%")
 importFrom(dplyr,arrange)

@@ -9,7 +9,9 @@ At this moment the implemented functions at this moment are:
 
 - ```lc.login``` login to your Opal instance
 - ```lc.populate.core``` populate the data dictionaries for LifeCycle
+- ```lc.populate.outcome``` populate the data dictionaries for LifeCycle
 - ```lc.reshape.core``` performing the reshape of the data dictionaries for LifeCycle (only core variables)
+- ```lc.reshape.outcome``` performing the reshape of the data dictionaries for LifeCycle (only core variables)
 
 For further detail check: https://github.com/lifecycle-project/analysis-protocols/wiki/LifeCycle-variables
 
@@ -91,3 +93,12 @@ curl -v --user 'user:password' --upload-file lifecycleProject_1.0.0.zip https://
 ```
 
 >So just to be short: https://registry.molgenis.org/repository/r-hosted/bin/windows/contrib/*r-version*/*package_version*.zip
+
+Also create a git-tag and push this to the remote, based upon the lifecycleProject DESCRIPTION-file.
+
+```
+git tag x.x.x
+git push origin x.x.x
+```
+
+This is used to download the data dictionaries, so do not forget to do this!

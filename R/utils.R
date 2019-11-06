@@ -8,6 +8,7 @@ lifecycle.globals$input_formats <- c('CSV', 'STATA', 'SPSS', 'SAS')
 lifecycle.globals$variable_category <- c('ALL','META','MATERNAL','PATERNAL','CHILD','HOUSEHOLD')
 lifecycle.globals$cohorts <- setNames(as.list(cohort_urls), cohorts)
 lifecycle.globals$cohort_ids <- cohorts
+
 lifecycle.globals$dictionaries_core <- c('1_0', '1_1')
 lifecycle.globals$dictionaries_outcome <- c('1_0')
 
@@ -61,31 +62,3 @@ checkVersion <- local(function(version) {
   return(str_detect(version, "\\d+\\_\\d+"))
 })
 
-#' Read the input file from different sources
-#' 
-#' @param input_format possible formats are CSV,STATA,SPSS or SAS (default = CSV)
-#' @param input_path path for importfile
-#' 
-#' @importFrom readr read_csv cols col_double
-#' @importFrom haven read_dta read_sas read_spss
-#' 
-#' @return dataframe with source data
-#'  
-lc.read.source.file <- local(function(input_path, input_format = 'CSV') {
-  lc_data <- NULL
-  
-  if(missing(input_path)) {
-    input_path <- readline('- Specify input path (for your data): ')
-    input_format <- readline('- Specify input format (possible formats: CSV,STATA,SPSS or SAS - default = CSV): ')
-  }
-  if (input_format %in% lifecycle.globals$input_formats) {
-    if (input_format == 'STATA') lc_data <- read_dta(input_path)
-    else if (input_format == 'SPSS') lc_data <- read_spss(input_path)
-    else if (input_format == 'SAS') lc_data <- read_sas(input_path)
-    else lc_data <- read_csv(input_path, col_types = cols(.default = col_double()))
-  } else {
-    stop(paste(input_format, ' is not a valid input format, Possible input formats are: ', lifecycle.globals$input_formats, sep = ','))
-  }
-  
-  return(lc_data)
-})
