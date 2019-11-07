@@ -19,8 +19,18 @@ lc.variables.outcome.non.repeated <- local(function() {
 #'
 #' @return list with yearly repeated measures for the outcome variables
 lc.variables.outcome.yearly.repeated <- local(function() {
-  return(c(
-  ))
+  return(as.vector(outer(c(
+    'int_raw_', 'int_age_', 'int_instr_', 'int_eval_', 'int_pro_', 'int_avg_', 'int_pc_', 
+    'ext_raw_', 'ext_age_', 'ext_instr_', 'ext_eval_', 'ext_pro_', 'ext_avg_', 'ext_pc_', 
+    'adhd_raw_', 'adhd_age_', 'adhd_instr_', 'adhd_eval_', 'adhd_pro_', 'adhd_avg_', 'adhd_pc_', 'adhdR_', 'adhdR_age_', 'adhdR_eval_', 
+    'asd_raw_', 'asd_age_', 'asd_instr_', 'asd_eval_', 'asd_pro_', 'asd_avg_', 'asd_pc_', 'asdR_', 'asdR_age_', 'asdR_eval_', 
+    'gm_raw_', 'gm_age_', 'gm_instr_', 'gm_eval_', 'gm_pro_', 'gm_avg_', 'gm_pc_', 'gm_std_', 
+    'fm_raw_', 'fm_age_', 'fm_instr_', 'fm_eval_', 'fm_pro_', 'fm_avg_', 'fm_pc_', 'fm_std_', 
+    'nvi_raw_', 'nvi_age_', 'nvi_instr_', 'nvi_eval_', 'nvi_pro_', 'nvi_avg_', 'nvi_pc_', 'nvi_std_', 
+    'wm_raw_', 'wm_age_', 'wm_instr_', 'wm_eval_', 'wm_pro_', 'wm_avg_', 'wm_pc_', 'wm_std_', 
+    'lan_raw_', 'lan_age_', 'lan_instr_', 'lan_eval_', 'lan_pro_', 'lan_avg_', 'lan_pc_', 'lan_std_'
+  ), 0:17, paste, sep = ''
+  )))
 })
 
 #' List all measures for weekly repeated pregnancy measures for the outcome variables
