@@ -41,11 +41,10 @@ lc.populate.core <- local(function(dict_version = '1_0', cohort_id, data_version
   }
   
   dict_kind <- 'core'
-  project <- paste('lifecycle_', dict_kind, '_', dict_version, sep = '')
   
   lc.dict.project.create(dict_version, dict_kind, project, database_name)
   lc.dict.download(dict_version, dict_kind, cohort_id, data_version)
-  lc.dict.import(project, dict_version, dict_kind, cohort_id, data_version)
+  lc.dict.import(dict_version, dict_kind, cohort_id, data_version)
   
   message('######################################################')
   message('  Importing data dictionaries has finished            ')
