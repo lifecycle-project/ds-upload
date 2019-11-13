@@ -9,10 +9,14 @@ lc.variables.primary.keys <- local(function() {
 #'
 #' @return list with non repeated measures for the outcome variables
 lc.variables.outcome.non.repeated <- local(function() {
-  return(c(
+  wp4 <- c(
     "glucose_cord", "haem_cord", "hba1c_cord", "insulin_cord", "crp_cord", "il6_cord", "adipo_cord", 
     "leptin_cord", "chol_cord", "hdlc_cord", "ldlc_cord", "vldlc_cord", "triglycerides_cord"
-           ))
+  )
+  
+  wp5 <- c('test')
+  
+  return(c(wp4, wp5))
   })
 
 #' List all measures for yearly repeated meaures for the outcome variables
