@@ -15,14 +15,14 @@ The version-scheme is as follows:
 **dictionary-major . dictionary-minor . cohort . data-major . data-minor . tablename**
 
 *Examples*
-* 1_1_dnbc_1_0_non_repeated_measures.xlsx
-* 1_1_dnbc_1_0_monthly_repeated_measures.xlsx
-* 1_1_dnbc_1_0_yearly_repeated_measures.xlsx
+* 1_1_core_dnbc_1_0_non_repeated_measures.xlsx
+* 1_1_core_dnbc_1_0_monthly_repeated_measures.xlsx
+* 1_1_core_dnbc_1_0_yearly_repeated_measures.xlsx
 
 *Table names*
-* 1_1_dnbc_1_0_non_repeated_measures
-* 1_1_dnbc_1_0_monthly_repeated_measures
-* 1_1_dnbc_1_0_yearly_repeated_measuress
+* 1_1_core_dnbc_1_0_non_repeated_measures
+* 1_1_core_dnbc_1_0_monthly_repeated_measures
+* 1_1_core_dnbc_1_0_yearly_repeated_measuress
 
 ### Dictionary
 We are using semantic versioning in the data dictionary in LifeCycle. The implementation we now use is:
@@ -49,18 +49,4 @@ To keep track of all the changed within the different versions of the dictionari
 Check: [dictionary changelog](./changelogs/DICTIONARY_CHANGELOG.md)
 
 ### Data releases
-Check the changelog/data directory for cohort specifics.
-
-## Opal upload
->**IMPORTANT**: Check the instruction video [here](https://youtube.com)
-
-You need to use the lifecycleProject package to upload your data. To install it check: [install lifecycleProject](README.md#Installation).
-
-You can run:
-
-```R
-library(lifecycleProject)
-lc.reshape.core()
-```
-
-This will create a project and import the data dictionaries.
+We do not have a cohort specific changelog at the moment. Coming soon.

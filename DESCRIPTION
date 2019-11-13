@@ -1,14 +1,14 @@
 Package: lifecycleProject
-Title: Protocols and sample analysis
-Version: 0.8.0
+Title: Protocols and Sample analysis
+Version: 1.1.0
 Authors@R: person("Sido", "Haakma", email = "s.haakma@rug.nl",
                   role = c("aut", "cre"))
-Description: This package contains standardised ways to upload and import versioned data dictionaries. 
-  To check if your data is correct it contains als a number of local functions which can be performed to
-  check the quality of your data. It also can reshape the data into Opal format when you use other tools
+Description: We supply standardised ways to upload and import versioned data dictionaries. 
+  To check if your data is correct it contains a number of local functions which can be performed to
+  check the quality of your data as well. It also can reshape the data into Opal format when you use other tools
   to harmonise your data.
 Depends: 
-  R (>= 3.5.2)
+  R (>= 3.5.0)
 Imports:
   opalr (>= 1.2.0),
   dplyr,
@@ -16,11 +16,12 @@ Imports:
   httr,
   jsonlite,
   stringr,
+  rlang,
+  utils,
   data.table,
   readr,
-  sas7bdat,
-  foreign,
-  openxlsx,
+  readxl,
+  haven,
   plotly,
   gmodels,
   ggplot2
