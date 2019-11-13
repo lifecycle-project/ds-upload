@@ -39,7 +39,7 @@ lc.read.source.file <- local(function(input_path, input_format = 'CSV') {
 #'
 lc.dict.project.create <- local(function(dict_version, dict_kind = 'core', project, database_name) {
   message('------------------------------------------------------')
-  message(paste('  Start creating the project: [ ', dict_kind, ' ] with version: [ ', dict_version, ' ]', sep = ''))
+  message(paste('  Start creating project: [ ', project, ' ]', sep = ''))
   projects <- opal.projects(lifecycle.globals$opal)
   if(!(project %in% projects$name)) {
     json <- sprintf('{"database":"%s","description":"%s","name":"%s","title":"%s"}', database_name, paste('Project for [ ', dict_kind ,' ] variables and data dictionary version: [ ', dict_version,' ]', sep = ''), project, project)
