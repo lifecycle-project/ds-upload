@@ -2,20 +2,21 @@
 These provide researchers with a list of standard functions for data manipulations and analyses in DataSHIELD; these can be adapted to each specific research question. The protocols are currently fairly simple, but will become more extensive as our experience of DataSHIELD develops.
 
 ## Protocols
-We are trying to build a meta package for the LifeCycle project to ease the administration within scripts to setup the connections and assigning the data.
+We are trying to build a meta package for the LifeCycle project to aid data mangers and researchers in the initial stages of uploading data to Opal and assigning data in R/DataSHIELD.
 
 ### Usage
-At this moment the implemented functions at this moment are:
+The current functions available to data managers and researchers are:
 
 - ```lc.login``` login to your Opal instance
-- ```lc.populate.core``` populate the data dictionaries for LifeCycle
-- ```lc.populate.outcome``` populate the data dictionaries for LifeCycle
-- ```lc.reshape.core``` performing the reshape of the data dictionaries for LifeCycle (only core variables)
-- ```lc.reshape.outcome``` performing the reshape of the data dictionaries for LifeCycle (only core variables)
+- ```lc.populate.core``` populates the data dictionaries for LifeCycle
+- ```lc.populate.outcome``` populates the data dictionaries for LifeCycle
+- ```lc.reshape.core``` separates non-repeated and repeated measure varables; reshapes repeated measures to long format (WP1)
+- ```lc.reshape.outcome``` separates non-repeated and repeated measure varables; reshapes repeated measures to long format (WP4,5 and 6)
 
 For further detail check: https://github.com/lifecycle-project/analysis-protocols/wiki/LifeCycle-variables
 
 ### Installation
+> For Opal reference documentation check: http://opaldoc.obiba.org/en/latest/r-user-guide/datashield.html
 
 You can install the package by executing the following command:
 
