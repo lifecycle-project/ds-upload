@@ -30,6 +30,7 @@ lc.read.source.file <- local(function(input_path, input_format = 'CSV') {
 #'
 #' @param dict_version dictionary version (possible dictionaries are: 1_0, 1_1 / default = 1_0)
 #' @param dict_kind can be outcome or core
+#' @param cohort_id cohort code that is reflection
 #' @param project prpject resource in Opal
 #' @param database_name the database name of the Opal instance (default = opal_data)
 #' 
@@ -37,10 +38,9 @@ lc.read.source.file <- local(function(input_path, input_format = 'CSV') {
 #' @importFrom dplyr between
 #' @importFrom opalr opal.post
 #'
-lc.dict.project.create <- local(function(dict_version, dict_kind = 'core', project, database_name, cohort_id) {
+lc.dict.project.create <- local(function(dict_version, dict_kind = 'core', cohort_id, project, database_name) {
   message('------------------------------------------------------')
-  message(paste('  Start creating the project: [ ', dict_kind, ' ] with version: [ ', dict_version, ' ]', sep = ''))
-  project <- paste('lifecycle_', cohort_id, '_', dict_kind, '_', dict_version, sep = '')
+  message(paste('  Start creating project: [ ', project, ' ]', sep = ''))
   projects <- opal.projects(lifecycle.globals$opal)
   if(!(project %in% projects$name)) {
     json <- sprintf('{"database":"%s","description":"%s","name":"%s","title":"%s"}', database_name, paste('Project for [ ', dict_kind ,' ] variables and data dictionary version: [ ', dict_version,' ]', sep = ''), project, project)
@@ -171,6 +171,6 @@ lc.populate.match.categories <- local(function(project, table, variables, catego
   
   message(paste('* Import variables into: [ ', table,' ]', sep = ''))
   opal.post(lifecycle.globals$opal, 'datasource', project, 'table', table, 'variables', body=toJSON(variables), contentType = 'application/x-protobuf+json')  
-#  message(paste('* Remove the table: [', source_file,']', sep = ''))
-#  unlink(source_file)
+  message(paste('* Remove the table: [', source_file,']', sep = ''))
+  unlink(source_file)
 })
