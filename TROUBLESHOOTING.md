@@ -111,3 +111,20 @@ weight_01 == integer
 ...
 wieght_04 == decimal
 ```
+
+#### Error's importing the tables
+
+##### Tablenames too large
+When Opal returns something like this and you have a SQL like backend (MariaDB or MySQL)
+
+```
+Identifier name 'idx_lifecycle_1_0_20191119_172835_1_0_monthly_repeated_measures_created' is too long
+```
+
+You need to run this on the mysql-client:
+
+```
+SET @@global.innodb_large_prefix = 1;
+```
+
+This options is persisted in the database and allows you to create larger indexes on the SQL server.
