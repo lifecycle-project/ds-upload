@@ -1,4 +1,4 @@
-# Versions of data dictionaries
+# Versions of data dictionaries (core = wp1 and wp3)
 We define here in what versions of the data dictionaries contains which tables.
 
 ## 1.1
@@ -14,7 +14,7 @@ Additional variables from WP3 and changes in the lifecycle variables.
 - (task 3.1.3)
 - (task 3.1.4)
 
-**LifeCycle variables**
+**Workpackage 1**
 * Changing the child_id's columntype to character to overcome the maximum integer problem
 
 ### Tables
@@ -27,7 +27,7 @@ Additional variables from WP3 and changes in the lifecycle variables.
 
 ### Content
 
-**LifeCycle variables**
+**Workpackage 1**
 Includes all lifecycle variables harmonised by all cohorts
 
 * art --> variable_id changed from **art** to **mar**

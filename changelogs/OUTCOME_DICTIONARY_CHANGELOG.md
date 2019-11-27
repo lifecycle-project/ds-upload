@@ -1,4 +1,4 @@
-# Versions of data dictionaries
+# Versions of data dictionaries (outcome = wp4, wp5 and wp6)
 We define here in what versions of the data dictionaries contains which tables.
 
 ## 1.0
