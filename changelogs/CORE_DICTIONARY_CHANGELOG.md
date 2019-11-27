@@ -8,6 +8,9 @@ Additional variables from WP3 and changes in the lifecycle variables.
 
 ### Content
 
+**General changes**
+* Create a seperate table for the trimester variables.
+
 **Workpackage 3**
 - EUSILC variables (task 3.1.1)
 - Migration variables (task 3.1.2)
@@ -18,9 +21,9 @@ Additional variables from WP3 and changes in the lifecycle variables.
 * Changing the child_id's columntype to character to overcome the maximum integer problem
 
 ### Tables
-- 1_1_cohort_id_x_x_non_repeated_measures
-- 1_1_cohort_id_x_x_quaterly_measures
-- 1_1_cohort_id_x_x_yearly_measures
+- 1_1_core_cohort-id_x_x_non_repeated_measures
+- 1_1_core_cohort-id_x_x_quaterly_measures
+- 1_1_core_cohort-id_x_x_yearly_measures
 
 ## 1.0
 **lifecycleProject R-package version >= 1.0.4**
@@ -41,6 +44,6 @@ Includes all lifecycle variables harmonised by all cohorts
   * 2) Born in other country
 
 ### Tables
-- 1_0_cohort_id_x_x_non_repeated_measures
-- 1_0_cohort_id_x_x_monthly_repeated_measures
-- 1_0_cohort_id_x_x_yearly_repeated_measures
+- 1_0_cohort-id_x_x_non_repeated_measures
+- 1_0_cohort-id_x_x_monthly_repeated_measures
+- 1_0_cohort-id_x_x_yearly_repeated_measures
