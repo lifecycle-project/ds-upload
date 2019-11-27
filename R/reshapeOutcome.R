@@ -427,19 +427,20 @@ lc.reshape.outcome.generate.weekly.repeated <- local(
     
     # Create the age_years and age_months variables with the regular expression extraction of the year
     # NB - these weekly dta are pregnancy related so child is NOT BORN YET ---
-    long_1$age_weeks  <- as.integer(as.numeric(numextract(long_1$orig_var))/42)
+    long_1$age_years  <- as.integer(as.numeric(numextract(long_1$orig_var))/52)
+    long_1$age_weeks  <- as.integer(numextract(long_1$orig_var))
     
     # Here we remove the year indicator from the original variable name
     long_1$variable_trunc <- gsub('[[:digit:]]+$', '', long_1$orig_var)
     
     # Use the data.table package for spreading the data again, as tidyverse ruins into memory issues 
-    long_2 <- dcast(long_1, child_id + age_weeks ~ variable_trunc, value.var = "m_sbp_")
+    long_2 <- dcast(long_1, child_id + age_years + age_weeks ~ variable_trunc, value.var = "m_sbp_")
     
     # Create a row_id so there is a unique identifier for the rows
     long_2$row_id <- c(1:length(long_2$child_id))
     
     # Arrange the variable names based on the original order
-    long_weekly <- long_2[,c("row_id", "child_id", "age_weeks", unique(long_1$variable_trunc))]
+    long_weekly <- long_2[,c("row_id", "child_id", "age_years", "age_weeks", unique(long_1$variable_trunc))]
     
     # As the data table is still too big for opal, remove those
     # rows, that have only missing values, but keep all rows at age_years=0, so
@@ -450,8 +451,8 @@ lc.reshape.outcome.generate.weekly.repeated <- local(
       filter(age_weeks %in% 0)
     
     # Subset of data with age_months > 0
-    later_weekly <- later_weekly %>%
-      filter(age_months > 0)
+    later_weekly <- long_weekly %>%
+      filter(age_weeks > 0)
     
     # Remove all the rows that are missing only: rowSums and is.na combined indicate if 0 or all columns are NA (4), and
     # remove the rows with rowSum values of 4
@@ -461,10 +462,10 @@ lc.reshape.outcome.generate.weekly.repeated <- local(
     ]
     
     # Bind the 0 year and older data sets together 
-    long_weekly <- rbind(zero_monthly,later_monthly)
+    long_weekly <- rbind(zero_weekly,later_weekly)
     
     # strip completely missing columns
-    long_weekly <- long_weeky[,colSums(is.na(long_weekly))<nrow(long_weekly)]
+    long_weekly <- long_weekly[,colSums(is.na(long_weekly))<nrow(long_weekly)]
     
     write_csv(
       long_weekly, 
