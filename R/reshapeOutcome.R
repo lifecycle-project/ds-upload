@@ -202,7 +202,7 @@ lc.reshape.outcome.generate.yearly.repeated <- local(
     ) {
     
   # workaround to avoid glpobal variable warnings, check: https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
-  orig_var <- whe_ <- age_years <- NULL # ???
+  orig_var <- int_raw_ <- age_years <- NULL # ???
   
   message("* Generating: yearly-repeated measures")
   
@@ -214,7 +214,7 @@ lc.reshape.outcome.generate.yearly.repeated <- local(
   
   # First re-arrange the whole data set to long format, unspecific for variable
   long_1 <- yearly_repeated_measures %>% 
-    gather(orig_var, whe_, lc.variables.outcome.monthly.repeated(), na.rm=FALSE)
+    gather(orig_var, int_raw_, lc.variables.outcome.yearly.repeated(), na.rm=FALSE)
   
   # Create the age_years variable with the regular expression extraction of the year
   long_1$age_years <- as.numeric(numextract(long_1$orig_var))
@@ -223,7 +223,7 @@ lc.reshape.outcome.generate.yearly.repeated <- local(
   long_1$variable_trunc <- gsub('[[:digit:]]+$', '', long_1$orig_var)
   
   # Use the data.table package for spreading the data again, as tidyverse runs into memory issues 
-  long_2 <- dcast(long_1, child_id + age_years ~ variable_trunc, value.var = "cohab_")
+  long_2 <- dcast(long_1, child_id + age_years ~ variable_trunc, value.var = "int_raw_")
   
   # Create a row_id so there is a unique identifier for the rows
   long_2$row_id <- c(1:length(long_2$child_id))
@@ -330,7 +330,7 @@ lc.reshape.outcome.generate.monthly.repeated <- local(
   long_1$variable_trunc <- gsub('[[:digit:]]+$', '', long_1$orig_var)
   
   # Use the data.table package for spreading the data again, as tidyverse ruins into memory issues 
-  long_2 <- dcast(long_1, child_id + age_years + age_months ~ variable_trunc, value.var = "height_")
+  long_2 <- dcast(long_1, child_id + age_years + age_months ~ variable_trunc, value.var = "heightmes_")
   
   # Create a row_id so there is a unique identifier for the rows
   long_2$row_id <- c(1:length(long_2$child_id))
@@ -421,51 +421,50 @@ lc.reshape.outcome.generate.weekly.repeated <- local(
     weekly_repeated_measures <- lc_data[,weekly_repeated]
     
     # First re-arrange the whole data set to long format, unspecific for variable
-    long_weekly <- weekly_repeated_measures %>% gather(
+    long_1 <- weekly_repeated_measures %>% gather(
       orig_var, m_sbp_, lc.variables.outcome.weekly.repeated(), na.rm=FALSE
     )
     
     # Create the age_years and age_months variables with the regular expression extraction of the year
     # NB - these weekly dta are pregnancy related so child is NOT BORN YET ---
-    #    long_1$age_years  <- as.integer(as.numeric(numextract(long_1$orig_var))/12)
-    #    long_1$age_months <- as.numeric(numextract(long_1$orig_var))
+    long_1$age_weeks  <- as.integer(as.numeric(numextract(long_1$orig_var))/42)
     
     # Here we remove the year indicator from the original variable name
-    #    long_1$variable_trunc <- gsub('[[:digit:]]+$', '', long_1$orig_var)
+    long_1$variable_trunc <- gsub('[[:digit:]]+$', '', long_1$orig_var)
     
     # Use the data.table package for spreading the data again, as tidyverse ruins into memory issues 
-    #    long_2 <- dcast(long_1, child_id + age_years + age_months ~ variable_trunc, value.var = "height_")
+    long_2 <- dcast(long_1, child_id + age_weeks ~ variable_trunc, value.var = "m_sbp_")
     
     # Create a row_id so there is a unique identifier for the rows
-    #    long_2$row_id <- c(1:length(long_2$child_id))
+    long_2$row_id <- c(1:length(long_2$child_id))
     
     # Arrange the variable names based on the original order
-    #    long_monthly <- long_2[,c("row_id", "child_id", "age_years", "age_months", unique(long_1$variable_trunc))]
+    long_weekly <- long_2[,c("row_id", "child_id", "age_weeks", unique(long_1$variable_trunc))]
     
     # As the data table is still too big for opal, remove those
     # rows, that have only missing values, but keep all rows at age_years=0, so
     # no child_id get's lost:
     
     # Subset of data with age_months = 0
-    #    zero_monthly <- long_monthly %>%
-    #      filter(age_months %in% 0)
+    zero_weekly <- long_weekly %>%
+      filter(age_weeks %in% 0)
     
     # Subset of data with age_months > 0
-    #    later_monthly <- long_monthly %>%
-    #      filter(age_months > 0)
+    later_weekly <- later_weekly %>%
+      filter(age_months > 0)
     
     # Remove all the rows that are missing only: rowSums and is.na combined indicate if 0 or all columns are NA (4), and
     # remove the rows with rowSum values of 4
-    #    later_monthly <- later_monthly[
-    #      rowSums(is.na(later_monthly[,unique(long_1$variable_trunc)])) < 
-    #        length(later_monthly[,unique(long_1$variable_trunc)]),
-    #      ]
+    later_weekly <- later_weekly[
+       rowSums(is.na(later_weekly[,unique(long_1$variable_trunc)])) < 
+         length(later_weekly[,unique(long_1$variable_trunc)]),
+    ]
     
     # Bind the 0 year and older data sets together 
-    #    long_weeky <- rbind(zero_monthly,later_monthly)
+    long_weekly <- rbind(zero_monthly,later_monthly)
     
     # strip completely missing columns
-    #    long_weeky <- long_weeky[,colSums(is.na(long_weeky))<nrow(long_weeky)]
+    long_weekly <- long_weeky[,colSums(is.na(long_weekly))<nrow(long_weekly)]
     
     write_csv(
       long_weekly, 
