@@ -43,7 +43,7 @@ lc.populate.core <- local(function(dict_version = '1_0', cohort_id, data_version
   dict_kind <- 'core'
   project <- paste('lifecycle_', dict_kind, '_', cohort_id, '_', dict_version, sep = '')
   
-  lc.dict.project.create(dict_version, dict_kind, project, database_name, cohort_id)
+  lc.dict.project.create(dict_version, dict_kind, cohort_id, project, database_name)
   lc.dict.download(dict_version, dict_kind, cohort_id, data_version)
   lc.dict.import(project, dict_version, dict_kind, cohort_id, data_version)
   

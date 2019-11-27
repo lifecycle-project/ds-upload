@@ -5,7 +5,6 @@ cohorts <- c('dnbc', 'gecko', 'alspac', 'genr', 'moba', 'sws', 'bib', 'chop', 'e
 
 lifecycle.globals$input_formats <- c('CSV', 'STATA', 'SPSS', 'SAS')
 lifecycle.globals$variable_category <- c('ALL','META','MATERNAL','PATERNAL','CHILD','HOUSEHOLD')
-lifecycle.globals$cohorts <- setNames(as.list(cohort_urls), cohorts)
 lifecycle.globals$cohort_ids <- cohorts
 
 lifecycle.globals$dictionaries_core <- c('1_0', '1_1')

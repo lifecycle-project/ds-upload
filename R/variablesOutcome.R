@@ -9,17 +9,27 @@ lc.variables.primary.keys <- local(function() {
 #'
 #' @return list with non repeated measures for the outcome variables
 lc.variables.outcome.non.repeated <- local(function() {
-  return(c(
-    "glucose_cord", "haem_cord", "hba1c_cord", "insulin_cord", "crp_cord", "il6_cord", "adipo_cord", 
-    "leptin_cord", "chol_cord", "hdlc_cord", "ldlc_cord", "vldlc_cord", "triglycerides_cord"
-           ))
-  })
+ wp4and6 <- c(
+   "glucose_cord", "haem_cord", "hba1c_cord", "insulin_cord", "crp_cord", "il6_cord", "adipo_cord", 
+   "leptin_cord", "chol_cord", "hdlc_cord", "ldlc_cord", "vldlc_cord", "triglycerides_cord"
+ )
+   
+ wp5 <- c("eczema_m", "allergy_inh_m", "allergy_food_m", "allergy_any_m", "whe_ever", "whe_ever2",
+          "whe_ever4", "whe_ever5_10", "asthma_ever_CHICOS", "asthma_ever_MeDALL", "asthma_current_MeDALL", 
+          "asthma_current_CHICOS", "food_all_ever", "inh_all_ever", "all_ever", "urticaria", "anaphylaxis", 
+          "eczema_ever", "asthma_adult", "COPD_adult_GOLD", "COPD_adult_LLN", "COPD_adult_diagnosis", "pets_pregn"
+)
+
+ full_list <- c(wp4and6, wp5)
+ 
+ return(full_list)
+   })
 
 #' List all measures for yearly repeated meaures for the outcome variables
 #'
 #' @return list with yearly repeated measures for the outcome variables
 lc.variables.outcome.yearly.repeated <- local(function() {
-  return(as.vector(outer(c(
+ wp4and6 <- (as.vector(outer(c(
     'int_raw_', 'int_age_', 'int_instr_', 'int_eval_', 'int_pro_', 'int_avg_', 'int_pc_', 
     'ext_raw_', 'ext_age_', 'ext_instr_', 'ext_eval_', 'ext_pro_', 'ext_avg_', 'ext_pc_', 
     'adhd_raw_', 'adhd_age_', 'adhd_instr_', 'adhd_eval_', 'adhd_pro_', 'adhd_avg_', 'adhd_pc_', 'adhdR_', 'adhdR_age_', 'adhdR_eval_', 
@@ -31,6 +41,20 @@ lc.variables.outcome.yearly.repeated <- local(function() {
     'lan_raw_', 'lan_age_', 'lan_instr_', 'lan_eval_', 'lan_pro_', 'lan_avg_', 'lan_pc_', 'lan_std_'
   ), 0:17, paste, sep = ''
   )))
+ 
+ wp5 <- (as.vector(outer(c(
+   'whe_', 'asthma_', 'asthma_med_', 'asthma_med_spec_', 'URTI_', 'LRTI_', 'FEV1_abs_', 
+   'FVC_abs_', 'FEF25_abs_', 'FEF5_abs_', 'FEF75_abs_', 'FEV1_z_', 'FVC_z_', 'FEV1FVC_z_', 
+   'repro_', 'BHR_', 'FeNO_', 'food_all_', 'inh_all_', 'all_', 'food_all_sens_SPT_', 
+   'inh_all_sens_SPT_', 'inh_all_sens_IgE__HDM', 'inh_all_sens_IgE__CAT', 'inh_all_sens_IgE__RYE',
+   'inh_all_sens_IgE__GRASS', 'inh_all_sens_IgE__MOULD', 'eczema_', 'rash_', 'rash_loc_' 
+ ), 0:17, paste, sep = ''
+ )))
+ 
+ 
+ full_list <- c(wp4and6, wp5)
+ 
+ return(full_list) 
 })
 
 #' List all measures for weekly repeated pregnancy measures for the outcome variables
