@@ -112,7 +112,16 @@ weight_01 == integer
 wieght_04 == decimal
 ```
 
-#### Error's importing the tables
+#### Packages won't register within the R-environment
+
+**For Windows**
+Sometimes the installed packages can not be registered in the R-environment because of the missing package ``pkgconfig``
+
+```R
+install.packages("pkgconfig")
+```
+
+## Error's importing the tables
 
 ##### Tablenames too large
 When Opal returns something like this and you have a SQL like backend (MariaDB or MySQL)

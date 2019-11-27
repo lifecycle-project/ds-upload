@@ -16,7 +16,6 @@ New variables for work packages 4, 5 and 6.
 
 **Workpackage 6**
 
-
 ### Tables
 - 1_0_cohort_id_x_x_non_repeated
 - 1_0_cohort_id_x_x_weekly_repeated
