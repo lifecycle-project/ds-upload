@@ -28,17 +28,16 @@ lc.read.source.file <- local(function(input_path, input_format = 'CSV') {
 
 #' Create the project with data dictionary version in between
 #'
-#' @param dict_version dictionary version (possible dictionaries are: 1_0, 1_1 / default = 1_0)
-#' @param dict_kind can be outcome or core
-#' @param cohort_id cohort code that is reflection
 #' @param project prpject resource in Opal
 #' @param database_name the database name of the Opal instance (default = opal_data)
-#' 
 #' 
 #' @importFrom dplyr between
 #' @importFrom opalr opal.post
 #'
-lc.dict.project.create <- local(function(dict_version, dict_kind = 'core', cohort_id, project, database_name) {
+lc.dict.project.create <- local(function(project, database_name) {
+  a <- strsplit(project, "_")
+  dict_kind <- a[[1]][3]
+  dict_version <- paste(a[[1]][4], "_", a[[1]][5], sep ="")
   message('------------------------------------------------------')
   message(paste('  Start creating project: [ ', project, ' ]', sep = ''))
   projects <- opal.projects(lifecycle.globals$opal)
@@ -50,59 +49,31 @@ lc.dict.project.create <- local(function(dict_version, dict_kind = 'core', cohor
   }
 })
 
-#' Download all released data dictionaries
-#' 
-#' @param dict_version dictionary version (possible dictionaries are: 1_0, 1_1 / default = 1_0)
-#' @param dict_kind dictionary kind (possible kinds are 'core' or 'outcome')
-#' @param cohort_id cohort identifier (possible values are: 'dnbc', 'gecko', 'alspac', 'genr', 'moba', 'sws', 'bib', 'chop', 'elfe', 'eden', 'ninfea', 'hbcs', 'inma', 'isglobal', 'nfbc66', 'nfbc86', 'raine', 'rhea')
-#' @param data_version version of the data (specific to the cohort)
-#' 
-#' @importFrom utils download.file
-#' 
-lc.dict.download <- local(function(dict_version, dict_kind, cohort_id, data_version) {
-  message('------------------------------------------------------')
-  message('  Start download dictionaries')
-  packageTag <- packageVersion('lifecycleProject')
-  download_base_dir <- paste('https://github.com/lifecycle-project/analysis-protocols/blob/', packageTag,'/R/data/dictionaries/', dict_kind ,'/', dict_version, '/', sep = '')
-  dict_source_file_non_repeated <- paste(dict_version, '_non_repeated.xlsx', sep = '')
-  dict_source_file_monthly_repeated <- paste(dict_version, '_monthly_repeated.xlsx', sep = '')
-  dict_source_file_yearly_repeated <- paste(dict_version, '_yearly_repeated.xlsx', sep = '')
-  
-  dict_dest_file_non_repeated <- paste(dict_version, '_', dict_kind, '_', cohort_id, '_', data_version, '_non_repeated.xlsx', sep = '')
-  dict_dest_file_monthly_repeated <- paste(dict_version, '_', dict_kind, '_', cohort_id, '_', data_version,'_monthly_repeated.xlsx', sep = '')
-  dict_dest_file_yearly_repeated <- paste(dict_version, '_', dict_kind, '_', cohort_id, '_', data_version, '_yearly_repeated.xlsx', sep = '')
-  
-  message(paste('* Download: [ ', dict_source_file_non_repeated, ' ]', sep = ''))
-  download.file(paste(download_base_dir, dict_source_file_non_repeated, '?raw=true', sep = ''), destfile=dict_dest_file_non_repeated, mode = "wb", method="libcurl", quiet = TRUE)
-  message(paste('* Download: [ ', dict_source_file_monthly_repeated, ' ]', sep = ''))
-  download.file(paste(download_base_dir, dict_source_file_monthly_repeated, '?raw=true', sep = ''), destfile=dict_dest_file_monthly_repeated, mode = "wb", method="libcurl", quiet = TRUE)
-  message(paste('* Download: [ ', dict_source_file_yearly_repeated, ' ]', sep = ''))
-  download.file(paste(download_base_dir, dict_source_file_yearly_repeated, '?raw=true', sep = ''), destfile=dict_dest_file_yearly_repeated, mode = "wb", method="libcurl", quiet = TRUE)
-  
-  message('  Successfully downloaded dictionaries')
-})
-
 #' Import the tables into Opal
 #' 
 #' @param project project resource in Opal
-#' @param dict_version dictionary version (possible dictionaries are: 1_0, 1_1 / default = 1_0)
-#' @param dict_kind can be 'core' or 'outcome'
-#' @param cohort_id cohort identifier (possible values are: 'dnbc', 'gecko', 'alspac', 'genr', 'moba', 'sws', 'bib', 'chop', 'elfe', 'eden', 'ninfea', 'hbcs', 'inma', 'isglobal', 'nfbc66', 'nfbc86', 'raine', 'rhea')
 #' @param data_version version of the data (specific to the cohort)
 #' 
 #' @importFrom readxl read_xlsx
 #' 
-lc.dict.import <- local(function(project, dict_version, dict_kind, cohort_id, data_version) {
+lc.dict.import <- local(function(project, data_version) {
   message('------------------------------------------------------')
   message('  Start importing dictionaries')
+  
+  a <- strsplit(project, "_")
+  dict_kind <- a[[1]][3]
+  dict_version <- paste(a[[1]][4], "_", a[[1]][5], sep ="")
+  cohort_id <- a[[1]][2]
   
   dict_table_non_repeated <- paste(dict_version, '_', dict_kind, '_', cohort_id, '_', data_version, '_non_repeated', sep = '')
   dict_table_monthly_repeated <- paste(dict_version, '_', dict_kind, '_', cohort_id, '_', data_version, '_monthly_repeated', sep = '')
   dict_table_yearly_repeated <- paste(dict_version, '_', dict_kind, '_', cohort_id, '_', data_version, '_yearly_repeated', sep = '')
+  dict_table_weekly_repeated <- paste(dict_version, '_', dict_kind, '_', cohort_id, '_', data_version, '_weekly_repeated', sep = '')
   
   json_non_repeated <- sprintf('{"entityType":"Participant","name":"%s"}', dict_table_non_repeated)
   json_monthly_repeated <- sprintf('{"entityType":"Participant","name":"%s"}', dict_table_monthly_repeated)
   json_yearly_repeated <- sprintf('{"entityType":"Participant","name":"%s"}', dict_table_yearly_repeated)
+  json_weekly_repeated <- sprintf('{"entityType":"Participant","name":"%s"}', dict_table_weekly_repeated)
   
   tables <- opal.tables(lifecycle.globals$opal, project)
   
@@ -124,19 +95,32 @@ lc.dict.import <- local(function(project, dict_version, dict_kind, cohort_id, da
   } else {
     message(paste('* Table: [ ', dict_table_yearly_repeated,' ] already exists', sep = ''))
   }
+  if(dict_kind == "outcome"){
+    if(!(dict_table_weekly_repeated %in% tables$name)) {
+      message(paste('* Create table: [ ', dict_table_weekly_repeated,' ]', sep = ''))
+      opal.post(lifecycle.globals$opal, 'datasource', project, 'tables', body=json_weekly_repeated, contentType = 'application/x-protobuf+json')
+    } else {
+      message(paste('* Table: [ ', dict_table_weekly_repeated,' ] already exists', sep = ''))
+    }
+  }
   
   variables_non_repeated_measures <- read_xlsx(path = paste(getwd(), '/', dict_table_non_repeated, '.xlsx', sep = ''), sheet = 1)
   variables_yearly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', dict_table_yearly_repeated, '.xlsx', sep = ''), sheet = 1)
   variables_monthly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', dict_table_monthly_repeated, '.xlsx', sep = ''), sheet = 1)
+  variables_weekly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', dict_table_weekly_repeated, '.xlsx', sep = ''), sheet = 1)
   
   categories_non_repeated_measures <- read_xlsx(path = paste(getwd(), '/', dict_table_non_repeated, '.xlsx', sep = ''), sheet = 2)
   categories_monthly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', dict_table_yearly_repeated, '.xlsx', sep = ''), sheet = 2)
   categories_yearly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', dict_table_monthly_repeated, '.xlsx', sep = ''), sheet = 2)
+  categories_weekly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', dict_table_weekly_repeated, '.xlsx', sep = ''), sheet = 2)
   
   lc.populate.match.categories(project, dict_table_non_repeated, variables_non_repeated_measures, categories_non_repeated_measures, paste(dict_table_non_repeated, '.xlsx', sep = ''))
   lc.populate.match.categories(project, dict_table_monthly_repeated, variables_monthly_repeated_measures, categories_monthly_repeated_measures, paste(dict_table_yearly_repeated, '.xlsx', sep = ''))
   lc.populate.match.categories(project, dict_table_yearly_repeated, variables_yearly_repeated_measures, categories_yearly_repeated_measures, paste(dict_table_monthly_repeated, '.xlsx', sep = ''))
   
+  if(dict_kind == "outcome"){
+    lc.populate.match.categories(project, dict_table_weekly_repeated, variables_weekly_repeated_measures, categories_weekly_repeated_measures, paste(dict_table_weekly_repeated, '.xlsx', sep = ''))
+  }
   message('  All dictionaries are populated correctly')
 })
 
