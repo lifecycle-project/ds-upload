@@ -82,6 +82,7 @@ lc.upload <- function(dict_version, dict_kind, cohort_id, data_version,
   
   ## Delete the dictionnaries:
   
-  dict_file_list <- list.files('.', pattern = '*.xlsx')
+  file_name <- paste(dict_version, '.+repeated\\.xlsx', sep = '')
+  dict_file_list <- list.files('.', pattern = file_name)
   unlink(dict_file_list)
 }
