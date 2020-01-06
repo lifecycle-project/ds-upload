@@ -67,7 +67,7 @@ lc.dict.download <- local(function(dict_version, dict_kind, cohort_id, data_vers
   # For testing purposes you can change the download location to your own branch
   # Please replace the #name-of-branch#-part by for instance 'feat/new-vars'
   #
-  # download_base_dir <- paste('https://github.com/lifecycle-project/analysis-protocols/blob/#name-of-branch#/', packageTag,'/R/data/dictionaries/', dict_kind ,'/', dict_version, '/', sep = '')
+  # download_base_dir <- paste('https://github.com/lifecycle-project/analysis-protocols/blob/#name-of-branch#/R/data/dictionaries/', dict_kind ,'/', dict_version, '/', sep = '')
   
   download_base_dir <- paste('https://github.com/lifecycle-project/analysis-protocols/blob/', packageTag,'/R/data/dictionaries/', dict_kind ,'/', dict_version, '/', sep = '')
   dict_source_file_non_repeated <- paste(dict_version, '_non_repeated.xlsx', sep = '')
