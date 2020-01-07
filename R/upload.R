@@ -59,6 +59,27 @@ lc.upload <- function(dict_version, dict_kind, cohort_id, data_version,
                       upload_to_opal = T, data_input_path, data_output_path = getwd(),
                       action = "all"){
   
+  ## Save wd
+  
+  workdir <- getwd()
+  
+  # Create temporary workdir and set working directory to it:
+  
+  # Liste files in current directory
+  
+  file_list <- list.files()
+  
+  # Generate 15 random strings and check that at least one of them isn't an existing dir
+  
+  a <- do.call(paste0, replicate(15, sample(LETTERS, 20, TRUE), FALSE))
+  a <- a[which(!(a %in% file_list))]
+  
+  # And use the first non-existing random string to name our temp folder
+  
+  dir.create(paste('./', a[1], sep = ""))
+  
+  setwd(paste('./', a[1], sep = ""))
+  
   # Download dictionnaries from the remote repo:
   
   lc.dict.download(dict_version, dict_kind, cohort_id, data_version)
@@ -81,8 +102,16 @@ lc.upload <- function(dict_version, dict_kind, cohort_id, data_version,
   }
   
   ## Delete the dictionnaries:
+   
+  # file_name <- paste(dict_version, '.+repeated\\.xlsx', sep = '')
+  # dict_file_list <- list.files('.', pattern = file_name)
+  # unlink(dict_file_list)
   
-  file_name <- paste(dict_version, '.+repeated\\.xlsx', sep = '')
-  dict_file_list <- list.files('.', pattern = file_name)
-  unlink(dict_file_list)
+  # Delete the temp dir
+  
+  unlink(paste('../', a[1], sep = ""), recursive = T)
+  
+  # Re-establish old working directory
+  
+  setwd(workdir)
 }
