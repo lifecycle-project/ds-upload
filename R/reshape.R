@@ -18,7 +18,7 @@
 #'
 #' @importFrom readxl read_xlsx
 #' @export
-lc.reshape <- local(function(upload_to_opal = TRUE, data_version, input_format = 'CSV', dict_kind = 'core', input_path, cohort_id, output_path = getwd()) {
+lc.reshape <- local(function(upload_to_opal = TRUE, data_version, input_format = 'CSV', dict_kind = 'core', input_path, cohort_id, output_path) {
   
   message('######################################################')
   message('  Start reshaping data                                ')
@@ -84,17 +84,18 @@ lc.reshape.generate.non.repeated <- local(function(lc_data, upload_to_opal, outp
   
   # Retrieve dictionnary 
   
-  dict_table_non_repeated <- paste(file_version, '_', dict_kind, '_', cohort_id, '_', file_version, '_non_repeated', sep ='')
+  dict_names <- paste('.+', cohort_id, '+', '.+repeated\\.xlsx', sep = '')
+  dict_file_list <- list.files('.', pattern = dict_names)
   
-  lc_variables_non_repeated_dict <- read_xlsx(path = paste(getwd(), '/', dict_table_non_repeated, '.xlsx', sep = ''), sheet = 1)
+  dict_table_non_repeated <- dict_file_list[grep("non_repeated", dict_file_list)]
   
-  #lc_variables_non_repeated_dict <- read.xlsx('1_0_core_eden_1_0_non_repeated.xlsx')
+  lc_variables_non_repeated_dict <- read_xlsx(path = dict_table_non_repeated, sheet = 1)
   
   lc_variables_non_repeated_dict <- as.data.frame(lc_variables_non_repeated_dict)
   
   ## Generate the variable list:
   
-  lc_variables_non_repeated <- lc_variables_non_repeated_dict$names
+  lc_variables_non_repeated <- lc_variables_non_repeated_dict$name
   
   # select the non-repeated measures from the full data set
   non_repeated <- c(lc.variables.primary.keys(), lc_variables_non_repeated)
@@ -112,7 +113,6 @@ lc.reshape.generate.non.repeated <- local(function(lc_data, upload_to_opal, outp
   if(upload_to_opal) {
     lc.reshape.upload(file_prefix, dict_kind, file_version, file_name)
   }
-  
 })    
 
 #' Generate the yearly repeated measures file and write it to your local workspace
@@ -142,11 +142,12 @@ lc.reshape.generate.yearly.repeated <- local(function(lc_data, upload_to_opal, o
   
   # Retrieve dictionnary 
   
-  dict_table_yearly_repeated <- paste(file_version, '_', dict_kind, '_', cohort_id, '_', file_version, '_yearly_repeated', sep ='')
+  dict_names <- paste('.+', cohort_id, '+', '.+repeated\\.xlsx', sep = '')
+  dict_file_list <- list.files('.', pattern = dict_names)
   
-  lc_variables_yearly_repeated_dict <- read_xlsx(path = paste(getwd(), '/', dict_table_yearly_repeated, '.xlsx', sep = ''), sheet = 1)  
+  dict_table_yearly_repeated <- dict_file_list[grep("yearly_repeated", dict_file_list)]
   
-  # lc_variables_yearly_repeated_dict <- read.xlsx('1_0_core_eden_1_0_yearly_repeated.xlsx')
+  lc_variables_yearly_repeated_dict <- read_xlsx(path = dict_table_yearly_repeated, sheet = 1)
   
   lc_variables_yearly_repeated_dict <- as.data.frame(lc_variables_yearly_repeated_dict)
   
@@ -244,11 +245,12 @@ lc.reshape.generate.monthly.repeated <- local(function(lc_data, upload_to_opal, 
   
   # Retrieve dictionnary 
   
-  dict_table_monthly_repeated <- paste(file_version, '_', dict_kind, '_', cohort_id, '_', file_version, '_monthly_repeated', sep ='')
+  dict_names <- paste('.+', cohort_id, '+', '.+repeated\\.xlsx', sep = '')
+  dict_file_list <- list.files('.', pattern = dict_names)
   
-  lc_variables_monthly_repeated_dict <- read_xlsx(path = paste(getwd(), '/', dict_table_monthly_repeated, '.xlsx', sep = ''), sheet = 1)  
+  dict_table_monthly_repeated <- dict_file_list[grep("monthly_repeated", dict_file_list)]
   
- #lc_variables_monthly_repeated_dict <- read_xls('1_0_core_eden_1_0_monthly_repeated.xlsx')
+  lc_variables_monthly_repeated_dict <- read_xlsx(path = dict_table_monthly_repeated, sheet = 1)
   
   lc_variables_monthly_repeated_dict <- as.data.frame(lc_variables_monthly_repeated_dict)
   
@@ -362,9 +364,12 @@ lc.reshape.outcome.generate.weekly.repeated <- local(
     
     # Retrieve dictionnary 
     
-    dict_table_weekly_repeated <- paste(file_version, '_', dict_kind, '_', cohort_id, '_', file_version, '_weekly_repeated', sep ='')
+    dict_names <- paste('.+', cohort_id, '+', '.+repeated\\.xlsx', sep = '')
+    dict_file_list <- list.files('.', pattern = dict_names)
     
-    lc_variables_weekly_repeated_dict <- read_xlsx(path = paste(getwd(), '/', dict_table_weekly_repeated, '.xlsx', sep = ''), sheet = 1)  
+    dict_table_weekly_repeated <- dict_file_list[grep("weekly_repeated", dict_file_list)]
+    
+    lc_variables_weekly_repeated_dict <- read_xlsx(path = dict_table_weekly_repeated, sheet = 1)
     
     lc_variables_weekly_repeated_dict <- as.data.frame(lc_variables_weekly_repeated_dict)
     

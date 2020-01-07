@@ -77,7 +77,7 @@ lc.upload <- function(dict_version, dict_kind, cohort_id, data_version,
   
   if(action == "all" | action == "reshape"){
     lc.reshape(upload_to_opal, data_version, data_input_format, dict_kind,
-               data_input_path, cohort_id, output_path)
+               data_input_path, cohort_id, data_output_path)
   }
   
   ## Delete the dictionnaries:
