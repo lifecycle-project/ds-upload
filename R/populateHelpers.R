@@ -91,12 +91,12 @@ lc.dict.download <- local(function(dict_version, dict_kind, cohort_id, data_vers
   download.file(paste(download_base_dir, dict_source_file_yearly_repeated, '?raw=true', sep = ''), destfile=dict_dest_file_yearly_repeated, mode = "wb", method="libcurl", quiet = TRUE)
   
   if(dict_kind == 'outcome') {
-    message(paste('* Download: [ ', dict_source_file_yearly_repeated, ' ]', sep = ''))
-    download.file(paste(download_base_dir, dict_source_file_yearly_repeated, '?raw=true', sep = ''), destfile=dict_dest_file_yearly_repeated, mode = "wb", method="libcurl", quiet = TRUE)
+    message(paste('* Download: [ ', dict_source_file_weekly_repeated, ' ]', sep = ''))
+    download.file(paste(download_base_dir, dict_source_file_weekly_repeated, '?raw=true', sep = ''), destfile=dict_dest_file_weekly_repeated, mode = "wb", method="libcurl", quiet = TRUE)
   }
   #if(dict_kind == 'core') {
-  #  message(paste('* Download: [ ', dict_source_file_yearly_repeated, ' ]', sep = ''))
-  #  download.file(paste(download_base_dir, dict_source_file_yearly_repeated, '?raw=true', sep = ''), destfile=dict_dest_file_yearly_repeated, mode = "wb", method="libcurl", quiet = TRUE)
+  #  message(paste('* Download: [ ', dict_source_file_quaterly_repeated, ' ]', sep = ''))
+  #  download.file(paste(download_base_dir, dict_source_file_quaterly_repeated, '?raw=true', sep = ''), destfile=dict_dest_file_weekly_repeated, mode = "wb", method="libcurl", quiet = TRUE)
   #}
   
   message('  Successfully downloaded dictionaries')
@@ -132,7 +132,7 @@ lc.dict.import <- local(function(project, dict_version, dict_kind, cohort_id, da
   # for dict_kind == outcome
   json_weekly_repeated <- sprintf('{"entityType":"Participant","name":"%s"}', dict_table_weekly_repeated)
   # for dict_kind == core
-  json_quaterly_repeated <- sprintf('{"entityType":"Participant","name":"%s"}', dict_table_quately_repeated)
+  json_quaterly_repeated <- sprintf('{"entityType":"Participant","name":"%s"}', dict_table_quaterly_repeated)
   
   tables <- opal.tables(lifecycle.globals$opal, project)
   
