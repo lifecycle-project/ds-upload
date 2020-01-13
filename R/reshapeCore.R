@@ -121,7 +121,7 @@ lc.reshape.core.generate.yearly.repeated <- local(function(lc_data, upload_to_op
   yearly_repeated <- c(lc.variables.primary.keys(), lc.variables.core.yearly.repeated())
   yearly_repeated_measures <- lc_data[,yearly_repeated]
   
-  if(nrow(yearly_repeated_measures[complete.cases(yearly_repeated_measures),]) <= 0) {
+  if(nrow(lc.data.frame.remove.all.na.rows(yearly_repeated_measures)) <= 0) {
     message('* WARNING: No yearly repeated measures found in this set')
     return()
   } 
@@ -190,7 +190,7 @@ lc.reshape.core.generate.monthly.repeated <- local(function(lc_data, upload_to_o
   monthly_repeated <- c(lc.variables.primary.keys(), lc.variables.core.monthly.repeated())
   monthly_repeated_measures <- lc_data[,monthly_repeated]
   
-  if(nrow(monthly_repeated_measures[complete.cases(monthly_repeated_measures),]) <= 0) {
+  if(nrow(lc.data.frame.remove.all.na.rows(monthly_repeated_measures)) <= 0) {
     message('* WARNING: No monthly repeated measures found in this set')
     return()
   } 
