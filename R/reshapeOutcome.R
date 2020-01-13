@@ -212,9 +212,14 @@ lc.reshape.outcome.generate.yearly.repeated <- local(
   yearly_repeated <- c(lc.variables.primary.keys(), lc.variables.outcome.yearly.repeated())
   yearly_repeated_measures <- lc_data[,yearly_repeated]
   
+  if(nrow(lc.data.frame.remove.all.na.rows(yearly_repeated_measures)) <= 0) {
+    message('* WARNING: No monthly repeated measures found in this set')
+    return()
+  } 
+  
   # First re-arrange the whole data set to long format, unspecific for variable
   long_1 <- yearly_repeated_measures %>% 
-    gather(orig_var, int_raw_, lc.variables.outcome.yearly.repeated(), na.rm=FALSE)
+    gather(orig_var, int_raw_, lc.variables.outcome.yearly.repeated(), na.rm=TRUE)
   
   # Create the age_years variable with the regular expression extraction of the year
   long_1$age_years <- as.numeric(numextract(long_1$orig_var))
@@ -244,20 +249,8 @@ lc.reshape.outcome.generate.yearly.repeated <- local(
   # Subset of data with age_years > 0
   later_year <- long_yearly %>% filter(age_years > 0)
   
-  # Remove all the rows that are missing only
-  later_year <- later_year[
-    rowSums(is.na(later_year[,unique(long_1$variable_trunc)])) < 
-      length(later_year[,unique(long_1$variable_trunc)]),
-    ]
-  
   # Bind the 0 year and older data sets together 
   long_yearly <- rbind(zero_year,later_year)
-  
-  # strip fully na columns
-  long_yearly <- long_yearly[
-    ,colSums(is.na(long_yearly))<
-      nrow(long_yearly)
-    ]
   
   write_csv(
     long_yearly, 
@@ -317,9 +310,14 @@ lc.reshape.outcome.generate.monthly.repeated <- local(
   
   monthly_repeated_measures <- lc_data[,monthly_repeated]
   
+  if(nrow(lc.data.frame.remove.all.na.rows(monthly_repeated_measures)) <= 0) {
+    message('* WARNING: No monthly repeated measures found in this set')
+    return()
+  } 
+  
   # First re-arrange the whole data set to long format, unspecific for variable
   long_1 <- monthly_repeated_measures %>% gather(
-    orig_var, heightmes_, lc.variables.outcome.monthly.repeated(), na.rm=FALSE
+    orig_var, heightmes_, lc.variables.outcome.monthly.repeated(), na.rm=TRUE
     )
   
   # Create the age_years and age_months variables with the regular expression extraction of the year
@@ -350,18 +348,8 @@ lc.reshape.outcome.generate.monthly.repeated <- local(
   later_monthly <- long_monthly %>%
     filter(age_months > 0)
   
-  # Remove all the rows that are missing only: rowSums and is.na combined indicate if 0 or all columns are NA (4), and
-  # remove the rows with rowSum values of 4
-  later_monthly <- later_monthly[
-    rowSums(is.na(later_monthly[,unique(long_1$variable_trunc)])) < 
-      length(later_monthly[,unique(long_1$variable_trunc)]),
-    ]
-  
   # Bind the 0 year and older data sets together 
   long_monthly <- rbind(zero_monthly,later_monthly)
-  
-  # strip completely missing columns
-  long_monthly <- long_monthly[,colSums(is.na(long_monthly))<nrow(long_monthly)]
   
   write_csv(
     long_monthly, 
@@ -420,9 +408,14 @@ lc.reshape.outcome.generate.weekly.repeated <- local(
     
     weekly_repeated_measures <- lc_data[,weekly_repeated]
     
+    if(nrow(lc.data.frame.remove.all.na.rows(weekly_repeated_measures)) <= 0) {
+      message('* WARNING: No weekly repeated measures found in this set')
+      return()
+    } 
+    
     # First re-arrange the whole data set to long format, unspecific for variable
     long_1 <- weekly_repeated_measures %>% gather(
-      orig_var, m_sbp_, lc.variables.outcome.weekly.repeated(), na.rm=FALSE
+      orig_var, m_sbp_, lc.variables.outcome.weekly.repeated(), na.rm=TRUE
     )
     
     # Create the age_years and age_months variables with the regular expression extraction of the year
@@ -454,19 +447,9 @@ lc.reshape.outcome.generate.weekly.repeated <- local(
     later_weekly <- long_weekly %>%
       filter(age_weeks > 0)
     
-    # Remove all the rows that are missing only: rowSums and is.na combined indicate if 0 or all columns are NA (4), and
-    # remove the rows with rowSum values of 4
-    later_weekly <- later_weekly[
-       rowSums(is.na(later_weekly[,unique(long_1$variable_trunc)])) < 
-         length(later_weekly[,unique(long_1$variable_trunc)]),
-    ]
-    
     # Bind the 0 year and older data sets together 
     long_weekly <- rbind(zero_weekly,later_weekly)
-    
-    # strip completely missing columns
-    long_weekly <- long_weekly[,colSums(is.na(long_weekly))<nrow(long_weekly)]
-    
+
     write_csv(
       long_weekly, 
       paste(output_path, '/', 

@@ -60,3 +60,24 @@ lc.reshape.import <- local(function(file_prefix, dict_kind, file_version, file_n
   
   message('  Succesfully imported the files')
 })
+
+#' Get the table without rows containing only NA's. 
+#' 
+#' We have to remove the first column (child_id), that is generated always.
+#' 
+#' @param dataframe dataframe to check
+#' 
+#' @importFrom dyplr is.na %>%
+#'
+#' @returnfiltered dataframe
+#'
+lc.data.frame.remove.all.na.rows <- local(function(dataframe) {
+  
+  df <- dataframe[ -c(1) ]
+  
+  naLines <- df %>%
+    is.na() %>%
+    apply(MARGIN = 1, FUN = all)
+  
+  return(df[!naLines,])
+})
