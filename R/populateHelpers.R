@@ -100,10 +100,10 @@ lc.dict.download <- local(function(dict_version, dict_kind, cohort_id, data_vers
     message(paste('* Download: [ ', dict_source_file_weekly_repeated, ' ]', sep = ''))
     download.file(paste(download_base_dir, dict_source_file_weekly_repeated, '?raw=true', sep = ''), destfile=dict_dest_file_weekly_repeated, mode = "wb", method="libcurl", quiet = TRUE)
   }
-  #if(dict_kind == 'core') {
-  #  message(paste('* Download: [ ', dict_source_file_quaterly_repeated, ' ]', sep = ''))
-  #  download.file(paste(download_base_dir, dict_source_file_quaterly_repeated, '?raw=true', sep = ''), destfile=dict_dest_file_weekly_repeated, mode = "wb", method="libcurl", quiet = TRUE)
-  #}
+  if(dict_kind == 'core') {
+    message(paste('* Download: [ ', dict_source_file_quaterly_repeated, ' ]', sep = ''))
+    download.file(paste(download_base_dir, dict_source_file_quaterly_repeated, '?raw=true', sep = ''), destfile=dict_dest_file_weekly_repeated, mode = "wb", method="libcurl", quiet = TRUE)
+  }
   
   message('  Successfully downloaded dictionaries')
 })
@@ -179,23 +179,23 @@ lc.dict.import <- local(function(project, dict_version, dict_kind, cohort_id, da
   variables_monthly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', dict_table_monthly_repeated, '.xlsx', sep = ''), sheet = 1)
   
   categories_non_repeated_measures <- read_xlsx(path = paste(getwd(), '/', dict_table_non_repeated, '.xlsx', sep = ''), sheet = 2)
-  categories_monthly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', dict_table_yearly_repeated, '.xlsx', sep = ''), sheet = 2)
-  categories_yearly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', dict_table_monthly_repeated, '.xlsx', sep = ''), sheet = 2)
+  categories_monthly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', dict_table_monthly_repeated, '.xlsx', sep = ''), sheet = 2)
+  categories_yearly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', dict_table_yearly_repeated, '.xlsx', sep = ''), sheet = 2)
   
   lc.populate.match.categories(project, dict_table_non_repeated, variables_non_repeated_measures, categories_non_repeated_measures, paste(dict_table_non_repeated, '.xlsx', sep = ''))
-  lc.populate.match.categories(project, dict_table_monthly_repeated, variables_monthly_repeated_measures, categories_monthly_repeated_measures, paste(dict_table_yearly_repeated, '.xlsx', sep = ''))
-  lc.populate.match.categories(project, dict_table_yearly_repeated, variables_yearly_repeated_measures, categories_yearly_repeated_measures, paste(dict_table_monthly_repeated, '.xlsx', sep = ''))
+  lc.populate.match.categories(project, dict_table_monthly_repeated, variables_monthly_repeated_measures, categories_monthly_repeated_measures, paste(dict_table_monthly_repeated, '.xlsx', sep = ''))
+  lc.populate.match.categories(project, dict_table_yearly_repeated, variables_yearly_repeated_measures, categories_yearly_repeated_measures, paste(dict_table_yearly_repeated, '.xlsx', sep = ''))
   
   if(dict_kind == 'outcome') {
     variables_weekly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', dict_table_weekly_repeated, '.xlsx', sep = ''), sheet = 1)
     categories_weekly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', dict_table_weekly_repeated, '.xlsx', sep = ''), sheet = 2)
     lc.populate.match.categories(project, dict_table_weekly_repeated, variables_weekly_repeated_measures, categories_weekly_repeated_measures, paste(dict_table_weekly_repeated, '.xlsx', sep = ''))
   }  
-  #if(dict_kind == 'core') {
-  #  variables_quaterly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', dict_table_quaterly_repeated, '.xlsx', sep = ''), sheet = 1)
-  #  categories_quaterly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', dict_table_quaterly_repeated, '.xlsx', sep = ''), sheet = 2)
-  #  lc.populate.match.categories(project, dict_table_quaterly_repeated, variables_quaterly_repeated_measures, categories_quaterly_repeated_measures, paste(dict_table_quaterly_repeated, '.xlsx', sep = ''))
-  #}
+  if(dict_kind == 'core') {
+    variables_quaterly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', dict_table_quaterly_repeated, '.xlsx', sep = ''), sheet = 1)
+    categories_quaterly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', dict_table_quaterly_repeated, '.xlsx', sep = ''), sheet = 2)
+    lc.populate.match.categories(project, dict_table_quaterly_repeated, variables_quaterly_repeated_measures, categories_quaterly_repeated_measures, paste(dict_table_quaterly_repeated, '.xlsx', sep = ''))
+  }
   
   message('  All dictionaries are populated correctly')
 })
