@@ -266,38 +266,38 @@ lc.reshape.core.generate.quarterly.repeated <- local(function(lc_data, upload_to
   } 
   
   # First re-arrange the whole data set to long format, unspecific for variable
-  long_1 <- quaterly_repeated_measures %>% 
-    gather(orig_var, height_, lc.variables.core.quaterly.repeated(), na.rm=TRUE)
+  long_1 <- quarterly_repeated_measures %>% 
+    gather(orig_var, smk_t, lc.variables.core.quarterly.repeated(), na.rm=TRUE)
   
   # Create the age_years and age_months variables with the regular expression extraction of the year
   long_1$age_years  <- as.integer(as.numeric(numextract(long_1$orig_var))/4)
-  long_1$age_quarterly <- as.numeric(numextract(long_1$orig_var))
+  long_1$age_quarters <- as.numeric(numextract(long_1$orig_var))
   
   # Here we remove the year indicator from the original variable name
   long_1$variable_trunc <- gsub('[[:digit:]]+$', '', long_1$orig_var)
   
   # Use the data.table package for spreading the data again, as tidyverse ruins into memory issues 
-  long_2 <- dcast(long_1, child_id + age_years + age_quarterly ~ variable_trunc, value.var = "smk_t")
+  long_2 <- dcast(long_1, child_id + age_years + age_quarters ~ variable_trunc, value.var = "smk_t")
   
   # Create a row_id so there is a unique identifier for the rows
   long_2$row_id <- c(1:length(long_2$child_id))
   
   # Arrange the variable names based on the original order
-  long_quaterly <- long_2[,c("row_id", "child_id", "age_years", "age_quarterly", unique(long_1$variable_trunc))]
+  long_quarterly <- long_2[,c("row_id", "child_id", "age_years", "age_quarters", unique(long_1$variable_trunc))]
   
   # As the data table is still too big for opal, remove those
   # rows, that have only missing values, but keep all rows at age_years=0, so
   # no child_id get's lost:
   
   # Subset of data with age_months = 0
-  zero_quaterly <- long_quaterly %>%
-    filter(age_quarterly %in% 0)
+  zero_quarterly <- long_quarterly %>%
+    filter(age_quarters %in% 0)
   
   # Subset of data with age_months > 0
-  long_quaterly <- long_quaterly %>%
-    filter(age_quarterly > 0)
+  long_quarterly <- long_quarterly %>%
+    filter(age_quarters > 0)
   
-  write_csv(long_quaterly, paste(output_path, '/', file_prefix, '_', dict_kind, '_', file_version, '_', file_name, '.csv', sep=""), na = "")
+  write_csv(long_quarterly, paste(output_path, '/', file_prefix, '_', dict_kind, '_', file_version, '_', file_name, '.csv', sep=""), na = "")
   
   if(upload_to_opal) {
     lc.reshape.upload(file_prefix, dict_kind, file_version, file_name)

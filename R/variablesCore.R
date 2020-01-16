@@ -238,7 +238,7 @@ lc.variables.core.monthly.repeated <- local(function() {
   return(as.vector(outer(c("height_","height_age","weight_","weight_age"), 0:215, paste, sep = '')))
 })
 
-lc.variables.core.quaterly.repeated <- local(function() {
+lc.variables.core.quarterly.repeated <- local(function() {
   return(as.vector(outer(c(
     "smk_t","alc_t","no2_t","nox_t","pm10_t","pm25_t","pmcoarse_t","pm25abs_t","pm25cu_t","pm25fe_t",
     "pm25k_t","pm25ni_t","pm25s_t","pm25si_t","pm25v_t","pm25zn_t","pm10cu_t","pm10fe_t","pm10k_t",
@@ -250,5 +250,5 @@ lc.variables.core.quaterly.repeated <- local(function() {
     "ndvi500_t","lden_t","ln_t","lden_c_t","ln_c_t","noise_dist_t","areases_tert_t","areases_quint_t","distinvnear1_t",
     "trafload100_t","trafmajorload100_t","trafnear_t","foodenvdens300_t","foodenvdensosm300_t","tm_t","tmin_t","tmax_t",
     "hum_t","hmin_t","hmax_t","uvddc_t","uvdec_t","uvdvc_t","lst_t"
-  ), 0:3, paste, sep = "")))
+  ), 1:3, paste, sep = "")))
 })
