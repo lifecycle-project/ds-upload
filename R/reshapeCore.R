@@ -252,7 +252,7 @@ lc.reshape.core.generate.monthly.repeated <- local(function(lc_data, upload_to_o
 #' 
 lc.reshape.core.generate.quarterly.repeated <- local(function(lc_data, upload_to_opal, output_path, file_prefix, dict_kind, file_version, file_name) {
   # workaround to avoid glpobal variable warnings, check: https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
-  orig_var <- height_ <- age_months <- NULL
+  orig_var <- smk_t <- age_quarters <- NULL
   
   message('* Generating: quaterly-repeated measures')
   
