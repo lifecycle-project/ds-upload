@@ -96,7 +96,7 @@ lc.dict.download <- local(function(dict_version, dict_kind, cohort_id, data_vers
   message(paste('* Download: [ ', dict_source_file_yearly_repeated, ' ]', sep = ''))
   download.file(paste(download_base_dir, dict_source_file_yearly_repeated, '?raw=true', sep = ''), destfile=dict_dest_file_yearly_repeated, mode = "wb", method="libcurl", quiet = TRUE)
   
-  if(dict_kind == 'outcome' && dict_version != '1_0') {
+  if(dict_kind == 'outcome') {
     message(paste('* Download: [ ', dict_source_file_weekly_repeated, ' ]', sep = ''))
     download.file(paste(download_base_dir, dict_source_file_weekly_repeated, '?raw=true', sep = ''), destfile=dict_dest_file_weekly_repeated, mode = "wb", method="libcurl", quiet = TRUE)
   }
@@ -161,15 +161,11 @@ lc.dict.import <- local(function(project, dict_version, dict_kind, cohort_id, da
     message(paste('* Table: [ ', dict_table_yearly_repeated,' ] already exists', sep = ''))
   }
   
-  if(!(dict_table_weekly_repeated %in% tables$name) && dict_kind == 'outcome' && dict_version != '1_0') {
+  if(!(dict_table_weekly_repeated %in% tables$name) && dict_kind == 'outcome') {
     message(paste('* Create table: [ ', dict_table_weekly_repeated,' ]', sep = ''))
     opal.post(lifecycle.globals$opal, 'datasource', project, 'tables', body=json_weekly_repeated, contentType = 'application/x-protobuf+json')
   } else {
-    if(dict_version != '1_0') {
-      message(paste('* Table: [ ', dict_table_weekly_repeated,' ] already exists', sep = ''))
-    } else {
-      message(paste('* No table: [ ', dict_table_weekly_repeated,' ] available for version: [ ', dict_version, ' ]', sep = ''))
-    }
+    message(paste('* No table: [ ', dict_table_weekly_repeated,' ] available for version: [ ', dict_version, ' ]', sep = ''))
   }
   if(!(dict_table_quarterly_repeated %in% tables$name) && dict_kind == 'core' && dict_version != '1_0') {
     message(paste('* Create table: [ ', dict_table_quarterly_repeated,' ]', sep = ''))
@@ -194,7 +190,7 @@ lc.dict.import <- local(function(project, dict_version, dict_kind, cohort_id, da
   lc.populate.match.categories(project, dict_table_monthly_repeated, variables_monthly_repeated_measures, categories_monthly_repeated_measures, paste(dict_table_monthly_repeated, '.xlsx', sep = ''))
   lc.populate.match.categories(project, dict_table_yearly_repeated, variables_yearly_repeated_measures, categories_yearly_repeated_measures, paste(dict_table_yearly_repeated, '.xlsx', sep = ''))
   
-  if(dict_kind == 'outcome' && dict_version != '1_0') {
+  if(dict_kind == 'outcome') {
     variables_weekly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', dict_table_weekly_repeated, '.xlsx', sep = ''), sheet = 1)
     categories_weekly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', dict_table_weekly_repeated, '.xlsx', sep = ''), sheet = 2)
     lc.populate.match.categories(project, dict_table_weekly_repeated, variables_weekly_repeated_measures, categories_weekly_repeated_measures, paste(dict_table_weekly_repeated, '.xlsx', sep = ''))
