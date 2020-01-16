@@ -42,7 +42,7 @@ lc.reshape.core <- local(function(upload_to_opal = TRUE, data_version, input_for
   
   # Check which variables are missing in the study as compared to the full variable list (if character(0), continue, otherwise
   # check the list of variables in the original harmonized data)
-  lc_variables <- c(lc.variables.primary.keys(), lc.variables.core.non.repeated(), lc.variables.core.yearly.repeated(), lc.variables.core.monthly.repeated())
+  lc_variables <- c(lc.variables.primary.keys(), lc.variables.core.non.repeated(), lc.variables.core.yearly.repeated(), lc.variables.core.monthly.repeated(), lc.variables.core.quarterly.repeated())
   missing <- setdiff(lc_variables, names(lc_data))
   # Ammend the data with columns
   lc_data[missing] <- NA
