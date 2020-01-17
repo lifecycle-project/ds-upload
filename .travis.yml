@@ -13,7 +13,6 @@ cache:
 
 r:
   - release
-  - oldrel
 
 script:
   - R CMD build . --compact-vignettes=gs+qpdf
