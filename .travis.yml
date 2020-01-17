@@ -1,15 +1,12 @@
-language: r
-dist: xenial
-latex: false
-
-branches:
-  only:
-  - master
+language: R
 
 cache:
   packages: yes
-directories:
-  - $HOME/bin
+
+r:
+  - release
+  - devel
+  - oldrel
 
 script:
   - R CMD build . --compact-vignettes=gs+qpdf
