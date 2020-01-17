@@ -4,6 +4,10 @@ os:
  - linux
  - windows
 
+repos:
+  CRAN: https://cloud.r-project.org
+  molgenis: https://registry.molgenis.org/repository/R/
+
 cache:
   packages: yes
 
