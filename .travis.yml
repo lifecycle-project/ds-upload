@@ -1,11 +1,14 @@
-language: R
+language: r
+
+os: 
+ - linux
+ - windows
 
 cache:
   packages: yes
 
 r:
   - release
-  - devel
   - oldrel
 
 script:
