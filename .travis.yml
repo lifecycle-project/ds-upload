@@ -1,0 +1,16 @@
+language: r
+dist: xenial
+latex: false
+
+branches:
+  only:
+  - master
+
+cache:
+  packages: yes
+directories:
+  - $HOME/bin
+
+script:
+  - R CMD build . --compact-vignettes=gs+qpdf
+  - R CMD check *tar.gz --as-cran
