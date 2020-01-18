@@ -1,9 +1,5 @@
 language: r
 
-os: 
- - linux
- - windows
-
 repos:
   CRAN: https://cloud.r-project.org
   molgenis: https://registry.molgenis.org/repository/R/
@@ -11,9 +7,18 @@ repos:
 cache:
   packages: yes
 
-r:
-  - release
+matrix:
+  include:
+  - os: linux
+    r: release
+    script:
+      - R CMD build . --compact-vignettes=gs+qpdf
+      - R CMD check *tar.gz --as-cran
+  - os: windows
+    language: shell
+    before_install:
+      - source .ci/.travis.win.install.sh
+    script:
+      - R.exe CMD build . --compact-vignettes=gs+qpdf
+      - R.exe CMD check $PKG_TARBALL --no-manual --as-cran --install-args=--build
 
-script:
-  - R CMD build . --compact-vignettes=gs+qpdf
-  - R CMD check *tar.gz --as-cran
