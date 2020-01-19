@@ -21,3 +21,4 @@ matrix:
     script:
       - R.exe CMD build . --compact-vignettes=gs+qpdf
       - R.exe CMD check *tar.gz --as-cran
+      - R.exe CMD build . --binary
