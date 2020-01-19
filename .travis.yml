@@ -19,6 +19,7 @@ matrix:
     before_install:
       - source .ci/.travis.win.install.sh
     script:
-      - R.exe CMD build --binary .
+      - R.exe CMD build . --compact-vignettes=gs+qpdf
+      - R.exe CMD INSTALL --build .
       - R.exe CMD check *.zip --as-cran
 
