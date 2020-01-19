@@ -20,5 +20,4 @@ matrix:
       - source .ci/.travis.win.install.sh
     script:
       - R.exe CMD build . --compact-vignettes=gs+qpdf
-      - R.exe CMD check $PKG_TARBALL --no-manual --as-cran --install-args=--build
-
+      - R.exe CMD check *tar.gz --as-cran
