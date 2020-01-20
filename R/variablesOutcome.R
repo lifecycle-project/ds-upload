@@ -14,8 +14,8 @@ lc.variables.outcome.non.repeated <- local(function() {
    "leptin_cord", "chol_cord", "hdlc_cord", "ldlc_cord", "vldlc_cord", "triglycerides_cord",
    "eczema_m", "allergy_inh_m", "allergy_food_m", "allergy_any_m", "whe_ever", "whe_ever2",
    "whe_ever4", "whe_ever5_10", "asthma_ever_CHICOS", "asthma_ever_MeDALL", "asthma_current_MeDALL", 
-   "asthma_current_CHICOS", "food_all_ever", "inh_all_ever", "all_ever", "urticaria", "anaphylaxis", 
-   "eczema_ever", "asthma_adult", "COPD_adult_GOLD", "COPD_adult_LLN", "COPD_adult_diagnosis", "pets_pregn"))
+   "asthma_current_ISAAC", "food_all_ever", "inh_all_ever", "all_ever", "urticaria", "anaphylaxis", 
+   "eczema_ever", "asthma_adult", "COPD_adult_GOLD", "COPD_adult_LLN", "COPD_adult_diagnosis", "pets_preg"))
 })
 
 #' List all measures for yearly repeated meaures for the outcome variables
