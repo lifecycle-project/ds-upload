@@ -104,3 +104,5 @@ git push origin x.x.x
 ```
 
 This is used to download the data dictionaries, so do not forget to do this!
+
+Soon this wqill be replaced by travis-ci.

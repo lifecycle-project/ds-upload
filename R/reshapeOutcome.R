@@ -143,6 +143,11 @@ lc.reshape.outcome.generate.non.repeated <- local(
   
   non_repeated_measures <- lc_data[,non_repeated]
   
+  if(nrow(lc.data.frame.remove.all.na.rows(non_repeated_measures)) <= 0) {
+    message('* WARNING: No non-repeated measures found in this set')
+    return()
+  } 
+  
   non_repeated_measures <- non_repeated_measures[,colSums(
     is.na(non_repeated_measures))<nrow(non_repeated_measures)
     ]
@@ -213,7 +218,7 @@ lc.reshape.outcome.generate.yearly.repeated <- local(
   yearly_repeated_measures <- lc_data[,yearly_repeated]
   
   if(nrow(lc.data.frame.remove.all.na.rows(yearly_repeated_measures)) <= 0) {
-    message('* WARNING: No monthly repeated measures found in this set')
+    message('* WARNING: No yearly-repeated measures found in this set')
     return()
   } 
   
@@ -409,7 +414,7 @@ lc.reshape.outcome.generate.weekly.repeated <- local(
     weekly_repeated_measures <- lc_data[,weekly_repeated]
     
     if(nrow(lc.data.frame.remove.all.na.rows(weekly_repeated_measures)) <= 0) {
-      message('* WARNING: No weekly repeated measures found in this set')
+      message('* WARNING: No weekly-repeated measures found in this set')
       return()
     } 
     
