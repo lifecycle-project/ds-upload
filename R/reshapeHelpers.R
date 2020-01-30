@@ -67,7 +67,7 @@ lc.reshape.import <- local(function(file_prefix, dict_kind, file_version, file_n
 #' 
 #' @param dataframe dataframe to check
 #' 
-#' @importFrom dyplr is.na %>%
+#' @importFrom dplyr %>%
 #'
 #' @returnfiltered dataframe
 #'
