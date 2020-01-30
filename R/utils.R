@@ -7,7 +7,7 @@ lifecycle.globals$input_formats <- c('CSV', 'STATA', 'SPSS', 'SAS')
 lifecycle.globals$variable_category <- c('ALL','META','MATERNAL','PATERNAL','CHILD','HOUSEHOLD')
 lifecycle.globals$cohort_ids <- cohorts
 
-lifecycle.globals$dictionaries_core <- c('1_0', '1_1')
+lifecycle.globals$dictionaries_core <- c('1_0', '2_0')
 lifecycle.globals$dictionaries_outcome <- c('1_0')
 
 #' Numerical extraction function
