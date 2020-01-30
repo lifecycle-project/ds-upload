@@ -87,7 +87,10 @@ lc.variables.core.monthly.repeated <- local(function() {
   return(as.vector(outer(c("height_","height_age","weight_","weight_age"), 0:215, paste, sep = "")))
 })
 
-lc.variables.core.quarterly.repeated <- local(function() {
+#' List all measures for trimesterly repeated meaures for the core variables
+#'
+#' @return list with trimesterly repeated measures for the core variables
+lc.variables.core.trimester.repeated <- local(function() {
   return(as.vector(outer(c(
     "smk_t","alc_t","no2_t","nox_t","pm10_t","pm25_t","pmcoarse_t","pm25abs_t","pm25cu_t","pm25fe_t",
     "pm25k_t","pm25ni_t","pm25s_t","pm25si_t","pm25v_t","pm25zn_t","pm10cu_t","pm10fe_t","pm10k_t",
