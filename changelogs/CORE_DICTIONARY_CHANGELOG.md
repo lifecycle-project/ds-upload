@@ -1,7 +1,7 @@
 # Versions of data dictionaries (core = wp1 and wp3)
 We define here in what versions of the data dictionaries contains which tables.
 
-## 1.1
+## 2.0
 **lifecycleProject R-package version >= 1.1.0**
 
 Additional variables from WP3 and changes in the lifecycle variables.
