@@ -45,8 +45,8 @@ lc.populate.outcome <- local(function(dict_version = '1_0', cohort_id, data_vers
   project <- paste('lc_', dict_kind, '_', cohort_id, '_', dict_version, sep = '')
   
   lc.dict.project.create(dict_version, dict_kind, cohort_id, project, database_name)
-  lc.dict.download(dict_version, dict_kind, cohort_id, data_version)
-  lc.dict.import(project, dict_version, dict_kind, cohort_id, data_version)
+  lc.dict.download(dict_version, dict_kind, data_version)
+  lc.dict.import(project, dict_version, dict_kind, data_version)
   
   message('######################################################')
   message('  Importing data dictionaries has finished            ')

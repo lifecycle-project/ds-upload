@@ -59,7 +59,7 @@ lc.dict.project.create <- local(function(dict_version, dict_kind = 'core', cohor
 #' 
 #' @importFrom utils download.file
 #' 
-lc.dict.download <- local(function(dict_version, dict_kind, cohort_id, data_version) {
+lc.dict.download <- local(function(dict_version, dict_kind, data_version) {
   message('------------------------------------------------------')
   message('  Start download dictionaries')
   packageTag <- packageVersion('lifecycleProject')
@@ -80,14 +80,14 @@ lc.dict.download <- local(function(dict_version, dict_kind, cohort_id, data_vers
   # for dict_kind == core
   dict_source_file_trimester_rep <- paste(dict_version, '_trimester_rep.xlsx', sep = '')
   
-  dict_dest_file_non_rep <- paste(dict_version, '_', dict_kind, '_', cohort_id, '_', data_version, '_non_rep.xlsx', sep = '')
-  dict_dest_file_monthly_rep <- paste(dict_version, '_', dict_kind, '_', cohort_id, '_', data_version,'_monthly_rep.xlsx', sep = '')
-  dict_dest_file_yearly_rep <- paste(dict_version, '_', dict_kind, '_', cohort_id, '_', data_version, '_yearly_rep.xlsx', sep = '')
+  dict_dest_file_non_rep <- paste(dict_version, '_', dict_kind, '_', data_version, '_non_rep.xlsx', sep = '')
+  dict_dest_file_monthly_rep <- paste(dict_version, '_', dict_kind, '_', data_version,'_monthly_rep.xlsx', sep = '')
+  dict_dest_file_yearly_rep <- paste(dict_version, '_', dict_kind, '_', data_version, '_yearly_rep.xlsx', sep = '')
   
   # for dict_kind == outcome
-  dict_dest_file_weekly_rep <- paste(dict_version, '_', dict_kind, '_', cohort_id, '_', data_version, '_weekly_rep.xlsx', sep = '')
+  dict_dest_file_weekly_rep <- paste(dict_version, '_', dict_kind, '_', data_version, '_weekly_rep.xlsx', sep = '')
   # for dict_kind == core
-  dict_dest_file_trimester_rep <- paste(dict_version, '_', dict_kind, '_', cohort_id, '_', data_version, '_trimester_rep.xlsx', sep = '')
+  dict_dest_file_trimester_rep <- paste(dict_version, '_', dict_kind, '_', data_version, '_trimester_rep.xlsx', sep = '')
   
   message(paste('* Download: [ ', dict_source_file_non_rep, ' ]', sep = ''))
   download.file(paste(download_base_dir, dict_source_file_non_rep, '?raw=true', sep = ''), destfile=dict_dest_file_non_rep, mode = "wb", method="libcurl", quiet = TRUE)
@@ -113,23 +113,22 @@ lc.dict.download <- local(function(dict_version, dict_kind, cohort_id, data_vers
 #' @param project project resource in Opal
 #' @param dict_version dictionary version (possible dictionaries are: 1_0, 2_0 / default = 2_0)
 #' @param dict_kind can be 'core' or 'outcome'
-#' @param cohort_id cohort identifier (possible values are: 'dnbc', 'gecko', 'alspac', 'genr', 'moba', 'sws', 'bib', 'chop', 'elfe', 'eden', 'ninfea', 'hbcs', 'inma', 'isglobal', 'nfbc66', 'nfbc86', 'raine', 'rhea')
 #' @param data_version version of the data (specific to the cohort)
 #' 
 #' @importFrom readxl read_xlsx
 #' 
-lc.dict.import <- local(function(project, dict_version, dict_kind, cohort_id, data_version) {
+lc.dict.import <- local(function(project, dict_version, dict_kind, data_version) {
   message('------------------------------------------------------')
   message('  Start importing dictionaries')
   
-  dict_table_non_rep <- paste(dict_version, '_', dict_kind, '_', cohort_id, '_', data_version, '_non_rep', sep = '')
-  dict_table_monthly_rep <- paste(dict_version, '_', dict_kind, '_', cohort_id, '_', data_version, '_monthly_rep', sep = '')
-  dict_table_yearly_rep <- paste(dict_version, '_', dict_kind, '_', cohort_id, '_', data_version, '_yearly_rep', sep = '')
+  dict_table_non_rep <- paste(dict_version, '_', dict_kind, '_', data_version, '_non_rep', sep = '')
+  dict_table_monthly_rep <- paste(dict_version, '_', dict_kind, '_', data_version, '_monthly_rep', sep = '')
+  dict_table_yearly_rep <- paste(dict_version, '_', dict_kind, '_', data_version, '_yearly_rep', sep = '')
   
   # for dict_kind == outcome
-  dict_table_weekly_rep <- paste(dict_version, '_', dict_kind, '_', cohort_id, '_', data_version, '_weekly_rep', sep = '')
+  dict_table_weekly_rep <- paste(dict_version, '_', dict_kind, '_', data_version, '_weekly_rep', sep = '')
   # for dict_kind == core
-  dict_table_trimester_rep <- paste(dict_version, '_', dict_kind, '_', cohort_id, '_', data_version, '_trimester_rep', sep = '')
+  dict_table_trimester_rep <- paste(dict_version, '_', dict_kind, '_', data_version, '_trimester_rep', sep = '')
   
   json_non_rep <- sprintf('{"entityType":"Participant","name":"%s"}', dict_table_non_rep)
   json_monthly_rep <- sprintf('{"entityType":"Participant","name":"%s"}', dict_table_monthly_rep)
