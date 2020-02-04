@@ -7,7 +7,8 @@ echo 'options(repos = "https://cloud.r-project.org")' > ~/.Rprofile.site &&
 export R_PROFILE=~/.Rprofile.site &&
 
 Rscript.exe -e 'sessionInfo()' &&
-Rscript.exe -e 'install.packages(c("devtools"));if (!all("devtools" %in% installed.packages())) { q(status = 1, save = "no")}' &&
+Rscript.exe -e 'install.packages(c("installr", "devtools"));if (!all("devtools" %in% installed.packages())) { q(status = 1, save = "no")}' &&
+Rscript.exe -e 'install.Rtools(choose_version = FALSE, check = TRUE, GUI = FALSE)' &&
 Rscript.exe -e 'deps <- devtools::dev_package_deps(dependencies = NA);devtools::install_deps(dependencies = TRUE)' &&
 Rscript.exe -e 'devtools::session_info(installed.packages()[, "Package"])' &&
 
