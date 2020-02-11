@@ -42,10 +42,22 @@ lc.reshape.core <- local(function(upload_to_opal = TRUE, data_version, input_for
   
   # Check which variables are missing in the study as compared to the full variable list (if character(0), continue, otherwise
   # check the list of variables in the original harmonized data)
-  lc_variables <- c(lc.variables.primary.keys(), lc.variables.core.non.repeated(), lc.variables.core.yearly.repeated(), lc.variables.core.monthly.repeated(), lc.variables.core.trimester.repeated())
-  missing <- setdiff(lc_variables, names(lc_data))
-  # Ammend the data with columns
-  lc_data[missing] <- NA
+  # We split the variables in different parts because of memory issues in larger datasets
+  missing_non <- setdiff(lc.variables.core.non.repeated(), names(lc_data))
+  missing_yearly <- setdiff(lc.variables.core.yearly.repeated(), names(lc_data))
+  missing_monthly <- setdiff(lc.variables.core.monthly.repeated(), names(lc_data))
+  missing_trimester <- setdiff(lc.variables.core.trimester.repeated(), names(lc_data))
+  missing_primary_key <- setdiff(lc.variables.primary.keys(), names(lc_data))
+  
+  message('------------------------------------------------------')
+  message('* Ammend the data with missing columns')
+  lc_data <- lc.data.frame.ammend.missing.columns(lc_data, missing_non)
+  lc_data <- lc.data.frame.ammend.missing.columns(lc_data, missing_yearly)
+  lc_data <- lc.data.frame.ammend.missing.columns(lc_data, missing_monthly)
+  lc_data <- lc.data.frame.ammend.missing.columns(lc_data, missing_trimester)
+  lc_data <- lc.data.frame.ammend.missing.columns(lc_data, missing_primary_key)
+  message('* Ammending missing columns finished')
+  message('------------------------------------------------------')
   
   dict_kind <- 'core'
   

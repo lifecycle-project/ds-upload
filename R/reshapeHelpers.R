@@ -89,6 +89,22 @@ lc.reshape.import <- local(function(file_prefix, dict_kind, file_version, file_n
   message('  Succesfully imported the files')
 })
 
+#'
+#' Ammend missing columns to the data and bootstrap them with "NA" values.
+#' 
+#' We need this in the reshape function, because we match the columns against the expected set.
+#'
+#' @return data the imported dataset
+#'
+lc.data.frame.ammend.missing.columns <- local(function(data, missing_columns) {
+  sublist_count <- 4000
+  lists_missing_columns <- split(missing_columns, rep(1:ceiling(length(missing_columns)/sublist_count), each=sublist_count)[1:length(missing_columns)])
+  for(list_missing_columns in lists_missing_columns) {
+    data[list_missing_columns] <- NA  
+  }
+  return(data)
+})
+
 #' Get the table without rows containing only NA's. 
 #' 
 #' We have to remove the first column (child_id), that is generated always.

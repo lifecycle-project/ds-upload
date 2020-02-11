@@ -29,7 +29,7 @@ lc.dict.project.create <- local(function(dict_version, dict_kind = 'core', cohor
 #' @param cohort_id cohort identifier (possible values are: 'dnbc', 'gecko', 'alspac', 'genr', 'moba', 'sws', 'bib', 'chop', 'elfe', 'eden', 'ninfea', 'hbcs', 'inma', 'isglobal', 'nfbc66', 'nfbc86', 'raine', 'rhea')
 #' @param data_version version of the data (specific to the cohort)
 #' 
-#' @importFrom utils download.file
+#' @importFrom utils download.file packageVersion
 #' 
 lc.dict.download <- local(function(dict_version, dict_kind, data_version) {
   message('------------------------------------------------------')

@@ -48,20 +48,24 @@ lc.reshape.outcome <- local(
   }
   
   # Check which variables are missing in the study as compared to the full variable list 
-  # (if character(0), continue, otherwise
-  # check the list of variables in the original harmonized data)
-  lc_variables <- c(
-    lc.variables.primary.keys(), 
-    lc.variables.outcome.non.repeated(), 
-    lc.variables.outcome.yearly.repeated(), 
-    lc.variables.outcome.monthly.repeated(),
-    lc.variables.outcome.weekly.repeated()
-    )
+  # (if character(0), continue, otherwise) check the list of variables in the original 
+  # harmonized data)
+  # We split the variables in different parts because of memory issues in larger datasets
+  missing_non <- setdiff(lc.variables.outcome.non.repeated(), names(lc_data))
+  missing_monthly <- setdiff(lc.variables.outcome.monthly.repeated(), names(lc_data))
+  missing_yearly <- setdiff(lc.variables.outcome.yearly.repeated(), names(lc_data))
+  missing_weekly <- setdiff(lc.variables.outcome.weekly.repeated(), names(lc_data))
+  missing_primary_key <- setdiff(lc.variables.primary.keys(), names(lc_data))
   
-  missing <- setdiff(lc_variables, names(lc_data))
-  
-  # Ammend the data with columns
-  lc_data[missing] <- NA
+  message('------------------------------------------------------')
+  message('* Ammend the data with missing columns')
+  lc_data <- lc.data.frame.ammend.missing.columns(lc_data, missing_non)
+  lc_data <- lc.data.frame.ammend.missing.columns(lc_data, missing_yearly)
+  lc_data <- lc.data.frame.ammend.missing.columns(lc_data, missing_monthly)
+  lc_data <- lc.data.frame.ammend.missing.columns(lc_data, missing_weekly)
+  lc_data <- lc.data.frame.ammend.missing.columns(lc_data, missing_primary_key)
+  message('* Ammending missing columns finished')
+  message('------------------------------------------------------')
   
   dict_kind <- 'outcome'
   
@@ -401,7 +405,7 @@ lc.reshape.outcome.generate.weekly.repeated <- local(
     file_name
   ) {
     # workaround to avoid glpobal variable warnings, check: https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
-    orig_var <- m_sbp_ <- g_age_weeks <- NULL # Gestational age in weeks
+    orig_var <- m_sbp_ <- age_weeks <-  NULL # Gestational age in weeks
     
     message('* Generating: weekly-repeated measures')
     
