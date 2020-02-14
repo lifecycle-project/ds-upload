@@ -17,11 +17,13 @@ lc.dict.download <- local(function(dict_version, dict_kind, cohort_id, data_vers
   dict_source_file_monthly_repeated <- paste(dict_version, '_monthly_repeated.xlsx', sep = '')
   dict_source_file_yearly_repeated <- paste(dict_version, '_yearly_repeated.xlsx', sep = '')
   dict_source_file_weekly_repeated <- paste(dict_version, '_weekly_repeated.xlsx', sep = '')
+  dict_source_file_quarterly_repeated <- paste(dict_version, '_quarterly_repeated.xlsx', sep = '')
   
   dict_dest_file_non_repeated <- paste(dict_version, '_', dict_kind, '_', cohort_id, '_', data_version, '_non_repeated.xlsx', sep = '')
   dict_dest_file_monthly_repeated <- paste(dict_version, '_', dict_kind, '_', cohort_id, '_', data_version,'_monthly_repeated.xlsx', sep = '')
   dict_dest_file_yearly_repeated <- paste(dict_version, '_', dict_kind, '_', cohort_id, '_', data_version, '_yearly_repeated.xlsx', sep = '')
   dict_dest_file_weekly_repeated <- paste(dict_version, '_', dict_kind, '_', cohort_id, '_', data_version, '_weekly_repeated.xlsx', sep = '')
+  dict_dest_file_quarterly_repeated <- paste(dict_version, '_', dict_kind, '_', cohort_id, '_', data_version, '_quarterly_repeated.xlsx', sep = '')
   
   message(paste('* Download: [ ', dict_source_file_non_repeated, ' ]', sep = ''))
   download.file(paste(download_base_dir, dict_source_file_non_repeated, '?raw=true', sep = ''), destfile=dict_dest_file_non_repeated, mode = "wb", method="libcurl", quiet = TRUE)
@@ -33,6 +35,11 @@ lc.dict.download <- local(function(dict_version, dict_kind, cohort_id, data_vers
   if(dict_kind == "outcome"){
     message(paste('* Download: [ ', dict_source_file_weekly_repeated, ' ]', sep = ''))
     download.file(paste(download_base_dir, dict_source_file_weekly_repeated, '?raw=true', sep = ''), destfile=dict_dest_file_weekly_repeated, mode = "wb", method="libcurl", quiet = TRUE)
+  }
+  
+  if(dict_kind == 'core' && dict_version != '1_0') {
+    message(paste('* Download: [ ', dict_source_file_quarterly_repeated, ' ]', sep = ''))
+    download.file(paste(download_base_dir, dict_source_file_quarterly_repeated, '?raw=true', sep = ''), destfile=dict_dest_file_quarterly_repeated, mode = "wb", method="libcurl", quiet = TRUE)
   }
   
   message('  Successfully downloaded dictionaries')
