@@ -3,3 +3,4 @@
 #' @return list with primary keys 
 lc.variables.primary.keys <- local(function() {
   return(c("child_id"))
+}
