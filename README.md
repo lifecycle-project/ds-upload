@@ -44,6 +44,7 @@ For WP4, 5 and 6 these tables are created:
 - 1_0_outcome_non_repeated.xslx
 - 1_0_outcome_yearly_repeated.xslx
 - 1_0_outcome_monthly_repeated.xslx
+- 1_0_outcome_weekly_repeated.xslx
 
 You need to place them into ```R/data/dictionaries/x_x``` as well. 
 
@@ -103,3 +104,5 @@ git push origin x.x.x
 ```
 
 This is used to download the data dictionaries, so do not forget to do this!
+
+Soon this wqill be replaced by travis-ci.

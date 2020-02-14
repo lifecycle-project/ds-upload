@@ -1,42 +1,36 @@
-# Versions of data dictionaries
+# Versions of data dictionaries (core = wp1 and wp3)
 We define here in what versions of the data dictionaries contains which tables.
 
-## 1.1
+## 2.0
 **lifecycleProject R-package version >= 1.1.0**
 
 Additional variables from WP3 and changes in the lifecycle variables.
 
 ### Content
 
-**EUSILC variables (task 3.1.1)**
+**General changes**
+* Create a seperate table for the trimester variables.
 
-| Variable               | Description                                                                  | Datatype    |
-| ---------------------- | ---------------------------------------------------------------------------- | ----------- |
-| eusilc_income          | Log-equivalised total disposable household income predicted                  | continuous  |
-| eusilc_income_quintiles| Quintiles of the log-equivalised total disposable household income predicted | categorical |
+**Workpackage 3**
+- EUSILC variables (task 3.1.1)
+- Migration variables (task 3.1.2)
+- (task 3.1.3)
+- (task 3.1.4)
 
-**Migration variables (task 3.1.2)** 
-
-| Variable     | Description                      | Datatype    |
-| ------------ | -------------------------------- | ----------- |
-| abroad_child | Child's born abroad	            | binary      |
-| abroad_mo	   | Mother's born abroad	            | binary      |
-| abroad_fa	   | Father's born abroad	            | binary      |
-| miggen_child | Child's migrant status	          | categorical |
-| region_mo	   | Mother’s world region of birth   | categorical |
-| region_fa	   | Father’s world region of birth	  | categorical |
-| reledu_mo	   | Mother’s educational selectivity | decimal     |
-| reledu_fa    | Father’s educational selectivity | decimal     |
+**Workpackage 1**
+* Changing the child_id's columntype to character to overcome the maximum integer problem
 
 ### Tables
-- 1_1_cohort_id_x_x_non_repeated_measures
+- 1_1_core_cohort-id_x_x_non_repeated_measures
+- 1_1_core_cohort-id_x_x_quaterly_measures
+- 1_1_core_cohort-id_x_x_yearly_measures
 
 ## 1.0
 **lifecycleProject R-package version >= 1.0.4**
 
 ### Content
 
-**LifeCycle variables**
+**Workpackage 1**
 Includes all lifecycle variables harmonised by all cohorts
 
 * art --> variable_id changed from **art** to **mar**
@@ -50,6 +44,6 @@ Includes all lifecycle variables harmonised by all cohorts
   * 2) Born in other country
 
 ### Tables
-- 1_0_cohort_id_x_x_non_repeated_measures
-- 1_0_cohort_id_x_x_monthly_repeated_measures
-- 1_0_cohort_id_x_x_yearly_repeated_measures
+- 1_0_cohort-id_x_x_non_repeated_measures
+- 1_0_cohort-id_x_x_monthly_repeated_measures
+- 1_0_cohort-id_x_x_yearly_repeated_measures

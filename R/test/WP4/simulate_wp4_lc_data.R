@@ -16,7 +16,7 @@ wp4.non.repeated <- setNames(data.frame(matrix(ncol = 4, nrow = 10000)), c(
   "glucose_cord", "insulin_cord", "crp_cord", "il6_cord"))
 
 wp4.weekly.repeated <- setNames(data.frame(matrix(ncol = 49, nrow = 10000)), outer(c(
-  'm_sbp_', 'm_dbp_', 'm_glucose_', 'm_hdl_', 'm_ldl_', 'm_chol_', 'm_triglycerides_'
+  'm_sbp_', 'm_dbp_', 'm_glucose_', 'm_hdlc_', 'm_ldlc_', 'm_chol_', 'm_triglycerides_'
 ), c(10, 14, 17, 25, 31, 37, 40), paste, sep = ''
 ))
 
