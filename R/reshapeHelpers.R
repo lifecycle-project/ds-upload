@@ -7,13 +7,9 @@
 #' @importFrom haven read_dta read_sas read_spss
 #' 
 #' @return dataframe with source data
-lc.read.source.file <- local(function(input_path, input_format = 'CSV') {
+lc.read.source.file <- local(function(input_path, input_format) {
   lc_data <- NULL
   
-  if(missing(input_path)) {
-    input_path <- readline('- Specify input path (for your data): ')
-    input_format <- readline('- Specify input format (possible formats: CSV,STATA,SPSS or SAS - default = CSV): ')
-  }
   if (input_format %in% lifecycle.globals$input_formats) {
     if (input_format == 'STATA') lc_data <- read_dta(input_path)
     else if (input_format == 'SPSS') lc_data <- read_spss(input_path)
@@ -87,6 +83,25 @@ lc.reshape.import <- local(function(file_prefix, dict_kind, file_version, file_n
   unlink(paste(getwd(), '/', file_prefix, '_', dict_kind, '_', file_version, '_', file_name, file_ext, sep = ''))
   
   message('  Succesfully imported the files')
+})
+
+#'
+#' Retrieve the right file from download directory
+#'
+#' @param dict_repeated can be non-repeated, yearly-repeated etc..
+#' @param dict_kind can be 'core' or 'outcome'
+#'
+#' @returns a raw version of the dictionary
+#'
+lc.retrieve.dictionaries <- local(function(dict_repeated, dict_kind) {
+  
+  dict_names <- paste('.+', dict_kind, '+', '.+rep\\.xlsx', sep = '')
+  dict_file_list <- list.files('.', pattern = dict_names)
+  
+  file_name <- dict_file_list[grep(dict_repeated, dict_file_list)]
+  
+  raw_dict <- read_xlsx(path = file_name, sheet = 1)
+  return(as.data.frame(raw_dict))
 })
 
 #' Get the table without rows containing only NA's. 

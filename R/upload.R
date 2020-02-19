@@ -62,16 +62,22 @@ lc.upload <- local(function(dict_version = '2_0', data_version = '1_0', dict_kin
         lc.populate(dict_version, cohort_id, data_version, database_name, dict_kind)
       }
       
-      if(action == "all" | action == "reshape"){
+      if(action == "all" | action == "reshape") {
+        if(missing(data_input_path)) {
+          input_path <- readline('- Specify input path (for your data): ')
+        }
+        if(missing(data_input_format)) {
+          data_input_format <- readline('- Specify input format (possible formats: CSV,STATA,SPSS or SAS - default = CSV): ')
+        }
         lc.reshape(upload_to_opal, data_version, data_input_format, dict_kind,
                    data_input_path, cohort_id, data_output_path)
       }
     },
     finally={
-      message(" Cleanup temporary directory")
+      message(" * Cleanup temporary directory")
       unlink(paste0("../", tempDirectoryName[1], sep = ""), recursive = T)
       
-      message(" Reinstate default working directory")
+      message(" * Reinstate default working directory")
       setwd(workdir)
     }
   )

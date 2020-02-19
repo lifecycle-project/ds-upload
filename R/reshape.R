@@ -18,7 +18,7 @@
 #'
 #' @importFrom readxl read_xlsx
 #' @export
-lc.reshape <- local(function(upload_to_opal = TRUE, data_version, input_format = 'CSV', dict_kind = 'core', input_path, cohort_id, output_path) {
+lc.reshape <- local(function(upload_to_opal = TRUE, data_version, input_format, dict_kind, input_path, cohort_id, output_path) {
   
   message('######################################################')
   message('  Start reshaping data                                ')
@@ -30,24 +30,16 @@ lc.reshape <- local(function(upload_to_opal = TRUE, data_version, input_format =
   
   file_prefix <- format(Sys.time(), "%Y-%m-%d_%H-%M-%S")
   
-  
-  # Check which variables are missing in the study as compared to the full variable list (if character(0), continue, otherwise
-  # check the list of variables in the original harmonized data)
-  # lc_variables <- c(lc.variables.primary.keys(), lc.variables.core.non.repeated(), lc.variables.core.yearly.repeated(), lc.variables.core.monthly.repeated())
-  # missing <- setdiff(lc_variables, names(lc_data))
-  # Ammend the data with columns
-  # lc_data[missing] <- NA
-  
-  lc.reshape.generate.non.repeated(lc_data, upload_to_opal, output_path, file_prefix, dict_kind, file_version, 'non_repeated_measures', cohort_id)
-  lc.reshape.generate.yearly.repeated(lc_data, upload_to_opal, output_path, file_prefix, dict_kind, file_version, 'yearly_repeated_measures', cohort_id)
-  lc.reshape.generate.monthly.repeated(lc_data, upload_to_opal, output_path, file_prefix, dict_kind, file_version, 'monthly_repeated_measures', cohort_id)
+  lc.reshape.generate.non.repeated(lc_data, upload_to_opal, output_path, file_prefix, dict_kind, data_version, 'non_repeated_measures')
+  lc.reshape.generate.yearly.repeated(lc_data, upload_to_opal, output_path, file_prefix, dict_kind, data_version, 'yearly_repeated_measures')
+  lc.reshape.generate.monthly.repeated(lc_data, upload_to_opal, output_path, file_prefix, dict_kind, data_version, 'monthly_repeated_measures')
   
   if(dict_kind == "outcome"){
-    lc.reshape.generate.weekly.repeated(lc_data, upload_to_opal, output_path, file_prefix, dict_kind, file_version, 'weekly_repeated_measures', cohort_id)
+    lc.reshape.generate.weekly.repeated(lc_data, upload_to_opal, output_path, file_prefix, dict_kind, data_version, 'weekly_repeated_measures')
   }
   
   if(dict_kind == 'core' & data_version != "1_0"){
-    lc.reshape.generate.trimesterly.repeated(lc_data, upload_to_opal, output_path, file_prefix, dict_kind, file_version, 'trimesterly_repeated_measures', cohort_id)
+    lc.reshape.generate.trimesterly.repeated(lc_data, upload_to_opal, output_path, file_prefix, dict_kind, data_version, 'trimester_repeated_measures')
   }
   
   message('######################################################')
@@ -71,26 +63,17 @@ lc.reshape <- local(function(upload_to_opal = TRUE, data_version, input_format =
 #' @importFrom dplyr %>%
 #' @importFrom readxl read_xlsx
 #'   
-lc.reshape.generate.non.repeated <- local(function(lc_data, upload_to_opal, output_path, file_prefix, dict_kind, file_version, file_name, cohort_id) {
+lc.reshape.generate.non.repeated <- local(function(lc_data, upload_to_opal, output_path, file_prefix, dict_kind, file_version, file_name) {
   message("* Generating: non-repeated measures")
   
   # Retrieve dictionnary 
-  
-  dict_names <- paste('.+', cohort_id, '+', '.+repeated\\.xlsx', sep = '')
-  dict_file_list <- list.files('.', pattern = dict_names)
-  
-  dict_table_non_repeated <- dict_file_list[grep("non_repeated", dict_file_list)]
-  
-  lc_variables_non_repeated_dict <- read_xlsx(path = dict_table_non_repeated, sheet = 1)
-  
-  lc_variables_non_repeated_dict <- as.data.frame(lc_variables_non_repeated_dict)
+  lc_variables_non_repeated_dict <- lc.retrieve.dictionaries("non_rep", dict_kind)
   
   ## Generate the variable list:
-  
   lc_variables_non_repeated <- lc_variables_non_repeated_dict$name
   
   # select the non-repeated measures from the full data set
-  non_repeated <- c(lc.variables.primary.keys(), lc_variables_non_repeated)
+  non_repeated <- c("child_id", lc_variables_non_repeated)
   non_repeated_measures <- lc_data[, which(colnames(lc_data) %in% non_repeated)]
   
   # strip the rows with na values
@@ -118,73 +101,53 @@ lc.reshape.generate.non.repeated <- local(function(lc_data, upload_to_opal, outp
 #' @param file_name non-repeated, monthly-repeated, weekly, trimesterly or yearly-repeated
 #' @param cohort_id ID of the cohort
 #'
+#' @importFrom stringr str_subset str_replace
 #' @importFrom readr write_csv
 #' @importFrom dplyr %>% filter select_if
 #' @importFrom data.table dcast
 #' @importFrom tidyr gather spread
 #' @importFrom readxl read_xls
 #' 
-lc.reshape.generate.yearly.repeated <- local(function(lc_data, upload_to_opal, output_path, file_prefix, dict_kind, file_version, file_name, cohort_id) {
+lc.reshape.generate.yearly.repeated <- local(function(lc_data, upload_to_opal, output_path, file_prefix, dict_kind, file_version, file_name) {
   # workaround to avoid glpobal variable warnings, check: https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
   orig_var <- cohab_ <- age_years <- NULL
   
   message("* Generating: yearly-repeated measures")
   
-  file_name <- 'yearly_repeated_measures'
+  lc_variables_yearly_repeated_dict <- lc.retrieve.dictionaries("yearly_rep", dict_kind)
   
-  # Retrieve dictionnary 
-  
-  dict_names <- paste('.+', cohort_id, '+', '.+repeated\\.xlsx', sep = '')
-  dict_file_list <- list.files('.', pattern = dict_names)
-  
-  dict_table_yearly_repeated <- dict_file_list[grep("yearly_repeated", dict_file_list)]
-  
-  lc_variables_yearly_repeated_dict <- read_xlsx(path = dict_table_yearly_repeated, sheet = 1)
-  
-  lc_variables_yearly_repeated_dict <- as.data.frame(lc_variables_yearly_repeated_dict)
-  
-  ## Get the number of repetition
-  
-  for (i in lc_variables_yearly_repeated_dict$name){
-    
-    lc_variables_yearly_repeated_dict[lc_variables_yearly_repeated_dict$name == i,'n'] <- length(grep(paste(i, '[[:digit:]]', sep = ''), colnames(lc_data)))
-    
-    lc_variables_yearly_repeated_dict[lc_variables_yearly_repeated_dict$name == i & lc_variables_yearly_repeated_dict$n != 0,'n'] <-
-      lc_variables_yearly_repeated_dict[lc_variables_yearly_repeated_dict$name == i & lc_variables_yearly_repeated_dict$n != 0,'n'] - 1
-    
-  }
-  
-  ## Generate the variable list:
-  
-  lc_variables_yearly_repeated <- character()
-  
-  for (i in lc_variables_yearly_repeated_dict$name){
-    
-    if(lc_variables_yearly_repeated_dict[lc_variables_yearly_repeated_dict$name == i, 'n'] != 0){
-      
-      lc_variables_yearly_repeated <- append(lc_variables_yearly_repeated, c(paste(lc_variables_yearly_repeated_dict$name[lc_variables_yearly_repeated_dict$name == i],
-                                                                             1:lc_variables_yearly_repeated_dict[lc_variables_yearly_repeated_dict$name == i, 'n'],
-                                                                             sep = '')))
-      
-    }
+  matched_columns <- character()
+  data_columns <- colnames(lc_data)
+  for (variable in lc_variables_yearly_repeated_dict$name) {
+    matched_columns <- c(matched_columns, data_columns %>% str_subset(pattern = paste0("^", variable, "\\d+", sep = "")))
   }
   
   # Select the non-repeated measures from the full data set
-  yearly_repeated <- c(lc.variables.primary.keys(), lc_variables_yearly_repeated)
-  yearly_repeated_measures <- lc_data[,which(colnames(lc_data) %in% yearly_repeated)]
+  yearly_repeated_measures <- lc_data[,matched_columns]
+  
+  if(nrow(lc.data.frame.remove.all.na.rows(yearly_repeated_measures)) <= 0) {
+    message('* WARNING: No yearly-repeated measures found in this set')
+    return()
+  }
+  
+  index_variable <- str_replace(matched_columns[2], "_+[^_]*$", "_")
+  
+  print(index_variable)
   
   # First re-arrange the whole data set to long format, unspecific for variable
   long_1 <- yearly_repeated_measures %>% 
-    gather(orig_var, cohab_, lc_variables_yearly_repeated, na.rm=TRUE)
+    gather(orig_var, index_variable, matched_columns, na.rm=TRUE)
   
   # Create the age_years variable with the regular expression extraction of the year
   long_1$age_years <- as.numeric(numextract(long_1$orig_var))
   
   # Here we remove the year indicator from the original variable name
-  long_1$variable_trunc <- gsub('[[:digit:]]+$', '', long_1$orig_var)
+  long_1$variable_trunc <- gsub("[[:digit:]]+$", "", long_1$orig_var)
+  
+  print(long_1)
   
   # Use the data.table package for spreading the data again, as tidyverse runs into memory issues 
-  long_2 <- dcast(long_1, child_id + age_years ~ variable_trunc, value.var = "cohab_")
+  long_2 <- dcast(long_1, child_id + age_years ~ variable_trunc, value.var = index_variable)
   
   # Create a row_id so there is a unique identifier for the rows
   long_2$row_id <- c(1:length(long_2$child_id))
@@ -229,25 +192,16 @@ lc.reshape.generate.yearly.repeated <- local(function(lc_data, upload_to_opal, o
 #' @importFrom tidyr gather spread
 #' @importFrom readxl read_xlsx
 #' 
-lc.reshape.generate.monthly.repeated <- local(function(lc_data, upload_to_opal, output_path, file_prefix, dict_kind, file_version, file_name, cohort_id) {
+lc.reshape.generate.monthly.repeated <- local(function(lc_data, upload_to_opal, output_path, file_prefix, dict_kind, file_version, file_name) {
   # workaround to avoid glpobal variable warnings, check: https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
   orig_var <- height_ <- age_months <- NULL
   
   message('* Generating: monthly-repeated measures')
   
   # Retrieve dictionnary 
-  
-  dict_names <- paste('.+', cohort_id, '+', '.+repeated\\.xlsx', sep = '')
-  dict_file_list <- list.files('.', pattern = dict_names)
-  
-  dict_table_monthly_repeated <- dict_file_list[grep("monthly_repeated", dict_file_list)]
-  
-  lc_variables_monthly_repeated_dict <- read_xlsx(path = dict_table_monthly_repeated, sheet = 1)
-  
-  lc_variables_monthly_repeated_dict <- as.data.frame(lc_variables_monthly_repeated_dict)
+  lc_variables_monthly_repeated_dict <- lc.retrieve.dictionaries("monthly_rep", dict_kind)
   
   ## Get the number of repetition
-  
   for (i in lc_variables_monthly_repeated_dict$name){
     
     lc_variables_monthly_repeated_dict[lc_variables_monthly_repeated_dict$name == i,'n'] <- length(grep(paste(i, '[[:digit:]]', sep = ''), colnames(lc_data)))
@@ -258,13 +212,10 @@ lc.reshape.generate.monthly.repeated <- local(function(lc_data, upload_to_opal, 
   }
   
   ## Generate the variable list:
-  
   lc_variables_monthly_repeated <- character()
   
-  for (i in lc_variables_monthly_repeated_dict$name){
-    
+  for (i in lc_variables_monthly_repeated_dict$name) {
     if(lc_variables_monthly_repeated_dict[lc_variables_monthly_repeated_dict$name == i, 'n'] != 0){
-      
       lc_variables_monthly_repeated <- append(lc_variables_monthly_repeated, c(paste(lc_variables_monthly_repeated_dict$name[lc_variables_monthly_repeated_dict$name == i],
                                                                              1:lc_variables_monthly_repeated_dict[lc_variables_monthly_repeated_dict$name == i, 'n'],
                                                                              sep = '')))
@@ -273,8 +224,13 @@ lc.reshape.generate.monthly.repeated <- local(function(lc_data, upload_to_opal, 
   }
   
   # Select the non-repeated measures from the full data set
-  monthly_repeated <- c(lc.variables.primary.keys(), lc_variables_monthly_repeated)
+  monthly_repeated <- c(c("child_id"), lc_variables_monthly_repeated)
   monthly_repeated_measures <- lc_data[, which(colnames(lc_data) %in% monthly_repeated)]
+  
+  if(nrow(lc.data.frame.remove.all.na.rows(monthly_repeated_measures)) <= 0) {
+    message('* WARNING: No monthly-repeated measures found in this set')
+    return()
+  } 
   
   # First re-arrange the whole data set to long format, unspecific for variable
   long_1 <- monthly_repeated_measures %>% 
@@ -338,7 +294,7 @@ lc.reshape.generate.monthly.repeated <- local(function(lc_data, upload_to_opal, 
 #' @importFrom tidyr gather spread
 #' @importFrom readxl read_xlsx
 #' 
-lc.reshape.outcome.generate.weekly.repeated <- local(
+lc.reshape.generate.weekly.repeated <- local(
   function(
     lc_data, 
     upload_to_opal, 
@@ -355,15 +311,7 @@ lc.reshape.outcome.generate.weekly.repeated <- local(
     message('* Generating: weekly-repeated measures')
     
     # Retrieve dictionnary 
-    
-    dict_names <- paste('.+', cohort_id, '+', '.+repeated\\.xlsx', sep = '')
-    dict_file_list <- list.files('.', pattern = dict_names)
-    
-    dict_table_weekly_repeated <- dict_file_list[grep("weekly_repeated", dict_file_list)]
-    
-    lc_variables_weekly_repeated_dict <- read_xlsx(path = dict_table_weekly_repeated, sheet = 1)
-    
-    lc_variables_weekly_repeated_dict <- as.data.frame(lc_variables_weekly_repeated_dict)
+    lc_variables_weekly_repeated_dict <- lc.retrieve.dictionaries("weekly_rep", dict_kind)
     
     ## Get the number of repetition
     
@@ -392,8 +340,13 @@ lc.reshape.outcome.generate.weekly.repeated <- local(
     }
     
     # Select the weekly-repeated measures from the full data set
-    weekly_repeated <- c(lc.variables.primary.keys(), lc_variables_weekly_repeated)
+    weekly_repeated <- c(c("child_id"), lc_variables_weekly_repeated)
     weekly_repeated_measures <- lc_data[, which(colnames(lc_data) %in% weekly_repeated)]
+    
+    if(nrow(lc.data.frame.remove.all.na.rows(weekly_repeated_measures)) <= 0) {
+      message('* WARNING: No weekly-repeated measures found in this set')
+      return()
+    } 
     
     # First re-arrange the whole data set to long format, unspecific for variable
     long_1 <- weekly_repeated_measures %>% gather(
@@ -480,7 +433,7 @@ lc.reshape.outcome.generate.weekly.repeated <- local(
 #' @importFrom readxl read_xlsx
 #' 
 
-lc.reshape.core.generate.trimesterly.repeated <- local(function(lc_data, upload_to_opal, output_path, file_prefix, dict_kind, file_version, file_name) {
+lc.reshape.generate.trimesterly.repeated <- local(function(lc_data, upload_to_opal, output_path, file_prefix, dict_kind, file_version, file_name) {
   # workaround to avoid glpobal variable warnings, check: https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
   orig_var <- smk_t <- age_trimesters <- NULL
   
@@ -488,14 +441,7 @@ lc.reshape.core.generate.trimesterly.repeated <- local(function(lc_data, upload_
   
   # Retrieve dictionnary 
   
-  dict_names <- paste('.+', cohort_id, '+', '.+repeated\\.xlsx', sep = '')
-  dict_file_list <- list.files('.', pattern = dict_names)
-  
-  dict_table_trimesterly_repeated <- dict_file_list[grep("trimesterly_repeated", dict_file_list)]
-  
-  lc_variables_trimesterly_repeated_dict <- read_xlsx(path = dict_table_trimesterly_repeated, sheet = 1)
-  
-  lc_variables_trimesterly_repeated_dict <- as.data.frame(lc_variables_trimesterly_repeated_dict)
+  lc_variables_trimesterly_repeated_dict <- lc.retrieve.dictionaries("trimester_rep", dict_kind)
   
   ## Get the number of repetition
   
@@ -523,7 +469,7 @@ lc.reshape.core.generate.trimesterly.repeated <- local(function(lc_data, upload_
   }
   
   # Select the trimesterly repeated measures from the full data set
-  trimesterly_repeated <- c(lc.variables.primary.keys(), lc_variables_trimesterly_repeated)
+  trimesterly_repeated <- c(c("child_id"), lc_variables_trimesterly_repeated)
   trimesterly_repeated_measures <- lc_data[, which(colnames(lc_data) %in% trimesterly_repeated)]
   
   if(nrow(lc.data.frame.remove.all.na.rows(trimesterly_repeated_measures)) <= 0) {
