@@ -29,6 +29,13 @@ lc.dict.import <- local(function(project, dict_version, dict_kind, data_version)
   message('------------------------------------------------------')
   message('  Start importing dictionaries')
   
+  dict_source_table_non_rep <- paste(dict_version, '_', dict_kind, '_non_rep.xlsx', sep = '')
+  dict_source_table_monthly_rep <- paste(dict_version, '_', dict_kind, '_monthly_rep.xlsx', sep = '')
+  dict_source_table_yearly_rep <- paste(dict_version, '_', dict_kind, '_yearly_rep.xlsx', sep = '')
+  
+  dict_source_table_weekly_rep <- paste(dict_version, '_', dict_kind, '_weekly_rep.xlsx', sep = '')
+  dict_source_table_trimester_rep <- paste(dict_version, '_', dict_kind, '_trimester_rep.xlsx', sep = '')
+  
   dict_table_non_rep <- paste(dict_version, '_', dict_kind, '_', data_version, '_non_rep', sep = '')
   dict_table_monthly_rep <- paste(dict_version, '_', dict_kind, '_', data_version, '_monthly_rep', sep = '')
   dict_table_yearly_rep <- paste(dict_version, '_', dict_kind, '_', data_version, '_yearly_rep', sep = '')
@@ -68,47 +75,47 @@ lc.dict.import <- local(function(project, dict_version, dict_kind, data_version)
     message(paste('* Table: [ ', dict_table_yearly_rep,' ] already exists', sep = ''))
   }
   if(dict_kind == "outcome"){
-    if(!(dict_table_weekly_repeated %in% tables$name)) {
-      message(paste('* Create table: [ ', dict_table_weekly_repeated,' ]', sep = ''))
-      opal.post(lifecycle.globals$opal, 'datasource', project, 'tables', body=json_weekly_repeated, contentType = 'application/x-protobuf+json')
+    if(!(dict_table_weekly_rep %in% tables$name)) {
+      message(paste('* Create table: [ ', dict_table_weekly_rep,' ]', sep = ''))
+      opal.post(lifecycle.globals$opal, 'datasource', project, 'tables', body=json_weekly_rep, contentType = 'application/x-protobuf+json')
     } else {
-      message(paste('* No table: [ ', dict_table_weekly_repeated,' ] available for version: [ ', dict_version, ' ]', sep = ''))
+      message(paste('* No table: [ ', dict_table_weekly_rep,' ] available for version: [ ', dict_version, ' ]', sep = ''))
     }
   }
   
-  if(!(dict_table_quarterly_repeated %in% tables$name) && dict_kind == 'core' && dict_version != '1_0') {
-    message(paste('* Create table: [ ', dict_table_quarterly_repeated,' ]', sep = ''))
-    opal.post(lifecycle.globals$opal, 'datasource', project, 'tables', body=json_quarterly_repeated, contentType = 'application/x-protobuf+json')
+  if(!(dict_table_trimester_rep %in% tables$name) && dict_kind == 'core' && dict_version != '1_0') {
+    message(paste('* Create table: [ ', dict_table_trimester_rep,' ]', sep = ''))
+    opal.post(lifecycle.globals$opal, 'datasource', project, 'tables', body=json_trimester_rep, contentType = 'application/x-protobuf+json')
   } else {
     if(dict_version != '1_0') {
-      message(paste('* Table: [ ', dict_table_quarterly_repeated,' ] already exists', sep = ''))
+      message(paste('* Table: [ ', dict_table_trimester_rep,' ] already exists', sep = ''))
     } else {
-      message(paste('* No table: [ ', dict_table_quarterly_repeated,' ] available for version: [ ', dict_version, ' ]', sep = ''))
+      message(paste('* No table: [ ', dict_table_trimester_rep,' ] available for version: [ ', dict_version, ' ]', sep = ''))
     }
   }
   
-  variables_non_repeated_measures <- read_xlsx(path = paste(getwd(), '/', dict_table_non_repeated, '.xlsx', sep = ''), sheet = 1)
-  variables_yearly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', dict_table_yearly_repeated, '.xlsx', sep = ''), sheet = 1)
-  variables_monthly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', dict_table_monthly_repeated, '.xlsx', sep = ''), sheet = 1)
+  variables_non_rep <- read_xlsx(path = paste(getwd(), '/', dict_source_table_non_rep, sep = ''), sheet = 1)
+  variables_yearly_rep <- read_xlsx(path = paste(getwd(), '/', dict_source_table_yearly_rep, sep = ''), sheet = 1)
+  variables_monthly_rep <- read_xlsx(path = paste(getwd(), '/', dict_source_table_monthly_rep, sep = ''), sheet = 1)
 
-  categories_non_repeated_measures <- read_xlsx(path = paste(getwd(), '/', dict_table_non_repeated, '.xlsx', sep = ''), sheet = 2)
-  categories_monthly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', dict_table_monthly_repeated, '.xlsx', sep = ''), sheet = 2)
-  categories_yearly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', dict_table_yearly_repeated, '.xlsx', sep = ''), sheet = 2)
+  categories_non_rep <- read_xlsx(path = paste(getwd(), '/', dict_source_table_non_rep, sep = ''), sheet = 2)
+  categories_monthly_rep <- read_xlsx(path = paste(getwd(), '/', dict_source_table_monthly_rep, sep = ''), sheet = 2)
+  categories_yearly_rep <- read_xlsx(path = paste(getwd(), '/', dict_source_table_yearly_rep, sep = ''), sheet = 2)
   
-  lc.populate.match.categories(project, dict_table_non_rep, variables_non_rep_measures, categories_non_rep_measures, paste(dict_table_non_rep, '.xlsx', sep = ''))
-  lc.populate.match.categories(project, dict_table_monthly_rep, variables_monthly_rep_measures, categories_monthly_rep_measures, paste(dict_table_monthly_rep, '.xlsx', sep = ''))
-  lc.populate.match.categories(project, dict_table_yearly_rep, variables_yearly_rep_measures, categories_yearly_rep_measures, paste(dict_table_yearly_rep, '.xlsx', sep = ''))
+  lc.populate.match.categories(project, dict_table_non_rep, variables_non_rep, categories_non_rep, dict_source_table_non_rep)
+  lc.populate.match.categories(project, dict_table_monthly_rep, variables_monthly_rep, categories_monthly_rep, dict_source_table_monthly_rep)
+  lc.populate.match.categories(project, dict_table_yearly_rep, variables_yearly_rep, categories_yearly_rep, dict_source_table_yearly_rep)
   
   if(dict_kind == "outcome"){
-    variables_weekly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', dict_table_weekly_repeated, '.xlsx', sep = ''), sheet = 1)
-    categories_weekly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', dict_table_weekly_repeated, '.xlsx', sep = ''), sheet = 2)
-    lc.populate.match.categories(project, dict_table_weekly_repeated, variables_weekly_repeated_measures, categories_weekly_repeated_measures, paste(dict_table_weekly_repeated, '.xlsx', sep = ''))
+    variables_weekly_rep <- read_xlsx(path = paste(getwd(), '/', dict_source_table_weekly_rep, sep = ''), sheet = 1)
+    categories_weekly_rep <- read_xlsx(path = paste(getwd(), '/', dict_source_table_weekly_rep, sep = ''), sheet = 2)
+    lc.populate.match.categories(project, dict_table_weekly_rep, variables_weekly_rep, categories_weekly_rep, dict_source_table_weekly_rep)
   }
   
   if(dict_kind == 'core' && dict_version != '1_0') {
-    variables_quarterly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', dict_table_quarterly_repeated, '.xlsx', sep = ''), sheet = 1)
-    categories_quarterly_repeated_measures <- read_xlsx(path = paste(getwd(), '/', dict_table_quarterly_repeated, '.xlsx', sep = ''), sheet = 2)
-    lc.populate.match.categories(project, dict_table_quarterly_repeated, variables_quarterly_repeated_measures, categories_quarterly_repeated_measures, paste(dict_table_quarterly_repeated, '.xlsx', sep = ''))
+    variables_trimester_rep <- read_xlsx(path = paste(getwd(), '/', dict_source_table_trimester_rep, sep = ''), sheet = 1)
+    categories_trimester_rep <- read_xlsx(path = paste(getwd(), '/', dict_source_table_trimester_rep, sep = ''), sheet = 2)
+    lc.populate.match.categories(project, dict_table_trimester_rep, variables_trimester_rep, categories_trimester_rep, dict_source_table_trimester_rep)
   }
   
   message('  All dictionaries are populated correctly')
