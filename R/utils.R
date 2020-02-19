@@ -10,6 +10,50 @@ lifecycle.globals$cohort_ids <- cohorts
 lifecycle.globals$dictionaries_core <- c('1_0', '2_0')
 lifecycle.globals$dictionaries_outcome <- c('1_0')
 
+#' Download all released data dictionaries
+#' 
+#' @param dict_version dictionary version (possible dictionaries are: 1_0, 1_1 / default = 1_0)
+#' @param dict_kind dictionary kind (possible kinds are 'core' or 'outcome')
+#' 
+#' @importFrom utils download.file
+#' 
+lc.dict.download <- local(function(dict_version, dict_kind) {
+  message('------------------------------------------------------')
+  message('  Start download dictionaries')
+  packageTag <- packageVersion('lifecycleProject')
+  download_base_dir <- paste('https://github.com/lifecycle-project/analysis-protocols/blob/', packageTag,'/R/data/dictionaries/', dict_kind ,'/', dict_version, '/', sep = '')
+  dict_source_file_non_repeated <- paste(dict_version, '_non_rep.xlsx', sep = '')
+  dict_source_file_monthly_repeated <- paste(dict_version, '_monthly_rep.xlsx', sep = '')
+  dict_source_file_yearly_repeated <- paste(dict_version, '_yearly_rep.xlsx', sep = '')
+  dict_source_file_weekly_repeated <- paste(dict_version, '_weekly_rep.xlsx', sep = '')
+  dict_source_file_trimester_repeated <- paste(dict_version, '_trimester_rep.xlsx', sep = '')
+  
+  dict_dest_file_non_repeated <- paste(dict_version, '_', dict_kind, '_non_rep.xlsx', sep = '')
+  dict_dest_file_monthly_repeated <- paste(dict_version, '_', dict_kind, '_monthly_rep.xlsx', sep = '')
+  dict_dest_file_yearly_repeated <- paste(dict_version, '_', dict_kind, '_yearly_rep.xlsx', sep = '')
+  dict_dest_file_weekly_repeated <- paste(dict_version, '_', dict_kind, '_weekly_rep.xlsx', sep = '')
+  dict_dest_file_trimester_repeated <- paste(dict_version, '_', dict_kind, '_trimester_rep.xlsx', sep = '')
+  
+  message(paste('* Download: [ ', dict_source_file_non_repeated, ' ]', sep = ''))
+  download.file(paste(download_base_dir, dict_source_file_non_repeated, '?raw=true', sep = ''), destfile=dict_dest_file_non_repeated, mode = "wb", method="libcurl", quiet = TRUE)
+  message(paste('* Download: [ ', dict_source_file_monthly_repeated, ' ]', sep = ''))
+  download.file(paste(download_base_dir, dict_source_file_monthly_repeated, '?raw=true', sep = ''), destfile=dict_dest_file_monthly_repeated, mode = "wb", method="libcurl", quiet = TRUE)
+  message(paste('* Download: [ ', dict_source_file_yearly_repeated, ' ]', sep = ''))
+  download.file(paste(download_base_dir, dict_source_file_yearly_repeated, '?raw=true', sep = ''), destfile=dict_dest_file_yearly_repeated, mode = "wb", method="libcurl", quiet = TRUE)
+  
+  if(dict_kind == "outcome"){
+    message(paste('* Download: [ ', dict_source_file_weekly_repeated, ' ]', sep = ''))
+    download.file(paste(download_base_dir, dict_source_file_weekly_repeated, '?raw=true', sep = ''), destfile=dict_dest_file_weekly_repeated, mode = "wb", method="libcurl", quiet = TRUE)
+  }
+  
+  if(dict_kind == 'core' && dict_version != '1_0') {
+    message(paste('* Download: [ ', dict_source_file_trimester_repeated, ' ]', sep = ''))
+    download.file(paste(download_base_dir, dict_source_file_trimester_repeated, '?raw=true', sep = ''), destfile=dict_dest_file_trimester_repeated, mode = "wb", method="libcurl", quiet = TRUE)
+  }
+  
+  message('  Successfully downloaded dictionaries')
+})
+
 #' Numerical extraction function
 #' Number at the end of the string: Indicates year. We need to extract this to create the age_years variable.
 #' This is the function to do so.

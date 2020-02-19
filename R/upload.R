@@ -1,124 +1,80 @@
-#' Download all released data dictionaries
-#' 
-#' @param dict_version dictionary version (possible dictionaries are: 1_0, 1_1 / default = 1_0)
-#' @param dict_kind dictionary kind (possible kinds are 'core' or 'outcome')
-#' @param cohort_id cohort identifier (possible values are: 'dnbc', 'gecko', 'alspac', 'genr', 'moba', 'sws', 'bib', 'chop', 'elfe', 'eden', 'ninfea', 'hbcs', 'inma', 'isglobal', 'nfbc66', 'nfbc86', 'raine', 'rhea')
-#' @param data_version version of the data (specific to the cohort)
-#' 
-#' @importFrom utils download.file
-#' 
-
-lc.dict.download <- local(function(dict_version, dict_kind, cohort_id, data_version) {
-  message('------------------------------------------------------')
-  message('  Start download dictionaries')
-  packageTag <- packageVersion('lifecycleProject')
-  download_base_dir <- paste('https://github.com/lifecycle-project/analysis-protocols/blob/', packageTag,'/R/data/dictionaries/', dict_kind ,'/', dict_version, '/', sep = '')
-  dict_source_file_non_repeated <- paste(dict_version, '_non_repeated.xlsx', sep = '')
-  dict_source_file_monthly_repeated <- paste(dict_version, '_monthly_repeated.xlsx', sep = '')
-  dict_source_file_yearly_repeated <- paste(dict_version, '_yearly_repeated.xlsx', sep = '')
-  dict_source_file_weekly_repeated <- paste(dict_version, '_weekly_repeated.xlsx', sep = '')
-  dict_source_file_quarterly_repeated <- paste(dict_version, '_quarterly_repeated.xlsx', sep = '')
-  
-  dict_dest_file_non_repeated <- paste(dict_version, '_', dict_kind, '_', cohort_id, '_', data_version, '_non_repeated.xlsx', sep = '')
-  dict_dest_file_monthly_repeated <- paste(dict_version, '_', dict_kind, '_', cohort_id, '_', data_version,'_monthly_repeated.xlsx', sep = '')
-  dict_dest_file_yearly_repeated <- paste(dict_version, '_', dict_kind, '_', cohort_id, '_', data_version, '_yearly_repeated.xlsx', sep = '')
-  dict_dest_file_weekly_repeated <- paste(dict_version, '_', dict_kind, '_', cohort_id, '_', data_version, '_weekly_repeated.xlsx', sep = '')
-  dict_dest_file_quarterly_repeated <- paste(dict_version, '_', dict_kind, '_', cohort_id, '_', data_version, '_quarterly_repeated.xlsx', sep = '')
-  
-  message(paste('* Download: [ ', dict_source_file_non_repeated, ' ]', sep = ''))
-  download.file(paste(download_base_dir, dict_source_file_non_repeated, '?raw=true', sep = ''), destfile=dict_dest_file_non_repeated, mode = "wb", method="libcurl", quiet = TRUE)
-  message(paste('* Download: [ ', dict_source_file_monthly_repeated, ' ]', sep = ''))
-  download.file(paste(download_base_dir, dict_source_file_monthly_repeated, '?raw=true', sep = ''), destfile=dict_dest_file_monthly_repeated, mode = "wb", method="libcurl", quiet = TRUE)
-  message(paste('* Download: [ ', dict_source_file_yearly_repeated, ' ]', sep = ''))
-  download.file(paste(download_base_dir, dict_source_file_yearly_repeated, '?raw=true', sep = ''), destfile=dict_dest_file_yearly_repeated, mode = "wb", method="libcurl", quiet = TRUE)
-  
-  if(dict_kind == "outcome"){
-    message(paste('* Download: [ ', dict_source_file_weekly_repeated, ' ]', sep = ''))
-    download.file(paste(download_base_dir, dict_source_file_weekly_repeated, '?raw=true', sep = ''), destfile=dict_dest_file_weekly_repeated, mode = "wb", method="libcurl", quiet = TRUE)
-  }
-  
-  if(dict_kind == 'core' && dict_version != '1_0') {
-    message(paste('* Download: [ ', dict_source_file_quarterly_repeated, ' ]', sep = ''))
-    download.file(paste(download_base_dir, dict_source_file_quarterly_repeated, '?raw=true', sep = ''), destfile=dict_dest_file_quarterly_repeated, mode = "wb", method="libcurl", quiet = TRUE)
-  }
-  
-  message('  Successfully downloaded dictionaries')
-})
-
 #' Function that wraps around and bind the populate and reshape processes:
 #' 
 #' @param dict_version version of the data dictionnary to be used
+#' @param data_version version of the dataset to be uploaded
 #' @param dict_kind can be 'core' or 'outcome'
 #' @param cohort_id cohort name
-#' @param data_version version of the dataset to be uploaded
-#' @param database_name ?
+#' @param database_name is the name of the data backend of Opal
 #' @param data_input_format format of the database to be reshaped. Can be 'CSV', 'STATA', or 'SAS'
 #' @param upload_to_opal Wether to directly upload the reshaped database to the logged in opal server
 #' @param data_input_path Path to the to-be-reshaped database
 #' @param data_output_path Path where the reshaped databases will be written
-#' @param action actio to be performed, can be 'reshape', 'populate' or 'all'
-#' 
+#' @param action action to be performed, can be 'reshape', 'populate' or 'all'
 #' 
 #' @export
-
-lc.upload <- function(dict_version, dict_kind, cohort_id, data_version,
-                      database_name = 'opal_data', data_input_format = 'CSV',
-                      upload_to_opal = T, data_input_path, data_output_path = getwd(),
-                      action = "all"){
+lc.upload <- local(function(dict_version = '2_0', data_version = '1_0', dict_kind = 'core', cohort_id,
+                      database_name = 'opal_data', data_input_format = 'CSV', data_input_path, data_output_path = getwd(),
+                      action = "all", upload_to_opal = T){
   
-  ## Save wd
+  if(!exists('hostname', envir = lifecycle.globals)) stop('You need to login first, please run lc.login')
+  if(!exists('username', envir = lifecycle.globals)) stop('You need to login first, please run lc.login')
   
+  if(missing(cohort_id)) cohort_id <- readline('- Specify cohort identifier (e.g. dnbc): ')
+  if(cohort_id == '') {
+    stop("No cohort identifier is specified! Program is terminated.", call. = FALSE)
+  } else {
+    if(!(cohort_id %in% lifecycle.globals$cohort_ids)) {
+      stop('Cohort: [ ', cohort_id, ' ] is not know LifeCycle project. Please choose from: [ ', paste(lifecycle.globals$cohort_ids, collapse = ', '), ' ]')
+    }
+  }
+  
+  if(missing(data_version)) data_version <- readline('- Specify version of cohort data upload (e.g. 1_0): ')
+  if(dict_version != '' && !(dict_version %in% lifecycle.globals$dictionaries_core)) {
+    stop('Version: [ ', dict_version ,' ] is not available in published data dictionaries. Possible dictionaries are: ', paste(lifecycle.globals$dictionaries_core, collapse = ', '))
+  } else {
+    if(dict_version == '') dict_version <- '2_0'
+  }
+  if(data_version == '' || !checkVersion(data_version)) {
+    stop("No data version is specified or the data version does not match syntax: 'number_number'! Program is terminated.", call. = FALSE)
+  }
+  
+  #  Set workingdirectory to user-home 
   workdir <- getwd()
   
   # Create temporary workdir and set working directory to it:
-  
-  # Liste files in current directory
-  
-  file_list <- list.files()
-  
   # Generate 15 random strings and check that at least one of them isn't an existing dir
-  
-  a <- do.call(paste0, replicate(15, sample(LETTERS, 20, TRUE), FALSE))
-  a <- a[which(!(a %in% file_list))]
+  tempDirectoryName <- do.call(paste0, replicate(15, sample(LETTERS, 1, TRUE), FALSE))
+  tempDirectoryName <- tempDirectoryName[which(!(tempDirectoryName %in% list.files()))]
   
   # And use the first non-existing random string to name our temp folder
+  dir.create(paste0(getwd(), '/', tempDirectoryName[1], sep = ""))
+  setwd(paste0(getwd(), '/', tempDirectoryName[1], sep = ""))
   
-  dir.create(paste('./', a[1], sep = ""))
+  tryCatch(
+    {
+      lc.dict.download(dict_version, dict_kind)
+      
+      if(!(action %in% c("all", "reshape", "populate"))){
+        stop("Unknown action type, please fill in 'populate', 'reshape' or 'all'")
+      }
+      
+      if(action == "all" | action == "populate"){
+        lc.populate(dict_version, cohort_id, data_version, database_name, dict_kind)
+      }
+      
+      if(action == "all" | action == "reshape"){
+        lc.reshape(upload_to_opal, data_version, data_input_format, dict_kind,
+                   data_input_path, cohort_id, data_output_path)
+      }
+    },
+    finally={
+      message(" Cleanup temporary directory")
+      unlink(paste0("../", tempDirectoryName[1], sep = ""), recursive = T)
+      
+      message(" Reinstate default working directory")
+      setwd(workdir)
+    }
+  )
   
-  setwd(paste('./', a[1], sep = ""))
   
-  # Download dictionnaries from the remote repo:
-  
-  lc.dict.download(dict_version, dict_kind, cohort_id, data_version)
-  
-  # Check the action to be performed:
-  
-  if(!(action %in% c("all", "reshape", "populate"))){
-    stop("unknown action type")
-  }
-  
-  # And perform them
-  
-  if(action == "all" | action == "populate"){
-    lc.populate(dict_version, cohort_id, data_version, database_name, dict_kind)
-  }
-  
-  if(action == "all" | action == "reshape"){
-    lc.reshape(upload_to_opal, data_version, data_input_format, dict_kind,
-               data_input_path, cohort_id, data_output_path)
-  }
-  
-  ## Delete the dictionnaries:
-   
-  # file_name <- paste(dict_version, '.+repeated\\.xlsx', sep = '')
-  # dict_file_list <- list.files('.', pattern = file_name)
-  # unlink(dict_file_list)
-  
-  # Delete the temp dir
-  
-  unlink(paste('../', a[1], sep = ""), recursive = T)
-  
-  # Re-establish old working directory
-  
-  setwd(workdir)
-}
+})
