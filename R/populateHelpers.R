@@ -7,9 +7,9 @@
 #' @importFrom opalr opal.post
 #'
 lc.dict.project.create <- local(function(project, database_name) {
-  a <- strsplit(project, "_")
-  dict_kind <- a[[1]][3]
-  dict_version <- paste(a[[1]][4], "_", a[[1]][5], sep ="")
+  canonical_project_name <- strsplit(project, "_")
+  dict_kind <- canonical_project_name[[1]][3]
+  dict_version <- paste(canonical_project_name[[1]][4], "_", canonical_project_name[[1]][5], sep ="")
   message('------------------------------------------------------')
   message(paste('  Start creating project: [ ', project, ' ]', sep = ''))
   projects <- opal.projects(lifecycle.globals$opal)
