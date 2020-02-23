@@ -124,3 +124,14 @@ lc.data.frame.remove.all.na.rows <- local(function(dataframe) {
   
   return(df[!naLines,])
 })
+
+lc.match.columns <- local(function(data_columns, dict_columns) {
+  matched_columns <- character()
+  
+  for (variable in dict_columns) {
+    matched_columns <- c(matched_columns, data_columns %>% str_subset(pattern = paste0("^", variable, "\\d+", sep = "")))
+  }
+  
+  # Select the non-repeated measures from the full data set
+  return(matched_columns)
+})

@@ -69,7 +69,7 @@ lc.upload <- local(function(dict_version = '2_0', data_version = '1_0', dict_kin
         if(missing(data_input_format)) {
           data_input_format <- readline('- Specify input format (possible formats: CSV,STATA,SPSS or SAS - default = CSV): ')
         }
-        lc.reshape(upload_to_opal, data_version, data_input_format, dict_kind,
+        lc.reshape(upload_to_opal, data_version, data_input_format, dict_version, dict_kind,
                    data_input_path, cohort_id, data_output_path)
       }
     },
