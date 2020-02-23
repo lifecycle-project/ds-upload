@@ -11,10 +11,12 @@
 #' @param data_output_path Path where the reshaped databases will be written
 #' @param action action to be performed, can be 'reshape', 'populate' or 'all'
 #' 
+#' @importFrom utils packageVersion
+#' 
 #' @export
 lc.upload <- local(function(dict_version = '2_0', data_version = '1_0', dict_kind = 'core', cohort_id,
                       database_name = 'opal_data', data_input_format = 'CSV', data_input_path, data_output_path = getwd(),
-                      action = "all", upload_to_opal = T){
+                      action = "all", upload_to_opal = T) {
   
   if(!exists('hostname', envir = lifecycle.globals)) stop('You need to login first, please run lc.login')
   if(!exists('username', envir = lifecycle.globals)) stop('You need to login first, please run lc.login')
@@ -70,7 +72,7 @@ lc.upload <- local(function(dict_version = '2_0', data_version = '1_0', dict_kin
           data_input_format <- readline('- Specify input format (possible formats: CSV,STATA,SPSS or SAS - default = CSV): ')
         }
         lc.reshape(upload_to_opal, data_version, data_input_format, dict_version, dict_kind,
-                   data_input_path, cohort_id, data_output_path)
+                   data_input_path, data_output_path)
       }
     },
     finally={

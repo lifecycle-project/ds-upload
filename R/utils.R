@@ -15,9 +15,10 @@ lifecycle.globals$dictionaries_outcome <- c('1_0')
 #' @param dict_version dictionary version (possible dictionaries are: 1_0, 1_1 / default = 1_0)
 #' @param dict_kind dictionary kind (possible kinds are 'core' or 'outcome')
 #' 
-#' @importFrom utils download.file
+#' @importFrom utils download.file packageVersion
 #' 
 lc.dict.download <- local(function(dict_version, dict_kind) {
+  
   message('------------------------------------------------------')
   message('  Start download dictionaries')
   packageTag <- packageVersion('lifecycleProject')

@@ -21,6 +21,11 @@ lc.dict.project.create <- local(function(project, database_name) {
   }
 })
 
+#' Import the data dictionaries into Opal
+#' 
+#' @param project project in which the data is imported
+#' @param dict_version dictionary version (concerning core or outcome)
+#' @param dict_kind dictionary kind (core or outcome)
 #' @param data_version version of the data (specific to the cohort)
 #' 
 #' @importFrom readxl read_xlsx

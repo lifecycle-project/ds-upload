@@ -3,10 +3,10 @@
 #' @param upload_to_opal do you want automatically upload the files to your opal (default = true)
 #' @param data_version version of the data you are going to upload into Opal
 #' @param input_format possible formats are CSV,STATA,SPSS or SAS (default = CSV)
+#' @param dict_version version of the dictionary
+#' @param dict_kind kind of data to reshape (default = core)
 #' @param input_path path for importfile
 #' @param output_path path to output directory (default = your working directory)
-#' @param dict_kind kind of data to reshape (default = core)
-#' @param cohort_id Id of the cohort
 #' 
 #' @examples 
 #' lc.reshape(
@@ -18,7 +18,7 @@
 #'
 #' @importFrom readxl read_xlsx
 #' @export
-lc.reshape <- local(function(upload_to_opal = TRUE, data_version, input_format, dict_version, dict_kind, input_path, cohort_id, output_path) {
+lc.reshape <- local(function(upload_to_opal = TRUE, data_version, input_format, dict_version, dict_kind, input_path, output_path) {
   
   message('######################################################')
   message('  Start reshaping data                                ')
@@ -57,7 +57,6 @@ lc.reshape <- local(function(upload_to_opal = TRUE, data_version, input_format, 
 #' @param dict_kind can be 'core' or 'outcome'
 #' @param file_version version of the data release (e.g. 1_0)
 #' @param file_name non-repeated, monthly-repeated or yearly-repeated
-#' @param cohort_id ID of the cohort
 #'
 #' @importFrom readr write_csv
 #' @importFrom dplyr %>%
@@ -67,7 +66,7 @@ lc.reshape.generate.non.repeated <- local(function(lc_data, upload_to_opal, outp
   message("* Generating: non-repeated measures")
   
   # Retrieve dictionnary 
-  lc_variables_non_repeated_dict <- lc.retrieve.dictionaries("non_rep", dict_kind)
+  lc_variables_non_repeated_dict <- lc.retrieve.dictionaries("non_rsep", dict_kind)
   
   ## Generate the variable list:
   lc_variables_non_repeated <- lc_variables_non_repeated_dict$name
@@ -99,7 +98,6 @@ lc.reshape.generate.non.repeated <- local(function(lc_data, upload_to_opal, outp
 #' @param dict_kind can be 'core' or 'outcome'
 #' @param file_version version of the data release (e.g. 1_0)
 #' @param file_name non-repeated, monthly-repeated, weekly, trimesterly or yearly-repeated
-#' @param cohort_id ID of the cohort
 #'
 #' @importFrom stringr str_subset str_replace
 #' @importFrom readr write_csv
@@ -110,7 +108,7 @@ lc.reshape.generate.non.repeated <- local(function(lc_data, upload_to_opal, outp
 #' 
 lc.reshape.generate.yearly.repeated <- local(function(lc_data, upload_to_opal, output_path, file_prefix, dict_kind, file_version, file_name) {
   # workaround to avoid glpobal variable warnings, check: https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
-  orig_var <- cohab_ <- age_years <- NULL
+  orig_var <- value <- age_years <- NULL
   
   message("* Generating: yearly-repeated measures")
   
@@ -170,7 +168,6 @@ lc.reshape.generate.yearly.repeated <- local(function(lc_data, upload_to_opal, o
 #' @param dict_kind can be 'core' or 'outcome'
 #' @param file_version version of the data release (e.g. 1_0)
 #' @param file_name non-repeated, monthly-repeated, weekly, trimesterly or yearly-repeated
-#' @param cohort_id ID of the cohort
 #'
 #' @importFrom readr write_csv
 #' @importFrom dplyr %>% filter
@@ -180,7 +177,7 @@ lc.reshape.generate.yearly.repeated <- local(function(lc_data, upload_to_opal, o
 #' 
 lc.reshape.generate.monthly.repeated <- local(function(lc_data, upload_to_opal, output_path, file_prefix, dict_kind, file_version, file_name) {
   # workaround to avoid glpobal variable warnings, check: https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
-  orig_var <- height_ <- age_months <- NULL
+  orig_var <- value <- age_months <- NULL
   
   message('* Generating: monthly-repeated measures')
   
@@ -245,6 +242,7 @@ lc.reshape.generate.monthly.repeated <- local(function(lc_data, upload_to_opal, 
 #' @param upload_to_opal do you want to upload to Opal (default = true)
 #' @param output_path directory where the CSV files need to be stored
 #' @param file_prefix the date of the generated file
+#' @param dict_kind can be 'core' or 'outcome'
 #' @param file_version version of the data release (e.g. 1_0)
 #' @param file_name non-repeated, monthly-repeated, weekly, trimesterly or yearly-repeated
 #'
@@ -266,7 +264,7 @@ lc.reshape.generate.weekly.repeated <- local(
   ) {
     
     # workaround to avoid glpobal variable warnings, check: https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
-    orig_var <- m_sbp_ <- g_age_weeks <- NULL # Gestational age in weeks
+    orig_var <- value <- age_weeks <- NULL # Gestational age in weeks
     
     message('* Generating: weekly-repeated measures')
     
@@ -364,7 +362,7 @@ lc.reshape.generate.weekly.repeated <- local(
 
 lc.reshape.generate.trimesterly.repeated <- local(function(lc_data, upload_to_opal, output_path, file_prefix, dict_kind, file_version, file_name) {
   # workaround to avoid glpobal variable warnings, check: https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
-  orig_var <- smk_t <- age_trimesters <- NULL
+  orig_var <- value <- age_trimesters <- NULL
   
   message('* Generating: trimesterly-repeated measures')
   
