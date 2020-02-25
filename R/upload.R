@@ -25,6 +25,13 @@ lc.upload <-
                  data_output_path = getwd(),
                  action = "all",
                  upload_to_opal = TRUE) {
+    
+    message('######################################################')
+    message('  Start upload data into Opal')
+    message('------------------------------------------------------')
+    
+    populateDictionaryVersions(dict_kind)
+    
     if (!exists('hostname', envir = lifecycle.globals))
       stop('You need to login first, please run lc.login')
     if (!exists('username', envir = lifecycle.globals))
