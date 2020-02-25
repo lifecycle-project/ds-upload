@@ -25,14 +25,14 @@ lc.upload <-
                  data_output_path = getwd(),
                  action = "all",
                  upload_to_opal = TRUE) {
-    
     if (!exists('hostname', envir = lifecycle.globals))
       stop('You need to login first, please run lc.login')
     if (!exists('username', envir = lifecycle.globals))
       stop('You need to login first, please run lc.login')
     
     if (missing(cohort_id))
-      cohort_id <- readline('- Specify cohort identifier (e.g. dnbc): ')
+      cohort_id <-
+        readline('- Specify cohort identifier (e.g. dnbc): ')
     if (cohort_id == '') {
       stop("No cohort identifier is specified! Program is terminated.")
     } else {
@@ -52,7 +52,8 @@ lc.upload <-
         readline('- Specify version of cohort data upload (e.g. 1_0): ')
     }
     
-    if (dict_version != '' && dict_kind == 'core'
+    if (dict_version != '' &&
+        dict_kind == 'core' &&
         !(dict_version %in% lifecycle.globals$dictionaries_core)) {
       stop(
         'Version: [ ',
@@ -60,7 +61,9 @@ lc.upload <-
         ' ] is not available in published data dictionaries. Possible dictionaries are: ',
         paste(lifecycle.globals$dictionaries_core, collapse = ', ')
       )
-    } else if (dict_version != '' && dict_kind == 'outcome' && !(dict_version %in% lifecycle.globals$dictionaries_outcome)) { 
+    } else if (dict_version != '' &&
+               dict_kind == 'outcome' &&
+               !(dict_version %in% lifecycle.globals$dictionaries_outcome)) {
       stop(
         'Version: [ ',
         dict_version ,
@@ -68,18 +71,17 @@ lc.upload <-
         paste(lifecycle.globals$dictionaries_outcome, collapse = ', ')
       )
     } else {
-      if (dict_version == '' && dict_kind = 'core') {
+      if (dict_version == '' && dict_kind == 'core') {
         dict_version <- '2_0'
-      } else if(dict_version == '' && dict_kind = 'outcome') {
+      } else if (dict_version == '' && dict_kind == 'outcome') {
         dict_version <- '1_0'
-      } else {
-        stop("No dictionary version is specified. Program is terminated.") 
+      } else if (dict_version == '' && dict_kind == '') {
+        stop("No dictionary version or kind is specified. Program is terminated.")
       }
     }
     if (data_version == '' || !checkVersion(data_version)) {
       stop(
-        "No data version is specified or the data version does not match syntax: 'number_number'! Program is terminated.",
-        call. = FALSE
+        "No data version is specified or the data version does not match syntax: 'number_number'! Program is terminated."
       )
     }
     
@@ -134,7 +136,7 @@ lc.upload <-
       message(" * Reinstate default working directory")
       setwd(workdir)
       message(" * Cleanup temporary directory")
-      unlink(paste0("../", tempDirectoryName[1], sep = ""), recursive = T)
+      unlink(tempDirectoryName[1], recursive = T)
     })
     
     
