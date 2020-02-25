@@ -14,13 +14,13 @@ matrix:
     script:
       - R CMD build . --compact-vignettes=gs+qpdf
       - R CMD check *tar.gz --as-cran
-  - os: windows
-    language: shell
-    before_install:
-      - source .ci/.travis.win.install.sh
-    script:
-      - R.exe CMD build . --compact-vignettes=gs+qpdf
-      - R.exe CMD check .tar.gz --as-cran
-      - R.exe CMD INSTALL --build .
+#  - os: windows
+#    language: shell
+#    before_install:
+#      - source .ci/.travis.win.install.sh
+#    script:
+#      - R.exe CMD build . --compact-vignettes=gs+qpdf
+#      - R.exe CMD check .tar.gz --as-cran
+#      - R.exe CMD INSTALL --build .
 
 

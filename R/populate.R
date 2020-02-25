@@ -10,22 +10,27 @@ lifecycle.globals <- new.env()
 #' @param database_name the database name specified in your Opal instance (defaults to 'opal_data')
 #' @param dict_kind dictionnary kind, can be 'core' or 'outcome'
 #'
-#' @examples 
+#' @examples
 #' lc.populate(dict_version = '1_1', cohort_id = 'dnbc', data_version = '1_0')
 #'
 #' @export
-lc.populate <- local(function(dict_version, cohort_id, data_version, database_name, dict_kind) {
-
-  message('######################################################')
-  message('  Start importing data dictionaries                   ')
-  message('######################################################')
-
-  project <- paste('lifecycle_', cohort_id, '_', dict_kind, '_', dict_version, sep = '')
-  
-  lc.dict.project.create(project, database_name)
-  lc.dict.import(project, dict_version, dict_kind, data_version)
-  
-  message('######################################################')
-  message('  Importing data dictionaries has finished            ')
-  message('######################################################')
-})
+lc.populate <-
+  local(function(dict_version,
+                 cohort_id,
+                 data_version,
+                 database_name,
+                 dict_kind) {
+    message('######################################################')
+    message('  Start importing data dictionaries                   ')
+    message('######################################################')
+    
+    project <-
+      paste('lc_', cohort_id, '_', dict_kind, '_', dict_version, sep = '')
+    
+    lc.dict.project.create(project, database_name)
+    lc.dict.import(project, dict_version, dict_kind, data_version)
+    
+    message('######################################################')
+    message('  Importing data dictionaries has finished            ')
+    message('######################################################')
+  })
