@@ -112,10 +112,14 @@ checkVersion <- local(function(version) {
 })
 
 #'
+#' Get the possible dictionary versions from Github
+#' 
+#' @param dict_kind dictionary kind (can be 'core' or 'outcome')
+#' 
+#' @importFrom utils packageVersion
 #'
 #'
-#'
-populateDictionaryVersions <- local(function(dict_kind, package_tag) {
+populateDictionaryVersions <- local(function(dict_kind) {
  
   lifecycle.globals$package_tag <- packageVersion('lifecycleProject')
   
@@ -134,8 +138,8 @@ populateDictionaryVersions <- local(function(dict_kind, package_tag) {
 #'
 #' @param url get this location
 #' 
-#' @importFrom httr GET
-#' @importFrom jsonlite fromJSON
+#' @importFrom httr GET content
+#' @importFrom jsonlite fromJSON 
 #' 
 #' @return response as dataframe
 #'

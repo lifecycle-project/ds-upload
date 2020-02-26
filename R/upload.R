@@ -11,8 +11,6 @@
 #' @param data_output_path Path where the reshaped databases will be written
 #' @param action action to be performed, can be 'reshape', 'populate' or 'all'
 #'
-#' @importFrom utils packageVersion
-#'
 #' @export
 lc.upload <-
   local(function(dict_version = '2_0',
@@ -32,10 +30,12 @@ lc.upload <-
     
     populateDictionaryVersions(dict_kind)
     
-    if (!exists('hostname', envir = lifecycle.globals))
-      stop('You need to login first, please run lc.login')
-    if (!exists('username', envir = lifecycle.globals))
-      stop('You need to login first, please run lc.login')
+    if(upload_to_opal == TRUE) {
+      if (!exists('hostname', envir = lifecycle.globals))
+        stop('You need to login first, please run lc.login')
+      if (!exists('username', envir = lifecycle.globals))
+        stop('You need to login first, please run lc.login')
+    }
     
     if (missing(cohort_id))
       cohort_id <-
