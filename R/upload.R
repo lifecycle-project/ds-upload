@@ -142,8 +142,12 @@ lc.upload <-
     finally = {
       message(" * Reinstate default working directory")
       setwd(workdir)
-      message(" * Cleanup temporary directory")
-      unlink(tempDirectoryName[1], recursive = T)
+      if (upload_to_opal == TRUE) {
+        message(" * Cleanup temporary directory")
+        unlink(tempDirectoryName[1], recursive = T)
+      } else {
+        message(" * Be advised: you need to cleanup the temporary directories yourself now.")
+      }
     })
     
     
