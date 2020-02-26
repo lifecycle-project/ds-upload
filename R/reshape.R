@@ -123,7 +123,8 @@ lc.reshape.generate.non.repeated <-
       lc.retrieve.dictionaries("non_rep", dict_kind)
     
     # select the non-repeated measures from the full data set
-    non_repeated <- c("child_id", lc_variables_non_repeated_dict$name)
+    non_repeated <-
+      c("child_id", lc_variables_non_repeated_dict$name)
     non_repeated_measures <-
       lc_data[, which(colnames(lc_data) %in% non_repeated)]
     
@@ -170,7 +171,7 @@ lc.reshape.generate.non.repeated <-
 #' @param file_name non-repeated, monthly-repeated, weekly, trimesterly or yearly-repeated
 #'
 #' @importFrom readr write_csv
-#' @importFrom dplyr %>% filter
+#' @importFrom dplyr %>% filter summarise bind_rows
 #' @importFrom maditr dcast as.data.table
 #' @importFrom tidyr gather
 #'
@@ -210,8 +211,29 @@ lc.reshape.generate.yearly.repeated <-
       gsub("[[:digit:]]+$", "", long_1$orig_var)
     
     # Use the maditr package for spreading the data again, as tidyverse runs into memory issues
-    long_2 <-
-      dcast(long_1, child_id + age_years ~ variable_trunc, value.var = "value")
+    long_2 <- dcast(long_1, child_id + age_years ~ variable_trunc, value.var = "value")
+    
+    # As the data table is still too big for opal, remove those
+    # rows, that have only missing values, but keep all rows at age_years=0, so
+    # no child_id get's lost:
+    
+    # Subset of data with age_years = 0
+    zero_year <- long_2 %>% filter(age_years %in% 0)
+    
+    for(id in unique(yearly_repeated_measures$child_id)) {
+      if(!(id %in% zero_year$child_id)) {
+        zero_year %<>%
+          summarise(child_id = id,
+                    age_years = 0) %>%
+          bind_rows(zero_year, .)
+      }
+    }
+    
+    # Subset of data with age_years > 0
+    later_year <- long_2 %>% filter(age_years > 0)
+    
+    # Bind the 0 year and older data sets together
+    long_2 <- rbind(zero_year, later_year)
     
     # Create a row_id so there is a unique identifier for the rows
     long_2$row_id <- c(1:length(long_2$child_id))
@@ -222,19 +244,6 @@ lc.reshape.generate.yearly.repeated <-
                  "child_id",
                  "age_years",
                  unique(long_1$variable_trunc))]
-    
-    # As the data table is still too big for opal, remove those
-    # rows, that have only missing values, but keep all rows at age_years=0, so
-    # no child_id get's lost:
-    
-    # Subset of data with age_years = 0
-    zero_year <- long_yearly %>% filter(age_years %in% 0)
-    
-    # Subset of data with age_years > 0
-    later_year <- long_yearly %>% filter(age_years > 0)
-    
-    # Bind the 0 year and older data sets together
-    long_yearly <- rbind(zero_year, later_year)
     
     write_csv(
       long_yearly,
@@ -270,7 +279,7 @@ lc.reshape.generate.yearly.repeated <-
 #' @param file_name non-repeated, monthly-repeated, weekly, trimesterly or yearly-repeated
 #'
 #' @importFrom readr write_csv
-#' @importFrom dplyr %>% filter
+#' @importFrom dplyr %>% filter summarise bind_rows
 #' @importFrom maditr dcast as.data.table
 #' @importFrom tidyr gather
 #'
@@ -318,6 +327,30 @@ lc.reshape.generate.monthly.repeated <-
             child_id + age_years + age_months ~ variable_trunc,
             value.var = "value")
     
+    # As the data table is still too big for opal, remove those
+    # rows, that have only missing values, but keep all rows at age_years=0, so
+    # no child_id get's lost:
+    
+    # Subset of data with age_months = 0
+    zero_monthly <- long_2 %>%
+      filter(age_months %in% 0)
+    
+    for(id in unique(monthly_repeated_measures$child_id)) {
+      if(!(id %in% zero_monthly$child_id)) {
+        zero_monthly %<>%
+          summarise(child_id = id,
+                    age_months = 0) %>%
+          bind_rows(zero_monthly, .)
+      }
+    }
+    
+    # Subset of data with age_months > 0
+    later_monthly <- long_2 %>%
+      filter(age_months > 0)
+    
+    # Bind the 0 year and older data sets together
+    long_2 <- rbind(zero_monthly, later_monthly)
+    
     # Create a row_id so there is a unique identifier for the rows
     long_2$row_id <- c(1:length(long_2$child_id))
     
@@ -329,20 +362,6 @@ lc.reshape.generate.monthly.repeated <-
                  "age_months",
                  unique(long_1$variable_trunc))]
     
-    # As the data table is still too big for opal, remove those
-    # rows, that have only missing values, but keep all rows at age_years=0, so
-    # no child_id get's lost:
-    
-    # Subset of data with age_months = 0
-    zero_monthly <- long_monthly %>%
-      filter(age_months %in% 0)
-    
-    # Subset of data with age_months > 0
-    later_monthly <- long_monthly %>%
-      filter(age_months > 0)
-    
-    # Bind the 0 year and older data sets together
-    long_monthly <- rbind(zero_monthly, later_monthly)
     
     write_csv(
       long_monthly,
@@ -378,7 +397,7 @@ lc.reshape.generate.monthly.repeated <-
 #' @param file_name non-repeated, monthly-repeated, weekly, trimesterly or yearly-repeated
 #'
 #' @importFrom readr write_csv
-#' @importFrom dplyr %>% filter
+#' @importFrom dplyr %>% filter summarise bind_rows
 #' @importFrom maditr dcast as.data.table
 #' @importFrom tidyr gather
 #'
@@ -426,6 +445,30 @@ lc.reshape.generate.weekly.repeated <- local(function(lc_data,
           child_id + age_years + age_weeks ~ variable_trunc,
           value.var = "value")
   
+  # As the data table is still too big for opal, remove those
+  # rows, that have only missing values, but keep all rows at age_years=0, so
+  # no child_id get's lost:
+  
+  # Subset of data with age_months = 0
+  zero_weekly <- long_2 %>%
+    filter(age_weeks %in% 0)
+  
+  for(id in unique(weekly_repeated_measures$child_id)) {
+    if(!(id %in% zero_weekly$child_id)) {
+      zero_weekly %<>%
+        summarise(child_id = id,
+                  age_weeks = 0) %>%
+        bind_rows(zero_weekly, .)
+    }
+  }
+  
+  # Subset of data with age_months > 0
+  later_weekly <- long_2 %>%
+    filter(age_weeks > 0)
+  
+  # Bind the 0 year and older data sets together
+  long_2 <- rbind(zero_weekly, later_weekly)
+  
   # Create a row_id so there is a unique identifier for the rows
   long_2$row_id <- c(1:length(long_2$child_id))
   
@@ -436,25 +479,6 @@ lc.reshape.generate.weekly.repeated <- local(function(lc_data,
                "age_years",
                "age_weeks",
                unique(long_1$variable_trunc))]
-  
-  # As the data table is still too big for opal, remove those
-  # rows, that have only missing values, but keep all rows at age_years=0, so
-  # no child_id get's lost:
-  
-  # Subset of data with age_months = 0
-  zero_weekly <- long_weekly %>%
-    filter(age_weeks %in% 0)
-  
-  # Subset of data with age_months > 0
-  later_weekly <- long_weekly %>%
-    filter(age_weeks > 0)
-  
-  # Bind the 0 year and older data sets together
-  long_weekly <- rbind(zero_weekly, later_weekly)
-  
-  # strip completely missing columns
-  long_weekly <-
-    long_weekly[, colSums(is.na(long_weekly)) < nrow(long_weekly)]
   
   write_csv(
     long_weekly,
@@ -494,11 +518,10 @@ lc.reshape.generate.weekly.repeated <- local(function(lc_data,
 #' @param file_name non-repeated, monthly-repeated, weekly, trimesterly or yearly-repeated
 #'
 #' @importFrom readr write_csv
-#' @importFrom dplyr %>% filter
+#' @importFrom dplyr %>% filter summarise bind_rows
 #' @importFrom maditr dcast as.data.table
 #' @importFrom tidyr gather
 #'
-
 lc.reshape.generate.trimesterly.repeated <-
   local(function(lc_data,
                  upload_to_opal,
@@ -543,6 +566,29 @@ lc.reshape.generate.trimesterly.repeated <-
             child_id + age_years + age_trimesters ~ variable_trunc,
             value.var = "value")
     
+    # As the data table is still too big for opal, remove those
+    # rows, that have only missing values, but keep all rows at age_years=0, so
+    # no child_id get's lost:
+    
+    # Subset of data with age_months = 0
+    zero_trimesterly <- long_2 %>%
+      filter(age_trimesters %in% 0)
+    
+    for(id in unique(trimesterly_repeated_measures$child_id)) {
+      if(!(id %in% zero_trimesterly$child_id)) {
+        zero_trimesterly %<>%
+          summarise(child_id = id,
+                    age_trimesters = 0) %>%
+          bind_rows(zero_trimesterly, .)
+      }
+    }
+    
+    # Subset of data with age_months > 0
+    later_trimesterly <- long_2 %>%
+      filter(age_trimesters > 0)
+    
+    long_2 <- rbind(zero_trimesterly, later_trimesterly)
+    
     # Create a row_id so there is a unique identifier for the rows
     long_2$row_id <- c(1:length(long_2$child_id))
     
@@ -555,18 +601,6 @@ lc.reshape.generate.trimesterly.repeated <-
         "age_trimesters",
         unique(long_1$variable_trunc)
       )]
-    
-    # As the data table is still too big for opal, remove those
-    # rows, that have only missing values, but keep all rows at age_years=0, so
-    # no child_id get's lost:
-    
-    # Subset of data with age_months = 0
-    zero_trimesterly <- long_trimesterly %>%
-      filter(age_trimesters %in% 0)
-    
-    # Subset of data with age_months > 0
-    long_trimesterly <- long_trimesterly %>%
-      filter(age_trimesters > 0)
     
     write_csv(
       long_trimesterly,
