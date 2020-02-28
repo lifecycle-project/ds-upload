@@ -172,7 +172,7 @@ lc.reshape.generate.non.repeated <-
 #'
 #' @importFrom readr write_csv
 #' @importFrom dplyr %>% filter summarise bind_rows
-#' @importFrom maditr dcast as.data.table
+#' @importFrom maditr dcast as.data.table %<>%
 #' @importFrom tidyr gather
 #'
 lc.reshape.generate.yearly.repeated <-
@@ -184,7 +184,7 @@ lc.reshape.generate.yearly.repeated <-
                  file_version,
                  file_name) {
     # workaround to avoid glpobal variable warnings, check: https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
-    orig_var <- value <- age_years <- NULL
+    orig_var <- value <- age_years <- . <- NULL
     
     message("* Generating: yearly-repeated measures")
     
@@ -222,7 +222,7 @@ lc.reshape.generate.yearly.repeated <-
     
     for(id in unique(yearly_repeated_measures$child_id)) {
       if(!(id %in% zero_year$child_id)) {
-        zero_year %<>%
+        zero_year %>%
           summarise(child_id = id,
                     age_years = 0) %>%
           bind_rows(zero_year, .)
@@ -280,7 +280,7 @@ lc.reshape.generate.yearly.repeated <-
 #'
 #' @importFrom readr write_csv
 #' @importFrom dplyr %>% filter summarise bind_rows
-#' @importFrom maditr dcast as.data.table
+#' @importFrom maditr dcast as.data.table %<>%
 #' @importFrom tidyr gather
 #'
 lc.reshape.generate.monthly.repeated <-
@@ -292,7 +292,7 @@ lc.reshape.generate.monthly.repeated <-
                  file_version,
                  file_name) {
     # workaround to avoid glpobal variable warnings, check: https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
-    orig_var <- value <- age_months <- NULL
+    orig_var <- value <- age_months <- . <- NULL
     
     message('* Generating: monthly-repeated measures')
     
@@ -398,7 +398,7 @@ lc.reshape.generate.monthly.repeated <-
 #'
 #' @importFrom readr write_csv
 #' @importFrom dplyr %>% filter summarise bind_rows
-#' @importFrom maditr dcast as.data.table
+#' @importFrom maditr dcast as.data.table %<>%
 #' @importFrom tidyr gather
 #'
 lc.reshape.generate.weekly.repeated <- local(function(lc_data,
@@ -410,7 +410,7 @@ lc.reshape.generate.weekly.repeated <- local(function(lc_data,
                                                       file_name) {
   # workaround to avoid glpobal variable warnings, check: https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
   orig_var <-
-    value <- age_weeks <- NULL # Gestational age in weeks
+    value <- age_weeks <- . <- NULL # Gestational age in weeks
   
   message('* Generating: weekly-repeated measures')
   
@@ -519,7 +519,7 @@ lc.reshape.generate.weekly.repeated <- local(function(lc_data,
 #'
 #' @importFrom readr write_csv
 #' @importFrom dplyr %>% filter summarise bind_rows
-#' @importFrom maditr dcast as.data.table
+#' @importFrom maditr dcast as.data.table %<>%
 #' @importFrom tidyr gather
 #'
 lc.reshape.generate.trimesterly.repeated <-
@@ -531,7 +531,7 @@ lc.reshape.generate.trimesterly.repeated <-
                  file_version,
                  file_name) {
     # workaround to avoid glpobal variable warnings, check: https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
-    orig_var <- value <- age_trimesters <- NULL
+    orig_var <- value <- age_trimester <- . <- NULL
     
     message('* Generating: trimesterly-repeated measures')
     
@@ -570,20 +570,20 @@ lc.reshape.generate.trimesterly.repeated <-
     
     # Subset of data with age_months = 0
     one_trimesterly <- long_2 %>%
-      filter(age_trimester %in% 1)
+      filter(age_trimester %in% 0)
     
     for(id in unique(trimesterly_repeated_measures$child_id)) {
       if(!(id %in% one_trimesterly$child_id)) {
         one_trimesterly %<>%
           summarise(child_id = id,
-                    age_trimester = 1) %>%
+                    age_trimester = 0) %>%
           bind_rows(one_trimesterly, .)
       }
     }
     
     # Subset of data with age_months > 0
     later_trimesterly <- long_2 %>%
-      filter(age_trimester > 1)
+      filter(age_trimester > 0)
     
     long_2 <- rbind(one_trimesterly, later_trimesterly)
     
