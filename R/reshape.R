@@ -17,7 +17,7 @@
 #'   output_path = 'C:\MyDocuments\output_file.csv')
 #'
 #' @importFrom readxl read_xlsx
-#' @export
+#' 
 lc.reshape <-
   local(function(upload_to_opal = TRUE,
                  data_version,
@@ -552,9 +552,7 @@ lc.reshape.generate.trimesterly.repeated <-
       gather(orig_var, value, matched_columns, na.rm = TRUE)
     
     # Create the age_years and age_months variables with the regular expression extraction of the year
-    long_1$age_years  <-
-      as.integer(as.numeric(numextract(long_1$orig_var)) / 4)
-    long_1$age_trimesters <- as.numeric(numextract(long_1$orig_var))
+    long_1$age_trimester <- as.numeric(numextract(long_1$orig_var))
     
     # Here we remove the year indicator from the original variable name
     long_1$variable_trunc <-
@@ -563,7 +561,7 @@ lc.reshape.generate.trimesterly.repeated <-
     # Use the maditr package for spreading the data again, as tidyverse ruins into memory issues
     long_2 <-
       dcast(long_1,
-            child_id + age_years + age_trimesters ~ variable_trunc,
+            child_id + age_trimester ~ variable_trunc,
             value.var = "value")
     
     # As the data table is still too big for opal, remove those
@@ -571,23 +569,23 @@ lc.reshape.generate.trimesterly.repeated <-
     # no child_id get's lost:
     
     # Subset of data with age_months = 0
-    zero_trimesterly <- long_2 %>%
-      filter(age_trimesters %in% 0)
+    one_trimesterly <- long_2 %>%
+      filter(age_trimester %in% 1)
     
     for(id in unique(trimesterly_repeated_measures$child_id)) {
-      if(!(id %in% zero_trimesterly$child_id)) {
-        zero_trimesterly %<>%
+      if(!(id %in% one_trimesterly$child_id)) {
+        one_trimesterly %<>%
           summarise(child_id = id,
-                    age_trimesters = 0) %>%
-          bind_rows(zero_trimesterly, .)
+                    age_trimester = 1) %>%
+          bind_rows(one_trimesterly, .)
       }
     }
     
     # Subset of data with age_months > 0
     later_trimesterly <- long_2 %>%
-      filter(age_trimesters > 0)
+      filter(age_trimester > 1)
     
-    long_2 <- rbind(zero_trimesterly, later_trimesterly)
+    long_2 <- rbind(one_trimesterly, later_trimesterly)
     
     # Create a row_id so there is a unique identifier for the rows
     long_2$row_id <- c(1:length(long_2$child_id))
@@ -597,8 +595,7 @@ lc.reshape.generate.trimesterly.repeated <-
       long_2[, c(
         "row_id",
         "child_id",
-        "age_years",
-        "age_trimesters",
+        "age_trimester",
         unique(long_1$variable_trunc)
       )]
     

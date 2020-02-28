@@ -13,7 +13,6 @@ lifecycle.globals <- new.env()
 #' @examples
 #' lc.populate(dict_version = '1_1', cohort_id = 'dnbc', data_version = '1_0')
 #'
-#' @export
 lc.populate <-
   local(function(dict_version,
                  cohort_id,
