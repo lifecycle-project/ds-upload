@@ -222,7 +222,7 @@ lc.reshape.generate.yearly.repeated <-
     
     for(id in unique(yearly_repeated_measures$child_id)) {
       if(!(id %in% zero_year$child_id)) {
-        zero_year %>%
+        zero_year %<>%
           summarise(child_id = id,
                     age_years = 0) %>%
           bind_rows(zero_year, .)
