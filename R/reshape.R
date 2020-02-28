@@ -570,20 +570,20 @@ lc.reshape.generate.trimesterly.repeated <-
     
     # Subset of data with age_months = 0
     one_trimesterly <- long_2 %>%
-      filter(age_trimester %in% 0)
+      filter(age_trimester %in% 1)
     
     for(id in unique(trimesterly_repeated_measures$child_id)) {
       if(!(id %in% one_trimesterly$child_id)) {
         one_trimesterly %<>%
           summarise(child_id = id,
-                    age_trimester = 0) %>%
+                    age_trimester = 1) %>%
           bind_rows(one_trimesterly, .)
       }
     }
     
     # Subset of data with age_months > 0
     later_trimesterly <- long_2 %>%
-      filter(age_trimester > 0)
+      filter(age_trimester > 1)
     
     long_2 <- rbind(one_trimesterly, later_trimesterly)
     
