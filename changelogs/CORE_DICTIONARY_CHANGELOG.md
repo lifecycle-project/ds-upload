@@ -13,6 +13,7 @@ Additional variables from WP3 and changes in the lifecycle variables.
 * Moved smk_t* and alc_t* to the trimester variables
 
 **Eating diorder variables**
+
 Contributed by: Maja Popovic (maja.popovic@unito.it)
 
 *Non-repeated variables*
