@@ -1,6 +1,6 @@
 Package: lifecycleProject
 Title: Protocols and Sample analysis
-Version: 2.0.4
+Version: 2.1.0
 Authors@R: person("Sido", "Haakma", email = "s.haakma@rug.nl",
                   role = c("aut", "cre"))
 Description: We supply standardised ways to upload and import versioned data dictionaries. 
@@ -8,23 +8,24 @@ Description: We supply standardised ways to upload and import versioned data dic
   check the quality of your data as well. It also can reshape the data into Opal format when you use other tools
   to harmonise your data.
 Depends: 
-  R (>= 3.5.0)
-Imports:
+  R (>= 3.5.0),
   opalr (>= 1.2.0),
+  maditr
+Imports:
   dplyr,
-  tidyr,
-  maditr,
+  gmodels,
+  ggplot2,
+  haven,
   httr,
   jsonlite,
-  stringr,
-  rlang,
-  utils,
+  plotly,
   readr,
   readxl,
-  haven,
-  plotly,
-  gmodels,
-  ggplot2
+  rlang,
+  stats,
+  stringr,
+  tidyr,
+  utils
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

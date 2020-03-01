@@ -59,276 +59,57 @@ lc.dict.import <-
     message('------------------------------------------------------')
     message('  Start importing dictionaries')
     
-    dict_source_table_non_rep <-
-      paste(dict_version, '_', dict_kind, '_non_rep.xlsx', sep = '')
-    dict_source_table_monthly_rep <-
-      paste(dict_version, '_', dict_kind, '_monthly_rep.xlsx', sep = '')
-    dict_source_table_yearly_rep <-
-      paste(dict_version, '_', dict_kind, '_yearly_rep.xlsx', sep = '')
+    files <- getResponseAsDataFrame(paste(lifecycle.globals$api_base_url, 'R/data/dictionaries/', dict_kind, '/', dict_version, '?ref=', lifecycle.globals$package_tag, sep = ""))
     
-    dict_source_table_weekly_rep <-
-      paste(dict_version, '_', dict_kind, '_weekly_rep.xlsx', sep = '')
-    dict_source_table_trimester_rep <-
-      paste(dict_version, '_', dict_kind, '_trimester_rep.xlsx', sep = '')
-    
-    dict_table_non_rep <-
-      paste(dict_version,
+    for(f in 1:nrow(files)) {
+      file <- files[f,]
+      canonical_table_name <- strsplit(file$name, "_")
+      table <- paste(dict_version,
             '_',
             dict_kind,
             '_',
             data_version,
-            '_non_rep',
+            '_',
+            canonical_table_name[[1]][3],
+            '_rep',
             sep = '')
-    dict_table_monthly_rep <-
-      paste(dict_version,
-            '_',
-            dict_kind,
-            '_',
-            data_version,
-            '_monthly_rep',
-            sep = '')
-    dict_table_yearly_rep <-
-      paste(dict_version,
-            '_',
-            dict_kind,
-            '_',
-            data_version,
-            '_yearly_rep',
-            sep = '')
-    
-    # for dict_kind == outcome
-    dict_table_weekly_rep <-
-      paste(dict_version,
-            '_',
-            dict_kind,
-            '_',
-            data_version,
-            '_weekly_rep',
-            sep = '')
-    # for dict_kind == core
-    dict_table_trimester_rep <-
-      paste(dict_version,
-            '_',
-            dict_kind,
-            '_',
-            data_version,
-            '_trimester_rep',
-            sep = '')
-    
-    json_non_rep <-
-      sprintf('{"entityType":"Participant","name":"%s"}',
-              dict_table_non_rep)
-    json_monthly_rep <-
-      sprintf('{"entityType":"Participant","name":"%s"}',
-              dict_table_monthly_rep)
-    json_yearly_rep <-
-      sprintf('{"entityType":"Participant","name":"%s"}',
-              dict_table_yearly_rep)
-    
-    # for dict_kind == outcome
-    json_weekly_rep <-
-      sprintf('{"entityType":"Participant","name":"%s"}',
-              dict_table_weekly_rep)
-    # for dict_kind == core
-    json_trimester_rep <-
-      sprintf('{"entityType":"Participant","name":"%s"}',
-              dict_table_trimester_rep)
-    
-    tables <- opal.tables(lifecycle.globals$opal, project)
-    
-    if (!(dict_table_non_rep %in% tables$name)) {
-      message(paste('* Create table: [ ', dict_table_non_rep, ' ]', sep = ''))
-      opal.post(
-        lifecycle.globals$opal,
-        'datasource',
-        project,
-        'tables',
-        body = json_non_rep,
-        contentType = 'application/x-protobuf+json'
-      )
-    } else {
-      message(paste('* Table: [ ', dict_table_non_rep, ' ] already exists', sep = ''))
-    }
-    if (!(dict_table_monthly_rep %in% tables$name)) {
-      message(paste('* Create table: [ ', dict_table_monthly_rep, ' ]', sep = ''))
-      opal.post(
-        lifecycle.globals$opal,
-        'datasource',
-        project,
-        'tables',
-        body = json_monthly_rep,
-        contentType = 'application/x-protobuf+json'
-      )
-    } else {
-      message(paste(
-        '* Table: [ ',
-        dict_table_monthly_rep,
-        ' ] already exists',
-        sep = ''
-      ))
-    }
-    if (!(dict_table_yearly_rep %in% tables$name)) {
-      message(paste('* Create table: [ ', dict_table_yearly_rep, ' ]', sep = ''))
-      opal.post(
-        lifecycle.globals$opal,
-        'datasource',
-        project,
-        'tables',
-        body = json_yearly_rep,
-        contentType = 'application/x-protobuf+json'
-      )
-    } else {
-      message(paste('* Table: [ ', dict_table_yearly_rep, ' ] already exists', sep = ''))
-    }
-    if (dict_kind == "outcome") {
-      if (!(dict_table_weekly_rep %in% tables$name)) {
-        message(paste('* Create table: [ ', dict_table_weekly_rep, ' ]', sep = ''))
+      
+      json_table <-
+        sprintf('{"entityType":"Participant","name":"%s"}',
+                table)
+      tables <- opal.tables(lifecycle.globals$opal, project)
+      
+      if (!(table %in% tables$name)) {
+        message(paste('* Create table: [ ', table, ' ]', sep = ''))
         opal.post(
           lifecycle.globals$opal,
           'datasource',
           project,
           'tables',
-          body = json_weekly_rep,
+          body = json_table,
           contentType = 'application/x-protobuf+json'
         )
       } else {
-        message(
-          paste(
-            '* No table: [ ',
-            dict_table_weekly_rep,
-            ' ] available for version: [ ',
-            dict_version,
-            ' ]',
-            sep = ''
-          )
-        )
+        message(paste('* Table: [ ', table, ' ] already exists', sep = ''))
       }
-    }
-    
-    if (!(dict_table_trimester_rep %in% tables$name) &&
-        dict_kind == 'core' && dict_version != '1_0') {
-      message(paste('* Create table: [ ', dict_table_trimester_rep, ' ]', sep = ''))
-      opal.post(
-        lifecycle.globals$opal,
-        'datasource',
-        project,
-        'tables',
-        body = json_trimester_rep,
-        contentType = 'application/x-protobuf+json'
-      )
-    } else {
-      if (dict_version != '1_0') {
-        message(paste(
-          '* Table: [ ',
-          dict_table_trimester_rep,
-          ' ] already exists',
-          sep = ''
-        ))
-      } else {
-        message(
-          paste(
-            '* No table: [ ',
-            dict_table_trimester_rep,
-            ' ] available for version: [ ',
-            dict_version,
-            ' ]',
-            sep = ''
-          )
-        )
-      }
-    }
-    
-    variables_non_rep <-
-      read_xlsx(
-        path = paste(getwd(), '/', dict_source_table_non_rep, sep = ''),
-        sheet = 1
-      )
-    variables_yearly_rep <-
-      read_xlsx(
-        path = paste(getwd(), '/', dict_source_table_yearly_rep, sep = ''),
-        sheet = 1
-      )
-    variables_monthly_rep <-
-      read_xlsx(
-        path = paste(getwd(), '/', dict_source_table_monthly_rep, sep = ''),
-        sheet = 1
-      )
-    
-    categories_non_rep <-
-      read_xlsx(
-        path = paste(getwd(), '/', dict_source_table_non_rep, sep = ''),
-        sheet = 2
-      )
-    categories_monthly_rep <-
-      read_xlsx(
-        path = paste(getwd(), '/', dict_source_table_monthly_rep, sep = ''),
-        sheet = 2
-      )
-    categories_yearly_rep <-
-      read_xlsx(
-        path = paste(getwd(), '/', dict_source_table_yearly_rep, sep = ''),
-        sheet = 2
-      )
-    
-    lc.populate.match.categories(
-      project,
-      dict_table_non_rep,
-      variables_non_rep,
-      categories_non_rep,
-      dict_source_table_non_rep
-    )
-    lc.populate.match.categories(
-      project,
-      dict_table_monthly_rep,
-      variables_monthly_rep,
-      categories_monthly_rep,
-      dict_source_table_monthly_rep
-    )
-    lc.populate.match.categories(
-      project,
-      dict_table_yearly_rep,
-      variables_yearly_rep,
-      categories_yearly_rep,
-      dict_source_table_yearly_rep
-    )
-    
-    if (dict_kind == "outcome") {
-      variables_weekly_rep <-
+      
+      variables <-
         read_xlsx(
-          path = paste(getwd(), '/', dict_source_table_weekly_rep, sep = ''),
+          path = paste(getwd(), '/', dict_kind, '/', file$name, sep = ''),
           sheet = 1
         )
-      categories_weekly_rep <-
+      categories <-
         read_xlsx(
-          path = paste(getwd(), '/', dict_source_table_weekly_rep, sep = ''),
+          path = paste(getwd(), '/', dict_kind, '/', file$name, sep = ''),
           sheet = 2
         )
+      
       lc.populate.match.categories(
         project,
-        dict_table_weekly_rep,
-        variables_weekly_rep,
-        categories_weekly_rep,
-        dict_source_table_weekly_rep
-      )
-    }
-    
-    if (dict_kind == 'core' && dict_version != '1_0') {
-      variables_trimester_rep <-
-        read_xlsx(
-          path = paste(getwd(), '/', dict_source_table_trimester_rep, sep = ''),
-          sheet = 1
-        )
-      categories_trimester_rep <-
-        read_xlsx(
-          path = paste(getwd(), '/', dict_source_table_trimester_rep, sep = ''),
-          sheet = 2
-        )
-      lc.populate.match.categories(
-        project,
-        dict_table_trimester_rep,
-        variables_trimester_rep,
-        categories_trimester_rep,
-        dict_source_table_trimester_rep
+        table,
+        variables,
+        categories,
+        file$name
       )
     }
     
@@ -393,5 +174,4 @@ lc.populate.match.categories <-
       body = toJSON(variables),
       contentType = 'application/x-protobuf+json'
     )
-    message(paste('* Remove the table: [', source_file, ']', sep = ''))
   })

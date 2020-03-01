@@ -100,12 +100,11 @@ lc.reshape.import <- local(function(file_prefix, dict_kind, file_version, file_n
 #' @return a raw version of the dictionary
 #'
 lc.retrieve.dictionaries <- local(function(dict_repeated, dict_kind) {
-  dict_names <- paste(".+", dict_kind, "+", ".+rep\\.xlsx", sep = "")
-  dict_file_list <- list.files(".", pattern = dict_names)
+  dict_file_list <- list.files(paste(getwd(), '/', dict_kind, sep = ''))
 
   file_name <- dict_file_list[grep(dict_repeated, dict_file_list)]
 
-  raw_dict <- read_xlsx(path = file_name, sheet = 1)
+  raw_dict <- read_xlsx(path = paste(dict_kind, '/', file_name, sep = ''), sheet = 1)
   return(as.data.frame(raw_dict))
 })
 
@@ -128,7 +127,6 @@ lc.data.frame.remove.all.na.rows <- local(function(dataframe) {
 
   return(df[!naLines, ])
 })
-
 #'
 #' Matched the columns in the source data.
 #' You can then match the found column against the dictionary.
