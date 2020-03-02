@@ -14,6 +14,10 @@ Additional variables from WP3 and changes in the lifecycle variables. Minor chan
 * Fixed requite_age in non-repeated variables
 * Changing the child_id's columntype to character to overcome the maximum integer problem
 
+
+**Additional variables**
+Extensions of the core variables by individuals within LifeCycle or workpackages within LifeCycle.
+
 **Cats and dog variables**
 
 Contributed by: Angela Pinot de Moira (anpi@sund.ku.dk)
@@ -52,7 +56,7 @@ Contributed by: Maja Popovic (maja.popovic@unito.it)
 | an_m_       |	integer	| Maternal anorexia nervosa active after the index pregnancy     |
 | bn_m_	      | integer |	Maternal bulimia nervosa active after the index pregnancy      |
 
-** Socio-economic stressors (task 3.1.1) **
+**Socio-economic stressors (task 3.1.1)**
 
 Contributed by: Constanza Pizzi (costanza.pizzi@unito.it)
 
@@ -63,12 +67,11 @@ Contributed by: Constanza Pizzi (costanza.pizzi@unito.it)
 eusilc_income         	| decimal	| Predicted log-equivalised total disposable household income at baseline                  |
 eusilc_income_quintiles |	integer	| Quintiles of the predicted log-equivalised total disposable household income at baseline |
 
-** Migration stressors (task 3.1.2) **
+**Migration stressors (task 3.1.2)**
 
-** Urban environment stressors (task 3.1.3) **
+**Urban environment stressors (task 3.1.3)**
 
-
-** Lifestyle related stressors (task 3.1.4) **
+**Lifestyle related stressors (task 3.1.4)**
 
 
 ### Tables
