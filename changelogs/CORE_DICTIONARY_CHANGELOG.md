@@ -72,9 +72,10 @@ eusilc_income_quintiles |	integer	| Quintiles of the predicted log-equivalised t
 
 
 ### Tables
-- 1_1_core_cohort-id_x_x_non_repeated_measures
-- 1_1_core_cohort-id_x_x_trimester_measures
-- 1_1_core_cohort-id_x_x_yearly_measures
+- 1_1_core_x_x_non_repeated_measures
+- 1_1_core_x_x_trimester_measures
+- 1_1_core_x_x_yearly_measures
+- 1_1_core_x_x_monthly_measures
 
 ## 1.0
 **lifecycleProject R-package version >= 1.0.4**

@@ -17,7 +17,7 @@ New variables for work packages 4, 5 and 6.
 **Early-life stressors and mental health life course trajectories (WP6)**
 
 ### Tables
-- 1_0_outcome_cohort-id_x_x_non_repeated
-- 1_0_outcome_cohort-id_x_x_weekly_repeated
-- 1_0_outcome_cohort-id_x_x_monthly_repeated
-- 1_0_outcome_cohort-id_x_x_yearly_repeated
+- 1_0_outcome_x_x_non_repeated
+- 1_0_outcome_x_x_weekly_repeated
+- 1_0_outcome_x_x_monthly_repeated
+- 1_0_outcome_x_x_yearly_repeated
