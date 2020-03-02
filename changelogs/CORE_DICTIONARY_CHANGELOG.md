@@ -52,10 +52,24 @@ Contributed by: Maja Popovic (maja.popovic@unito.it)
 | an_m_       |	integer	| Maternal anorexia nervosa active after the index pregnancy     |
 | bn_m_	      | integer |	Maternal bulimia nervosa active after the index pregnancy      |
 
-** EUSILC variables (task 3.1.1) **
-** Migration variables (task 3.1.2) **
-** (task 3.1.3) **
-** (task 3.1.4) **
+** Socio-economic stressors (task 3.1.1) **
+
+Contributed by: Constanza Pizzi (costanza.pizzi@unito.it)
+
+*Non-repeated variables*
+
+| Variable              | Type    | Description                                                                              |
+| --------------------- | ------- | ---------------------------------------------------------------------------------------- |
+eusilc_income         	| decimal	| Predicted log-equivalised total disposable household income at baseline                  |
+eusilc_income_quintiles |	integer	| Quintiles of the predicted log-equivalised total disposable household income at baseline |
+
+** Migration stressors (task 3.1.2) **
+
+** Urban environment stressors (task 3.1.3) **
+
+
+** Lifestyle related stressors (task 3.1.4) **
+
 
 ### Tables
 - 1_1_core_cohort-id_x_x_non_repeated_measures

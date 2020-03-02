@@ -8,13 +8,13 @@ New variables for work packages 4, 5 and 6.
 
 ### Content
 
-**Workpackage 4**
+**Early-life stressors and cardio-metabolic health life course trajectories (WP4)**
 
 
-**Workpackage 5**
+**Early-life stressors and respiratory health life course trajectories (WP5)**
 
 
-**Workpackage 6**
+**Early-life stressors and mental health life course trajectories (WP6)**
 
 ### Tables
 - 1_0_outcome_cohort-id_x_x_non_repeated
