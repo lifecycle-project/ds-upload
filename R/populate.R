@@ -10,9 +10,6 @@ lifecycle.globals <- new.env()
 #' @param database_name the database name specified in your Opal instance (defaults to 'opal_data')
 #' @param dict_kind dictionnary kind, can be 'core' or 'outcome'
 #'
-#' @examples
-#' lc.populate(dict_version = '1_1', cohort_id = 'dnbc', data_version = '1_0')
-#'
 lc.populate <-
   local(function(dict_version,
                  cohort_id,

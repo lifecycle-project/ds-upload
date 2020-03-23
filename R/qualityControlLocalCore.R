@@ -29,13 +29,6 @@
 #' @param input_format possible formats are CSV,STATA,SPSS or SAS (default = CSV)
 #' @param input_path path for importfile
 #' @param variable_category describes the categories you want to run in your quality control (possible values are: ALL, META, MATERNAL, PATERNAL, CHILD and HOUSEHOLD - default = ALL)
-#'
-#' @examples
-#' lc.quality.local.core(
-#'   input_format = 'SPSS',
-#'   input_path = 'C:\MyDocuments\source_file.sav',
-#'   variable_category = 'CHILD')
-#'
 lc.quality.local.core <-
   local(function(input_format = 'CSV',
                  input_path,
@@ -221,7 +214,6 @@ lc.quality.local.core.meta <- local(function(lc_data) {
 #' @importFrom ggplot2 geom_point
 #' @importFrom dplyr select_if mutate group_by arrange lag contains
 #' @importFrom tidyr spread
-#'
 lc.quality.local.core.maternal.social.char <-
   local(function(lc_data) {
     message("- Maternal - social demographic characteristics")

@@ -8,16 +8,7 @@
 #' @param input_path path for importfile
 #' @param output_path path to output directory (default = your working directory)
 #'
-#' @examples
-#' lc.reshape(
-#'   upload_to_opal = FALSE,
-#'   data_version = '1_0',
-#'   input_format = 'SPSS',
-#'   input_path = 'C:\MyDocuments\source_file.sav',
-#'   output_path = 'C:\MyDocuments\output_file.csv')
-#'
 #' @importFrom readxl read_xlsx
-#' 
 lc.reshape <-
   local(function(upload_to_opal = TRUE,
                  data_version,

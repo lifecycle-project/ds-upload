@@ -5,7 +5,6 @@
 #'
 #' @importFrom dplyr between
 #' @importFrom opalr opal.post
-#'
 lc.dict.project.create <- local(function(project, database_name) {
   canonical_project_name <- strsplit(project, "_")
   dict_kind <- canonical_project_name[[1]][3]
@@ -50,7 +49,6 @@ lc.dict.project.create <- local(function(project, database_name) {
 #' @param data_version version of the data (specific to the cohort)
 #'
 #' @importFrom readxl read_xlsx
-#'
 lc.dict.import <-
   local(function(project,
                  dict_version,
@@ -127,7 +125,6 @@ lc.dict.import <-
 #'
 #' @importFrom opalr opal.post
 #' @importFrom dplyr select %>% nest_join rename
-#'
 lc.populate.match.categories <-
   local(function(project,
                  table,
