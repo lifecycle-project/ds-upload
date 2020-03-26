@@ -10,7 +10,7 @@ The current functions available to data managers and researchers are:
 - ```lc.login``` login to your Opal instance
 - ```lc.upload``` uploads data dictionaries and reshaping all data
 
-For further detail check: https://github.com/lifecycle-project/analysis-protocols/wiki/Adding-variables
+For further detail check: [uploading data](https://github.com/lifecycle-project/analysis-protocols/wiki/Uploading-data)
 
 ### Installation
 > For Opal reference documentation check: http://opaldoc.obiba.org/en/latest/r-user-guide/datashield.html
