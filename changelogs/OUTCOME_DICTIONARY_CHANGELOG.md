@@ -2,7 +2,7 @@
 We define here in what versions of the data dictionaries contains which tables.
 
 ## 1.0
-**lifecycleProject R-package version >= 1.1.0**
+**lifecycleProject R-package version >= 2.1.0**
 
 New variables for work packages 4, 5 and 6.
 
