@@ -53,8 +53,9 @@ The implementation of semantic versioning is as follows.
 To keep track of all the changed within the different versions of the dictionaries and data releases we need to have changelogs. This way we can trace back what has happened in which release.
 
 ### Dictionary releases
-Check: [dictionary changelog](./changelogs/CORE_DICTIONARY_CHANGELOG.md) of the core variables
-Check: [dictionary changelog](./changelogs/OUTCOME_DICTIONARY_CHANGELOG.md) of the outcome variables
+Check: [core dictionary changelog](./changelogs/CORE_DICTIONARY_CHANGELOG.md)
+
+Check: [outcome dictionary changelog](./changelogs/OUTCOME_DICTIONARY_CHANGELOG.md)
 
 
 ### Data releases
