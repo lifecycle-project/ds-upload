@@ -25,6 +25,8 @@ lc.reshape <-
     
     lc_data <- lc.read.source.file(input_path, input_format)
     
+    checkVariables(dict_kind, colnames(lc_data))
+    
     file_prefix <- format(Sys.time(), "%Y-%m-%d_%H-%M-%S")
     
     lc.reshape.generate.non.repeated(
@@ -184,7 +186,7 @@ lc.reshape.generate.yearly.repeated <-
     matched_columns <-
       lc.match.columns(colnames(lc_data), lc_variables_yearly_repeated_dict$name)
     yearly_repeated_measures <-
-      lc_data[, c(c("child_id"), matched_columns)]
+      lc_data[matched_columns]
     
     if (nrow(lc.data.frame.remove.all.na.rows(yearly_repeated_measures)) <= 0) {
       message('* WARNING: No yearly-repeated measures found in this set')
@@ -192,7 +194,7 @@ lc.reshape.generate.yearly.repeated <-
     }
     
     long_1 <- yearly_repeated_measures %>%
-      gather(orig_var, value, matched_columns, na.rm = TRUE)
+      gather(orig_var, value, matched_columns[matched_columns != "child_id"], na.rm = TRUE)
     
     # Create the age_years variable with the regular expression extraction of the year
     long_1$age_years <- as.numeric(numextract(long_1$orig_var))
@@ -293,7 +295,7 @@ lc.reshape.generate.monthly.repeated <-
       lc.match.columns(colnames(lc_data),
                        lc_variables_monthly_repeated_dict$name)
     monthly_repeated_measures <-
-      lc_data[, c(c("child_id"), matched_columns)]
+      lc_data[, matched_columns]
     
     if (nrow(lc.data.frame.remove.all.na.rows(monthly_repeated_measures)) <= 0) {
       message('* WARNING: No monthly-repeated measures found in this set')
@@ -301,7 +303,7 @@ lc.reshape.generate.monthly.repeated <-
     }
     
     long_1 <- monthly_repeated_measures %>%
-      gather(orig_var, value, matched_columns, na.rm = TRUE)
+      gather(orig_var, value, matched_columns[matched_columns != "child_id"], na.rm = TRUE)
     
     # Create the age_years and age_months variables with the regular expression extraction of the year
     long_1$age_years  <-
@@ -410,7 +412,7 @@ lc.reshape.generate.weekly.repeated <- local(function(lc_data,
   matched_columns <-
     lc.match.columns(colnames(lc_data), lc_variables_weekly_repeated_dict$name)
   weekly_repeated_measures <-
-    lc_data[, c(c("child_id"), matched_columns)]
+    lc_data[, matched_columns]
   
   if (nrow(lc.data.frame.remove.all.na.rows(weekly_repeated_measures)) <= 0) {
     message('* WARNING: No weekly-repeated measures found in this set')
@@ -418,7 +420,7 @@ lc.reshape.generate.weekly.repeated <- local(function(lc_data,
   }
   
   long_1 <- weekly_repeated_measures %>%
-    gather(orig_var, value, matched_columns, na.rm = TRUE)
+    gather(orig_var, value, matched_columns[matched_columns != "child_id"], na.rm = TRUE)
   
   # Create the age_years and age_months variables with the regular expression extraction of the year
   # NB - these weekly dta are pregnancy related so child is NOT BORN YET ---
@@ -532,7 +534,7 @@ lc.reshape.generate.trimesterly.repeated <-
       lc.match.columns(colnames(lc_data),
                        lc_variables_trimesterly_repeated_dict$name)
     trimesterly_repeated_measures <-
-      lc_data[, c(c("child_id"), matched_columns)]
+      lc_data[, matched_columns]
     
     if (nrow(lc.data.frame.remove.all.na.rows(trimesterly_repeated_measures)) <= 0) {
       message('* WARNING: No trimesterly-repeated measures found in this set')
@@ -540,7 +542,7 @@ lc.reshape.generate.trimesterly.repeated <-
     }
     
     long_1 <- trimesterly_repeated_measures %>%
-      gather(orig_var, value, matched_columns, na.rm = TRUE)
+      gather(orig_var, value, matched_columns[matched_columns != "child_id"], na.rm = TRUE)
     
     # Create the age_years and age_months variables with the regular expression extraction of the year
     long_1$age_trimester <- as.numeric(numextract(long_1$orig_var))
