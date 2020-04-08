@@ -20,7 +20,8 @@ cohorts <-
     'nfbc66',
     'nfbc86',
     'raine',
-    'rhea'
+    'rhea',
+    'abcd'
   )
 
 lifecycle.globals$input_formats <- c('CSV', 'STATA', 'SPSS', 'SAS')
