@@ -94,17 +94,23 @@ lc.reshape.import <- local(function(file_prefix, dict_kind, file_version, file_n
 #'
 #' @param dict_repeated can be non-repeated, yearly-repeated etc..
 #' @param dict_kind can be 'core' or 'outcome'
+#' @param retrieve_all_by_kind 
 #'
 #' @importFrom readxl read_xlsx
 #'
 #' @return a raw version of the dictionary
 #'
-lc.retrieve.dictionaries <- local(function(dict_repeated, dict_kind) {
+lc.retrieve.dictionaries <- local(function(dict_table, dict_kind, retrieve_all_by_kind = FALSE) {
   dict_file_list <- list.files(paste(getwd(), '/', dict_kind, sep = ''))
 
-  file_name <- dict_file_list[grep(dict_repeated, dict_file_list)]
-
-  raw_dict <- read_xlsx(path = paste(dict_kind, '/', file_name, sep = ''), sheet = 1)
+  if (retrieve_all_by_kind == FALSE) {
+    dict_file_list <- dict_file_list[grep(dict_table, dict_file_list)]  
+  }
+  
+  raw_dict <- list()
+  for (file_name in dict_file_list) {
+    raw_dict <- rbind(raw_dict, read_xlsx(path = paste(dict_kind, '/', file_name, sep = ''), sheet = 1))
+  }
   return(as.data.frame(raw_dict))
 })
 
@@ -141,10 +147,39 @@ lc.data.frame.remove.all.na.rows <- local(function(dataframe) {
 lc.match.columns <- local(function(data_columns, dict_columns) {
   matched_columns <- character()
 
+  matched_columns <- data_columns[data_columns %in% dict_columns]
+  
   for (variable in dict_columns) {
     matched_columns <- c(matched_columns, data_columns %>% str_subset(pattern = paste0("^", variable, "\\d+", sep = "")))
   }
-
   # Select the non-repeated measures from the full data set
   return(matched_columns)
+})
+
+#'
+#' Check if there are columns not matching the dictionary.
+#' 
+#' @param dict_kind specify which dictionary you want to check
+#' @param lc_data_columns the coiumns within the data
+#' 
+#' @return stops the program if someone terminates 
+#'
+checkVariables <- local(function(dict_kind, lc_data_columns) {
+  
+  lc_variables <- lc.retrieve.dictionaries("", dict_kind, retrieve_all_by_kind = TRUE)
+  
+  matched_columns <-
+    lc.match.columns(lc_data_columns,
+                     lc_variables$name)
+  
+  columns_not_matched <- lc_data_columns[!(lc_data_columns %in% matched_columns)]
+  
+  if (length(columns_not_matched) > 0) {
+    message(paste0("[WARNING] These are unmatched columns that will be dropped : [ ", columns_not_matched ," ]."))
+    proceed <- readline("Do you want to proceed (y/n)")
+  }
+  if(proceed == "n") {
+    stop("Program is terminated. There are unmatched columns in your source data.")
+  }
+  
 })
