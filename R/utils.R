@@ -160,7 +160,11 @@ checkPackageVersion <- function() {
   result <- fromJSON(txt=url)
   currentVersion <- packageVersion("lifecycleProject")
   if(any(result$items$version > currentVersion)) {
-    stop(paste0("[WARNING] There is new version of the lifecycleProject available: [ " , max(result$items$version), " ]"))
+    message(paste0("***********************************************************************************"))
+    message(paste0("  [WARNING] You are not running the latest version of the lifecycleProject package."))
+    message(paste0("  [WARNING] If you want to upgrade to newest version : [ " , max(result$items$version), " ],"))
+    message(paste0("  [WARNING] please run 'install.packages(\"lifecyclePackage\"'"))
+    message(paste0("***********************************************************************************"))
   }
 }
 
