@@ -24,6 +24,8 @@ lc.upload <-
                  action = "all",
                  upload_to_opal = TRUE) {
     
+    checkPackageVersion()
+    
     message('######################################################')
     message('  Start upload data into Opal')
     message('------------------------------------------------------')

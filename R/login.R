@@ -16,6 +16,8 @@ lc.login <-
     if (missing(password))
       password <- readline('- Password: ')
     
+    checkPackageVersion()
+    
     lifecycle.globals$hostname <- hostname
     lifecycle.globals$username <- username
     lifecycle.globals$password <- password
