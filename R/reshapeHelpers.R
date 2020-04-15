@@ -92,9 +92,9 @@ lc.reshape.import <- local(function(file_prefix, dict_kind, file_version, file_n
 #'
 #' Retrieve the right file from download directory
 #'
-#' @param dict_repeated can be non-repeated, yearly-repeated etc..
+#' @param dict_table which table do you want to return
 #' @param dict_kind can be 'core' or 'outcome'
-#' @param retrieve_all_by_kind 
+#' @param retrieve_all_by_kind do you want to retrieve all dictionaries in a certain version
 #'
 #' @importFrom readxl read_xlsx
 #'
