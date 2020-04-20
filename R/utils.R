@@ -164,7 +164,7 @@ checkPackageVersion <- function() {
     message(paste0("***********************************************************************************"))
     message(paste0("  [WARNING] You are not running the latest version of the lifecycleProject package."))
     message(paste0("  [WARNING] If you want to upgrade to newest version : [ " , max(result$items$version), " ],"))
-    message(paste0("  [WARNING] please run 'install.packages(\"lifecyclePackage\"'"))
+    message(paste0("  [WARNING] please run 'install.packages(\"lifecycleProject\", repos = \"https://registry.molgenis.org/repository/R/\")'"))
     message(paste0("***********************************************************************************"))
   }
 }
