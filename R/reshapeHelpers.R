@@ -177,6 +177,8 @@ checkVariables <- local(function(dict_kind, lc_data_columns) {
   if (length(columns_not_matched) > 0) {
     message(paste0("[WARNING] This is an unmatched column, it will be dropped : [ ", columns_not_matched ," ].\n"))
     proceed <- readline("Do you want to proceed (y/n)")
+  } else {
+    proceed <- 'y'
   }
   if(proceed == "n") {
     stop("Program is terminated. There are unmatched columns in your source data.")
