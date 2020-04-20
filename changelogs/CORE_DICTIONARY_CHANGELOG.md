@@ -13,9 +13,10 @@ Fixes and amendments for WP3, WP4 and WP5
   - variable miggen --> changed to miggen_child
 
 #### Additional variables 
-* WP3 - Added three variables added (abroad_mo, abroad_fa, abroad_child)
+WP3 - Added three variables added (abroad_mo, abroad_fa, abroad_child)
 
 *non-repeated variables*
+
 | Variable                | Type    | Description                           |
 | ----------------------- | ------- | ------------------------------------- |
 | abroad_mo             	| integer	|	Mother's born abroad                  |
@@ -30,9 +31,7 @@ Additional variables from WP3 and changes in the lifecycle variables. Minor chan
 ### Content
 
 #### General changes
-* Create a seperate table for the trimester variables
-
-*trimester variables*
+- Create a seperate table for the trimester variables
 - *trimester variables and non-repeated variables*
   - Moved smk_t* and alc_t* to the trimester variables, check: additional variables 
 - *non-repeated variables*

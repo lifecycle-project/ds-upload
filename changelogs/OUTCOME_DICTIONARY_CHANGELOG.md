@@ -17,15 +17,17 @@ We define here in what versions of the data dictionaries contains which tables.
   - hba1c units changed to %
 
 #### Additional variables
-- Non-priority variables for WP5
-- Added FEF75_z_ to yearly-repeated variables
 
 *yearly-repeated variables*
+
+**Added FEF75_z_**
+
 | Variable  | Type    | Description                           |
 | --------- | ------- | ------------------------------------- |
 | FEF75_z_	| decimal	| FEF75 (z-score according to GLI)      |
 
-*yearly-repeated variables*
+**Non-priority variables for WP5**
+
 | Variable                | Type    | Description                           |
 |-------------------------------|---------|---------|------------------------------------------------------------------------------------------------------------------|
 | food_all_sens_SPT_COWMILK_    | integer | numeric | food allergic sensitization to cow milk, measured by skin prick test                                             |
