@@ -2,6 +2,7 @@
 We define here in what versions of the data dictionaries contains which tables.
 
 ## 1.1
+**lifecycleProject R-package version >= 2.3.0** *--> not released yet*
 
 ### Content
 
