@@ -2,7 +2,7 @@
 We define here in what versions of the data dictionaries contains which tables.
 
 ## 2.1
-**lifecycleProject R-package version >= 2.3.0**
+**lifecycleProject R-package version >= 2.3.0** *--> not released yet*
 
 Fixes and amendments for WP3, WP4 and WP5
 
