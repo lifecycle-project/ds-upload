@@ -1,26 +1,27 @@
-#############################################
-# 
-#    SIMULATE A FAKE HARMONISED WP4 DATASET
-#      FOR TESTING THE RESHAPE FUNCTION
-#             AHMED ELHALKEEM
-#               31/10/2019
-#
-############################################
+
+########################################################
+#                                                      #
+#  SIMULATE A FAKE HARMONISED WP4 DATASET FOR TESTING  #
+#          BASED ON WP4 DATA DICTIONARY 1_1            #
+#                 AHMED ELHALKEEM                      #
+#                   23/04/2020                         #
+#                                                      #
+########################################################
 
 rm(list=ls())
 library(tidyverse)
+getwd()
 
 ### 1. CREATE EMPTY LC_DATA WITH HARMONIZED COLUMN NAMES ---
 
-wp4.non.repeated <- setNames(data.frame(matrix(ncol = 4, nrow = 10000)), c(
-  "glucose_cord", "insulin_cord", "crp_cord", "il6_cord"))
+wp4_non_rep_1_1 <- setNames(data.frame(matrix(ncol = 4, nrow = 10000)), c(
+  "chol_cord", "hdlc_cord", "ldlc_cord", "triglycerides_cord"))
 
-wp4.weekly.repeated <- setNames(data.frame(matrix(ncol = 49, nrow = 10000)), outer(c(
-  'm_sbp_', 'm_dbp_', 'm_glucose_', 'm_hdlc_', 'm_ldlc_', 'm_chol_', 'm_triglycerides_'
-), c(10, 14, 17, 25, 31, 37, 40), paste, sep = ''
+wp4_weekly_rep_1_1 <- setNames(data.frame(matrix(ncol = 14, nrow = 10000)), outer(c(
+  'm_sbp_', 'm_dbp_'), c(10, 14, 17, 25, 31, 37, 40), paste, sep = ''
 ))
 
-wp4.monthly.repeated <- setNames(data.frame(matrix(ncol = 252, nrow = 10000)), outer(c(
+wp4_monthly_rep_1_1 <- setNames(data.frame(matrix(ncol = 252, nrow = 10000)), outer(c(
   'heightmes_', 'weightmes_', 'dxafm_', 'dxafmage_', 'dxafmmes_',  'bio_', 'bioage_', 'biomes_',
   'dxalm_', 'dxalmage_', 'dxalmmes_', 'sbp_', 'dbp_', 'sbpav_', 'dbpav_', 'bpage_',
   'pulse_', 'pulseage_', 'pulsemessit_', 'chol_', 'cholage_', 'cholmes_',
@@ -28,21 +29,21 @@ wp4.monthly.repeated <- setNames(data.frame(matrix(ncol = 252, nrow = 10000)), o
 ), c(3, 6, 10, 14, 25, 39, 88, 100, 130), paste, sep = ''
 ))
 
-lc_data <- merge(
-  wp4.non.repeated, 
-  wp4.weekly.repeated, 
-  by="row.names"
-  )
-
-lc_data <- lc_data %>% select(-Row.names)
-  
-lc_data <- merge(
-  lc_data, 
-  wp4.monthly.repeated,
+fake_wp4_dataset_1_1 <- merge(
+  wp4_non_rep_1_1, 
+  wp4_weekly_rep_1_1, 
   by="row.names"
 )
 
-lc_data <- lc_data %>% select(-Row.names) %>% mutate(
+fake_wp4_dataset_1_1 <- fake_wp4_dataset_1_1 %>% select(-Row.names)
+
+fake_wp4_dataset_1_1 <- merge(
+  fake_wp4_dataset_1_1, 
+  wp4_monthly_rep_1_1,
+  by="row.names"
+)
+
+fake_wp4_dataset_1_1 <- fake_wp4_dataset_1_1 %>% select(-Row.names) %>% mutate(
   heightmes_41 = NA, weightmes_41 = NA,
   heightmes_96 = NA, weightmes_96 = NA
 )
@@ -50,17 +51,17 @@ lc_data <- lc_data %>% select(-Row.names) %>% mutate(
 ### 2.1 REPLACE ALL WITH NORMAL VALUES ----
 ### 2.2 THEN REPLACE CATEGORICAL DATA WITH APPROPRIATE DISTRIBUTIONS ---
 
-lc_data <- lc_data %>% mutate_all(
-    funs(rnorm(n=10000, mean = 100, sd = 5))) %>% mutate_at(
-      vars(matches("mes_")), funs(rbinom(n = 10000, size = 1, prob = 0.5))) %>% mutate_at(
+fake_wp4_dataset_1_1 <- fake_wp4_dataset_1_1 %>% mutate_all(
+  funs(rnorm(n=10000, mean = 100, sd = 5))) %>% mutate_at(
+    vars(matches("mes_")), funs(rbinom(n = 10000, size = 1, prob = 0.5))) %>% mutate_at(
         vars(matches("heightmes_")), funs(rbinom(n = 10000, size = 2, prob = 0.5))) %>% mutate_at(
           vars(matches("weightmes_")), funs(rbinom(n = 10000, size = 2, prob = 0.5))
-        )
+      )
 
 ### 3. RANDOMLY ADD 25% MISSING DATA ---
 
-lc_data <- as.data.frame(lapply(
-  lc_data, function(cc) cc[ sample(
+fake_wp4_dataset_1_1 <- as.data.frame(lapply(
+  fake_wp4_dataset_1_1, function(cc) cc[ sample(
     c(TRUE, NA), 
     prob = c(0.75, 0.25), 
     size = length(cc), 
@@ -69,13 +70,15 @@ lc_data <- as.data.frame(lapply(
 
 ### 4. ADD ROW ID AND CHILD ID ---
 
-lc_data <- lc_data %>% mutate(
-  row_id = row_number(),
-  child_id = sample(1:10000, 10000)) %>% select(
+fake_wp4_dataset_1_1 <- fake_wp4_dataset_1_1 %>% mutate(
+  row_id = row_number(), child_id = sample(1:10000, 10000)) %>% select(
     row_id, child_id, everything()
-    )
+  )
 
+fake_wp4_dataset_1_1$child_id <- as.character(fake_wp4_dataset_1_1$child_id)
+rm(wp4_non_rep_1_1, wp4_weekly_rep_1_1, wp4_monthly_rep_1_1)
 
 ### 5. SAVE HARMONISED DATASET AS CSV ----
+# NOTE WHEN YOU SAVE AS CSV CHILD_ID SAVED AS NUMERIC NOT CHARACTER
 
-write.csv(lc_data, file = "lc_data_wp4.csv",row.names=FALSE)
+write.csv(fake_wp4_dataset_1_1, file = "fake_harm_wp4_dataset_for_1_1.csv",row.names=FALSE)
