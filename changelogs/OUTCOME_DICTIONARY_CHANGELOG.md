@@ -29,8 +29,8 @@ We define here in what versions of the data dictionaries contains which tables.
 
 **Non-priority variables for WP5**
 
-| Variable                | Type    | Description                           |
-|-------------------------|---------|----------------------------------------------------------------------------------|
+| Variable                      | Type    | Description                                                                                                      |
+| ----------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------- |
 | food_all_sens_SPT_COWMILK_    | integer | food allergic sensitization to cow milk, measured by skin prick test                                             |
 | food_all_sens_SPT_EGG_        | integer | food allergic sensitization to chicken egg, measured by skin prick test                                          |
 | food_all_sens_SPT_WHEAT_      | integer | food allergic sensitization to wheat, measured by skin prick test                                                |
@@ -53,7 +53,7 @@ We define here in what versions of the data dictionaries contains which tables.
 | inh_all_sens_SPT_HDM_derf _   | integer | inhalant allergic sensitization to house dust mite (dermatophagoides farinae), measured by skin prick test       |
 | inh_all_sens_SPT_HDM_derp _   | integer | inhalant allergic sensitization to house dust mite (dermatophagoides pteronyssinus), measured by skin prick test |
 | inh_all_sens_SPT_TREE_mix _   | integer | inhalant allergic sensitization to tree polen mix, measured by skin prick test                                   |
-| inh_all_sens_SPT_TREE_birch _ | integer | inhalant allergic sensitization to birch, measured by skin prick test       |
+| inh_all_sens_SPT_TREE_birch _ | integer | inhalant allergic sensitization to birch, measured by skin prick test                                            |
 
 
 ## 1.0
@@ -69,11 +69,41 @@ New variables for work packages 4, 5 and 6.
 
 **Early-life stressors and cardio-metabolic health life course trajectories (WP4)**
 
+*yearly-repeated variables*
+
+*monthly-repeated variables*
+
+
+*weekly-repeated variables*
+
+| Variable         | Type    | Description                                                                        |
+| ---------------- | ------- | ---------------------------------------------------------------------------------- |
+| row_id           | integer | Unique identifer for the row in Opal                                               |
+| child_id         | text    | Unique identifer for the child                                                     |
+| age_years        | integer | Age of the child in years                                                          |
+| age_weeks        | integer | Age of the child in weeks                                                          |
+| m_sbp_           | decimal | Mother's systolic blood pressure during pregnancy in completed weeks of gestation  |
+| m_dbp_           | decimal | Mother's diastolic blood pressure during pregnancy in completed weeks of gestation |
+| m_crp_           | decimal | Mother's CRP during pregnancy in completed weeks of gestation                      |
+| m_glucose_       | decimal | Mother's glucose during pregnancy in completed weeks of gestation                  |
+| m_haem_          | decimal | Mother's haemoglobin during pregnancy in completed weeks of gestation              |
+| m_hba1c_         | decimal | Mother's HbA1c during pregnancy in completed weeks of gestation                    |
+| m_insulin_       | decimal | Mother's insulin during pregnancy in completed weeks of gestation                  |
+| m_hdlc_          | decimal | Mother's HDLc during pregnancy in completed weeks of gestation                     |
+| m_ldlc_          | decimal | Mother's LDLc during pregnancy in completed weeks of gestation                     |
+| m_chol_          | decimal | Mother's total cholesterol during pregnancy in completed weeks of gestation        |
+| m_triglycerides_ | decimal | mother's triglycerides during pregnancy in completed weeks of gestation            |
+| f_sbp_           | decimal | Father's systolic blood pressure during pregnancy in completed weeks of gestation  |
+| f_dbp_           | decimal | Father's diastolic blood pressure during pregnancy in completed weeks of gestation |
 
 **Early-life stressors and respiratory health life course trajectories (WP5)**
 
 
+
+
 **Early-life stressors and mental health life course trajectories (WP6)**
+
+
 
 ### Tables
 - 1_0_outcome_x_x_non_repeated
