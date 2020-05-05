@@ -25,7 +25,7 @@ We define here in what versions of the data dictionaries contains which tables.
 - 1_x_outcome_x_x_yearly_repeated
 
 ## 1.1
-**lifecycleProject R-package version >= 2.3.0** *--> not released yet*
+**lifecycleProject R-package version >= 2.3.0**
 
 ### Content
 Additional variables for yearly repeats and some renames.

@@ -25,7 +25,7 @@ We define here in what versions of the data dictionaries contains which tables.
 - 2_x_core_x_x_monthly_rep
 
 ## 2.1
-**lifecycleProject R-package version >= 2.3.0** *--> not released yet*
+**lifecycleProject R-package version >= 2.3.0**
 
 ### Content
 Fixes and amendments for WP3, WP4 and WP5
