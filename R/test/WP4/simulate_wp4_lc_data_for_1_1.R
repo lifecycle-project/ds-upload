@@ -9,6 +9,7 @@
 ########################################################
 
 rm(list=ls())
+install.packages("tidyverse")
 library(tidyverse)
 getwd()
 
@@ -82,3 +83,4 @@ rm(wp4_non_rep_1_1, wp4_weekly_rep_1_1, wp4_monthly_rep_1_1)
 # NOTE WHEN YOU SAVE AS CSV CHILD_ID SAVED AS NUMERIC NOT CHARACTER
 
 write.csv(fake_wp4_dataset_1_1, file = "fake_harm_wp4_dataset_for_1_1.csv",row.names=FALSE)
+

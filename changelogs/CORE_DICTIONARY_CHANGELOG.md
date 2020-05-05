@@ -1,12 +1,34 @@
 # Versions of data dictionaries (core = wp1 and wp3)
 We define here in what versions of the data dictionaries contains which tables.
 
-## 2.1
-**lifecycleProject R-package version >= 2.3.0** *--> not released yet*
-
-Fixes and amendments for WP3, WP4 and WP5
+## 2.x
+**lifecycleProject R-package version >= 2.x.x** *--> not released yet*
 
 ### Content
+
+#### General changes
+
+#### Additional variables 
+
+*non-repeated variables*
+
+*yearly-repeated variables*
+
+*monthly-repeated variables*
+
+*trimester-repeated variables*
+
+### Tables
+- 2_x_core_x_x_non_rep
+- 2_x_core_x_x_trimester_rep
+- 2_x_core_x_x_yearly_rep
+- 2_x_core_x_x_monthly_rep
+
+## 2.1
+**lifecycleProject R-package version >= 2.3.0**
+
+### Content
+Fixes and amendments for WP3, WP4 and WP5
 
 #### General changes
 - *non-repeated variables*
@@ -23,12 +45,17 @@ WP3 - Added three variables added (abroad_mo, abroad_fa, abroad_child)
 | abroad_fa	              | integer	|	Father's born abroad                  |
 | abroad_child	          | integer	|	Child's born abroad                   |
 
+### Tables
+- 2_1_core_x_x_non_rep
+- 2_1_core_x_x_trimester_rep
+- 2_1_core_x_x_yearly_rep
+- 2_1_core_x_x_monthly_rep
+
 ## 2.0
 **lifecycleProject R-package version >= 2.2.1**
 
-Additional variables from WP3 and changes in the lifecycle variables. Minor changes in core variables.
-
 ### Content
+Additional variables from WP3 and changes in the lifecycle variables. Minor changes in core variables.
 
 #### General changes
 - Create a seperate table for the trimester variables
@@ -192,8 +219,6 @@ Contributed by: Lidia Panico (lidia.panico@ined.fr)
 | ed_m_              | integer | Maternal any eating disorder active after the index pregnancy                                                                                                                                            |
 | an_m_              | integer | Maternal anorexia nervosa active after the index pregnancy                                                                                                                                               |
 | bn_m_              | integer | Maternal bulimia nervosa active after the index pregnancy                                                                                                                                                |
-
-
 *non-repeated variables*
 | Variable       | Type    | Description                                                                        |
 | -------------- | ------- | ---------------------------------------------------------------------------------- |
@@ -487,18 +512,17 @@ Contributed by: Maxime Cormet (maxime.cornet@inserm.fr)
 | supp_psc       | integer | Supplements in preschool age                                                       |
 | supp_sch       | integer | Supplements in school-age children                                                 |
 
-
-
 ### Tables
-- 1_1_core_x_x_non_rep
-- 1_1_core_x_x_trimester_rep
-- 1_1_core_x_x_yearly_rep
-- 1_1_core_x_x_monthly_rep
+- 2_0_core_x_x_non_rep
+- 2_0_core_x_x_trimester_rep
+- 2_0_core_x_x_yearly_rep
+- 2_0_core_x_x_monthly_rep
 
 ## 1.0
 **lifecycleProject R-package version >= 1.0.4**
 
 ### Content
+First version of the core variable set.
 
 #### General changes
 Added all core variables defined by work package 1

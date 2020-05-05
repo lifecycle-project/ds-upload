@@ -1,5 +1,6 @@
 .ci/
 data/
+test/
 changelogs/
 ANALYSIS_GUIDELINES.md
 DICTIONARY_VERSIONING.md
