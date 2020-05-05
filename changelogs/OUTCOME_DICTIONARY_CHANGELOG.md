@@ -1,10 +1,34 @@
 # Versions of data dictionaries (outcome = wp4, wp5 and wp6)
 We define here in what versions of the data dictionaries contains which tables.
 
+## 1.x
+**lifecycleProject R-package version >= 2.x.x** *--> not released yet*
+
+### Content
+
+#### General changes
+
+#### Additional variables
+
+*non-repeated variables*
+
+*yearly-repeated variables*
+
+*monthly-repeated variables*
+
+*trimester-repeated variables*
+
+### Tables
+- 1_x_outcome_x_x_non_repeated
+- 1_x_outcome_x_x_weekly_repeated
+- 1_x_outcome_x_x_monthly_repeated
+- 1_x_outcome_x_x_yearly_repeated
+
 ## 1.1
 **lifecycleProject R-package version >= 2.3.0** *--> not released yet*
 
 ### Content
+Additional variables for yearly repeats and some renames.
 
 #### General changes
 - *yearly-repeated variables*
@@ -55,6 +79,11 @@ We define here in what versions of the data dictionaries contains which tables.
 | inh_all_sens_SPT_TREE_mix _   | integer | inhalant allergic sensitization to tree polen mix, measured by skin prick test                                   |
 | inh_all_sens_SPT_TREE_birch _ | integer | inhalant allergic sensitization to birch, measured by skin prick test                                            |
 
+### Tables
+- 1_1_outcome_x_x_non_repeated
+- 1_1_outcome_x_x_weekly_repeated
+- 1_1_outcome_x_x_monthly_repeated
+- 1_1_outcome_x_x_yearly_repeated
 
 ## 1.0
 **lifecycleProject R-package version >= 2.1.0**
