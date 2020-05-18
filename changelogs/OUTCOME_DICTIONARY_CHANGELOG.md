@@ -35,6 +35,7 @@ Additional variables for yearly repeats and some renames.
   - Change unit of FeNO_ to "parts per billion"
 - *monthly-repeated variables*
   - hba1c units changed to %. 
+  - hdlc_c changed to hdlc_
   - information on category labels for heightmes_ and weightmes_added in the categories tab
 - *weekly-repeated variables*
   - hba1c units changed to %
