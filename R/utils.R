@@ -157,7 +157,7 @@ getResponseAsDataFrame <- local(function(url) {
 #' @importFrom utils packageVersion
 #'
 checkPackageVersion <- function() {
-  url <- 'http://registry.molgenis.org/service/rest/v1/search?repository=r-hosted&name=lifecycleProject'
+  url <- 'https://registry.molgenis.org/service/rest/v1/search?repository=r-hosted&name=lifecycleProject'
   result <- fromJSON(txt=url)
   currentVersion <- packageVersion("lifecycleProject")
   if(any(result$items$version > currentVersion)) {
