@@ -1,6 +1,29 @@
 # Versions of data dictionaries (core = wp1 and wp3)
 We define here in what versions of the data dictionaries contains which tables.
 
+## 2.2
+**lifecycleProject R-package version >= 2.x.x** *--> not released yet*
+
+### Content
+
+#### General changes
+
+#### Additional variables 
+
+*non-repeated variables*
+
+*yearly-repeated variables*
+
+*monthly-repeated variables*
+
+*trimester-repeated variables*
+
+### Tables
+- 2_2_core_x_x_non_rep
+- 2_2_core_x_x_trimester_rep
+- 2_2_core_x_x_yearly_rep
+- 2_2_core_x_x_monthly_rep
+
 ## 2.x
 **lifecycleProject R-package version >= 2.x.x** *--> not released yet*
 

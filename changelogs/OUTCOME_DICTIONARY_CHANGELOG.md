@@ -19,6 +19,29 @@ We define here in what versions of the data dictionaries contains which tables.
 *trimester-repeated variables*
 
 ### Tables
+- 1_2_outcome_x_x_non_repeated
+- 1_2_outcome_x_x_weekly_repeated
+- 1_2_outcome_x_x_monthly_repeated
+- 1_2_outcome_x_x_yearly_repeated
+
+## 1.2
+**lifecycleProject R-package version >= 2.x.x** *--> not released yet*
+
+### Content
+
+#### General changes
+
+#### Additional variables
+
+*non-repeated variables*
+
+*yearly-repeated variables*
+
+*monthly-repeated variables*
+
+*trimester-repeated variables*
+
+### Tables
 - 1_x_outcome_x_x_non_repeated
 - 1_x_outcome_x_x_weekly_repeated
 - 1_x_outcome_x_x_monthly_repeated
