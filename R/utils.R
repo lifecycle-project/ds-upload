@@ -33,7 +33,7 @@ lifecycle.globals$api_base_url <- 'https://api.github.com/repos/lifecycle-projec
 
 #' Download all released data dictionaries
 #'
-#' @param dict_version dictionary version (possible dictionaries are: 1_0, 1_1 / default = 1_0)
+#' @param dict_version dictionary version
 #' @param dict_kind dictionary kind (possible kinds are 'core' or 'outcome')
 #'
 #' @importFrom utils download.file packageVersion

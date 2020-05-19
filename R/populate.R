@@ -4,7 +4,7 @@ lifecycle.globals <- new.env()
 #' Populate your Opal instance with the new version of the data dictionary
 #' Involves only the core variables
 #'
-#' @param dict_version dictionary version (possible dictionaries are: 1_0, 2_0 / default = 2_0)
+#' @param dict_version dictionary version
 #' @param cohort_id cohort identifier (possible values are: 'dnbc', 'gecko', 'alspac', 'genr', 'moba', 'sws', 'bib', 'chop', 'elfe', 'eden', 'ninfea', 'hbcs', 'inma', 'isglobal', 'nfbc66', 'nfbc86', 'raine', 'rhea')
 #' @param data_version version of the data (specific to the cohort)
 #' @param database_name the database name specified in your Opal instance (defaults to 'opal_data')
