@@ -13,8 +13,8 @@
 #'
 #' @export
 lc.upload <-
-  local(function(dict_version = '2_0',
-                 data_version = '1_0',
+  local(function(dict_version = '2_1',
+                 data_version = '1_1',
                  dict_kind = 'core',
                  cohort_id,
                  database_name = 'opal_data',
