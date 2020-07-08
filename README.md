@@ -1,4 +1,4 @@
-https://travis-ci.org/lifecycle-project/analysis-protocols.svg?branch=master
+![Build status](https://travis-ci.org/lifecycle-project/analysis-protocols.svg?branch=master)
 
 # DataSHIELD upload protocols
 This is a collections of tools used to upload data into DataSHIELD backends. It aids data mangers in the initial stages of uploading data to DataSHIELD backends.
