@@ -1,8 +1,7 @@
-# LifeCycle Analysis Protocols
-These provide researchers with a list of standard functions for data manipulations and analyses in DataSHIELD; these can be adapted to each specific research question. The protocols are currently fairly simple, but will become more extensive as our experience of DataSHIELD develops.
+https://travis-ci.org/lifecycle-project/analysis-protocols.svg?branch=master
 
-## Protocols
-We are trying to build a meta package for the LifeCycle project to aid data mangers and researchers in the initial stages of uploading data to Opal and assigning data in R/DataSHIELD.
+# DataSHIELD upload protocols
+This is a collections of tools used to upload data into DataSHIELD backends. It aids data mangers in the initial stages of uploading data to DataSHIELD backends.
 
 ### Usage
 The current functions available to data managers and researchers are:
@@ -21,13 +20,10 @@ You can install the package by executing the following command:
 install.packages("lifecycleProject", repos='https://registry.molgenis.org/repository/R/', dependencies = TRUE)
 ```
 
-## Analysis guidelines
-Please check: [analysis guidelines](ANALYSIS_GUIDELINES.md)
-
 ## Adding new variables
 When you need to add new variables you need to perform 2 steps:
 - Adding the new variables to the dictionaries
-- Reshaping your data to Opal format
+- Reshaping your data to DataSHIELD backend format
 
 ### Adding new dictionaries (data schemes)
 When you add new dictionaries you need to place them in ```R/data/dictionaries/x_x```.
