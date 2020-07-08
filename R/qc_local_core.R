@@ -29,7 +29,7 @@
 #' @param input_format possible formats are CSV,STATA,SPSS or SAS (default = CSV)
 #' @param input_path path for importfile
 #' @param variable_category describes the categories you want to run in your quality control (possible values are: ALL, META, MATERNAL, PATERNAL, CHILD and HOUSEHOLD - default = ALL)
-lc.quality.local.core <-
+du.quality.local.core <-
   local(function(input_format = 'CSV',
                  input_path,
                  variable_category = 'ALL') {
@@ -37,44 +37,44 @@ lc.quality.local.core <-
     message('  Starting local quality control                      ')
     message('######################################################')
     
-    lc_data <- lc.read.source.file(input_path, input_format)
+    lc_data <- du.read.source.file(input_path, input_format)
     
     if (variable_category == 'ALL' ||
         variable_category == 'META')
-      lc.quality.local.core.meta(lc_data)
+      du.quality.local.core.meta(lc_data)
     if (variable_category == 'ALL' ||
         variable_category == 'MATERNAL')
-      lc.quality.local.core.maternal.social.char(lc_data)
+      du.quality.local.core.maternal.social.char(lc_data)
     if (variable_category == 'ALL' ||
         variable_category == 'MATERNAL')
-      lc.quality.local.core.maternal.health.char(lc_data)
+      du.quality.local.core.maternal.health.char(lc_data)
     if (variable_category == 'ALL' ||
         variable_category == 'MATERNAL')
-      lc.quality.local.core.maternal.lifestyle.char(lc_data)
+      du.quality.local.core.maternal.lifestyle.char(lc_data)
     if (variable_category == 'ALL' ||
         variable_category == 'MATERNAL')
-      lc.quality.local.core.maternal.obstetric.char(lc_data)
+      du.quality.local.core.maternal.obstetric.char(lc_data)
     if (variable_category == 'ALL' ||
         variable_category == 'PATERNAL')
-      lc.quality.local.core.paternal.health.related.char(lc_data)
+      du.quality.local.core.paternal.health.related.char(lc_data)
     if (variable_category == 'ALL' ||
         variable_category == 'PATERNAL')
-      lc.quality.local.core.paternal.lifestyle.char(lc_data)
+      du.quality.local.core.paternal.lifestyle.char(lc_data)
     if (variable_category == 'ALL' ||
         variable_category == 'PATERNAL')
-      lc.quality.local.core.paternal.socio.demo.char(lc_data)
+      du.quality.local.core.paternal.socio.demo.char(lc_data)
     if (variable_category == 'ALL' ||
         variable_category == 'CHILD')
-      lc.quality.local.core.child.birth.out(lc_data)
+      du.quality.local.core.child.birth.out(lc_data)
     if (variable_category == 'ALL' ||
         variable_category == 'CHILD')
-      lc.quality.local.core.child.exposure.lifestyle.environ.char(lc_data)
+      du.quality.local.core.child.exposure.lifestyle.environ.char(lc_data)
     if (variable_category == 'ALL' ||
         variable_category == 'CHILD')
-      lc.quality.local.core.child.exposure.lifestyle.environ.char(lc_data)
+      du.quality.local.core.child.exposure.lifestyle.environ.char(lc_data)
     if (variable_category == 'ALL' ||
         variable_category == 'HOUSEHOLD')
-      lc.quality.local.core.household.char(lc_data)
+      du.quality.local.core.household.char(lc_data)
     
   })
 
@@ -88,7 +88,7 @@ lc.quality.local.core <-
 #' @importFrom ggplot2 theme_set theme_minimal geom_bar
 #' @importFrom dplyr count arrange group_by row_number
 #'
-lc.quality.local.core.meta <- local(function(lc_data) {
+du.quality.local.core.meta <- local(function(lc_data) {
   message("- Meta - variables")
   # workaround to avoid glpobal variable warnings, check: https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
   lifecyclelc_data <-
@@ -214,7 +214,7 @@ lc.quality.local.core.meta <- local(function(lc_data) {
 #' @importFrom ggplot2 geom_point
 #' @importFrom dplyr select_if mutate group_by arrange lag contains
 #' @importFrom tidyr spread
-lc.quality.local.core.maternal.social.char <-
+du.quality.local.core.maternal.social.char <-
   local(function(lc_data) {
     message("- Maternal - social demographic characteristics")
     # workaround to avoid glpobal variable warnings, check: https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
@@ -511,7 +511,7 @@ lc.quality.local.core.maternal.social.char <-
 #' @importFrom plotly ggplotly
 #' @importFrom ggplot2 geom_point theme_minimal
 #'
-lc.quality.local.core.maternal.health.char <-
+du.quality.local.core.maternal.health.char <-
   local(function(lc_data) {
     message("- Maternal - health related characteristics")
     # workaround to avoid glpobal variable warnings, check: https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
@@ -879,7 +879,7 @@ lc.quality.local.core.maternal.health.char <-
 #'
 #' @importFrom gmodels CrossTable
 #'
-lc.quality.local.core.maternal.lifestyle.char <-
+du.quality.local.core.maternal.lifestyle.char <-
   local(function(lc_data) {
     message("- Maternal - lifestyle characteristics")
     # 32. PRE-PREGNANCY SMOKING
@@ -1133,7 +1133,7 @@ lc.quality.local.core.maternal.lifestyle.char <-
 #'
 #' @importFrom gmodels CrossTable
 #'
-lc.quality.local.core.maternal.obstetric.char <-
+du.quality.local.core.maternal.obstetric.char <-
   local(function(lc_data) {
     message("- Maternal - obstetric characteristics")
     #  39. MATERNAL PARITY ('parity_m')
@@ -1257,7 +1257,7 @@ lc.quality.local.core.maternal.obstetric.char <-
 #'
 #' @importFrom gmodels CrossTable
 #'
-lc.quality.local.core.paternal.socio.demo.char <-
+du.quality.local.core.paternal.socio.demo.char <-
   local(function(lc_data) {
     message("- Paternal - social demographic characteristics")
     #  46. PATERNAL OCCUPATIONAL STATUS, PRIMARY FATHER [CORE] ('occup_f1_0-17')
@@ -1758,7 +1758,7 @@ lc.quality.local.core.paternal.socio.demo.char <-
 #' @importFrom plotly ggplotly
 #' @importFrom ggplot2 geom_point geom_boxplot
 #'
-lc.quality.local.core.paternal.health.related.char <-
+du.quality.local.core.paternal.health.related.char <-
   local(function(lc_data) {
     message("- Paternal - health related characteristics")
     # workaround to avoid glpobal variable warnings, check: https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
@@ -1897,7 +1897,7 @@ lc.quality.local.core.paternal.health.related.char <-
 #' @importFrom gmodels CrossTable
 #' @importFrom plotly ggplotly
 #'
-lc.quality.local.core.paternal.lifestyle.char <-
+du.quality.local.core.paternal.lifestyle.char <-
   local(function(lc_data) {
     message("- Paternal - lifestyle characteristics")
     #  77. PATERNAL SMOKING DURING PREGNANCY
@@ -1949,7 +1949,7 @@ lc.quality.local.core.paternal.lifestyle.char <-
 #' @importFrom ggplot2 ggplot aes geom_point geom_boxplot
 #' @importFrom dplyr filter
 #'
-lc.quality.local.core.child.birth.out <- local(function(lc_data) {
+du.quality.local.core.child.birth.out <- local(function(lc_data) {
   message("- Child - birth outcomes")
   # workaround to avoid glpobal variable warnings, check: https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
   ga_lmp <-
@@ -2319,7 +2319,7 @@ lc.quality.local.core.child.birth.out <- local(function(lc_data) {
 #' @importFrom dplyr select_if mutate group_by arrange lag
 #' @importFrom tidyr spread
 #'
-lc.quality.local.core.child.health.related.char <-
+du.quality.local.core.child.health.related.char <-
   local(function(lc_data) {
     message("- Child - health related characterisics")
     # workaround to avoid glpobal variable warnings, check: https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
@@ -2504,7 +2504,7 @@ lc.quality.local.core.child.health.related.char <-
 #' @importFrom gmodels CrossTable
 #' @importFrom plotly ggplotly
 #'
-lc.quality.local.core.child.exposure.lifestyle.environ.char <-
+du.quality.local.core.child.exposure.lifestyle.environ.char <-
   local(function(lc_data) {
     message("- Child - exposure lifestyle environment characterisics")
     # 104. EXCLUSIVE BREAST-FEEDING ('breastfed_excl')
@@ -2774,7 +2774,7 @@ lc.quality.local.core.child.exposure.lifestyle.environ.char <-
 #' @importFrom gmodels CrossTable
 #' @importFrom plotly ggplotly
 #'
-lc.quality.local.core.household.char <- local(function(lc_data) {
+du.quality.local.core.household.char <- local(function(lc_data) {
   message("- Household - characteristics")
   # 116. HOUSEHOLD INCOME [CORE] ('hhincome_0-17')
   # * NB! Income categorised into quartiles (low, medium-low, medium-high, high) based on the national household income distribution in the year of follow-up.

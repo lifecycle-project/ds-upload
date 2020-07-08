@@ -8,34 +8,28 @@
 #' @importFrom opalr opal.login
 #'
 #' @export
-lc.login <-
-  local(function(hostname, username = 'administrator', password, insecure = FALSE) {
+du.login <- local(function(hostname, username = "administrator", password, insecure = FALSE) {
     if (missing(hostname)) {
-      hostname <- readline('- Hostname (e.g. https://my-own-opal.org): ')
-      username <- readline('- Username: ')
+        hostname <- readline("- Hostname (e.g. https://my-own-opal.org): ")
+        username <- readline("- Username: ")
     }
-    if (missing(password))
-      password <- readline('- Password: ')
+    if (missing(password)) 
+        password <- readline("- Password: ")
     
     checkPackageVersion()
     
-    lifecycle.globals$hostname <- hostname
-    lifecycle.globals$username <- username
-    lifecycle.globals$password <- password
+    ds_upload.globals$hostname <- hostname
+    ds_upload.globals$username <- username
+    ds_upload.globals$password <- password
     
     options <- list()
     
-    if(insecure) {
-      options <- list(ssl.verifyhost = FALSE, ssl.verifypeer = FALSE)
+    if (insecure) {
+        options <- list(ssl.verifyhost = FALSE, ssl.verifypeer = FALSE)
     }
     
-    message(paste('  Login to: "', lifecycle.globals$hostname, '"', sep = ''))
-    lifecycle.globals$opal <-
-      opal.login(
-        username = lifecycle.globals$username,
-        password = lifecycle.globals$password,
-        url = lifecycle.globals$hostname,
-        opts = options
-      )
-    message(paste('  Logged on to: "', lifecycle.globals$hostname, '"', sep = ''))
-  })
+    message(paste("  Login to: \"", ds_upload.globals$hostname, "\"", sep = ""))
+    ds_upload.globals$opal <- opal.login(username = ds_upload.globals$username, password = ds_upload.globals$password, 
+        url = ds_upload.globals$hostname, opts = options)
+    message(paste("  Logged on to: \"", ds_upload.globals$hostname, "\"", sep = ""))
+})

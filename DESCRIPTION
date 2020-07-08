@@ -1,6 +1,6 @@
 Package: dsUpload
 Title: Upload functions for DataSHIELD backends
-Version: 2.4.0.9000
+Version: 3.0.0.9000
 Authors@R: person("Sido", "Haakma", email = "s.haakma@rug.nl",
                   role = c("aut", "cre"))
 Description: We supply standardised ways to upload and import versioned data dictionaries. 
@@ -28,7 +28,8 @@ Imports:
   utils
 Suggests: 
   knitr, 
-  rmarkdown
+  rmarkdown,
+  testthat
 VignetteBuilder: knitr
 License: GPL-3
 Encoding: UTF-8

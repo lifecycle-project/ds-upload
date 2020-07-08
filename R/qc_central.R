@@ -1,0 +1,11 @@
+#' Check all versions of the servers
+#'
+#' @importFrom httr GET
+du.quality.central.servers.version <- function() {
+    for (cohort_url in du_upload.globals$cohorts) {
+        if (cohort_url != "") {
+            response <- GET(paste(cohort_url, "/ws/system/version", sep = ""))
+            print(response)
+        }
+    }
+}
