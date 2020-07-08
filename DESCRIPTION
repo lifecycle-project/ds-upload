@@ -1,6 +1,6 @@
-Package: lifecycleProject
-Title: Protocols and Sample analysis
-Version: 2.4.0
+Package: dsUpload
+Title: Upload functions for DataSHIELD backends
+Version: 2.4.0.9000
 Authors@R: person("Sido", "Haakma", email = "s.haakma@rug.nl",
                   role = c("aut", "cre"))
 Description: We supply standardised ways to upload and import versioned data dictionaries. 
@@ -9,10 +9,10 @@ Description: We supply standardised ways to upload and import versioned data dic
   to harmonise your data.
 Depends: 
   R (>= 3.5.0),
-  opalr (>= 1.2.0),
-  maditr
+  opalr (>= 1.2.0)
 Imports:
   dplyr,
+  maditr,
   gmodels,
   ggplot2,
   haven,
@@ -34,4 +34,3 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.0
-
