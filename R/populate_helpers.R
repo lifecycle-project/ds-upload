@@ -35,8 +35,8 @@ du.dict.import <- local(function(project, dict_version, dict_kind, data_version)
     message("------------------------------------------------------")
     message("  Start importing dictionaries")
     
-    files <- getResponseAsDataFrame(paste(ds_upload.globals$api_base_url, "R/data/dictionaries/", 
-        dict_kind, "/", dict_version, "?ref=", ds_upload.globals$package_tag, sep = ""))
+    files <- du.get.response.as.dataframe(paste0(ds_upload.globals$api_content_url, "/dictionaries/", 
+        dict_kind, "/", dict_version, "?ref=", dict_version))
     
     for (f in 1:nrow(files)) {
         file <- files[f, ]

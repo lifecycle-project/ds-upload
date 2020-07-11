@@ -10,7 +10,7 @@ ds_upload.globals$variable_category <- c("ALL", "META", "MATERNAL", "PATERNAL", 
     "HOUSEHOLD")
 ds_upload.globals$cohort_ids <- cohorts
 
-ds_upload.globals$api_base_url <- "https://api.github.com/repos/lifecycle-project/analysis-protocols/contents/"
+ds_upload.globals$api_content_url <- "https://api.github.com/repos/lifecycle-project/ds-dictionaries/contents/"
 
 #' Download all released data dictionaries
 #'
@@ -26,8 +26,8 @@ du.dict.download <- local(function(dict_version, dict_kind) {
     
     dir.create(dict_kind)
     
-    files <- getResponseAsDataFrame(paste(ds_upload.globals$api_base_url, "R/data/dictionaries/", 
-        dict_kind, "/", dict_version, "?ref=", ds_upload.globals$package_tag, sep = ""))
+    files <- du.get.response.as.dataframe(paste(ds_upload.globals$api_content_url, "/dictionaries/", 
+        dict_kind, "/", dict_version, "?ref=", dict_version, sep = ""))
     
     for (f in 1:nrow(files)) {
         file <- files[f, ]
@@ -78,31 +78,8 @@ summarizeR <- local(function(df, .var) {
 #'
 #' @importFrom stringr str_detect
 #'
-checkVersion <- local(function(version) {
+du.check.version <- local(function(version) {
     return(str_detect(version, "\\d+\\_\\d+"))
-})
-
-#'
-#' Get the possible dictionary versions from Github
-#' 
-#' @param dict_kind dictionary kind (can be 'core' or 'outcome')
-#' 
-#' @importFrom utils packageVersion
-#'
-#'
-populateDictionaryVersions <- local(function(dict_kind) {
-    
-    ds_upload.globals$package_tag <- packageVersion("lifecycleProject")
-    
-    versions <- getResponseAsDataFrame(paste(ds_upload.globals$api_base_url, "R/data/dictionaries/", 
-        dict_kind, "?ref=", ds_upload.globals$package_tag, sep = ""))
-    
-    if (dict_kind == "core") {
-        ds_upload.globals$dictionaries_core <- versions$name
-    } else {
-        ds_upload.globals$dictionaries_outcome <- versions$name
-    }
-    
 })
 
 #'
@@ -115,7 +92,7 @@ populateDictionaryVersions <- local(function(dict_kind) {
 #' 
 #' @return response as dataframe
 #'
-getResponseAsDataFrame <- local(function(url) {
+du.get.response.as.dataframe <- local(function(url) {
     response <- GET(url)
     json_response <- content(response, as = "text")
     return(fromJSON(json_response))
@@ -125,18 +102,18 @@ getResponseAsDataFrame <- local(function(url) {
 #' Check the package version 
 #'
 #' @importFrom jsonlite fromJSON
-#' @importFrom utils packageVersion
+#' @importFrom utils packageVersion packageName
 #'
-checkPackageVersion <- function() {
-    packageName <- url <- "https://registry.molgenis.org/service/rest/v1/search?repository=r-hosted&name=dsUpload"
+du.check.package.version <- function() {
+    url <- paste0("https://registry.molgenis.org/service/rest/v1/search?repository=r-hosted&name=",packageName())
     result <- fromJSON(txt = url)
-    currentVersion <- packageVersion("dsUpload")
+    currentVersion <- packageVersion(packageName())
     if (any(result$items$version > currentVersion)) {
         message(paste0("***********************************************************************************"))
-        message(paste0("  [WARNING] You are not running the latest version of the lifecycleProject package."))
+        message(paste0("  [WARNING] You are not running the latest version of the ", packageName(), "-package."))
         message(paste0("  [WARNING] If you want to upgrade to newest version : [ ", max(result$items$version), 
             " ],"))
-        message(paste0("  [WARNING] Please run 'install.packages(\"lifecycleProject\", repos = \"https://registry.molgenis.org/repository/R/\")'"))
+        message(paste0("  [WARNING] Please run 'install.packages(\"",packageName(),"\", repos = \"https://registry.molgenis.org/repository/R/\")'"))
         message(paste0("  [WARNING] Check the release notes here: https://github.com/lifecycle-project/analysis-protocols/releases/tag/", 
             max(result$items$version)))
         message(paste0("***********************************************************************************"))

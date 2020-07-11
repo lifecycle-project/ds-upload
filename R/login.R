@@ -16,7 +16,7 @@ du.login <- local(function(hostname, username = "administrator", password, insec
     if (missing(password)) 
         password <- readline("- Password: ")
     
-    checkPackageVersion()
+    du.check.package.version()
     
     ds_upload.globals$hostname <- hostname
     ds_upload.globals$username <- username

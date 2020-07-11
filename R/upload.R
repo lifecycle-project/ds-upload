@@ -16,13 +16,13 @@ du.upload <- local(function(dict_version = "2_1", data_version = "1_1", dict_kin
     cohort_id, database_name = "opal_data", data_input_format = "CSV", data_input_path, 
     data_output_path = getwd(), action = "all", upload_to_opal = TRUE) {
     
-    checkPackageVersion()
+    du.check.package.version()
     
     message("######################################################")
     message("  Start upload data into Opal")
     message("------------------------------------------------------")
     
-    populateDictionaryVersions(dict_kind)
+    du.populate.dictionary.versions(dict_kind, dict_version)
     
     if (upload_to_opal == TRUE) {
         if (!exists("hostname", envir = ds_upload.globals)) 
@@ -61,7 +61,7 @@ du.upload <- local(function(dict_version = "2_1", data_version = "1_1", dict_kin
             stop("No dictionary version or kind is specified. Program is terminated.")
         }
     }
-    if (data_version == "" || !checkVersion(data_version)) {
+    if (data_version == "" || !du.check.version(data_version)) {
         stop("No data version is specified or the data version does not match syntax: 'number_number'! Program is terminated.")
     }
     
