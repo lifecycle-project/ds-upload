@@ -170,10 +170,11 @@ du.match.columns <- local(function(data_columns, dict_columns) {
 #' 
 #' @param dict_kind specify which dictionary you want to check
 #' @param lc_data_columns the coiumns within the data
+#' @param non_interactive if set to TRUE you will get no questions
 #' 
 #' @return stops the program if someone terminates 
 #'
-checkVariables <- local(function(dict_kind, lc_data_columns) {
+du.check.variables <- local(function(dict_kind, lc_data_columns, non_interactive) {
     
     lc_variables <- du.retrieve.dictionaries("", dict_kind, retrieve_all_by_kind = TRUE)
     
@@ -184,7 +185,11 @@ checkVariables <- local(function(dict_kind, lc_data_columns) {
     if (length(columns_not_matched) > 0) {
         message(paste0("[WARNING] This is an unmatched column, it will be dropped : [ ", 
             columns_not_matched, " ].\n"))
-        proceed <- readline("Do you want to proceed (y/n)")
+        if (!non_interactive) {
+            proceed <- readline("Do you want to proceed (y/n)")
+        } else {
+            proceed = "y"
+        }
     } else {
         proceed <- "y"
     }

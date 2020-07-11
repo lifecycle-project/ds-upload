@@ -10,9 +10,12 @@ du.dict.project.create <- local(function(project, database_name) {
     dict_kind <- canonical_project_name[[1]][3]
     dict_version <- paste(canonical_project_name[[1]][4], "_", canonical_project_name[[1]][5], 
         sep = "")
+    
     message("------------------------------------------------------")
     message(paste("  Start creating project: [ ", project, " ]", sep = ""))
+    
     projects <- opal.projects(ds_upload.globals$opal)
+    
     if (!(project %in% projects$name)) {
         json <- sprintf("{\"database\":\"%s\",\"description\":\"%s\",\"name\":\"%s\",\"title\":\"%s\"}", 
             database_name, paste("Project for [ ", dict_kind, " ] variables and data dictionary version: [ ", 
@@ -100,4 +103,25 @@ du.populate.match.categories <- local(function(project, table, variables, catego
     message(paste("* Import variables into: [ ", table, " ]", sep = ""))
     opal.post(ds_upload.globals$opal, "datasource", project, "table", table, "variables", 
         body = toJSON(variables), contentType = "application/x-protobuf+json")
+})
+
+#'
+#' Get the possible dictionary versions from Github
+#' 
+#' @param dict_kind dictionary kind (can be 'core' or 'outcome')
+#' @param dict_version dictionary version (can be 'x_x')
+#' 
+#' @importFrom utils
+#'
+du.populate.dictionary.versions <- local(function(dict_kind, dict_version) {
+    
+    versions <- du.get.response.as.dataframe(paste0(ds_upload.globals$api_content_url, "dictionaries/", 
+                                                    dict_kind, "?ref=", dict_version))
+    
+    if (dict_kind == "core") {
+        ds_upload.globals$dictionaries_core <- versions$name
+    } else {
+        ds_upload.globals$dictionaries_outcome <- versions$name
+    }
+    
 })

@@ -7,10 +7,11 @@
 #' @param dict_kind kind of data to reshape (default = core)
 #' @param input_path path for importfile
 #' @param output_path path to output directory (default = your working directory)
+#' @param non_interactive if set to TRUE you will get no questions
 #'
 #' @importFrom readxl read_xlsx
 du.reshape <- local(function(upload_to_opal = TRUE, data_version, input_format, dict_version, 
-    dict_kind, input_path, output_path) {
+    dict_kind, input_path, output_path, non_interactive) {
     message("######################################################")
     message("  Start reshaping data                                ")
     message("######################################################")
@@ -19,7 +20,7 @@ du.reshape <- local(function(upload_to_opal = TRUE, data_version, input_format, 
     
     lc_data <- du.read.source.file(input_path, input_format)
     
-    checkVariables(dict_kind, colnames(lc_data))
+    du.check.variables(dict_kind, colnames(lc_data), non_interactive)
     
     file_prefix <- format(Sys.time(), "%Y-%m-%d_%H-%M-%S")
     
