@@ -1,5 +1,4 @@
 .ci/
-test/
 TROUBLESHOOTING.md
 .travis.yml
 ^.*\.Rproj$
