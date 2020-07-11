@@ -1,25 +1,13 @@
 ![Build status](https://travis-ci.org/lifecycle-project/analysis-protocols.svg?branch=master)
 
-# DataSHIELD upload protocols
+# DataSHIELD upload tools
 This is a collections of tools used to upload data into DataSHIELD backends. It aids data mangers in the initial stages of uploading data to DataSHIELD backends.
 
-### Usage
-The current functions available to data managers and researchers are:
+## Usage
+Please check the [references](./references/index.html) and [articles](./articles/index.html) above.
 
-- ```lc.login``` login to your Opal instance
-- ```lc.upload``` uploads data dictionaries and reshaping all data
-
-For further detail check: [uploading data](https://github.com/lifecycle-project/analysis-protocols/wiki/Uploading-data)
-
-### Installation
-> For Opal reference documentation check: http://opaldoc.obiba.org/en/latest/r-user-guide/datashield.html
-
-You can install the package by executing the following command:
-
-```R
-install.packages("dsUload", repos='https://registry.molgenis.org/repository/R/', dependencies = TRUE)
-```
-
+## Troubleshooting
+Please check the [troubleshooting guide]().
 
 ## Adding new variables
 Please check: [adding new variables](https://github.com/lifecycle-project/ds-dictionaries/blob/master/README.md)
@@ -33,7 +21,7 @@ Releasing the artifact can be done by curling to the following address:
 curl -v --user 'user:password' --upload-file dsUpload_3.0.0.tar.gz https://registry.molgenis.org/repository/r-hosted/src/contrib/dsUpload_3.0.0.tar.gz 
 ```
 
-> So just to be short: https://registry.molgenis.org/repository/r-hosted/src/contrib/*package_version*.tar.gz 
+*URL clarification: https://registry.molgenis.org/repository/r-hosted/src/contrib/*package_version*.tar.gz*
 
 **For binary packages**
 
@@ -44,7 +32,7 @@ Then download the zip-file build bij win-builder. Then upload it into the regist
 curl -v --user 'user:password' --upload-file dsUpload_3.0.0.zip https://registry.molgenis.org/repository/r-hosted/bin/windows/contrib/3.6/dsUpload_3.0.0.zip
 ```
 
->So just to be short: https://registry.molgenis.org/repository/r-hosted/bin/windows/contrib/*r-version*/*package_version*.zip
+*URL clarification: https://registry.molgenis.org/repository/r-hosted/bin/windows/contrib/*r-version*/*package_version*.zip*
 
 Also create a git-tag and push this to the remote, based upon the lifecycleProject DESCRIPTION-file.
 
