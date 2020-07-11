@@ -110,8 +110,6 @@ du.populate.match.categories <- local(function(project, table, variables, catego
 #' 
 #' @param dict_kind dictionary kind (can be 'core' or 'outcome')
 #' @param dict_version dictionary version (can be 'x_x')
-#' 
-#' @importFrom utils
 #'
 du.populate.dictionary.versions <- local(function(dict_kind, dict_version) {
     
