@@ -34,7 +34,7 @@ curl -v --user 'user:password' --upload-file dsUpload_3.0.0.zip https://registry
 
 *URL clarification: https://registry.molgenis.org/repository/r-hosted/bin/windows/contrib/*r-version*/*package_version*.zip*
 
-Also create a git-tag and push this to the remote, based upon the lifecycleProject DESCRIPTION-file.
+Also create a git-tag and push this to the remote, based upon the `dsUpload` DESCRIPTION-file.
 
 ```
 git tag x.x.x
