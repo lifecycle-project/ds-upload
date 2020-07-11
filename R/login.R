@@ -6,6 +6,15 @@
 #' @param insecure NOT RECOMMENDED, use an insecure SSL connection
 #'
 #' @importFrom opalr opal.login
+#' 
+#' @examples 
+#' \dontrun{
+#' du.login(
+#'   hostname = "https://cohort-datashield-server.org", 
+#'   username = "local_dm", 
+#'   password = "very-secret-pw"
+#' )
+#' }
 #'
 #' @export
 du.login <- local(function(hostname, username = "administrator", password, insecure = FALSE) {

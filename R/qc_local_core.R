@@ -102,7 +102,7 @@ du.quality.local.core.meta <- local(function(lc_data) {
   list(
     data_type = class(lifecyclelc_data$mother_id),
     category_numbers = table(lc_data$mother_id),
-    summary_stats = summarizeR(lc_data, "mother_id")
+    summary_stats = du.summarize(lc_data, "mother_id")
   )
   
   # * Please, check this number against any previously reported distribution of number of [mothers] in your cohort
@@ -135,7 +135,7 @@ du.quality.local.core.meta <- local(function(lc_data) {
   list(
     data_type = class(lc_data$preg_no),
     category_numbers = table(lc_data$preg_no),
-    summary_stats = summarizeR(lc_data, "preg_no")
+    summary_stats = du.summarize(lc_data, "preg_no")
   )
   # * Please, check this number against any previously reported distribution of [within-mother pregnancies] in your cohort
   
@@ -149,7 +149,7 @@ du.quality.local.core.meta <- local(function(lc_data) {
   list(
     data_type = class(lc_data$child_no),
     category_numbers = table(lc_data$child_no),
-    summary_stats = summarizeR(lc_data, "child_no")
+    summary_stats = du.summarize(lc_data, "child_no")
   )
   
   # * Please, check this number against any previously reported distribution of [number of within-pregnancies (singles, twins and triplets etc.)] in your cohort
@@ -172,7 +172,7 @@ du.quality.local.core.meta <- local(function(lc_data) {
   list(
     data_type = class(lc_data$child_id),
     category_numbers = table(lc_data$child_id),
-    summary_stats = summarizeR(lc_data, "child_id")
+    summary_stats = du.summarize(lc_data, "child_id")
   )
   
   #------------------------------------------------------------------------------------------------#
@@ -191,7 +191,7 @@ du.quality.local.core.meta <- local(function(lc_data) {
   list(
     data_type = class(lc_data$recruit_age),
     category_numbers = table(lc_data$recruit_age),
-    summary_stats = summarizeR(lc_data, "recruit_age")
+    summary_stats = du.summarize(lc_data, "recruit_age")
   )
   
   #------------------------------------------------------------------------------------------------#
@@ -238,7 +238,7 @@ du.quality.local.core.maternal.social.char <-
     lc_data %>%
       select(contains("cohab_")) %>%
       names() %>%
-      numextract() %>%
+      du.num.extract() %>%
       range()             # This should be 0-17
     
     # Second: print the summary stats for all variables
@@ -247,7 +247,7 @@ du.quality.local.core.maternal.social.char <-
       names()
     
     for (i in var_names) {
-      print(summarizeR(lc_data, i))
+      print(du.summarize(lc_data, i))
     }
     
     # * If more than one measure declared within the period, use the measure closest to the child's first birthday, e.g. for cohab_0 use the
@@ -288,7 +288,7 @@ du.quality.local.core.maternal.social.char <-
     lc_data %>%
       select(contains("occup_m_")) %>%
       names() %>%
-      numextract() %>%
+      du.num.extract() %>%
       range()
     
     # Second: print the summary stats for all variables
@@ -297,7 +297,7 @@ du.quality.local.core.maternal.social.char <-
       names()
     
     for (i in var_names) {
-      print(summarizeR(lc_data, i))
+      print(du.summarize(lc_data, i))
     }
     
     # * If reasonable, please check the distribution against any previously reported distribution of [maternal occupational status] in your cohort
@@ -314,7 +314,7 @@ du.quality.local.core.maternal.social.char <-
     lc_data %>%
       select(contains("occupcode_m_")) %>%
       names() %>%
-      numextract() %>%
+      du.num.extract() %>%
       range()
     
     # Second: print the summary stats for all variables
@@ -323,7 +323,7 @@ du.quality.local.core.maternal.social.char <-
       names()
     
     for (i in var_names) {
-      print(summarizeR(lc_data, i))
+      print(du.summarize(lc_data, i))
     }
     
     #1) Legislators, senior officials, managers
@@ -356,7 +356,7 @@ du.quality.local.core.maternal.social.char <-
     lc_data %>%
       select(contains("edu_m_")) %>%
       names() %>%
-      numextract() %>%
+      du.num.extract() %>%
       range()
     
     # Second: print the summary stats for all variables
@@ -365,7 +365,7 @@ du.quality.local.core.maternal.social.char <-
       names()
     
     for (i in var_names) {
-      print(summarizeR(lc_data, i))
+      print(du.summarize(lc_data, i))
     }
     
     # * If reasonable, please check the distribution against any previously reported distribution of [maternal education] in your cohort
@@ -386,7 +386,7 @@ du.quality.local.core.maternal.social.char <-
       #reshape to long format
       gather(orig_var, edu_m_, grep("edu_m_", names(.)), na.rm = FALSE) %>%
       # generate a year variable
-      mutate(age_years = as.numeric(numextract(orig_var))) %>%
+      mutate(age_years = as.numeric(du.num.extract(orig_var))) %>%
       #take out the year indicator from the education variable
       mutate(variable_trunc = gsub('[[:digit:]]+$', '', orig_var)) %>% #take out the year indicator from the education variable
       spread(key = variable_trunc, value = edu_m_) %>%
@@ -413,7 +413,7 @@ du.quality.local.core.maternal.social.char <-
     list(
       data_type = class(lc_data$cob_m),
       category_numbers = table(lc_data$cob_m),
-      summary_stats = summarizeR(lc_data, "cob_m")
+      summary_stats = du.summarize(lc_data, "cob_m")
     )
     
     #* If reasonable, please check the distribution against any previously reported distribution of [maternal country of birth] in your cohort
@@ -428,7 +428,7 @@ du.quality.local.core.maternal.social.char <-
     list(
       data_type = class(lc_data$ethn1_m),
       category_numbers = table(lc_data$ethn1_m),
-      summary_stats = summarizeR(lc_data, "ethn1_m")
+      summary_stats = du.summarize(lc_data, "ethn1_m")
     )
     
     #  * If reasonable, please check the distribution against any previously reported distribution of [maternal ethnicity] in your cohort
@@ -440,7 +440,7 @@ du.quality.local.core.maternal.social.char <-
     list(
       data_type = class(lc_data$ethn2_m),
       category_numbers = table(lc_data$ethn2_m),
-      summary_stats = summarizeR(lc_data, "ethn2_m")
+      summary_stats = du.summarize(lc_data, "ethn2_m")
     )
     
     #--------------------------------#
@@ -449,7 +449,7 @@ du.quality.local.core.maternal.social.char <-
     list(
       data_type = class(lc_data$ethn3_m),
       category_numbers = table(lc_data$ethn3_m),
-      summary_stats = summarizeR(lc_data, "ethn3_m")
+      summary_stats = du.summarize(lc_data, "ethn3_m")
     )
     
     #------------------------------------------------------------------------------------------------#
@@ -459,7 +459,7 @@ du.quality.local.core.maternal.social.char <-
     list(
       data_type = class(lc_data$agebirth_m_y),
       category_numbers = table(lc_data$agebirth_m_y),
-      summary_stats = summarizeR(lc_data, "agebirth_m_y")
+      summary_stats = du.summarize(lc_data, "agebirth_m_y")
     )
     
     # * If reasonable, please check the distribution against any previously reported distribution of [maternal age at birth, in years] in your cohort
@@ -483,7 +483,7 @@ du.quality.local.core.maternal.social.char <-
     list(
       data_type = class(lc_data$death_m),
       category_numbers = table(lc_data$death_m),
-      summary_stats = summarizeR(lc_data, "death_m")
+      summary_stats = du.summarize(lc_data, "death_m")
     )
     
     # * Check internal validity, e.g.:
@@ -496,7 +496,7 @@ du.quality.local.core.maternal.social.char <-
     list(
       data_type = class(lc_data$death_m_age),
       category_numbers = table(lc_data$death_m_age),
-      summary_stats = summarizeR(lc_data, "death_m_age")
+      summary_stats = du.summarize(lc_data, "death_m_age")
     )
     
   })
@@ -526,10 +526,10 @@ du.quality.local.core.maternal.health.char <-
     # * NB! If an early pregnancy weight is used in place of pre-pregnancy weight, gestational age at time of measurement should be provided in variable "prepreg_weight_ga".
     
     # * Check for outliers and impossible values (e.g. substantial low or high weight in kg)
-    summarizeR(lc_data, "prepreg_weight")
+    du.summarize(lc_data, "prepreg_weight")
     list(
       data_type = class(lc_data$prepreg_weight),
-      summary_stats = summarizeR(lc_data, "prepreg_weight")
+      summary_stats = du.summarize(lc_data, "prepreg_weight")
     )
     
     # * Check internal validity, e.g.:
@@ -555,7 +555,7 @@ du.quality.local.core.maternal.health.char <-
     list(
       data_type = class(lc_data$prepreg_weight_mes),
       category_numbers = table(lc_data$prepreg_weight_mes),
-      summary_stats = summarizeR(lc_data, "prepreg_weight_mes")
+      summary_stats = du.summarize(lc_data, "prepreg_weight_mes")
     )
     #--------------------------------#
     #  c. ('prepreg_weight_ga')
@@ -564,7 +564,7 @@ du.quality.local.core.maternal.health.char <-
     # * Check for outliers and impossible values (e.g. substantial low or high gestational age)
     list(
       data_type = class(lc_data$prepreg_weight_ga),
-      summary_stats = summarizeR(lc_data, "prepreg_weight_ga")
+      summary_stats = du.summarize(lc_data, "prepreg_weight_ga")
     )
     #------------------------------------------------------------------------------------------------#
     
@@ -574,10 +574,10 @@ du.quality.local.core.maternal.health.char <-
     # * This will be partial harmonisation, which should be indicated and detailed in the online catalogue under 'match'
     
     # * Check for outliers and impossible values (e.g. substantial low or high weight in kg)
-    summarizeR(lc_data, "latepreg_weight")
+    du.summarize(lc_data, "latepreg_weight")
     list(
       data_type = class(lc_data$latepreg_weight),
-      summary_stats = summarizeR(lc_data, "latepreg_weight")
+      summary_stats = du.summarize(lc_data, "latepreg_weight")
     )
     
     # * Check internal validity, e.g.:
@@ -591,7 +591,7 @@ du.quality.local.core.maternal.health.char <-
     list(
       data_type = class(lc_data$latepreg_weight_mes),
       category_numbers = table(lc_data$latepreg_weight_mes),
-      summary_stats = summarizeR(lc_data, "latepreg_weight_mes")
+      summary_stats = du.summarize(lc_data, "latepreg_weight_mes")
     )
     
     #--------------------------------#
@@ -599,7 +599,7 @@ du.quality.local.core.maternal.health.char <-
     # * Check for outliers and impossible values (e.g. substantial low or high gestational age)
     list(
       data_type = class(lc_data$prepreg_weight_mes),
-      summary_stats = summarizeR(lc_data, "prepreg_weight_mes")
+      summary_stats = du.summarize(lc_data, "prepreg_weight_mes")
     )
     
     #------------------------------------------------------------------------------------------------#
@@ -613,7 +613,7 @@ du.quality.local.core.maternal.health.char <-
     # ** NB! Negative variables for weight loss and positive variables for weight gain
     list(
       data_type = class(lc_data$preg_gain),
-      summary_stats = summarizeR(lc_data, "preg_gain")
+      summary_stats = du.summarize(lc_data, "preg_gain")
     )
     # and plot
     ggplotly(ggplot(lc_data, aes(y = preg_gain)) + geom_boxplot())
@@ -638,7 +638,7 @@ du.quality.local.core.maternal.health.char <-
     list(
       data_type = class(lc_data$preg_gain_mes),
       category_numbers = table(lc_data$preg_gain_mes),
-      summary_stats = summarizeR(lc_data, "preg_gain_mes")
+      summary_stats = du.summarize(lc_data, "preg_gain_mes")
     )
     
     # * Check internal validity, e.g.:
@@ -654,7 +654,7 @@ du.quality.local.core.maternal.health.char <-
     #  * Check for outliers and impossible values (e.g. substantial low or high height, in cm)
     list(
       data_type = class(lc_data$height_m),
-      summary_stats = summarizeR(lc_data, "height_m")
+      summary_stats = du.summarize(lc_data, "height_m")
     )
     # and plot
     ggplotly(ggplot(lc_data, aes(y = height_m)) + geom_boxplot())
@@ -669,7 +669,7 @@ du.quality.local.core.maternal.health.char <-
     list(
       data_type = class(lc_data$height_mes_m),
       category_numbers = table(lc_data$height_mes_m),
-      summary_stats = summarizeR(lc_data, "height_mes_m")
+      summary_stats = du.summarize(lc_data, "height_mes_m")
     )
     
     #------------------------------------------------------------------------------------------------#
@@ -681,7 +681,7 @@ du.quality.local.core.maternal.health.char <-
     list(
       data_type = class(lc_data$prepreg_dia),
       category_numbers = table(lc_data$prepreg_dia),
-      summary_stats = summarizeR(lc_data, "prepreg_dia")
+      summary_stats = du.summarize(lc_data, "prepreg_dia")
     )
     
     # * If reasonable, please check the distribution against any previously reported distribution of [maternal history of diabetes before index pregnancy] in your cohort
@@ -715,7 +715,7 @@ du.quality.local.core.maternal.health.char <-
     list(
       data_type = class(lc_data$preg_dia),
       category_numbers = table(lc_data$preg_dia),
-      summary_stats = summarizeR(lc_data, "preg_dia")
+      summary_stats = du.summarize(lc_data, "preg_dia")
     )
     
     # * If reasonable, please check the distribution against any previously reported distribution of [maternal history of gestational diabetes] in your cohort
@@ -730,7 +730,7 @@ du.quality.local.core.maternal.health.char <-
     list(
       data_type = class(lc_data$preg_thyroid),
       category_numbers = table(lc_data$preg_thyroid),
-      summary_stats = summarizeR(lc_data, "preg_thyroid")
+      summary_stats = du.summarize(lc_data, "preg_thyroid")
     )
     
     # * If reasonable, please check the distribution against any previously reported distribution of [maternal thyroid disorders during pregnancy] in your cohort
@@ -746,7 +746,7 @@ du.quality.local.core.maternal.health.char <-
     list(
       data_type = class(lc_data$preg_thyroid),
       category_numbers = table(lc_data$preg_thyroid),
-      summary_stats = summarizeR(lc_data, "preg_thyroid")
+      summary_stats = du.summarize(lc_data, "preg_thyroid")
     )
     # * If reasonable, please check the distribution against any previously reported distribution of [maternal fever during pregnancy] in your cohort
     
@@ -766,7 +766,7 @@ du.quality.local.core.maternal.health.char <-
     list(
       data_type = class(lc_data$preeclam),
       category_numbers = table(lc_data$preeclam),
-      summary_stats = summarizeR(lc_data, "preeclam")
+      summary_stats = du.summarize(lc_data, "preeclam")
     )
     
     #* If reasonable, please check the distribution against any previously reported distribution of [preeclamsia] in your cohort
@@ -805,7 +805,7 @@ du.quality.local.core.maternal.health.char <-
     list(
       data_type = class(lc_data$preg_ht),
       category_numbers = table(lc_data$preg_ht),
-      summary_stats = summarizeR(lc_data, "preg_ht")
+      summary_stats = du.summarize(lc_data, "preg_ht")
     )
     
     # * If reasonable, please check the distribution against any previously reported distribution of [gestational hypertension] in your cohort
@@ -819,7 +819,7 @@ du.quality.local.core.maternal.health.char <-
     list(
       data_type = class(lc_data$asthma_m),
       category_numbers = table(lc_data$asthma_m),
-      summary_stats = summarizeR(lc_data, "asthma_m")
+      summary_stats = du.summarize(lc_data, "asthma_m")
     )
     
     # * If reasonable, please check the distribution against any previously reported distribution of [maternal history of asthma] in your cohort
@@ -834,7 +834,7 @@ du.quality.local.core.maternal.health.char <-
     list(
       data_type = class(lc_data$prepreg_psych),
       category_numbers = table(lc_data$prepreg_psych),
-      summary_stats = summarizeR(lc_data, "prepreg_psych")
+      summary_stats = du.summarize(lc_data, "prepreg_psych")
     )
     
     # * If reasonable, please check the distribution against any previously reported distribution of [pre-pregnancy psyhicatric disorders]
@@ -849,7 +849,7 @@ du.quality.local.core.maternal.health.char <-
     list(
       data_type = class(lc_data$preg_psych),
       category_numbers = table(lc_data$preg_psych),
-      summary_stats = summarizeR(lc_data, "preg_psych")
+      summary_stats = du.summarize(lc_data, "preg_psych")
     )
     
     # * If reasonable, please check the distribution against any previously reported distribution of [pregnancy psyhicatric disorders] in your cohort
@@ -863,7 +863,7 @@ du.quality.local.core.maternal.health.char <-
     list(
       data_type = class(lc_data$ppd),
       category_numbers = table(lc_data$ppd),
-      summary_stats = summarizeR(lc_data, "ppd")
+      summary_stats = du.summarize(lc_data, "ppd")
     )
     
     # * Check internal validity, e.g.:
@@ -888,7 +888,7 @@ du.quality.local.core.maternal.lifestyle.char <-
     list(
       data_type = class(lc_data$prepreg_smk),
       category_numbers = table(lc_data$prepreg_smk),
-      summary_stats = summarizeR(lc_data, "prepreg_smk")
+      summary_stats = du.summarize(lc_data, "prepreg_smk")
     )
     
     # * Check internal validity, e.g.:
@@ -902,7 +902,7 @@ du.quality.local.core.maternal.lifestyle.char <-
     list(
       data_type = class(lc_data$prepreg_cig),
       category_numbers = table(lc_data$prepreg_cig),
-      summary_stats = summarizeR(lc_data, "prepreg_cig")
+      summary_stats = du.summarize(lc_data, "prepreg_cig")
     )
     
     #* If reasonable, please check the distribution against cohort-specific published or previously reported distribution of [cigarettes per day before pregnancy]
@@ -917,7 +917,7 @@ du.quality.local.core.maternal.lifestyle.char <-
     list(
       data_type = class(lc_data$preg_smk),
       category_numbers = table(lc_data$preg_smk),
-      summary_stats = summarizeR(lc_data, "preg_smk")
+      summary_stats = du.summarize(lc_data, "preg_smk")
     )
     
     #* If reasonable, please check the distribution against cohort-specific published or previously reported distribution of [maternal smoking during pregnancy]
@@ -945,7 +945,7 @@ du.quality.local.core.maternal.lifestyle.char <-
     list(
       data_type = class(lc_data$preg_cig),
       category_numbers = table(lc_data$preg_cig),
-      summary_stats = summarizeR(lc_data, "preg_cig")
+      summary_stats = du.summarize(lc_data, "preg_cig")
     )
     
     # * If reasonable, please check the distribution against cohort-specific published or previously reported distribution of [cigarettes per day during pregnancy]
@@ -956,7 +956,7 @@ du.quality.local.core.maternal.lifestyle.char <-
     list(
       data_type = class(lc_data$smk_t1),
       category_numbers = table(lc_data$smk_t1),
-      summary_stats = summarizeR(lc_data, "smk_t1")
+      summary_stats = du.summarize(lc_data, "smk_t1")
     )
     
     # * If reasonable, please check the distribution against cohort-specific published or previously reported distribution of [smoking during 1st trimester of pregnancy]
@@ -983,7 +983,7 @@ du.quality.local.core.maternal.lifestyle.char <-
     list(
       data_type = class(lc_data$smk_t2),
       category_numbers = table(lc_data$smk_t2),
-      summary_stats = summarizeR(lc_data, "smk_t2")
+      summary_stats = du.summarize(lc_data, "smk_t2")
     )
     
     # * Check internal validity, e.g.:
@@ -996,7 +996,7 @@ du.quality.local.core.maternal.lifestyle.char <-
     list(
       data_type = class(lc_data$smk_t3),
       category_numbers = table(lc_data$smk_t3),
-      summary_stats = summarizeR(lc_data, "smk_t3")
+      summary_stats = du.summarize(lc_data, "smk_t3")
     )
     
     # * If reasonable, please check the distribution against cohort-specific published or previously reported distribution of [smoking during 3rd trimester of pregnancy]
@@ -1012,7 +1012,7 @@ du.quality.local.core.maternal.lifestyle.char <-
     list(
       data_type = class(lc_data$prepreg_alc),
       category_numbers = table(lc_data$prepreg_alc),
-      summary_stats = summarizeR(lc_data, "prepreg_alc")
+      summary_stats = du.summarize(lc_data, "prepreg_alc")
     )
     
     # * Check internal validity, e.g.:
@@ -1026,7 +1026,7 @@ du.quality.local.core.maternal.lifestyle.char <-
     list(
       data_type = class(lc_data$prepreg_alc_unit),
       category_numbers = table(lc_data$prepreg_alc_unit),
-      summary_stats = summarizeR(lc_data, "prepreg_alc_unit")
+      summary_stats = du.summarize(lc_data, "prepreg_alc_unit")
     )
     
     #------------------------------------------------------------------------------------------------#
@@ -1037,7 +1037,7 @@ du.quality.local.core.maternal.lifestyle.char <-
     list(
       data_type = class(lc_data$preg_alc),
       category_numbers = table(lc_data$preg_alc),
-      summary_stats = summarizeR(lc_data, "preg_alc")
+      summary_stats = du.summarize(lc_data, "preg_alc")
     )
     
     #--------------------------------#
@@ -1048,7 +1048,7 @@ du.quality.local.core.maternal.lifestyle.char <-
     list(
       data_type = class(lc_data$preg_alc_unit),
       category_numbers = table(lc_data$preg_alc_unit),
-      summary_stats = summarizeR(lc_data, "preg_alc_unit")
+      summary_stats = du.summarize(lc_data, "preg_alc_unit")
     )
     
     #* Check internal validity, e.g.:
@@ -1060,7 +1060,7 @@ du.quality.local.core.maternal.lifestyle.char <-
     list(
       data_type = class(lc_data$alc_t1),
       category_numbers = table(lc_data$alc_t1),
-      summary_stats = summarizeR(lc_data, "alc_t1")
+      summary_stats = du.summarize(lc_data, "alc_t1")
     )
     
     #* Check internal validity, e.g.:
@@ -1072,7 +1072,7 @@ du.quality.local.core.maternal.lifestyle.char <-
     list(
       data_type = class(lc_data$alc_t2),
       category_numbers = table(lc_data$alc_t2),
-      summary_stats = summarizeR(lc_data, "alc_t2")
+      summary_stats = du.summarize(lc_data, "alc_t2")
     )
     
     #* Check internal validity, e.g.:
@@ -1084,7 +1084,7 @@ du.quality.local.core.maternal.lifestyle.char <-
     list(
       data_type = class(lc_data$alc_t3),
       category_numbers = table(lc_data$alc_t3),
-      summary_stats = summarizeR(lc_data, "alc_t3")
+      summary_stats = du.summarize(lc_data, "alc_t3")
     )
     
     #* Check internal validity, e.g.:
@@ -1099,7 +1099,7 @@ du.quality.local.core.maternal.lifestyle.char <-
     list(
       data_type = class(lc_data$folic_prepreg),
       category_numbers = table(lc_data$folic_prepreg),
-      summary_stats = summarizeR(lc_data, "folic_prepreg")
+      summary_stats = du.summarize(lc_data, "folic_prepreg")
     )
     #------------------------------------------------------------------------------------------------#
     #  37. FOLIC ACIDS SUPPLEMENT WEEK 0-12 ('folic_preg12')
@@ -1109,7 +1109,7 @@ du.quality.local.core.maternal.lifestyle.char <-
     list(
       data_type = class(lc_data$folic_preg12),
       category_numbers = table(lc_data$folic_preg12),
-      summary_stats = summarizeR(lc_data, "folic_preg12")
+      summary_stats = du.summarize(lc_data, "folic_preg12")
     )
     
     #------------------------------------------------------------------------------------------------#
@@ -1120,7 +1120,7 @@ du.quality.local.core.maternal.lifestyle.char <-
     list(
       data_type = class(lc_data$folic_post12),
       category_numbers = table(lc_data$folic_post12),
-      summary_stats = summarizeR(lc_data, "folic_post12")
+      summary_stats = du.summarize(lc_data, "folic_post12")
     )
     
   })
@@ -1144,7 +1144,7 @@ du.quality.local.core.maternal.obstetric.char <-
     list(
       data_type = class(lc_data$parity_m),
       category_numbers = table(lc_data$parity_m),
-      summary_stats = summarizeR(lc_data, "parity_m")
+      summary_stats = du.summarize(lc_data, "parity_m")
     )
     
     # * Check internal validity, e.g.:
@@ -1156,7 +1156,7 @@ du.quality.local.core.maternal.obstetric.char <-
     list(
       data_type = class(lc_data$preg_plan),
       category_numbers = table(lc_data$preg_plan),
-      summary_stats = summarizeR(lc_data, "preg_plan")
+      summary_stats = du.summarize(lc_data, "preg_plan")
     )
     
     # * If reasonable, please check the distribution against any previously reported distribution of [planned pregnancy] of your cohort
@@ -1169,7 +1169,7 @@ du.quality.local.core.maternal.obstetric.char <-
     list(
       data_type = class(lc_data$art),
       category_numbers = table(lc_data$art),
-      summary_stats = summarizeR(lc_data, "art")
+      summary_stats = du.summarize(lc_data, "art")
     )
     
     # * If reasonable, please check the distribution against any previously reported distribution of [ART] in your cohort
@@ -1186,7 +1186,7 @@ du.quality.local.core.maternal.obstetric.char <-
     list(
       data_type = class(lc_data$ivf),
       category_numbers = table(lc_data$ivf),
-      summary_stats = summarizeR(lc_data, "ivf")
+      summary_stats = du.summarize(lc_data, "ivf")
     )
     
     # * If reasonable, please check the distribution against any previously reported distribution of [IVF] in your cohort
@@ -1204,7 +1204,7 @@ du.quality.local.core.maternal.obstetric.char <-
     list(
       data_type = class(lc_data$outcome),
       category_numbers = table(lc_data$outcome),
-      summary_stats = summarizeR(lc_data, "outcome")
+      summary_stats = du.summarize(lc_data, "outcome")
     )
     
     # * If reasonable, please check the distribution against any previously reported distribution of [Birth Outcome] in your cohort
@@ -1223,7 +1223,7 @@ du.quality.local.core.maternal.obstetric.char <-
     list(
       data_type = class(lc_data$mode_delivery),
       category_numbers = table(lc_data$mode_delivery),
-      summary_stats = summarizeR(lc_data, "mode_delivery")
+      summary_stats = du.summarize(lc_data, "mode_delivery")
     )
     
     # * If reasonable, please check the distribution against any previously reported distribution of [Mode of Delivery] in your cohort
@@ -1234,7 +1234,7 @@ du.quality.local.core.maternal.obstetric.char <-
     list(
       data_type = class(lc_data$plac_abrup),
       category_numbers = table(lc_data$plac_abrup),
-      summary_stats = summarizeR(lc_data, "plac_abrup")
+      summary_stats = du.summarize(lc_data, "plac_abrup")
     )
     
   })
@@ -1267,7 +1267,7 @@ du.quality.local.core.paternal.socio.demo.char <-
     
     lc_data[, occup_f1_] %>%
       names() %>%
-      numextract() %>%
+      du.num.extract() %>%
       range()
     
     # Second: print the summary stats for all variables
@@ -1278,7 +1278,7 @@ du.quality.local.core.paternal.socio.demo.char <-
       print(i)
       print(list(
         category_numbers = table(lc_data[, i]),
-        summary_stats = summarizeR(lc_data, i)
+        summary_stats = du.summarize(lc_data, i)
       ))
       
     }
@@ -1293,7 +1293,7 @@ du.quality.local.core.paternal.socio.demo.char <-
     
     lc_data[, occup_f1_fath] %>%
       names() %>%
-      numextract() %>%
+      du.num.extract() %>%
       range()
     
     # Second: print the summary stats for all variables
@@ -1304,7 +1304,7 @@ du.quality.local.core.paternal.socio.demo.char <-
       print(i)
       print(list(
         category_numbers = table(lc_data[, i]),
-        summary_stats = summarizeR(lc_data, i)
+        summary_stats = du.summarize(lc_data, i)
       ))
       
     }
@@ -1325,7 +1325,7 @@ du.quality.local.core.paternal.socio.demo.char <-
     
     lc_data[, occup_f2_] %>%
       names() %>%
-      numextract() %>%
+      du.num.extract() %>%
       range()
     
     # Second: print the summary stats for all variables
@@ -1336,7 +1336,7 @@ du.quality.local.core.paternal.socio.demo.char <-
       print(i)
       print(list(
         category_numbers = table(lc_data[, i]),
-        summary_stats = summarizeR(lc_data, i)
+        summary_stats = du.summarize(lc_data, i)
       ))
       
     }
@@ -1352,7 +1352,7 @@ du.quality.local.core.paternal.socio.demo.char <-
     
     lc_data[, occup_f2_fath] %>%
       names() %>%
-      numextract() %>%
+      du.num.extract() %>%
       range()
     
     # Second: print the summary stats for all variables
@@ -1363,7 +1363,7 @@ du.quality.local.core.paternal.socio.demo.char <-
       print(i)
       print(list(
         category_numbers = table(lc_data[, i]),
-        summary_stats = summarizeR(lc_data, i)
+        summary_stats = du.summarize(lc_data, i)
       ))
       
     }
@@ -1385,7 +1385,7 @@ du.quality.local.core.paternal.socio.demo.char <-
     
     lc_data[, occupcode_f1_] %>%
       names() %>%
-      numextract() %>%
+      du.num.extract() %>%
       range()
     
     # Second: print the summary stats for all variables
@@ -1396,7 +1396,7 @@ du.quality.local.core.paternal.socio.demo.char <-
       print(i)
       print(list(
         category_numbers = table(lc_data[, i]),
-        summary_stats = summarizeR(lc_data, i)
+        summary_stats = du.summarize(lc_data, i)
       ))
       
     }
@@ -1413,7 +1413,7 @@ du.quality.local.core.paternal.socio.demo.char <-
     
     lc_data[, occupcode_f1_fath] %>%
       names() %>%
-      numextract() %>%
+      du.num.extract() %>%
       range()
     
     # Second: print the summary stats for all variables
@@ -1424,7 +1424,7 @@ du.quality.local.core.paternal.socio.demo.char <-
       print(i)
       print(list(
         category_numbers = table(lc_data[, i]),
-        summary_stats = summarizeR(lc_data, i)
+        summary_stats = du.summarize(lc_data, i)
       ))
       
     }
@@ -1447,7 +1447,7 @@ du.quality.local.core.paternal.socio.demo.char <-
     
     lc_data[, occupcode_f2_] %>%
       names() %>%
-      numextract() %>%
+      du.num.extract() %>%
       range()
     
     # Second: print the summary stats for all variables
@@ -1458,7 +1458,7 @@ du.quality.local.core.paternal.socio.demo.char <-
       print(i)
       print(list(
         category_numbers = table(lc_data[, i]),
-        summary_stats = summarizeR(lc_data, i)
+        summary_stats = du.summarize(lc_data, i)
       ))
       
     }
@@ -1474,7 +1474,7 @@ du.quality.local.core.paternal.socio.demo.char <-
     
     lc_data[, occupcode_f2_fath] %>%
       names() %>%
-      numextract() %>%
+      du.num.extract() %>%
       range()
     
     # Second: print the summary stats for all variables
@@ -1485,7 +1485,7 @@ du.quality.local.core.paternal.socio.demo.char <-
       print(i)
       print(list(
         category_numbers = table(lc_data[, i]),
-        summary_stats = summarizeR(lc_data, i)
+        summary_stats = du.summarize(lc_data, i)
       ))
       
     }
@@ -1506,7 +1506,7 @@ du.quality.local.core.paternal.socio.demo.char <-
     
     lc_data[, edu_f1_] %>%
       names() %>%
-      numextract() %>%
+      du.num.extract() %>%
       range()
     
     # Second: print the summary stats for all variables
@@ -1517,7 +1517,7 @@ du.quality.local.core.paternal.socio.demo.char <-
       print(i)
       print(list(
         category_numbers = table(lc_data[, i]),
-        summary_stats = summarizeR(lc_data, i)
+        summary_stats = du.summarize(lc_data, i)
       ))
       
     }
@@ -1533,7 +1533,7 @@ du.quality.local.core.paternal.socio.demo.char <-
     
     lc_data[, edu_f1_fath] %>%
       names() %>%
-      numextract() %>%
+      du.num.extract() %>%
       range()
     
     # Second: print the summary stats for all variables
@@ -1544,7 +1544,7 @@ du.quality.local.core.paternal.socio.demo.char <-
       print(i)
       print(list(
         category_numbers = table(lc_data[, i]),
-        summary_stats = summarizeR(lc_data, i)
+        summary_stats = du.summarize(lc_data, i)
       ))
       
     }
@@ -1562,7 +1562,7 @@ du.quality.local.core.paternal.socio.demo.char <-
     
     lc_data[, edu_f2_] %>%
       names() %>%
-      numextract() %>%
+      du.num.extract() %>%
       range()
     
     # Second: print the summary stats for all variables
@@ -1573,7 +1573,7 @@ du.quality.local.core.paternal.socio.demo.char <-
       print(i)
       print(list(
         category_numbers = table(lc_data[, i]),
-        summary_stats = summarizeR(lc_data, i)
+        summary_stats = du.summarize(lc_data, i)
       ))
       
     }
@@ -1589,7 +1589,7 @@ du.quality.local.core.paternal.socio.demo.char <-
     
     lc_data[, edu_f2_fath] %>%
       names() %>%
-      numextract() %>%
+      du.num.extract() %>%
       range()
     
     # Second: print the summary stats for all variables
@@ -1600,7 +1600,7 @@ du.quality.local.core.paternal.socio.demo.char <-
       print(i)
       print(list(
         category_numbers = table(lc_data[, i]),
-        summary_stats = summarizeR(lc_data, i)
+        summary_stats = du.summarize(lc_data, i)
       ))
       
     }
@@ -1612,7 +1612,7 @@ du.quality.local.core.paternal.socio.demo.char <-
     list(
       data_type = class(lc_data$cob_p),
       category_numbers = table(lc_data$cob_p),
-      summary_stats = summarizeR(lc_data, "cob_p")
+      summary_stats = du.summarize(lc_data, "cob_p")
     )
     #------------------------------------------------------------------------------------------------#
     # 59. TYPE OF FATHER, PATERNAL COUNTRY OF BIRTH ('cob_p_fath')
@@ -1622,7 +1622,7 @@ du.quality.local.core.paternal.socio.demo.char <-
     list(
       data_type = class(lc_data$cob_p_fath),
       category_numbers = table(lc_data$cob_p_fath),
-      summary_stats = summarizeR(lc_data, "cob_p_fath")
+      summary_stats = du.summarize(lc_data, "cob_p_fath")
     )
     
     # * Check reasonable cross-tabulations, e.g.:
@@ -1638,7 +1638,7 @@ du.quality.local.core.paternal.socio.demo.char <-
     list(
       data_type = class(lc_data$ethn1_p),
       category_numbers = table(lc_data$ethn1_p),
-      summary_stats = summarizeR(lc_data, "ethn1_p")
+      summary_stats = du.summarize(lc_data, "ethn1_p")
     )
     
     # * If reasonable, please check the distribution against any previously reported distribution of [paternal ethnicity]
@@ -1649,7 +1649,7 @@ du.quality.local.core.paternal.socio.demo.char <-
     list(
       data_type = class(lc_data$ethn2_p),
       category_numbers = table(lc_data$ethn2_p),
-      summary_stats = summarizeR(lc_data, "ethn2_p")
+      summary_stats = du.summarize(lc_data, "ethn2_p")
     )
     #--------------------------------#
     # c. ('ethn3_p')
@@ -1657,7 +1657,7 @@ du.quality.local.core.paternal.socio.demo.char <-
     list(
       data_type = class(lc_data$ethn3_p),
       category_numbers = table(lc_data$ethn3_p),
-      summary_stats = summarizeR(lc_data, "ethn3_p")
+      summary_stats = du.summarize(lc_data, "ethn3_p")
     )
     #------------------------------------------------------------------------------------------------#
     # 61. TYPE OF FATHER, PATERNAL ETHNICITY ('ethn_p_fath')
@@ -1665,7 +1665,7 @@ du.quality.local.core.paternal.socio.demo.char <-
     list(
       data_type = class(lc_data$ethn_p_fath),
       category_numbers = table(lc_data$ethn_p_fath),
-      summary_stats = summarizeR(lc_data, "ethn_p_fath")
+      summary_stats = du.summarize(lc_data, "ethn_p_fath")
     )
     
     # * Check internal validity, e.g.:
@@ -1677,7 +1677,7 @@ du.quality.local.core.paternal.socio.demo.char <-
     # * As this variable is continuous, please check for outliers and impossible values (i.e. typically outside age rage 15-70 years)
     list(
       data_type = class(lc_data$agebirth_p_y),
-      summary_stats = summarizeR(lc_data, "agebirth_p_y")
+      summary_stats = du.summarize(lc_data, "agebirth_p_y")
     )
     
     # * If reasonable, please check the distribution against any reported distribution of [paternal age at child's birth] in your cohort
@@ -1691,7 +1691,7 @@ du.quality.local.core.paternal.socio.demo.char <-
     # * Please, check for correct list of source variables used and for correct coding (same procedures as with Paternal Age at Birth [Years] above)
     list(
       data_type = class(lc_data$agebirth_p_d),
-      summary_stats = summarizeR(lc_data, "agebirth_p_d")
+      summary_stats = du.summarize(lc_data, "agebirth_p_d")
     )
     
     # * Check internal validity, e.g.:
@@ -1703,7 +1703,7 @@ du.quality.local.core.paternal.socio.demo.char <-
     list(
       data_type = class(lc_data$agebirth_p_fath),
       category_numbers = table(lc_data$agebirth_p_fath),
-      summary_stats = summarizeR(lc_data, "agebirth_p_fath")
+      summary_stats = du.summarize(lc_data, "agebirth_p_fath")
     )
     
     # * Check internal validity, e.g.:
@@ -1717,7 +1717,7 @@ du.quality.local.core.paternal.socio.demo.char <-
     list(
       data_type = class(lc_data$death_p),
       category_numbers = table(lc_data$death_p),
-      summary_stats = summarizeR(lc_data, "death_p")
+      summary_stats = du.summarize(lc_data, "death_p")
     )
     #* If reasonable, please check the distribution against any previously reported distribution of [paternal death] of your cohort
     
@@ -1730,7 +1730,7 @@ du.quality.local.core.paternal.socio.demo.char <-
     list(
       data_type = class(lc_data$death_p_age),
       category_numbers = table(lc_data$death_p_age),
-      summary_stats = summarizeR(lc_data, "death_p_age")
+      summary_stats = du.summarize(lc_data, "death_p_age")
     )
     
     #------------------------------------------------------------------------------------------------#
@@ -1739,7 +1739,7 @@ du.quality.local.core.paternal.socio.demo.char <-
     list(
       data_type = class(lc_data$death_p_fath),
       category_numbers = table(lc_data$death_p_fath),
-      summary_stats = summarizeR(lc_data, "death_p_fath")
+      summary_stats = du.summarize(lc_data, "death_p_fath")
     )
     
     # * Check internal validity, e.g.:
@@ -1772,7 +1772,7 @@ du.quality.local.core.paternal.health.related.char <-
     # * Please, check for outliers and impossible values (e.g. substantial low or high weight in kg)
     list(
       data_type = class(lc_data$weight_f1),
-      summary_stats = summarizeR(lc_data, "weight_f1")
+      summary_stats = du.summarize(lc_data, "weight_f1")
     )
     
     # * Check internal validity, e.g.:
@@ -1792,7 +1792,7 @@ du.quality.local.core.paternal.health.related.char <-
     list(
       data_type = class(lc_data$weight_mes_f1),
       category_numbers = table(lc_data$weight_mes_f1),
-      summary_stats = summarizeR(lc_data, "weight_mes_f1")
+      summary_stats = du.summarize(lc_data, "weight_mes_f1")
     )
     
     #------------------------------------------------------------------------------------------------#
@@ -1801,7 +1801,7 @@ du.quality.local.core.paternal.health.related.char <-
     list(
       data_type = class(lc_data$weight_f1_fath),
       category_numbers = table(lc_data$weight_f1_fath),
-      summary_stats = summarizeR(lc_data, "weight_f1_fath")
+      summary_stats = du.summarize(lc_data, "weight_f1_fath")
     )
     
     # * Check internal validity , e.g.:
@@ -1817,7 +1817,7 @@ du.quality.local.core.paternal.health.related.char <-
     # * Check for outliers and impossible values (e.g. substantial low or high height, in cm)
     list(
       data_type = class(lc_data$height_f1),
-      summary_stats = summarizeR(lc_data, "height_f1")
+      summary_stats = du.summarize(lc_data, "height_f1")
     )
     
     # And/or plot
@@ -1830,7 +1830,7 @@ du.quality.local.core.paternal.health.related.char <-
     list(
       data_type = class(lc_data$height_mes_f1),
       category_numbers = table(lc_data$height_mes_f1),
-      summary_stats = summarizeR(lc_data, "height_mes_f1")
+      summary_stats = du.summarize(lc_data, "height_mes_f1")
     )
     
     #------------------------------------------------------------------------------------------------#
@@ -1839,7 +1839,7 @@ du.quality.local.core.paternal.health.related.char <-
     list(
       data_type = class(lc_data$height_f1_fath),
       category_numbers = table(lc_data$height_f1_fath),
-      summary_stats = summarizeR(lc_data, "height_f1_fath")
+      summary_stats = du.summarize(lc_data, "height_f1_fath")
     )
     
     # * Check internal validity, e.g.:
@@ -1857,7 +1857,7 @@ du.quality.local.core.paternal.health.related.char <-
     list(
       data_type = class(lc_data$dia_bf),
       category_numbers = table(lc_data$dia_bf),
-      summary_stats = summarizeR(lc_data, "dia_bf")
+      summary_stats = du.summarize(lc_data, "dia_bf")
     )
     
     #------------------------------------------------------------------------------------------------#
@@ -1868,7 +1868,7 @@ du.quality.local.core.paternal.health.related.char <-
     list(
       data_type = class(lc_data$asthma_bf),
       category_numbers = table(lc_data$asthma_bf),
-      summary_stats = summarizeR(lc_data, "asthma_bf")
+      summary_stats = du.summarize(lc_data, "asthma_bf")
     )
     
     #------------------------------------------------------------------------------------------------#
@@ -1880,7 +1880,7 @@ du.quality.local.core.paternal.health.related.char <-
     list(
       data_type = class(lc_data$psych_bf),
       category_numbers = table(lc_data$psych_bf),
-      summary_stats = summarizeR(lc_data, "psych_bf")
+      summary_stats = du.summarize(lc_data, "psych_bf")
     )
     
     # * Check internal validity, e.g.:
@@ -1906,7 +1906,7 @@ du.quality.local.core.paternal.lifestyle.char <-
     list(
       data_type = class(lc_data$smk_p),
       category_numbers = table(lc_data$smk_p),
-      summary_stats = summarizeR(lc_data, "smk_p")
+      summary_stats = du.summarize(lc_data, "smk_p")
     )
     
     # * If reasonable, please check the distribution against any previously reported distribution of [paternal smoking during pregnancy] in your cohort
@@ -1922,7 +1922,7 @@ du.quality.local.core.paternal.lifestyle.char <-
     list(
       data_type = class(lc_data$smk_cig_p),
       category_numbers = table(lc_data$smk_cig_p),
-      summary_stats = summarizeR(lc_data, "smk_cig_p")
+      summary_stats = du.summarize(lc_data, "smk_cig_p")
     )
     
     #------------------------------------------------------------------------------------------------#
@@ -1931,7 +1931,7 @@ du.quality.local.core.paternal.lifestyle.char <-
     list(
       data_type = class(lc_data$smk_fath),
       category_numbers = table(lc_data$smk_fath),
-      summary_stats = summarizeR(lc_data, "smk_fath")
+      summary_stats = du.summarize(lc_data, "smk_fath")
     )
     
     # * Check internal validity, e.g.:
@@ -1967,7 +1967,7 @@ du.quality.local.core.child.birth.out <- local(function(lc_data) {
   list(
     data_type = class(lc_data$birth_month),
     category_numbers = table(lc_data$birth_month),
-    summary_stats = summarizeR(lc_data, "birth_month")
+    summary_stats = du.summarize(lc_data, "birth_month")
   )
   
   #------------------------------------------------------------------------------------------------#
@@ -1976,7 +1976,7 @@ du.quality.local.core.child.birth.out <- local(function(lc_data) {
   list(
     data_type = class(lc_data$birth_year),
     category_numbers = table(lc_data$birth_year),
-    summary_stats = summarizeR(lc_data, "birth_year")
+    summary_stats = du.summarize(lc_data, "birth_year")
   )
   
   #------------------------------------------------------------------------------------------------#
@@ -1988,7 +1988,7 @@ du.quality.local.core.child.birth.out <- local(function(lc_data) {
   list(
     data_type = class(lc_data$apgar),
     category_numbers = table(lc_data$apgar),
-    summary_stats = summarizeR(lc_data, "apgar")
+    summary_stats = du.summarize(lc_data, "apgar")
   )
   
   # * If reasonable, please check the distribution against any published or previously reported distribution of [apgar score] in your cohort
@@ -2004,7 +2004,7 @@ du.quality.local.core.child.birth.out <- local(function(lc_data) {
   list(
     data_type = class(lc_data$neo_unit),
     category_numbers = table(lc_data$neo_unit),
-    summary_stats = summarizeR(lc_data, "neo_unit")
+    summary_stats = du.summarize(lc_data, "neo_unit")
   )
   
   # * Check internal validity, e.g.:
@@ -2029,7 +2029,7 @@ du.quality.local.core.child.birth.out <- local(function(lc_data) {
   list(
     data_type = class(lc_data$sex),
     category_numbers = table(lc_data$sex),
-    summary_stats = summarizeR(lc_data, "sex")
+    summary_stats = du.summarize(lc_data, "sex")
   )
   
   #* If reasonable, please check the distribution against any previously reported distribution of [sex] in your cohort
@@ -2040,7 +2040,7 @@ du.quality.local.core.child.birth.out <- local(function(lc_data) {
   list(
     data_type = class(lc_data$plurality),
     category_numbers = table(lc_data$plurality),
-    summary_stats = summarizeR(lc_data, "plurality")
+    summary_stats = du.summarize(lc_data, "plurality")
   )
   
   # * If reasonable, please check the distribution against cohort-specific published or previously reported distribution of [plurality]
@@ -2053,7 +2053,7 @@ du.quality.local.core.child.birth.out <- local(function(lc_data) {
   list(
     data_type = class(lc_data$ga_lmp),
     category_numbers = table(lc_data$ga_lmp),
-    summary_stats = summarizeR(lc_data, "ga_lmp")
+    summary_stats = du.summarize(lc_data, "ga_lmp")
   )
   
   # * If reasonable, please check the summary statistics against any previously reported distribution of [gestational age using LMP] in your cohort
@@ -2077,7 +2077,7 @@ du.quality.local.core.child.birth.out <- local(function(lc_data) {
   # * As this variable is continuous, please check for outliers and impossible values (negative values or > 315, in days)
   list(
     data_type = class(lc_data$ga_us),
-    summary_stats = summarizeR(lc_data, "ga_us")
+    summary_stats = du.summarize(lc_data, "ga_us")
   )
   
   # * If reasonable, please check the summary statistics against any previously reported distribution of [gestational age using ulstra sound] in your cohort
@@ -2098,7 +2098,7 @@ du.quality.local.core.child.birth.out <- local(function(lc_data) {
   # * Check for outliers and impossible values (negative values or > 315, in days)
   list(
     data_type = class(lc_data$ga_mr),
-    summary_stats = summarizeR(lc_data, "ga_mr")
+    summary_stats = du.summarize(lc_data, "ga_mr")
   )
   
   # * If reasonable, please check the summary statistics against any previously reported distribution of [gestational age using medical record] in your cohort
@@ -2120,7 +2120,7 @@ du.quality.local.core.child.birth.out <- local(function(lc_data) {
   # * Check for outliers and impossible values (negative values, or > 315, in days)
   list(
     data_type = class(lc_data$ga_bj),
-    summary_stats = summarizeR(lc_data, "ga_bj")
+    summary_stats = du.summarize(lc_data, "ga_bj")
   )
   
   # * If reasonable, please check the summary statistics against any previously reported distribution of [gestational age using best judgement] in your cohort
@@ -2130,13 +2130,13 @@ du.quality.local.core.child.birth.out <- local(function(lc_data) {
   # * Please, check for outliers and impossible values (e.g. negative, or substantial low or high values, in kg)
   list(
     data_type = class(lc_data$ga_bj),
-    summary_stats = summarizeR(lc_data, "ga_bj")
+    summary_stats = du.summarize(lc_data, "ga_bj")
   )
   
   lc_data %>%
     filter(outcome == 1) %>%
     select(birth_weight) %>%
-    summarizeR(., "birth_weight")
+    du.summarize(., "birth_weight")
   
   
   # * If reasonable, please check the summary statistics against any previously reported distribution of [birth weight] in your cohort
@@ -2163,13 +2163,13 @@ du.quality.local.core.child.birth.out <- local(function(lc_data) {
   # * Please, check for outliers and impossible values (e.g. negative, or substantial low or high values, in cm)
   list(
     data_type = class(lc_data$birth_length),
-    summary_stats = summarizeR(lc_data, "birth_length")
+    summary_stats = du.summarize(lc_data, "birth_length")
   )
   
   lc_data %>%
     filter(outcome == 1) %>%
     select(birth_length) %>%
-    summarizeR(., "birth_length")
+    du.summarize(., "birth_length")
   
   # * If reasonable, please check the summary statistics against any previously reported distribution of [height at birth of child] in your cohort
   
@@ -2191,13 +2191,13 @@ du.quality.local.core.child.birth.out <- local(function(lc_data) {
   # * Please check for outliers and impossible values (e.g. negative, or substantial low or high values, in cm)
   list(
     data_type = class(lc_data$birth_length),
-    summary_stats = summarizeR(lc_data, "birth_head_circum")
+    summary_stats = du.summarize(lc_data, "birth_head_circum")
   )
   
   lc_data %>%
     filter(outcome == 1) %>%
     select(birth_head_circum) %>%
-    summarizeR(., "birth_head_circum")
+    du.summarize(., "birth_head_circum")
   
   # * If reasonable, please check the distribution against any previously reported distribution of [head circumference of child at birth] in your cohort
   
@@ -2217,12 +2217,12 @@ du.quality.local.core.child.birth.out <- local(function(lc_data) {
   list(
     data_type = class(lc_data$weight_who_ga),
     category_numbers = table(lc_data$weight_who_ga),
-    summary_stats = summarizeR(lc_data, "weight_who_ga")
+    summary_stats = du.summarize(lc_data, "weight_who_ga")
   )
   
   lc_data %>%
     select(weight_who_ga) %>%
-    summarizeR(., "weight_who_ga")
+    du.summarize(., "weight_who_ga")
   
   # * If reasonable, please check the distribution against any previously reported distribution of [size for gestational age]
   
@@ -2231,7 +2231,7 @@ du.quality.local.core.child.birth.out <- local(function(lc_data) {
   # * Check for outliers and impossible values (e.g. negative, or substantial low or high values, in kg)
   list(
     data_type = class(lc_data$plac_weight),
-    summary_stats = summarizeR(lc_data, "plac_weight")
+    summary_stats = du.summarize(lc_data, "plac_weight")
   )
   
   # * If reasonable, please check the summary statistics against cohort-specific published or previously reported distribution of [placenta weight]
@@ -2247,7 +2247,7 @@ du.quality.local.core.child.birth.out <- local(function(lc_data) {
   list(
     data_type = class(lc_data$con_anomalies),
     category_numbers = table(lc_data$con_anomalies),
-    summary_stats = summarizeR(lc_data, "con_anomalies")
+    summary_stats = du.summarize(lc_data, "con_anomalies")
   )
   
   #* If reasonable, please check the summary statistics against any previously reported distribution of [any congenital anomaly] in your cohort
@@ -2261,7 +2261,7 @@ du.quality.local.core.child.birth.out <- local(function(lc_data) {
   list(
     data_type = class(lc_data$major_con_anomalies),
     category_numbers = table(lc_data$major_con_anomalies),
-    summary_stats = summarizeR(lc_data, "major_con_anomalies")
+    summary_stats = du.summarize(lc_data, "major_con_anomalies")
   )
   
   #* If reasonable, please check the summary statistics against any previously reported distribution of [major congenital anomaly] in your cohort
@@ -2288,7 +2288,7 @@ du.quality.local.core.child.birth.out <- local(function(lc_data) {
   list(
     data_type = class(lc_data$cer_palsy),
     category_numbers = table(lc_data$cer_palsy),
-    summary_stats = summarizeR(lc_data, "cer_palsy")
+    summary_stats = du.summarize(lc_data, "cer_palsy")
   )
   
   #* If reasonable, please check the distribution against any previously reported distribution of [cerebral palsy] in your cohort
@@ -2301,7 +2301,7 @@ du.quality.local.core.child.birth.out <- local(function(lc_data) {
   list(
     data_type = class(lc_data$sibling_pos),
     category_numbers = table(lc_data$sibling_pos),
-    summary_stats = summarizeR(lc_data, "sibling_pos")
+    summary_stats = du.summarize(lc_data, "sibling_pos")
   )
   
   # * If reasonable, please check the distribution against any previously reported distribution of [sibling position] in your cohort
@@ -2338,7 +2338,7 @@ du.quality.local.core.child.health.related.char <-
     list(
       data_type = class(lc_data$death_child),
       category_numbers = table(lc_data$death_child),
-      summary_stats = summarizeR(lc_data, "death_child")
+      summary_stats = du.summarize(lc_data, "death_child")
     )
     
     # * If reasonable, please check summary statistics against any previously reported distribution of [death of child] in your cohort
@@ -2354,7 +2354,7 @@ du.quality.local.core.child.health.related.char <-
     # * Check for outliers and impossible values [NB! must have positive values]
     list(
       data_type = class(lc_data$death_child_age),
-      summary_stats = summarizeR(lc_data, "death_child_age")
+      summary_stats = du.summarize(lc_data, "death_child_age")
     )
     
     #------------------------------------------------------------------------------------------------#
@@ -2367,7 +2367,7 @@ du.quality.local.core.child.health.related.char <-
     
     lc_data[, height_] %>%
       names() %>%
-      numextract() %>%
+      du.num.extract() %>%
       range()
     
     # Second: print the summary stats for all variables
@@ -2376,7 +2376,7 @@ du.quality.local.core.child.health.related.char <-
     
     for (i in var_names) {
       print(i)
-      print(list(summary_stats = summarizeR(lc_data, i)))
+      print(list(summary_stats = du.summarize(lc_data, i)))
       
     }
     #* If reasonable, please check the distribution any previously reported distribution of [child's height] in your cohort
@@ -2397,7 +2397,7 @@ du.quality.local.core.child.health.related.char <-
       #reshape to long format
       gather(orig_var, height_, grep("height_", names(.)), na.rm = FALSE) %>%
       # generate a month variable
-      mutate(age_months = as.numeric(numextract(orig_var))) %>%
+      mutate(age_months = as.numeric(du.num.extract(orig_var))) %>%
       #take out the month indicator from the height variable
       mutate(variable_trunc = gsub('[[:digit:]]+$', '', orig_var)) %>% #take out the year indicator from the education variable
       spread(key = variable_trunc, value = height_) %>%
@@ -2424,7 +2424,7 @@ du.quality.local.core.child.health.related.char <-
     
     lc_data[, height_age] %>%
       names() %>%
-      numextract() %>%
+      du.num.extract() %>%
       range()
     
     # Second: print the summary stats for all variables
@@ -2433,7 +2433,7 @@ du.quality.local.core.child.health.related.char <-
     
     for (i in var_names) {
       print(i)
-      print(list(summary_stats = summarizeR(lc_data, i)))
+      print(list(summary_stats = du.summarize(lc_data, i)))
       
     }
     # * Replicate example from '8. Cohab_0-17' to check that date of collection corresponds to the exact age-band (do this for all age-bands where you have data)
@@ -2449,7 +2449,7 @@ du.quality.local.core.child.health.related.char <-
     
     lc_data[, weight_] %>%
       names() %>%
-      numextract() %>%
+      du.num.extract() %>%
       range()
     
     # Second: print the summary stats for all variables
@@ -2458,7 +2458,7 @@ du.quality.local.core.child.health.related.char <-
     
     for (i in var_names) {
       print(i)
-      print(list(summary_stats = summarizeR(lc_data, i)))
+      print(list(summary_stats = du.summarize(lc_data, i)))
       
     }
     # * If reasonable, please check the distribution against any previously reported distribution of [child's weight] in your cohort
@@ -2479,7 +2479,7 @@ du.quality.local.core.child.health.related.char <-
     
     lc_data[, weight_age] %>%
       names() %>%
-      numextract() %>%
+      du.num.extract() %>%
       range()
     
     # Second: print the summary stats for all variables
@@ -2488,7 +2488,7 @@ du.quality.local.core.child.health.related.char <-
     
     for (i in var_names) {
       print(i)
-      print(list(summary_stats = summarizeR(lc_data, i)))
+      print(list(summary_stats = du.summarize(lc_data, i)))
       
     }
     # * Replicate example from '8. Cohab_0-17' to check that date of collection corresponds to the exact age-band (do this for all age-bands where you have data)
@@ -2514,7 +2514,7 @@ du.quality.local.core.child.exposure.lifestyle.environ.char <-
     list(
       data_type = class(lc_data$breastfed_excl),
       category_numbers = table(lc_data$breastfed_excl),
-      summary_stats = summarizeR(lc_data, "breastfed_excl")
+      summary_stats = du.summarize(lc_data, "breastfed_excl")
     )
     
     #* If reasonable, please check the distribution against any previously reported distribution of [exclusive breast-feeding] in your cohort
@@ -2530,7 +2530,7 @@ du.quality.local.core.child.exposure.lifestyle.environ.char <-
     list(
       data_type = class(lc_data$breastfed_any),
       category_numbers = table(lc_data$breastfed_any),
-      summary_stats = summarizeR(lc_data, "breastfed_any")
+      summary_stats = du.summarize(lc_data, "breastfed_any")
     )
     
     # * If reasonable, please check the distribution against any previously reported distribution of [any breast-feeding] in your cohort
@@ -2544,7 +2544,7 @@ du.quality.local.core.child.exposure.lifestyle.environ.char <-
     list(
       data_type = class(lc_data$breastfed_ever),
       category_numbers = table(lc_data$breastfed_ever),
-      summary_stats = summarizeR(lc_data, "breastfed_ever")
+      summary_stats = du.summarize(lc_data, "breastfed_ever")
     )
     
     # * If reasonable, please check the distribution against any previously reported distribution of [ever breast-feeding] of your cohort
@@ -2557,7 +2557,7 @@ du.quality.local.core.child.exposure.lifestyle.environ.char <-
     list(
       data_type = class(lc_data$solid_food),
       category_numbers = table(lc_data$solid_food),
-      summary_stats = summarizeR(lc_data, "solid_food")
+      summary_stats = du.summarize(lc_data, "solid_food")
     )
     
     #* If reasonable, please check the distribution against any previously reported distribution of [age of the child when solid food was introduced] in your cohort
@@ -2570,7 +2570,7 @@ du.quality.local.core.child.exposure.lifestyle.environ.char <-
     list(
       data_type = class(lc_data$childcare_intro),
       category_numbers = table(lc_data$childcare_intro),
-      summary_stats = summarizeR(lc_data, "childcare_intro")
+      summary_stats = du.summarize(lc_data, "childcare_intro")
     )
     
     #-----------------------------------------------------------------------------------------------#
@@ -2585,7 +2585,7 @@ du.quality.local.core.child.exposure.lifestyle.environ.char <-
     
     lc_data[, childcare_] %>%
       names() %>%
-      numextract() %>%
+      du.num.extract() %>%
       range()
     
     # Second: print the summary stats for all variables
@@ -2594,7 +2594,7 @@ du.quality.local.core.child.exposure.lifestyle.environ.char <-
     
     for (i in var_names) {
       print(i)
-      print(list(summary_stats = summarizeR(lc_data, i)))
+      print(list(summary_stats = du.summarize(lc_data, i)))
       
     }
     
@@ -2610,7 +2610,7 @@ du.quality.local.core.child.exposure.lifestyle.environ.char <-
     
     lc_data[, childcarerel_] %>%
       names() %>%
-      numextract() %>%
+      du.num.extract() %>%
       range()
     
     # Second: print the summary stats for all variables
@@ -2619,7 +2619,7 @@ du.quality.local.core.child.exposure.lifestyle.environ.char <-
     
     for (i in var_names) {
       print(i)
-      print(list(summary_stats = summarizeR(lc_data, i)))
+      print(list(summary_stats = du.summarize(lc_data, i)))
       
     }
     # * Replicate example from '8. Cohab_0-17' to check that date of collection corresponds to the exact age-band (do this for all age-bands where you have data)
@@ -2634,7 +2634,7 @@ du.quality.local.core.child.exposure.lifestyle.environ.char <-
     
     lc_data[, childcareprof_] %>%
       names() %>%
-      numextract() %>%
+      du.num.extract() %>%
       range()
     
     # Second: print the summary stats for all variables
@@ -2643,7 +2643,7 @@ du.quality.local.core.child.exposure.lifestyle.environ.char <-
     
     for (i in var_names) {
       print(i)
-      print(list(summary_stats = summarizeR(lc_data, i)))
+      print(list(summary_stats = du.summarize(lc_data, i)))
     }
     
     #* Replicate example from '8. Cohab_0-17' to check that date of collection corresponds to the exact age-band (do this for all age-bands where you have data)
@@ -2658,7 +2658,7 @@ du.quality.local.core.child.exposure.lifestyle.environ.char <-
     
     lc_data[, childcarecentre_] %>%
       names() %>%
-      numextract() %>%
+      du.num.extract() %>%
       range()
     
     # Second: print the summary stats for all variables
@@ -2667,7 +2667,7 @@ du.quality.local.core.child.exposure.lifestyle.environ.char <-
     
     for (i in var_names) {
       print(i)
-      print(list(summary_stats = summarizeR(lc_data, i)))
+      print(list(summary_stats = du.summarize(lc_data, i)))
     }
     
     # * Replicate example from '8. Cohab_0-17' to check that date of collection corresponds to the exact age-band (do this for all age-bands where you have data)
@@ -2684,7 +2684,7 @@ du.quality.local.core.child.exposure.lifestyle.environ.char <-
     
     lc_data[, smk_exp] %>%
       names() %>%
-      numextract() %>%
+      du.num.extract() %>%
       range()
     
     # Second: print the summary stats for all variables
@@ -2693,7 +2693,7 @@ du.quality.local.core.child.exposure.lifestyle.environ.char <-
     
     for (i in var_names) {
       print(i)
-      print(list(summary_stats = summarizeR(lc_data, i)))
+      print(list(summary_stats = du.summarize(lc_data, i)))
     }
     
     # * Replicate example from '8. Cohab_0-17' to check that date of collection corresponds to the exact age-band (do this for all age-bands where you have data)
@@ -2712,7 +2712,7 @@ du.quality.local.core.child.exposure.lifestyle.environ.char <-
     
     lc_data[, pets_] %>%
       names() %>%
-      numextract() %>%
+      du.num.extract() %>%
       range()
     
     # Second: print the summary stats for all variables
@@ -2721,7 +2721,7 @@ du.quality.local.core.child.exposure.lifestyle.environ.char <-
     
     for (i in var_names) {
       print(i)
-      print(list(summary_stats = summarizeR(lc_data, i)))
+      print(list(summary_stats = du.summarize(lc_data, i)))
     }
     
     # * If reasonable, please check the distribution against any previously reported distribution of [any exposure to furry pets in household from birth up to 18th birthday] in your cohort
@@ -2743,7 +2743,7 @@ du.quality.local.core.child.exposure.lifestyle.environ.char <-
     
     lc_data[, mental_exp] %>%
       names() %>%
-      numextract() %>%
+      du.num.extract() %>%
       range()
     
     # Second: print the summary stats for all variables
@@ -2752,7 +2752,7 @@ du.quality.local.core.child.exposure.lifestyle.environ.char <-
     
     for (i in var_names) {
       print(i)
-      print(list(summary_stats = summarizeR(lc_data, i)))
+      print(list(summary_stats = du.summarize(lc_data, i)))
     }
     
     #* If reasonable, please check the distribution against any previously reported distribution of [any exposure to parental mental disorders from birth up to 18th birthday] in your cohort
@@ -2786,7 +2786,7 @@ du.quality.local.core.household.char <- local(function(lc_data) {
   
   lc_data[, hhincome_] %>%
     names() %>%
-    numextract() %>%
+    du.num.extract() %>%
     range()
   
   # Second: print the summary stats for all variables
@@ -2795,7 +2795,7 @@ du.quality.local.core.household.char <- local(function(lc_data) {
   
   for (i in var_names) {
     print(i)
-    print(list(summary_stats = summarizeR(lc_data, i)))
+    print(list(summary_stats = du.summarize(lc_data, i)))
   }
   # * Check internal validity, e.g.:
   CrossTable(lc_data$hhincome_0, lc_data$cohab_0)
@@ -2815,7 +2815,7 @@ du.quality.local.core.household.char <- local(function(lc_data) {
   
   lc_data[, fam_splitup] %>%
     names() %>%
-    numextract() %>%
+    du.num.extract() %>%
     range()
   
   # Second: print the summary stats for all variables
@@ -2824,7 +2824,7 @@ du.quality.local.core.household.char <- local(function(lc_data) {
   
   for (i in var_names) {
     print(i)
-    print(list(summary_stats = summarizeR(lc_data, i)))
+    print(list(summary_stats = du.summarize(lc_data, i)))
   }
   
   # * Replicate example from '8. Cohab_0-17' to check that date of collection corresponds to the exact age-band (do this for all age-bands where you have data)
@@ -2843,7 +2843,7 @@ du.quality.local.core.household.char <- local(function(lc_data) {
   
   lc_data[, famsize_child] %>%
     names() %>%
-    numextract() %>%
+    du.num.extract() %>%
     range()
   
   # Second: print the summary stats for all variables
@@ -2852,7 +2852,7 @@ du.quality.local.core.household.char <- local(function(lc_data) {
   
   for (i in var_names) {
     print(i)
-    print(list(summary_stats = summarizeR(lc_data, i)))
+    print(list(summary_stats = du.summarize(lc_data, i)))
   }
   
   # * Replicate example from '8. Cohab_0-17' to check that date of collection corresponds to the exact age-band (do this for all age-bands where you have data)
@@ -2867,7 +2867,7 @@ du.quality.local.core.household.char <- local(function(lc_data) {
   
   lc_data[, famsize_adult] %>%
     names() %>%
-    numextract() %>%
+    du.num.extract() %>%
     range()
   
   # Second: print the summary stats for all variables
@@ -2876,7 +2876,7 @@ du.quality.local.core.household.char <- local(function(lc_data) {
   
   for (i in var_names) {
     print(i)
-    print(list(summary_stats = summarizeR(lc_data, i)))
+    print(list(summary_stats = du.summarize(lc_data, i)))
   }
   
   # * Replicate example from '8. Cohab_0-17' to check that date of collection corresponds to the exact age-band (do this for all age-bands where you have data)

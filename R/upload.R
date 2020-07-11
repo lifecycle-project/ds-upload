@@ -11,6 +11,16 @@
 #' @param data_output_path Path where the reshaped databases will be written
 #' @param action action to be performed, can be 'reshape', 'populate' or 'all'
 #'
+#' @examples 
+#' \dontrun{
+#' du.upload(
+#'   data_input_path = "~/path-to-file/all_measurements_v1_2.csv", 
+#'   data_version = "1_0",
+#'   dict_version = "2_1",
+#'   cohort_id = "gecko"
+#' )
+#' }
+#'
 #' @export
 du.upload <- local(function(dict_version = "2_1", data_version = "1_1", dict_kind = "core", 
     cohort_id, database_name = "opal_data", data_input_format = "CSV", data_input_path, 

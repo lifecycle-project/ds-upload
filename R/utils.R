@@ -47,7 +47,7 @@ du.dict.download <- local(function(dict_version, dict_kind) {
 #'
 #' @importFrom stringr str_extract
 #'
-numextract <- local(function(input_string) {
+du.num.extract <- local(function(input_string) {
     str_extract(input_string, "\\d*$")
 })
 
@@ -62,7 +62,7 @@ numextract <- local(function(input_string) {
 #'
 #' @return a summary of the data
 #'
-summarizeR <- local(function(df, .var) {
+du.summarize <- local(function(df, .var) {
     .var <- sym(.var)
     
     data_summary <- df %>% summarise(variable = paste(.var), min = min(!!.var, na.rm = TRUE), 

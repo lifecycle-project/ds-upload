@@ -5,9 +5,9 @@ ds_upload.globals <- new.env()
 #' Get the possible dictionary versions from Github
 #' 
 #' @param dict_kind dictionary kind (can be 'core' or 'outcome')
+#' @param dict_version dictionary version (can be 'x_x')
 #' 
 #' @importFrom utils packageVersion
-#'
 #'
 du.populate.dictionary.versions <- local(function(dict_kind, dict_version) {
     

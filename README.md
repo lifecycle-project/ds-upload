@@ -17,35 +17,12 @@ For further detail check: [uploading data](https://github.com/lifecycle-project/
 You can install the package by executing the following command:
 
 ```R
-install.packages("lifecycleProject", repos='https://registry.molgenis.org/repository/R/', dependencies = TRUE)
+install.packages("dsUload", repos='https://registry.molgenis.org/repository/R/', dependencies = TRUE)
 ```
 
+
 ## Adding new variables
-When you need to add new variables you need to perform 2 steps:
-- Adding the new variables to the dictionaries
-- Reshaping your data to DataSHIELD backend format
-
-### Adding new dictionaries (data schemes)
-When you add new dictionaries you need to place them in ```R/data/dictionaries/x_x```.
-
-For WP1 and 3 these 3 tables are namespaces this way:
-- 2_0_non_repeated.xslx
-- 2_0_yearly_repeated.xslx
-- 2_0_monthly_repeated.xslx
-- 2_0_trimester_repeated.xslx
-
-For WP4, 5 and 6 these tables are created:
-- 1_0_non_repeated.xslx
-- 1_0_yearly_repeated.xslx
-- 1_0_monthly_repeated.xslx
-- 1_0_weekly_repeated.xslx
-
-You need to place them into ```R/data/dictionaries/x_x``` as well. 
-
-Finally you need to amend the changelogs.
-
-- WP1 and 3: CORE_DICTIONARY_CHANGELOG.md
-- WP4, 5 and 6: OUTCOME_DICTIONARY_CHANGELOG.md
+Please check: [adding new variables](https://github.com/lifecycle-project/ds-dictionaries/blob/master/README.md)
 
 ## Releases
 Releasing the artifact can be done by curling to the following address:
@@ -53,7 +30,7 @@ Releasing the artifact can be done by curling to the following address:
 **For source packages**
 
 ```bash
-curl -v --user 'user:password' --upload-file lifecycleProject_1.0.0.tar.gz https://registry.molgenis.org/repository/r-hosted/src/contrib/lifecycleProject_1.0.0.tar.gz 
+curl -v --user 'user:password' --upload-file dsUpload_3.0.0.tar.gz https://registry.molgenis.org/repository/r-hosted/src/contrib/dsUpload_3.0.0.tar.gz 
 ```
 
 > So just to be short: https://registry.molgenis.org/repository/r-hosted/src/contrib/*package_version*.tar.gz 
@@ -64,7 +41,7 @@ First upload the source package to https://win-builder.r-project.org/
 Then download the zip-file build bij win-builder. Then upload it into the registry by executing this command:
 
 ```bash
-curl -v --user 'user:password' --upload-file lifecycleProject_1.0.0.zip https://registry.molgenis.org/repository/r-hosted/bin/windows/contrib/3.6/lifecycleProject_1.0.0.zip
+curl -v --user 'user:password' --upload-file dsUpload_3.0.0.zip https://registry.molgenis.org/repository/r-hosted/bin/windows/contrib/3.6/dsUpload_3.0.0.zip
 ```
 
 >So just to be short: https://registry.molgenis.org/repository/r-hosted/bin/windows/contrib/*r-version*/*package_version*.zip

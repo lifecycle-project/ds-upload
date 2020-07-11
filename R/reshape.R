@@ -124,7 +124,7 @@ du.reshape.generate.yearly.repeated <- local(function(lc_data, upload_to_opal, o
         "child_id"], na.rm = TRUE)
     
     # Create the age_years variable with the regular expression extraction of the year
-    long_1$age_years <- as.numeric(numextract(long_1$orig_var))
+    long_1$age_years <- as.numeric(du.num.extract(long_1$orig_var))
     
     # Here we remove the year indicator from the original variable name
     long_1$variable_trunc <- gsub("[[:digit:]]+$", "", long_1$orig_var)
@@ -203,8 +203,8 @@ du.reshape.generate.monthly.repeated <- local(function(lc_data, upload_to_opal, 
     
     # Create the age_years and age_months variables with the regular expression
     # extraction of the year
-    long_1$age_years <- as.integer(as.numeric(numextract(long_1$orig_var))/12)
-    long_1$age_months <- as.numeric(numextract(long_1$orig_var))
+    long_1$age_years <- as.integer(as.numeric(du.num.extract(long_1$orig_var))/12)
+    long_1$age_months <- as.numeric(du.num.extract(long_1$orig_var))
     
     # Here we remove the year indicator from the original variable name
     long_1$variable_trunc <- gsub("[[:digit:]]+$", "", long_1$orig_var)
@@ -285,8 +285,8 @@ du.reshape.generate.weekly.repeated <- local(function(lc_data, upload_to_opal, o
     # Create the age_years and age_months variables with the regular expression
     # extraction of the year NB - these weekly dta are pregnancy related so child is NOT
     # BORN YET ---
-    long_1$age_years <- as.integer(as.numeric(numextract(long_1$orig_var))/52)
-    long_1$age_weeks <- as.integer(numextract(long_1$orig_var))
+    long_1$age_years <- as.integer(as.numeric(du.num.extract(long_1$orig_var))/52)
+    long_1$age_weeks <- as.integer(du.num.extract(long_1$orig_var))
     
     # Here we remove the year indicator from the original variable name
     long_1$variable_trunc <- gsub("[[:digit:]]+$", "", long_1$orig_var)
@@ -367,7 +367,7 @@ du.reshape.generate.trimesterly.repeated <- local(function(lc_data, upload_to_op
     
     # Create the age_years and age_months variables with the regular expression
     # extraction of the year
-    long_1$age_trimester <- as.numeric(numextract(long_1$orig_var))
+    long_1$age_trimester <- as.numeric(du.num.extract(long_1$orig_var))
     
     # Here we remove the year indicator from the original variable name
     long_1$variable_trunc <- gsub("[[:digit:]]+$", "", long_1$orig_var)
