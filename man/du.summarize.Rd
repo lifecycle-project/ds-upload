@@ -17,3 +17,4 @@ a summary of the data
 \description{
 This function creates a summary table
 }
+\keyword{internal}

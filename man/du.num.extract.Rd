@@ -16,3 +16,4 @@ Numerical extraction function
 Number at the end of the string: Indicates year. We need to extract this to create the age_years variable.
 This is the function to do so.
 }
+\keyword{internal}

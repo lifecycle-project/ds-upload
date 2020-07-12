@@ -18,3 +18,4 @@ du.dict.import(project, dict_version, dict_kind, data_version)
 \description{
 Import the data dictionaries into Opal
 }
+\keyword{internal}

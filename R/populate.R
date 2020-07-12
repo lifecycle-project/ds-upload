@@ -7,6 +7,7 @@
 #' @param database_name the database name specified in your Opal instance (defaults to 'opal_data')
 #' @param dict_kind dictionnary kind, can be 'core' or 'outcome'
 #'
+#' @keywords internal
 du.populate <- local(function(dict_version, cohort_id, data_version, database_name, dict_kind) {
     message("######################################################")
     message("  Start importing data dictionaries                   ")

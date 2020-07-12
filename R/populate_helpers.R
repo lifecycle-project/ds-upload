@@ -5,6 +5,8 @@
 #'
 #' @importFrom dplyr between
 #' @importFrom opalr opal.post
+#' 
+#' @keywords internal
 du.dict.project.create <- local(function(project, database_name) {
     canonical_project_name <- strsplit(project, "_")
     dict_kind <- canonical_project_name[[1]][3]
@@ -34,6 +36,8 @@ du.dict.project.create <- local(function(project, database_name) {
 #' @param data_version version of the data (specific to the cohort)
 #'
 #' @importFrom readxl read_xlsx
+#' 
+#' @keywords internal
 du.dict.import <- local(function(project, dict_version, dict_kind, data_version) {
     message("------------------------------------------------------")
     message("  Start importing dictionaries")
@@ -80,6 +84,8 @@ du.dict.import <- local(function(project, dict_version, dict_kind, data_version)
 #'
 #' @importFrom opalr opal.post
 #' @importFrom dplyr select %>% nest_join rename
+#' 
+#' @keywords internal
 du.populate.match.categories <- local(function(project, table, variables, categories, 
     source_file) {
     # workaround to avoid global variable warnings, check:
@@ -105,12 +111,12 @@ du.populate.match.categories <- local(function(project, table, variables, catego
         body = toJSON(variables), contentType = "application/x-protobuf+json")
 })
 
-#'
 #' Get the possible dictionary versions from Github
 #' 
 #' @param dict_kind dictionary kind (can be 'core' or 'outcome')
 #' @param dict_version dictionary version (can be 'x_x')
 #'
+#' @keywords internal
 du.populate.dictionary.versions <- local(function(dict_kind, dict_version) {
     
     versions <- du.get.response.as.dataframe(paste0(ds_upload.globals$api_content_url, "dictionaries/", 

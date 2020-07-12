@@ -14,3 +14,4 @@ du.quality.local.core.meta(lc_data)
 Run checks on metadata variables in LifeCycle
 It involves variables 1-7
 }
+\keyword{internal}

@@ -7,6 +7,8 @@
 #' @importFrom haven read_dta read_sas read_spss
 #'
 #' @return dataframe with source data
+#' 
+#' @keywords internal
 du.read.source.file <- local(function(input_path, input_format) {
     du_data <- NULL
     
@@ -37,6 +39,7 @@ du.read.source.file <- local(function(input_path, input_format) {
 #'
 #' @importFrom opalr opal.file_upload
 #'
+#' @keywords internal
 du.reshape.upload <- local(function(file_prefix, dict_kind, file_version, file_name) {
     upload_directory <- paste("/home/", ds_upload.globals$username, sep = "")
     file_ext <- ".csv"
@@ -63,6 +66,7 @@ du.reshape.upload <- local(function(file_prefix, dict_kind, file_version, file_n
 #' @importFrom opalr opal.tables
 #' @importFrom jsonlite toJSON
 #'
+#' @keywords internal
 du.reshape.import <- local(function(file_prefix, dict_kind, file_version, file_name) {
     message("------------------------------------------------------")
     message("  Start importing data files")
@@ -109,6 +113,7 @@ du.reshape.import <- local(function(file_prefix, dict_kind, file_version, file_n
 #'
 #' @return a raw version of the dictionary
 #'
+#' @keywords internal
 du.retrieve.dictionaries <- local(function(dict_table, dict_kind, retrieve_all_by_kind = FALSE) {
     dict_file_list <- list.files(paste(getwd(), "/", dict_kind, sep = ""))
     
@@ -152,6 +157,7 @@ du.data.frame.remove.all.na.rows <- local(function(dataframe) {
 #'
 #' @return matched_columns in source data
 #'
+#' @keywords internal
 du.match.columns <- local(function(data_columns, dict_columns) {
     matched_columns <- character()
     
@@ -174,6 +180,7 @@ du.match.columns <- local(function(data_columns, dict_columns) {
 #' 
 #' @return stops the program if someone terminates 
 #'
+#' @keywords internal
 du.check.variables <- local(function(dict_kind, lc_data_columns, non_interactive) {
     
     lc_variables <- du.retrieve.dictionaries("", dict_kind, retrieve_all_by_kind = TRUE)

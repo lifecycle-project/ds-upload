@@ -14,3 +14,4 @@ du.dict.download(dict_version, dict_kind)
 \description{
 Download all released data dictionaries
 }
+\keyword{internal}

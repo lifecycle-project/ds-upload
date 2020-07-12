@@ -14,3 +14,4 @@ du.populate.dictionary.versions(dict_kind, dict_version)
 \description{
 Get the possible dictionary versions from Github
 }
+\keyword{internal}

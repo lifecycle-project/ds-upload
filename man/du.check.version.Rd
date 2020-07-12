@@ -12,3 +12,4 @@ du.check.version(version)
 \description{
 Check if the given version matches the syntax number . underscore . number
 }
+\keyword{internal}

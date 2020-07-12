@@ -9,3 +9,4 @@ du.check.package.version()
 \description{
 Check the package version
 }
+\keyword{internal}

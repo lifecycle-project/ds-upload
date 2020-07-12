@@ -19,3 +19,4 @@ matched_columns in source data
 Matched the columns in the source data.
 You can then match the found column against the dictionary.
 }
+\keyword{internal}
