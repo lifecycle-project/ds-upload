@@ -32,3 +32,4 @@ du.reshape.generate.weekly.repeated(
 \description{
 Generate the weekly repeated measures file and write it to your local workspace
 }
+\keyword{internal}

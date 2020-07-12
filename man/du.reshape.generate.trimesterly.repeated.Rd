@@ -32,3 +32,4 @@ du.reshape.generate.trimesterly.repeated(
 \description{
 Generate the trimesterly repeated measures file and write it to your local workspace
 }
+\keyword{internal}
