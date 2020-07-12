@@ -43,4 +43,54 @@ git push origin tags/x.x.x
 
 This is used to download the data dictionaries, so do not forget to do this!
 
-Soon this wqill be replaced by travis-ci.
+## Setup Travis-CI
+You need some prerequisites for implementing the travis build flow.
+
+```R
+install.packages(c("remotes", "usethis"))
+library(remotes)
+install_github("ropenscilabs/travis")
+```
+
+Then you are going to implement the travis workflow
+
+```R
+library(usethis)
+library(travis)
+
+# generate a travis file
+usethis::use_travis()
+```
+
+To use travis to generate your site as well please use `pkgdown`
+
+```R
+usethis::use_pkgdown()
+usethis::use_pkgdown_travis()
+```
+
+Use travis to deploy to github
+Open the R environment: `usethis::edit_r_environ()`
+
+Add to R environment these keys:
+
+```bash
+# You can generate the key using this function: usethis::browse_github_token()
+GITHUB_PAT=xxxx
+R_TRAVIS=.org
+# You can find the key using this function: `travis::browse_travis_token(endpoint = '.org')`
+R_TRAVIS_ORG=xxxx
+```
+
+Then run this command:
+
+```R
+travis::use_travis_deploy()
+```
+
+
+
+
+
+
+
