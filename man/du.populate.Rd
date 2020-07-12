@@ -22,3 +22,4 @@ du.populate(dict_version, cohort_id, data_version, database_name, dict_kind)
 Populate your Opal instance with the new version of the data dictionary
 Involves only the core variables
 }
+\keyword{internal}

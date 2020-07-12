@@ -19,3 +19,4 @@ stops the program if someone terminates
 \description{
 Check if there are columns not matching the dictionary.
 }
+\keyword{internal}

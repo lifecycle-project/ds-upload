@@ -14,3 +14,4 @@ du.quality.local.core.household.char(lc_data)
 Household characteristics
 Involves variables 116-115
 }
+\keyword{internal}

@@ -29,6 +29,8 @@
 #' @param input_format possible formats are CSV,STATA,SPSS or SAS (default = CSV)
 #' @param input_path path for importfile
 #' @param variable_category describes the categories you want to run in your quality control (possible values are: ALL, META, MATERNAL, PATERNAL, CHILD and HOUSEHOLD - default = ALL)
+#' 
+#' @keywords internal
 du.quality.local.core <-
   local(function(input_format = 'CSV',
                  input_path,
@@ -88,6 +90,7 @@ du.quality.local.core <-
 #' @importFrom ggplot2 theme_set theme_minimal geom_bar
 #' @importFrom dplyr count arrange group_by row_number
 #'
+#' @keywords internal
 du.quality.local.core.meta <- local(function(lc_data) {
   message("- Meta - variables")
   # workaround to avoid glpobal variable warnings, check: https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
@@ -214,6 +217,8 @@ du.quality.local.core.meta <- local(function(lc_data) {
 #' @importFrom ggplot2 geom_point
 #' @importFrom dplyr select_if mutate group_by arrange lag contains
 #' @importFrom tidyr spread
+#' 
+#' @keywords internal
 du.quality.local.core.maternal.social.char <-
   local(function(lc_data) {
     message("- Maternal - social demographic characteristics")
@@ -511,6 +516,7 @@ du.quality.local.core.maternal.social.char <-
 #' @importFrom plotly ggplotly
 #' @importFrom ggplot2 geom_point theme_minimal
 #'
+#' @keywords internal
 du.quality.local.core.maternal.health.char <-
   local(function(lc_data) {
     message("- Maternal - health related characteristics")
@@ -879,6 +885,7 @@ du.quality.local.core.maternal.health.char <-
 #'
 #' @importFrom gmodels CrossTable
 #'
+#' @keywords internal
 du.quality.local.core.maternal.lifestyle.char <-
   local(function(lc_data) {
     message("- Maternal - lifestyle characteristics")
@@ -1133,6 +1140,7 @@ du.quality.local.core.maternal.lifestyle.char <-
 #'
 #' @importFrom gmodels CrossTable
 #'
+#' @keywords internal
 du.quality.local.core.maternal.obstetric.char <-
   local(function(lc_data) {
     message("- Maternal - obstetric characteristics")
@@ -1257,6 +1265,7 @@ du.quality.local.core.maternal.obstetric.char <-
 #'
 #' @importFrom gmodels CrossTable
 #'
+#' @keywords internal
 du.quality.local.core.paternal.socio.demo.char <-
   local(function(lc_data) {
     message("- Paternal - social demographic characteristics")
@@ -1758,6 +1767,7 @@ du.quality.local.core.paternal.socio.demo.char <-
 #' @importFrom plotly ggplotly
 #' @importFrom ggplot2 geom_point geom_boxplot
 #'
+#' @keywords internal
 du.quality.local.core.paternal.health.related.char <-
   local(function(lc_data) {
     message("- Paternal - health related characteristics")
@@ -1897,6 +1907,7 @@ du.quality.local.core.paternal.health.related.char <-
 #' @importFrom gmodels CrossTable
 #' @importFrom plotly ggplotly
 #'
+#' @keywords internal
 du.quality.local.core.paternal.lifestyle.char <-
   local(function(lc_data) {
     message("- Paternal - lifestyle characteristics")
@@ -1949,6 +1960,7 @@ du.quality.local.core.paternal.lifestyle.char <-
 #' @importFrom ggplot2 ggplot aes geom_point geom_boxplot
 #' @importFrom dplyr filter
 #'
+#' @keywords internal
 du.quality.local.core.child.birth.out <- local(function(lc_data) {
   message("- Child - birth outcomes")
   # workaround to avoid glpobal variable warnings, check: https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
@@ -2319,6 +2331,7 @@ du.quality.local.core.child.birth.out <- local(function(lc_data) {
 #' @importFrom dplyr select_if mutate group_by arrange lag
 #' @importFrom tidyr spread
 #'
+#' @keywords internal
 du.quality.local.core.child.health.related.char <-
   local(function(lc_data) {
     message("- Child - health related characterisics")
@@ -2504,6 +2517,7 @@ du.quality.local.core.child.health.related.char <-
 #' @importFrom gmodels CrossTable
 #' @importFrom plotly ggplotly
 #'
+#' @keywords internal
 du.quality.local.core.child.exposure.lifestyle.environ.char <-
   local(function(lc_data) {
     message("- Child - exposure lifestyle environment characterisics")
@@ -2774,6 +2788,7 @@ du.quality.local.core.child.exposure.lifestyle.environ.char <-
 #' @importFrom gmodels CrossTable
 #' @importFrom plotly ggplotly
 #'
+#' @keywords internal
 du.quality.local.core.household.char <- local(function(lc_data) {
   message("- Household - characteristics")
   # 116. HOUSEHOLD INCOME [CORE] ('hhincome_0-17')

@@ -10,6 +10,8 @@
 #' @param non_interactive if set to TRUE you will get no questions
 #'
 #' @importFrom readxl read_xlsx
+#' 
+#' @keywords internal
 du.reshape <- local(function(upload_to_opal = TRUE, data_version, input_format, dict_version, 
     dict_kind, input_path, output_path, non_interactive) {
     message("######################################################")
@@ -61,6 +63,7 @@ du.reshape <- local(function(upload_to_opal = TRUE, data_version, input_format, 
 #' @importFrom dplyr %>%
 #' @importFrom readxl read_xlsx
 #'
+#' @keywords internal
 du.reshape.generate.non.repeated <- local(function(lc_data, upload_to_opal, output_path, 
     file_prefix, dict_kind, file_version, file_name) {
     message("* Generating: non-repeated measures")
@@ -104,6 +107,7 @@ du.reshape.generate.non.repeated <- local(function(lc_data, upload_to_opal, outp
 #' @importFrom maditr dcast as.data.table %<>%
 #' @importFrom tidyr gather
 #'
+#' @keywords internal
 du.reshape.generate.yearly.repeated <- local(function(lc_data, upload_to_opal, output_path, 
     file_prefix, dict_kind, file_version, file_name) {
     # workaround to avoid glpobal variable warnings, check:
@@ -182,6 +186,7 @@ du.reshape.generate.yearly.repeated <- local(function(lc_data, upload_to_opal, o
 #' @importFrom maditr dcast as.data.table %<>%
 #' @importFrom tidyr gather
 #'
+#' @keywords internal
 du.reshape.generate.monthly.repeated <- local(function(lc_data, upload_to_opal, output_path, 
     file_prefix, dict_kind, file_version, file_name) {
     # workaround to avoid glpobal variable warnings, check:
@@ -263,6 +268,7 @@ du.reshape.generate.monthly.repeated <- local(function(lc_data, upload_to_opal, 
 #' @importFrom maditr dcast as.data.table %<>%
 #' @importFrom tidyr gather
 #'
+#' @keywords internal
 du.reshape.generate.weekly.repeated <- local(function(lc_data, upload_to_opal, output_path, 
     file_prefix, dict_kind, file_version, file_name) {
     # workaround to avoid glpobal variable warnings, check:
@@ -345,6 +351,7 @@ du.reshape.generate.weekly.repeated <- local(function(lc_data, upload_to_opal, o
 #' @importFrom maditr dcast as.data.table %<>%
 #' @importFrom tidyr gather
 #'
+#' @keywords internal
 du.reshape.generate.trimesterly.repeated <- local(function(lc_data, upload_to_opal, output_path, 
     file_prefix, dict_kind, file_version, file_name) {
     # workaround to avoid glpobal variable warnings, check:
