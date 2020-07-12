@@ -22,7 +22,7 @@ To ensure sure that the EU Child Cohort Network is both open and sustainable, th
 
 Participating cohorts must harmonise data following the data harmonisation manuals provided above, perform quality-control checks on their harmonised data and upload descriptions of harmonisation to the cohort catalogue. The last step is uploading the data into the DataSHIELD backends. The guide below guides you through the process.
 
-### Installing the dsUpload R-package
+## Installation
 > For Armadillo reference documentation check:
 https://molgenis.github.io/molgenis/molgenis-r-datashield
 > For Opal reference documentation check: http://opaldoc.obiba.org/en/latest/r-user-guide/datashield.html
@@ -32,12 +32,15 @@ You can install the package by executing the following command:
 ```{r}
 install.packages("dsUpload", repos='https://registry.molgenis.org/repository/R/', dependencies = TRUE)
 ```
->IMPORTANT: for troubleshooting check: [troubleshooting guide](https://github.com/lifecycle-project/ds-upload/blob/master/TROUBLESHOOTING.md)
 
-#### Data dictionary
+## Troubleshooting
+Check: [troubleshooting guide](https://github.com/lifecycle-project/ds-upload/blob/master/TROUBLESHOOTING.md)
+
+## Usage
 To simplify the upload and importing of data dictionaries, This package is written to carry, import and upload the data dictionaries and data in one run. When running the package, you need to specify the data dictionary version and the data input file.
 
-##### Prerequisites
+**Prerequisites**
+
 - To upload the core variables, you need to merge all the variables that are obtained in the dictionary of the core variables. So in general that means merge the data of WP1 and WP3 into one set.
 - To upload the outcome variables, you need to merge all the variables that are obtained in the dictionary of the outcome variables. So in general this means merge the data of WP4, WP5 and WP6 into one set. 
 

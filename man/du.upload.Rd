@@ -47,7 +47,7 @@ Function that wraps around and bind the populate and reshape processes:
 \examples{
 \dontrun{
 du.upload(
-  data_input_format = "CSV"
+  data_input_format = "CSV",
   data_input_path = "~/path-to-file/all_measurements_v1_2.csv", 
   data_version = "1_0",
   dict_version = "2_1",

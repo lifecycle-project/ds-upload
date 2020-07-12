@@ -9,3 +9,4 @@ du.quality.central.servers.version()
 \description{
 Check all versions of the servers
 }
+\keyword{internal}

@@ -18,3 +18,4 @@ du.reshape.import(file_prefix, dict_kind, file_version, file_name)
 \description{
 Importing generated data files
 }
+\keyword{internal}

@@ -19,6 +19,7 @@ ds_upload.globals$api_content_url <- "https://api.github.com/repos/lifecycle-pro
 #'
 #' @importFrom utils download.file packageVersion
 #'
+#' @keywords internal
 du.dict.download <- local(function(dict_version, dict_kind) {
     message("######################################################")
     message("  Start download dictionaries")
@@ -46,7 +47,8 @@ du.dict.download <- local(function(dict_version, dict_kind) {
 #' @param input_string convert this string into an integer value
 #'
 #' @importFrom stringr str_extract
-#'
+#' 
+#' @keywords internal
 du.num.extract <- local(function(input_string) {
     str_extract(input_string, "\\d*$")
 })
@@ -62,6 +64,7 @@ du.num.extract <- local(function(input_string) {
 #'
 #' @return a summary of the data
 #'
+#' @keywords internal
 du.summarize <- local(function(df, .var) {
     .var <- sym(.var)
     
@@ -78,6 +81,7 @@ du.summarize <- local(function(df, .var) {
 #'
 #' @importFrom stringr str_detect
 #'
+#' @keywords internal
 du.check.version <- local(function(version) {
     return(str_detect(version, "\\d+\\_\\d+"))
 })
@@ -92,6 +96,7 @@ du.check.version <- local(function(version) {
 #' 
 #' @return response as dataframe
 #'
+#' @keywords internal
 du.get.response.as.dataframe <- local(function(url) {
     response <- GET(url)
     json_response <- content(response, as = "text")
@@ -104,6 +109,7 @@ du.get.response.as.dataframe <- local(function(url) {
 #' @importFrom jsonlite fromJSON
 #' @importFrom utils packageVersion packageName
 #'
+#' @keywords internal
 du.check.package.version <- function() {
     url <- paste0("https://registry.molgenis.org/service/rest/v1/search?repository=r-hosted&name=",packageName())
     result <- fromJSON(txt = url)

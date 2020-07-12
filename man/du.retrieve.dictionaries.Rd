@@ -19,3 +19,4 @@ a raw version of the dictionary
 \description{
 Retrieve the right file from download directory
 }
+\keyword{internal}
