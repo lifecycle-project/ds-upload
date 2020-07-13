@@ -1,6 +1,3 @@
-# Use environment to store some path variables to use in different functions
-lifecycle.globals <- new.env()
-
 #' Populate your Opal instance with the new version of the data dictionary
 #' Involves only the core variables
 #'
@@ -10,23 +7,18 @@ lifecycle.globals <- new.env()
 #' @param database_name the database name specified in your Opal instance (defaults to 'opal_data')
 #' @param dict_kind dictionnary kind, can be 'core' or 'outcome'
 #'
-lc.populate <-
-  local(function(dict_version,
-                 cohort_id,
-                 data_version,
-                 database_name,
-                 dict_kind) {
-    message('######################################################')
-    message('  Start importing data dictionaries                   ')
-    message('######################################################')
+#' @keywords internal
+du.populate <- local(function(dict_version, cohort_id, data_version, database_name, dict_kind) {
+    message("######################################################")
+    message("  Start importing data dictionaries                   ")
+    message("######################################################")
     
-    project <-
-      paste('lc_', cohort_id, '_', dict_kind, '_', dict_version, sep = '')
+    project <- paste("lc_", cohort_id, "_", dict_kind, "_", dict_version, sep = "")
     
-    lc.dict.project.create(project, database_name)
-    lc.dict.import(project, dict_version, dict_kind, data_version)
+    du.dict.project.create(project, database_name)
+    du.dict.import(project, dict_version, dict_kind, data_version)
     
-    message('######################################################')
-    message('  Importing data dictionaries has finished            ')
-    message('######################################################')
-  })
+    message("######################################################")
+    message("  Importing data dictionaries has finished            ")
+    message("######################################################")
+})

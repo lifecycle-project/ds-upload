@@ -76,17 +76,17 @@ You need these packages to can make use of the LifeCycle R-package.
 
 ### For Windows
 Install the Opal package. By installing ```RCurl, rjson``` first.
-```R 
+```{r, eval = FALSE}
 install.packages(c('httr', 'rjson'), repos=c('https://cloud.r-project.org/', 'https://www.stats.ox.ac.uk/pub/RWin/'))
 ```
 
 Then execute: 
-```R 
+```{r, eval = FALSE}
 install.packages('opalr', repos=c('https://cloud.r-project.org', 'https://www.stats.ox.ac.uk/pub/RWin/'))
 ```
 
 Install remaining packages by executing:
-```R 
+```{r, eval = FALSE}
 install.packages(c('metafor', 'tidyr', 'dplyr', 'readr', 'stringr', 'readxl', 'data.table', 'haven', 'gmodels', 'ggplot2', 'plotly', 'openxslx', 'jsonlite'), repos=c('https://cloud.r-project.org/', 'https://www.stats.ox.ac.uk/pub/RWin/'))
 ```
 
@@ -94,12 +94,12 @@ This may take a while
 
 ### For Mac
 Install Opal by executing:
-```R 
+```{r, eval = FALSE}
 install.packages('opalr', repos=c('https://cloud.r-project.org/', 'https://cran.obiba.org'), dependencies=TRUE)
 ```
 
 Install remaing packages by executing:
-```R 
+```{r, eval = FALSE}
 install.packages(c('metafor', 'tidyr', 'dplyr', 'readr', 'stringr', 'readxl', 'data.table', 'haven', 'gmodels', 'ggplot2', 'plotly', 'httr', 'openxslx', 'jsonlite'), repos=c('https://cloud.r-project.org/'))
 ```
 
@@ -122,7 +122,7 @@ wieght_04 == decimal
 **For Windows**
 Sometimes the installed packages can not be registered in the R-environment because of the missing package ``pkgconfig``
 
-```R
+```{r, eval = FALSE}
 install.packages("pkgconfig")
 ```
 

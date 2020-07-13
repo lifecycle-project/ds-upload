@@ -1,26 +1,11 @@
-language: r
+# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
-repos:
-  CRAN: https://cloud.r-project.org
-  molgenis: https://registry.molgenis.org/repository/R/
+language: R
+cache: packages
 
-cache:
-  packages: yes
+before_cache: Rscript -e 'remotes::install_cran("pkgdown")'
 
-matrix:
-  include:
-  - os: linux
-    r: release
-    script:
-      - R CMD build . --compact-vignettes=gs+qpdf
-      - R CMD check *tar.gz --as-cran
-#  - os: windows
-#    language: shell
-#    before_install:
-#      - source .ci/.travis.win.install.sh
-#    script:
-#      - R.exe CMD build . --compact-vignettes=gs+qpdf
-#      - R.exe CMD check .tar.gz --as-cran
-#      - R.exe CMD INSTALL --build .
-
-
+deploy:
+  provider: script
+  script: Rscript -e 'pkgdown::deploy_site_github(ssh_id = Sys.getenv("TRAVIS_DEPLOY_KEY", ""))'
+  skip_cleanup: true

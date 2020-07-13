@@ -1,0 +1,118 @@
+---
+title: "DSUpload"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{DSUpload}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# DataSHIELD upload tools
+
+## Background
+The aim of the EU Child Cohort Network is to bring together data from existing child cohorts into one open and sustainable, multi-disciplinary network.
+To ensure sure that the EU Child Cohort Network is both open and sustainable, the consortia are using the data-sharing platform DataSHIELD. 
+
+Participating cohorts must harmonise data following the data harmonisation manuals provided above, perform quality-control checks on their harmonised data and upload descriptions of harmonisation to the cohort catalogue. The last step is uploading the data into the DataSHIELD backends. The guide below guides you through the process.
+
+## Installation
+> For Armadillo reference documentation check:
+https://molgenis.github.io/molgenis/molgenis-r-datashield
+> For Opal reference documentation check: http://opaldoc.obiba.org/en/latest/r-user-guide/datashield.html
+
+You can install the package by executing the following command:
+
+```{r}
+install.packages("dsUpload", repos='https://registry.molgenis.org/repository/R/', dependencies = TRUE)
+```
+
+## Troubleshooting
+Check: [troubleshooting guide](https://github.com/lifecycle-project/ds-upload/blob/master/TROUBLESHOOTING.md)
+
+## Usage
+To simplify the upload and importing of data dictionaries, This package is written to carry, import and upload the data dictionaries and data in one run. When running the package, you need to specify the data dictionary version and the data input file.
+
+**Prerequisites**
+
+- To upload the core variables, you need to merge all the variables that are obtained in the dictionary of the core variables. So in general that means merge the data of WP1 and WP3 into one set.
+- To upload the outcome variables, you need to merge all the variables that are obtained in the dictionary of the outcome variables. So in general this means merge the data of WP4, WP5 and WP6 into one set. 
+
+A video guiding you through the process can be found here:
+
+Check youtube channel: [upload data dictionaries and data into opal](https://youtu.be/fUrpbstPCsU)
+
+Alternatively, execute these commands in your R-console:
+
+```{r}
+# load the package
+library(dsUpload)
+
+# login to the DataSHIELD backend
+du.login(
+  hostname = 'https://cohort1-opal.test.molgenis.org', 
+  username = 'administrator', 
+  password = '?LifeCycleCohort1!')
+
+# upload the data into the DataSHIELD backend
+# these are the core variables
+# be advised the default input format is 'CSV'
+# you can use STATA, SPSS, SAS and CSV's as source files
+du.upload(
+  cohort_id = 'dnbc', 
+  dict_version = '2_1', 
+  dict_kind = 'core', 
+  data_version = '1_0', 
+  data_input_format = 'CSV',
+  data_input_path = 'https://github.com/lifecycle-project/analysis-protocols/blob/master/R/test/WP1/data/all_measurements_v1_2.csv?raw=true',
+  non_interactive = TRUE
+)
+
+# upload the outcome variables
+du.upload(
+  cohort_id = 'dnbc', 
+  dict_version = '1_1', 
+  dict_kind = 'outcome', 
+  data_version = '1_0', 
+  data_input_format = 'CSV',
+  data_input_path = 'https://github.com/lifecycle-project/analysis-protocols/blob/master/R/test/WP6/nd_data_wp6.csv?raw=true',
+  non_interactive = TRUE
+)
+```
+
+>**IMPORTANT**: Check if the data is correctly imported in the tables in Opal. Randomly select some values and check if they are correct with your actual data. That should be sufficient to know if the data is imported correctly, 
+
+>**IMPORTANT**: You can run this package for the core variables and for the outcome variables. Each of them requires changing some parameters in the function call. So dict_kind specific 'core' or 'outcome' variables and dict_version specifies the data dictionary version (check the changelogs here: https://github.com/lifecycle-project/analysis-protocols/tree/master/changelogs). 
+
+>**IMPORTANT** You can specify your upload format! So you do not have to export to CSV first. Supported upload formats are: 'SPSS', 'SAS', 'STATA' and 'CSV'.
+
+If you run these commands, your data will be uploaded to the DataSHIELD backend. 
+If you use Opal, you can now import these data into the tables manually.
+
+A video guiding you through the process can be found here:
+
+Check youtube channel: [import data into Opal](https://youtu.be/BKDnIAQzpdY)
+
+Alternatively, execute these actions for Opal:
+
+1. Navigate to the Opal web interface
+2. Login with you credentials
+3. Select "Projects" 
+4. Select "lifecycle_#cohort#_#dict_kind#_x_x" 
+5. Select "Import"
+6. Choose the CSV-file
+7. Select the target table (depending on your choice regarding the file you have chosen)
+8. Click on "Next"
+9. Click on "Next"
+10. Determine that you all variables are matched, otherwise you need to fix your source-data first
+**IMPORTANT**: make sure no NEW variables are introduce
+11. Click on "Finish"
+12. Check the "Task logs" (on the left side of the screen, in the icon bar)
+
+It will match your data dictionary and determine which variables are matched or not. You can re-upload the source files as often as needed.
