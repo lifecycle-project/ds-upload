@@ -1,10 +1,10 @@
-![Build status](https://travis-ci.org/lifecycle-project/analysis-protocols.svg?branch=master)
+![Build status](https://travis-ci.org/lifecycle-project/ds-upload.svg?branch=master)
 
 # DataSHIELD upload tools
 This is a collections of tools used to upload data into DataSHIELD backends. It aids data mangers in the initial stages of uploading data to DataSHIELD backends.
 
 ## Usage
-Please check the [references](./references/index.html) and [articles](./articles/index.html) above.
+Please check the [references](https://lifecycle-project.github.io/ds-upload/reference/index.html) and [articles](https://lifecycle-project.github.io/ds-upload/articles/DSUpload.html) above.
 
 ## Troubleshooting
 Please check the [troubleshooting guide]().
@@ -15,7 +15,7 @@ Please check: [adding new variables](https://github.com/lifecycle-project/ds-dic
 ## Releases
 Releasing the artifact can be done by curling to the following address:
 
-**For source packages**
+### For source packages
 
 ```bash
 curl -v --user 'user:password' --upload-file dsUpload_3.0.0.tar.gz https://registry.molgenis.org/repository/r-hosted/src/contrib/dsUpload_3.0.0.tar.gz 
@@ -23,7 +23,7 @@ curl -v --user 'user:password' --upload-file dsUpload_3.0.0.tar.gz https://regis
 
 *URL clarification: https://registry.molgenis.org/repository/r-hosted/src/contrib/*package_version*.tar.gz*
 
-**For binary packages**
+### For binary packages
 
 First upload the source package to https://win-builder.r-project.org/
 Then download the zip-file build bij win-builder. Then upload it into the registry by executing this command:
@@ -36,7 +36,7 @@ curl -v --user 'user:password' --upload-file dsUpload_3.0.0.zip https://registry
 
 Also create a git-tag and push this to the remote, based upon the `dsUpload` DESCRIPTION-file.
 
-```
+```bash
 git tag x.x.x
 git push origin tags/x.x.x
 ```
@@ -69,10 +69,9 @@ usethis::use_pkgdown()
 usethis::use_pkgdown_travis()
 ```
 
-Use travis to deploy to github
-Open the R environment: `usethis::edit_r_environ()`
+Use travis to deploy to github by first perparing the R environment: `usethis::edit_r_environ()`
 
-Add to R environment these keys:
+Add these key-value pairs to R environment
 
 ```bash
 # You can generate the key using this function: usethis::browse_github_token()
@@ -82,7 +81,7 @@ R_TRAVIS=.org
 R_TRAVIS_ORG=xxxx
 ```
 
-Then run this command:
+Run the travis deploy command to complete the setup.
 
 ```R
 travis::use_travis_deploy()

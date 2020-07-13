@@ -1,7 +1,7 @@
 # Use environment to store some path variables to use in different functions
 ds_upload.globals <- new.env()
 
-#' Function that wraps around and bind the populate and reshape processes:
+#' Upload dictionaries and data into the DataSHIELD backend.
 #'
 #' @param dict_version version of the data dictionnary to be used
 #' @param data_version version of the dataset to be uploaded

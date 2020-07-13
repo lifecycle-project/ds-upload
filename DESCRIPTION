@@ -7,6 +7,8 @@ Description: We supply standardised ways to upload and import versioned data dic
   To check if your data is correct it contains a number of local functions which can be performed to
   check the quality of your data as well. It also can reshape the data into Opal format when you use other tools
   to harmonise your data.
+URL: https://github.com/lifecycle-project/ds-upload
+BugReports: https://github.com/lifecycle-project/ds-upload/issues
 Depends: 
   R (>= 3.5.0),
   opalr (>= 1.2.0)

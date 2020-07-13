@@ -2,7 +2,7 @@
 % Please edit documentation in R/upload.R
 \name{du.upload}
 \alias{du.upload}
-\title{Function that wraps around and bind the populate and reshape processes:}
+\title{Upload dictionaries and data into the DataSHIELD backend.}
 \usage{
 du.upload(
   dict_version = "2_1",
@@ -42,7 +42,7 @@ du.upload(
 \item{non_interactive}{if set to TRUE you will get no questions}
 }
 \description{
-Function that wraps around and bind the populate and reshape processes:
+Upload dictionaries and data into the DataSHIELD backend.
 }
 \examples{
 \dontrun{

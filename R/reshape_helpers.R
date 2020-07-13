@@ -139,6 +139,7 @@ du.retrieve.dictionaries <- local(function(dict_table, dict_kind, retrieve_all_b
 #'
 #' @return dataframe without the na values
 #'
+#' @keywords internal
 du.data.frame.remove.all.na.rows <- local(function(dataframe) {
     df <- dataframe[-c(1)]
     
