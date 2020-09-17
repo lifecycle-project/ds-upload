@@ -7,12 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
+
 
 # DataSHIELD upload tools
 
@@ -24,13 +19,16 @@ Participating cohorts must harmonise data, following the data harmonisation manu
 
 ## Installation
 Reference documentation:
-- [Armadillo](https://molgenis.github.io/molgenis/molgenis-r-datashield)
+- [dsUpload](https://lifecycle-project.github.io/lifecycle-project/ds-upload)
+- [Armadillo](http://molgenis.github.io/molgenis/molgenis-r-armadillo)
 - [Opal](http://opaldoc.obiba.org/en/latest/r-user-guide/datashield.html)
 
 You can install the package by executing the following command:
 
-```{r}
+
+```r
 install.packages("dsUpload", repos='https://registry.molgenis.org/repository/R/', dependencies = TRUE)
+#> installing the source package 'dsUpload'
 ```
 
 ## Troubleshooting
@@ -55,16 +53,27 @@ Check youtube channel: [upload data dictionaries and data into opal](https://you
 
 Alternatively, execute these commands in your R-console:
 
-```{r}
+
+```r
 # load the package
 library(dsUpload)
+#> Loading required package: opalr
+#> Loading required package: httr
+```
 
+
+```r
 # login to the DataSHIELD backend
 du.login(
-  hostname = 'https://cohort1-opal.test.molgenis.org', 
+  hostname = 'https://opal.edge.molgenis.org', 
   username = 'administrator', 
-  password = '?LifeCycleCohort1!')
+  password = 'admin')
+#>   Login to: "https://opal.edge.molgenis.org"
+#>   Logged on to: "https://opal.edge.molgenis.org"
+```
 
+
+```r
 # upload the data into the DataSHIELD backend
 # these are the core variables
 # be advised the default input format is 'CSV'
@@ -75,10 +84,67 @@ du.upload(
   dict_kind = 'core', 
   data_version = '1_0', 
   data_input_format = 'CSV',
-  data_input_path = 'https://github.com/lifecycle-project/analysis-protocols/blob/master/tests/data/WP1/data/all_measurements_v1_2.csv?raw=true',
+  data_input_path = 'https://github.com/lifecycle-project/ds-upload/blob/master/tests/data/WP1/data/all_measurements_v1_2.csv?raw=true',
   non_interactive = TRUE
 )
+#> ######################################################
+#>   Start upload data into DataSHIELD backend
+#> ------------------------------------------------------
+#> ######################################################
+#>   Start download dictionaries
+#> ------------------------------------------------------
+#> * Download: [ 2_1_monthly_rep.xlsx ]
+#> * Download: [ 2_1_non_rep.xlsx ]
+#> * Download: [ 2_1_trimester_rep.xlsx ]
+#> * Download: [ 2_1_yearly_rep.xlsx ]
+#>   Successfully downloaded dictionaries
+#> ######################################################
+#>   Start importing data dictionaries
+#> ######################################################
+#> ------------------------------------------------------
+#>   Start creating project: [ lc_dnbc_core_2_1 ]
+#> ------------------------------------------------------
+#>   Start importing dictionaries
+#> * Create table: [ 2_1_core_1_0_monthly_rep ]
+#> * Import variables into: [ 2_1_core_1_0_monthly_rep ]
+#> * Create table: [ 2_1_core_1_0_non_rep ]
+#> * Matched categories for table: [ 2_1_core_1_0_non_rep ]
+#> * Import variables into: [ 2_1_core_1_0_non_rep ]
+#> * Create table: [ 2_1_core_1_0_trimester_rep ]
+#> * Matched categories for table: [ 2_1_core_1_0_trimester_rep ]
+#> * Import variables into: [ 2_1_core_1_0_trimester_rep ]
+#> * Create table: [ 2_1_core_1_0_yearly_rep ]
+#> * Matched categories for table: [ 2_1_core_1_0_yearly_rep ]
+#> * Import variables into: [ 2_1_core_1_0_yearly_rep ]
+#>   All dictionaries are populated correctly
+#> ######################################################
+#>   Importing data dictionaries has finished
+#> ######################################################
+#> ######################################################
+#>   Start reshaping data
+#> ######################################################
+#> * Setup: load data and set output directory
+#> ------------------------------------------------------
+#> [WARNING] This is an unmatched column, it will be dropped : [ art ].
+#> * Generating: non-repeated measures
+#> * Upload: /Users/sido/RProjects/ds-upload/vignettes/MEXVAUEQIHDRWII/2020-09-17_09-00-21_core_1_0_non_repeated_measures.csv
+#> * Generating: yearly-repeated measures
+#> Aggregate function missing, defaulting to 'length'
+#> * Upload: /Users/sido/RProjects/ds-upload/vignettes/MEXVAUEQIHDRWII/2020-09-17_09-00-21_core_1_0_yearly_repeated_measures.csv
+#> * Generating: monthly-repeated measures
+#> Aggregate function missing, defaulting to 'length'
+#> * Upload: /Users/sido/RProjects/ds-upload/vignettes/MEXVAUEQIHDRWII/2020-09-17_09-00-21_core_1_0_monthly_repeated_measures.csv
+#> * Generating: trimesterly-repeated measures
+#> Aggregate function missing, defaulting to 'length'
+#> * Upload: /Users/sido/RProjects/ds-upload/vignettes/MEXVAUEQIHDRWII/2020-09-17_09-00-21_core_1_0_trimester_repeated_measures.csv
+#> ######################################################
+#>   Reshaping successfully finished
+#> ######################################################
+#>  * Reinstate default working directory
+#>  * Cleanup temporary directory
+```
 
+```r
 # upload the outcome variables
 du.upload(
   cohort_id = 'dnbc', 
@@ -86,9 +152,60 @@ du.upload(
   dict_kind = 'outcome', 
   data_version = '1_0', 
   data_input_format = 'CSV',
-  data_input_path = 'https://github.com/lifecycle-project/analysis-protocols/blob/master/tests/data/WP6/nd_data_wp6.csv?raw=true',
+  data_input_path = 'https://github.com/lifecycle-project/ds-upload/blob/master/tests/data/WP6/nd_data_wp6.csv?raw=true',
   non_interactive = TRUE
 )
+#> ######################################################
+#>   Start upload data into DataSHIELD backend
+#> ------------------------------------------------------
+#> ######################################################
+#>   Start download dictionaries
+#> ------------------------------------------------------
+#> * Download: [ 1_1_monthly_rep.xlsx ]
+#> * Download: [ 1_1_non_rep.xlsx ]
+#> * Download: [ 1_1_weekly_rep.xlsx ]
+#> * Download: [ 1_1_yearly_rep.xlsx ]
+#>   Successfully downloaded dictionaries
+#> ######################################################
+#>   Start importing data dictionaries
+#> ######################################################
+#> ------------------------------------------------------
+#>   Start creating project: [ lc_dnbc_outcome_1_1 ]
+#> ------------------------------------------------------
+#>   Start importing dictionaries
+#> * Create table: [ 1_1_outcome_1_0_monthly_rep ]
+#> * Matched categories for table: [ 1_1_outcome_1_0_monthly_rep ]
+#> * Import variables into: [ 1_1_outcome_1_0_monthly_rep ]
+#> * Create table: [ 1_1_outcome_1_0_non_rep ]
+#> * Matched categories for table: [ 1_1_outcome_1_0_non_rep ]
+#> * Import variables into: [ 1_1_outcome_1_0_non_rep ]
+#> * Create table: [ 1_1_outcome_1_0_weekly_rep ]
+#> * Import variables into: [ 1_1_outcome_1_0_weekly_rep ]
+#> * Create table: [ 1_1_outcome_1_0_yearly_rep ]
+#> * Matched categories for table: [ 1_1_outcome_1_0_yearly_rep ]
+#> * Import variables into: [ 1_1_outcome_1_0_yearly_rep ]
+#>   All dictionaries are populated correctly
+#> ######################################################
+#>   Importing data dictionaries has finished
+#> ######################################################
+#> ######################################################
+#>   Start reshaping data
+#> ######################################################
+#> * Setup: load data and set output directory
+#> ------------------------------------------------------
+#> * Generating: non-repeated measures
+#> * Upload: /Users/sido/RProjects/ds-upload/vignettes/CVTROQVOPZEFVGZ/2020-09-17_09-00-42_outcome_1_0_non_repeated_measures.csv
+#> * Generating: yearly-repeated measures
+#> * Upload: /Users/sido/RProjects/ds-upload/vignettes/CVTROQVOPZEFVGZ/2020-09-17_09-00-42_outcome_1_0_yearly_repeated_measures.csv
+#> * Generating: monthly-repeated measures
+#> * Upload: /Users/sido/RProjects/ds-upload/vignettes/CVTROQVOPZEFVGZ/2020-09-17_09-00-42_outcome_1_0_monthly_repeated_measures.csv
+#> * Generating: weekly-repeated measures
+#> * Upload: /Users/sido/RProjects/ds-upload/vignettes/CVTROQVOPZEFVGZ/2020-09-17_09-00-42_outcome_1_0_weekly_repeated_measures.csv
+#> ######################################################
+#>   Reshaping successfully finished
+#> ######################################################
+#>  * Reinstate default working directory
+#>  * Cleanup temporary directory
 ```
 
 >**IMPORTANT**: Check if the data is correctly imported in the tables in Opal. Randomly select some values and check if they are correct with your actual data. That should be sufficient to know if the data is imported correctly, 
