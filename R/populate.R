@@ -9,16 +9,28 @@
 #'
 #' @keywords internal
 du.populate <- local(function(dict_version, cohort_id, data_version, database_name, dict_kind) {
-    message("######################################################")
-    message("  Start importing data dictionaries                   ")
-    message("######################################################")
-    
-    project <- paste("lc_", cohort_id, "_", dict_kind, "_", dict_version, sep = "")
-    
-    du.dict.project.create(project, database_name)
-    du.dict.import(project, dict_version, dict_kind, data_version)
-    
-    message("######################################################")
-    message("  Importing data dictionaries has finished            ")
-    message("######################################################")
+  message("######################################################")
+  message("  Start importing data dictionaries                   ")
+  message("######################################################")
+
+  project <- paste("lc_", cohort_id, "_", dict_kind, "_", dict_version, sep = "")
+
+  du.dict.project.create(project, database_name)
+  du.dict.import(project, dict_version, dict_kind, data_version)
+
+  message("######################################################")
+  message("  Importing data dictionaries has finished            ")
+  message("######################################################")
+})
+
+#' Create tables in Opal to import the data for the beta dictionaries
+#'
+#' @param dict_name dictionary path to search on
+#' @param cohort_id cohort id specified in the dictionary
+#'
+#' @keywords internal
+du.populate.beta <- local(function(dict_name, cohort_id) {
+  project <- paste0("lc_", dict_name, "_", cohort_id, "_", "beta")
+  du.dict.project.create(project, database_name)
+  du.dict.import(project, dict_version, dict_kind, data_version)
 })
