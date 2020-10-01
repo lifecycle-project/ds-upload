@@ -5,18 +5,17 @@
 \title{Reshape Script for R: LifeCycle Harmonized Data}
 \usage{
 du.reshape(
-  upload_to_opal = TRUE,
+  upload = TRUE,
   data_version,
   input_format,
   dict_version,
   dict_kind,
   input_path,
-  output_path,
   non_interactive
 )
 }
 \arguments{
-\item{upload_to_opal}{do you want automatically upload the files to your opal (default = true)}
+\item{upload}{do you want automatically upload the files to your opal (default = true)}
 
 \item{data_version}{version of the data you are going to upload into Opal}
 
@@ -26,9 +25,7 @@ du.reshape(
 
 \item{dict_kind}{kind of data to reshape (default = core)}
 
-\item{input_path}{path for importfile}
-
-\item{output_path}{path to output directory (default = your working directory)}
+\item{input_path}{path for import file}
 
 \item{non_interactive}{if set to TRUE you will get no questions}
 }

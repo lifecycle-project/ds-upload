@@ -16,13 +16,11 @@ du.upload.beta <- local(function(upload = TRUE, dict_name = "", action = "all", 
 
   tryCatch(
     {
-      dict_kind <- "beta"
-      du.dict.download(dict_version, dict_kind)
+      workdirs <- du.create.temp.workdir()
       du.check.action(action)
-      workdirs <- du.create.temp.workdir(upload, dict_kind)
-
+      
       if (action == "all" | action == "populate") {
-        du.populate.beta(dict_version, cohort_id, data_version, database_name, dict_kind)
+        du.populate.beta(dict_name, cohort_id, database_name)
       }
 
       if (action == "all" | action == "reshape") {
@@ -35,7 +33,7 @@ du.upload.beta <- local(function(upload = TRUE, dict_name = "", action = "all", 
           data_input_format <- "CSV"
         }
         du.reshape.beta(
-          upload_to_opal, data_version, data_input_format, dict_version,
+          upload, data_version, data_input_format, dict_version,
           dict_kind, data_input_path
         )
       }

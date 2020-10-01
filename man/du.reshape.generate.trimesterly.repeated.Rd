@@ -6,8 +6,7 @@
 \usage{
 du.reshape.generate.trimesterly.repeated(
   lc_data,
-  upload_to_opal,
-  output_path,
+  upload,
   file_prefix,
   dict_kind,
   file_version,
@@ -17,9 +16,7 @@ du.reshape.generate.trimesterly.repeated(
 \arguments{
 \item{lc_data}{data frame with all the data based upon the CSV file}
 
-\item{upload_to_opal}{do you want to upload to Opal (default = true)}
-
-\item{output_path}{directory where the CSV files need to be stored}
+\item{upload}{do you want to upload to Opal (default = true)}
 
 \item{file_prefix}{the date of the generated file}
 

@@ -1,3 +1,35 @@
+#' Download all released data dictionaries
+#'
+#' @param dict_version dictionary version
+#' @param dict_kind dictionary kind (possible kinds are 'core' or 'outcome')
+#'
+#' @importFrom purrr map pluck
+#' @importFrom utils download.file packageVersion
+#'
+#' @keywords internal
+du.dict.download.releases <- local(function(dict_version, dict_kind) {
+  message("######################################################")
+  message("  Start download dictionaries")
+  message("------------------------------------------------------")
+
+  dir.create(dict_kind)
+
+  dictionaries <- du.get.response.as.dataframe(paste0(
+    ds_upload.globals$api_dict_released_url, "dictionaries/",
+    dict_kind, "/", dict_version, "?ref=", dict_version
+  ))
+
+  dictionaries %>%
+    pluck(c("name", "download_url")) %>%
+    map(function(name, download_url) {
+      message(paste0("* Download: [ ", name, " ]"))
+      download.file(url = download_url, destfile = paste0(dict_kind, "/", name), mode = "wb", method = "libcurl", quiet = TRUE)
+    })
+
+  message("  Successfully downloaded dictionaries")
+})
+
+
 #' Create the project with data dictionary version in between
 #'
 #' @param project prpject resource in Opal
@@ -7,12 +39,10 @@
 #' @importFrom opalr opal.post
 #'
 #' @keywords internal
-du.dict.project.create <- local(function(project, database_name) {
+du.project.create <- local(function(project, database_name) {
   canonical_project_name <- strsplit(project, "_")
   dict_kind <- canonical_project_name[[1]][3]
-  dict_version <- paste(canonical_project_name[[1]][4], "_", canonical_project_name[[1]][5],
-    sep = ""
-  )
+  dict_version <- paste0(canonical_project_name[[1]][4], "_", canonical_project_name[[1]][5])
 
   message("------------------------------------------------------")
   message(paste("  Start creating project: [ ", project, " ]", sep = ""))
@@ -33,51 +63,59 @@ du.dict.project.create <- local(function(project, database_name) {
   }
 })
 
+#' Retrieve the released dictionaries from 'ds-dictionaries' to match against
 #'
+#' @param api_url url to retrieve the tables from
+#' @param dict_version model version of the data
+#' @param dict_kind dictionary kind can be outcome, core, exposure
+#' @param data_version data version if used to create the tables
 #'
-#' @importFrom tibble add_row
+#' @importFrom purrr map pluck
 #'
-du.dict.retrieve.released.files <- function(dict_version, dict_kind, data_version) {
-  dicts <- du.get.response.as.dataframe(paste0(
-    ds_upload.globals$api_content_url, "/dictionaries/",
-    dict_kind, "/", dict_version, "?ref=", dict_version
-  ))
+#' @return dictionaries list of tables
+#'
+#' @keywords internal
+du.dict.retrieve.tables <- function(api_url, dict_name, dict_version, data_version) {
+  api_url_path <- paste0(
+    api_url, "dictionaries/",
+    dict_name
+  )
 
-  for (f in 1:nrow(files)) {
-    file <- files[f, ]
-    canonical_table_name <- strsplit(file$name, "_")
-    table <- paste(dict_version, "_", dict_kind, "_", data_version, "_", canonical_table_name[[1]][3],
-      "_rep",
-      sep = ""
-    )
-    dictionaries %>% add_row(table = file)
+  if (!missing(dict_version)) {
+    api_url_path <- paste0(api_url_path, "?ref=", dict_version)
   }
 
-  return(dictionaries)
-}
+  dictionaries <- du.get.response.as.dataframe(api_url_path)
 
+  tables <- dictionaries %>%
+    pluck("name") %>%
+    map(function(name) {
+      canonical_table_name <- strsplit(name, "_")
+      print(canonical_table_name)
+      return(paste0(
+        data_version, "_", canonical_table_name[[1]][3]
+      ))
+    })
+
+  return(tables)
+}
 
 
 #' Import the data dictionaries into Opal
 #'
 #' @param project project in which the data is imported
-#' @param dict_version dictionary version (concerning core or outcome)
-#' @param dict_kind dictionary kind (core or outcome)
-#' @param data_version version of the data (specific to the cohort)
+#' @param dictionaries all the dictionaries pulled from the repository
+#' @param data_version data version to put into the table
 #'
 #' @importFrom readxl read_xlsx
+#' @importFrom purrr map
 #'
 #' @keywords internal
-du.dict.import <- local(function(project, dictionaries) {
+du.dict.import <- local(function(project, dictionaries, data_version) {
   message("------------------------------------------------------")
   message("  Start importing dictionaries")
 
-
-
-  for (dict in 1:nrow(dictionaries)) {
-    file <- files[f, ]
-    
-
+  dictionaries %>% map(function(table) {
     json_table <- sprintf("{\"entityType\":\"Participant\",\"name\":\"%s\"}", table)
     tables <- opal.tables(ds_upload.globals$opal, project)
 
@@ -91,15 +129,8 @@ du.dict.import <- local(function(project, dictionaries) {
       message(paste("* Table: [ ", table, " ] already exists", sep = ""))
     }
 
-    variables <- read_xlsx(path = paste(getwd(), "/", dict_kind, "/", file$name,
-      sep = ""
-    ), sheet = 1)
-    categories <- read_xlsx(path = paste(getwd(), "/", dict_kind, "/", file$name,
-      sep = ""
-    ), sheet = 2)
-
-    du.populate.match.categories(project, table, variables, categories, file$name)
-  }
+    du.match.dict.categories(project, dict_kind, table)
+  })
 
   message("  All dictionaries are populated correctly")
 })
@@ -109,19 +140,19 @@ du.dict.import <- local(function(project, dictionaries) {
 #'
 #' @param project project resource in Opal
 #' @param table dictionary to upload to Opal
-#' @param variables dictionary variables to upload
-#' @param categories dictionary categories to upload
 #' @param source_file source file for the dictionaries
 #'
 #' @importFrom opalr opal.post
 #' @importFrom dplyr select %>% nest_join rename
 #'
 #' @keywords internal
-du.populate.match.categories <- local(function(project, table, variables, categories,
-                                               source_file) {
+du.match.dict.categories <- local(function(project, dict_kind, table) {
   # workaround to avoid global variable warnings, check:
   # https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
   label <- name <- NULL
+
+  variables <- read_xlsx(path = paste0(getwd(), "/", dict_kind, "/", table, ".xlsx"), sheet = 1)
+  categories <- read_xlsx(path = paste0(getwd(), "/", dict_kind, "/", table, , ".xlsx"), sheet = 2)
 
   variables$entityType <- "Participant"
   variables$isRepeatable <- FALSE
@@ -153,7 +184,7 @@ du.populate.match.categories <- local(function(project, table, variables, catego
 #' @keywords internal
 du.populate.dictionary.versions <- local(function(dict_kind, dict_version) {
   versions <- du.get.response.as.dataframe(paste0(
-    ds_upload.globals$api_content_url, "dictionaries/",
+    ds_upload.globals$api_dict_released_url, "dictionaries/",
     dict_kind, "?ref=", dict_version
   ))
 

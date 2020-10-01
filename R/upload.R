@@ -9,7 +9,7 @@ ds_upload.globals <- new.env()
 #' @param cohort_id cohort name
 #' @param database_name is the name of the data backend of DataSHIELD, default = opal_data
 #' @param data_input_format format of the database to be reshaped. Can be 'CSV', 'STATA', or 'SAS'
-#' @param upload_to_opal wether to directly upload the reshaped database to the logged in opal server
+#' @param upload wether to directly upload the reshaped database to the logged in DataSHIELD server
 #' @param data_input_path path to the to-be-reshaped data
 #' @param data_output_path path where the reshaped databases will be written
 #' @param action action to be performed, can be 'reshape', 'populate' or 'all'
@@ -29,7 +29,7 @@ ds_upload.globals <- new.env()
 #' @export
 du.upload <- local(function(dict_version = "2_1", data_version = "1_1", dict_kind = "core",
                             cohort_id, database_name = "opal_data", data_input_format = "CSV", data_input_path,
-                            action = "all", upload_to_opal = TRUE, non_interactive = FALSE) {
+                            action = "all", upload = TRUE, non_interactive = FALSE) {
   du.check.package.version()
 
   message("######################################################")
@@ -38,7 +38,7 @@ du.upload <- local(function(dict_version = "2_1", data_version = "1_1", dict_kin
 
   du.populate.dictionary.versions(dict_kind, dict_version)
 
-  du.check.session(upload_to_opal)
+  du.check.session(upload)
 
   if (missing(cohort_id) & !non_interactive) {
     cohort_id <- readline("- Specify cohort identifier (e.g. dnbc): ")
@@ -83,13 +83,14 @@ du.upload <- local(function(dict_version = "2_1", data_version = "1_1", dict_kin
     stop("No data version is specified or the data version does not match syntax: 'number_number'! Program is terminated.")
   }
 
+  workdirs <- NULL
   tryCatch(
     {
-      du.dict.download(dict_version, dict_kind)
+      workdirs <- du.create.temp.workdir()
+      du.dict.download.releases(dict_version, dict_kind)
       du.check.action(action)
-      workdirs <- du.create.temp.workdir(dict_kind)
-
-      if (action == "all" | action == "populate") {
+      
+      if ((action == "all" | action == "populate") && upload == TRUE) {
         du.populate(dict_version, cohort_id, data_version, database_name, dict_kind)
       }
 
@@ -103,7 +104,7 @@ du.upload <- local(function(dict_version = "2_1", data_version = "1_1", dict_kin
           data_input_format <- "CSV"
         }
         du.reshape(
-          upload_to_opal, data_version, data_input_format, dict_version,
+          upload, data_version, data_input_format, dict_version,
           dict_kind, data_input_path, non_interactive
         )
       }

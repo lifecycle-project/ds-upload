@@ -21,8 +21,8 @@ Login into the opal instance and
 \examples{
 \dontrun{
 du.login(
-  hostname = "https://cohort-datashield-server.org", 
-  username = "local_dm", 
+  hostname = "https://cohort-datashield-server.org",
+  username = "local_dm",
   password = "very-secret-pw"
 )
 }

@@ -14,38 +14,8 @@ ds_upload.globals$variable_category <- c(
 )
 ds_upload.globals$cohort_ids <- cohorts
 
-ds_upload.globals$api_content_url <- "https://api.github.com/repos/lifecycle-project/ds-dictionaries/contents/"
-
-#' Download all released data dictionaries
-#'
-#' @param dict_version dictionary version
-#' @param dict_kind dictionary kind (possible kinds are 'core' or 'outcome')
-#'
-#' @importFrom utils download.file packageVersion
-#'
-#' @keywords internal
-du.dict.download <- local(function(dict_version, dict_kind) {
-  message("######################################################")
-  message("  Start download dictionaries")
-  message("------------------------------------------------------")
-
-  dir.create(dict_kind)
-
-  files <- du.get.response.as.dataframe(paste(ds_upload.globals$api_content_url, "/dictionaries/",
-    dict_kind, "/", dict_version, "?ref=", dict_version,
-    sep = ""
-  ))
-
-  for (f in 1:nrow(files)) {
-    file <- files[f, ]
-    message(paste("* Download: [ ", file$name, " ]", sep = ""))
-    download.file(url = file$download_url, destfile = paste(dict_kind, "/", file$name,
-      sep = ""
-    ), mode = "wb", method = "libcurl", quiet = TRUE)
-  }
-
-  message("  Successfully downloaded dictionaries")
-})
+ds_upload.globals$api_dict_released_url <- "https://api.github.com/repos/lifecycle-project/ds-dictionaries/contents/"
+ds_upload.globals$api_dict_beta_url <- "https://api.github.com/repos/lifecycle-project/ds-beta-dictionaries/contents/"
 
 #' Numerical extraction function
 #' Number at the end of the string: Indicates year. We need to extract this to create the age_years variable.
@@ -113,33 +83,6 @@ du.get.response.as.dataframe <- local(function(url) {
   return(fromJSON(json_response))
 })
 
-#'
-#' Check the package version
-#'
-#' @importFrom jsonlite fromJSON
-#' @importFrom utils packageVersion packageName
-#'
-#' @keywords internal
-du.check.package.version <- function() {
-  url <- paste0("https://registry.molgenis.org/service/rest/v1/search?repository=r-hosted&name=", packageName())
-  result <- fromJSON(txt = url)
-  currentVersion <- packageVersion(packageName())
-  if (any(result$items$version > currentVersion)) {
-    message(paste0("***********************************************************************************"))
-    message(paste0("  [WARNING] You are not running the latest version of the ", packageName(), "-package."))
-    message(paste0(
-      "  [WARNING] If you want to upgrade to newest version : [ ", max(result$items$version),
-      " ],"
-    ))
-    message(paste0("  [WARNING] Please run 'install.packages(\"", packageName(), "\", repos = \"https://registry.molgenis.org/repository/R/\")'"))
-    message(paste0(
-      "  [WARNING] Check the release notes here: https://github.com/lifecycle-project/analysis-protocols/releases/tag/",
-      max(result$items$version)
-    ))
-    message(paste0("***********************************************************************************"))
-  }
-}
-
 #' Check if there is an active session with a DataSHIELD backend
 #'
 #' @param upload is a session needed or not
@@ -168,18 +111,16 @@ du.check.action <- function(action = "all") {
 }
 
 
-#' Create a temparory directory in the current workdir to store all temporary file in
-#'
-#' @param dict_kind dictionary kinds can be 'core', 'outcome' or 'beta'
+#' Create a temporary directory in the current working directory to store all temporary files 
 #'
 #' @keywords internal
-du.create.temp.workdir <- function(dict_kind) {
+du.create.temp.workdir <- function() {
   message(" * Create temporary workdir")
   original_workdir <- getwd()
 
-  file_prefix <- format(Sys.time(), "%Y-%m-%d_%H-%M-%S")
+  timestamp <- format(Sys.time(), "%Y-%m-%d_%H-%M-%S")
 
-  temp_workdir <- paste0(file_prefix, "_", dict_kind)
+  temp_workdir <- paste0(timestamp)
   temp_workdir <- temp_workdir[which(!(temp_workdir %in% list.files()))]
 
   dir.create(paste0(getwd(), "/", temp_workdir, sep = ""))
@@ -196,8 +137,8 @@ du.create.temp.workdir <- function(dict_kind) {
 #' @keywords internal
 du.clean.temp.workdir <- function(upload, workdirs) {
   message(" * Reinstate default working directory")
-  original_workdir <- workdirs[0]
-  temp_workdir <- workdirs[1]
+  original_workdir <- unlist(workdirs)[1]
+  temp_workdir <- unlist(workdirs)[2]
   setwd(original_workdir)
   if (upload == TRUE) {
     message(" * Cleanup temporary directory")

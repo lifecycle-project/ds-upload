@@ -74,7 +74,7 @@ du.reshape.generate.non.repeated <- local(function(lc_data, upload,
                                                    file_prefix, dict_kind, file_version, file_name) {
   message("* Generating: non-repeated measures")
 
-  # Retrieve dictionnary
+  # Retrieve dictionary
   lc_variables_non_repeated_dict <- du.retrieve.dictionaries("non_rep", dict_kind)
 
   # select the non-repeated measures from the full data set

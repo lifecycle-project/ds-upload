@@ -21,13 +21,15 @@ Imports:
   httr,
   jsonlite,
   plotly,
+  purrr,
   readr,
   readxl,
   rlang,
   stats,
   stringr,
   tidyr,
-  utils
+  utils,
+  tibble
 Suggests: 
   knitr, 
   rmarkdown,

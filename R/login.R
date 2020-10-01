@@ -45,3 +45,30 @@ du.login <- local(function(hostname, username = "administrator", password, insec
   )
   message(paste("  Logged on to: \"", ds_upload.globals$hostname, "\"", sep = ""))
 })
+
+#'
+#' Check the package version
+#'
+#' @importFrom jsonlite fromJSON
+#' @importFrom utils packageVersion packageName
+#'
+#' @keywords internal
+du.check.package.version <- function() {
+  url <- paste0("https://registry.molgenis.org/service/rest/v1/search?repository=r-hosted&name=", packageName())
+  result <- fromJSON(txt = url)
+  currentVersion <- packageVersion(packageName())
+  if (any(result$items$version > currentVersion)) {
+    message(paste0("***********************************************************************************"))
+    message(paste0("  [WARNING] You are not running the latest version of the ", packageName(), "-package."))
+    message(paste0(
+      "  [WARNING] If you want to upgrade to newest version : [ ", max(result$items$version),
+      " ],"
+    ))
+    message(paste0("  [WARNING] Please run 'install.packages(\"", packageName(), "\", repos = \"https://registry.molgenis.org/repository/R/\")'"))
+    message(paste0(
+      "  [WARNING] Check the release notes here: https://github.com/lifecycle-project/analysis-protocols/releases/tag/",
+      max(result$items$version)
+    ))
+    message(paste0("***********************************************************************************"))
+  }
+}
