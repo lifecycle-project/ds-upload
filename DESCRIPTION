@@ -29,7 +29,8 @@ Imports:
   stringr,
   tidyr,
   utils,
-  tibble
+  tibble,
+  fs
 Suggests: 
   knitr, 
   rmarkdown,

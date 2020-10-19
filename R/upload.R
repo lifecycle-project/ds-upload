@@ -9,7 +9,7 @@ ds_upload.globals <- new.env()
 #' @param cohort_id cohort name
 #' @param database_name is the name of the data backend of DataSHIELD, default = opal_data
 #' @param data_input_format format of the database to be reshaped. Can be 'CSV', 'STATA', or 'SAS'
-#' @param upload wether to directly upload the reshaped database to the logged in DataSHIELD server
+#' @param upload directly upload the reshaped database to the logged in DataSHIELD server
 #' @param data_input_path path to the to-be-reshaped data
 #' @param data_output_path path where the reshaped databases will be written
 #' @param action action to be performed, can be 'reshape', 'populate' or 'all'
@@ -27,7 +27,7 @@ ds_upload.globals <- new.env()
 #' }
 #'
 #' @export
-du.upload <- local(function(dict_version = "2_1", data_version = "1_1", dict_kind = "core",
+du.upload <- local(function(dict_version = "2_1", data_version = "1_0", dict_kind = "core",
                             cohort_id, database_name = "opal_data", data_input_format = "CSV", data_input_path,
                             action = "all", upload = TRUE, non_interactive = FALSE) {
   du.check.package.version()
@@ -36,7 +36,7 @@ du.upload <- local(function(dict_version = "2_1", data_version = "1_1", dict_kin
   message("  Start upload data into DataSHIELD backend")
   message("------------------------------------------------------")
 
-  du.populate.dictionary.versions(dict_kind, dict_version)
+  du.populate.dict.versions(dict_kind, dict_version)
 
   du.check.session(upload)
 
@@ -46,35 +46,33 @@ du.upload <- local(function(dict_version = "2_1", data_version = "1_1", dict_kin
   if (cohort_id == "") {
     stop("No cohort identifier is specified! Program is terminated.")
   } else {
-    if (!(cohort_id %in% ds_upload.globals$cohort_ids)) {
+    if (!(cohort_id %in% du.enum.cohorts())) {
       stop(
         "Cohort: [ ", cohort_id, " ] is not know LifeCycle project. Please choose from: [ ",
-        paste(ds_upload.globals$cohort_ids, collapse = ", "), " ]"
+        paste(du.enum.cohorts(), collapse = ", "), " ]"
       )
     }
   }
 
   if (missing(data_version) & !non_interactive) {
     data_version <- readline("- Specify version of cohort data upload (e.g. 1_0): ")
-  } else {
-    data_version <- "1_0"
   }
 
-  if (dict_version != "" && dict_kind == "core" && !(dict_version %in% ds_upload.globals$dictionaries_core)) {
+  if (dict_version != "" && dict_kind == du.enum.dict.kind()$CORE && !(dict_version %in% ds_upload.globals$dictionaries_core)) {
     stop(
       "Version: [ ", dict_version, " ] is not available in published data dictionaries. Possible dictionaries are: ",
       paste(ds_upload.globals$dictionaries_core, collapse = ", ")
     )
-  } else if (dict_version != "" && dict_kind == "outcome" && !(dict_version %in% ds_upload.globals$dictionaries_outcome)) {
+  } else if (dict_version != "" && dict_kind == du.enum.dict.kind()$OUTCOME && !(dict_version %in% ds_upload.globals$dictionaries_outcome)) {
     stop(
       "Version: [ ", dict_version, " ] is not available in published data dictionaries. Possible dictionaries are: ",
       paste(ds_upload.globals$dictionaries_outcome, collapse = ", ")
     )
   } else {
-    if (dict_version == "" && dict_kind == "core") {
-      dict_version <- "2_0"
-    } else if (dict_version == "" && dict_kind == "outcome") {
-      dict_version <- "1_0"
+    if (dict_version == "" && dict_kind == du.enum.dict.kind()$CORE) {
+      dict_version <- "2_1"
+    } else if (dict_version == "" && dict_kind == du.enum.dict.kind()$OUTCOME) {
+      dict_version <- "1_1"
     } else if (dict_version == "" && dict_kind == "") {
       stop("No dictionary version or kind is specified. Program is terminated.")
     }
@@ -87,21 +85,21 @@ du.upload <- local(function(dict_version = "2_1", data_version = "1_1", dict_kin
   tryCatch(
     {
       workdirs <- du.create.temp.workdir()
-      du.dict.download.releases(dict_version, dict_kind)
+      du.dict.download(dict_version = dict_version, dict_kind = dict_kind)
       du.check.action(action)
       
-      if ((action == "all" | action == "populate") && upload == TRUE) {
+      if ((action == du.enum.action()$ALL | action == du.enum.action()$POPULATE) && upload == TRUE) {
         du.populate(dict_version, cohort_id, data_version, database_name, dict_kind)
       }
 
-      if (action == "all" | action == "reshape") {
+      if (action == du.enum.action()$ALL | action == du.enum.action()$RESHAPE) {
         if (missing(data_input_path) & !non_interactive) {
           input_path <- readline("- Specify input path (for your data): ")
         } else if (missing(data_input_path) & non_interactive) {
           stop("No source file specified, Please specify your source file")
         }
         if (missing(data_input_format)) {
-          data_input_format <- "CSV"
+          data_input_format <- du.enum.input.format()$CSV
         }
         du.reshape(
           upload, data_version, data_input_format, dict_version,

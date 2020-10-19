@@ -4,14 +4,14 @@
 \alias{du.dict.import}
 \title{Import the data dictionaries into Opal}
 \usage{
-du.dict.import(project, dictionaries, data_version)
+du.dict.import(project, dictionaries, dict_kind)
 }
 \arguments{
 \item{project}{project in which the data is imported}
 
 \item{dictionaries}{all the dictionaries pulled from the repository}
 
-\item{data_version}{data version to put into the table}
+\item{dict_kind}{dictionary kind}
 }
 \description{
 Import the data dictionaries into Opal

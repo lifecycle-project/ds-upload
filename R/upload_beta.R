@@ -10,7 +10,7 @@ ds_upload.globals <- new.env()
 #' @param data_input_format format of the database to be reshaped. Can be 'CSV', 'STATA', or 'SAS'
 #'
 #' @export
-du.upload.beta <- local(function(upload = TRUE, dict_name = "", action = "all", data_input_path = "", data_input_format = "CSV") {
+du.upload.beta <- local(function(upload = TRUE, dict_name = "", action = "all", data_input_path = "", data_input_format = "CSV", database_name = "opal_data") {
   du.check.package.version()
   du.check.session(upload)
 
@@ -18,19 +18,20 @@ du.upload.beta <- local(function(upload = TRUE, dict_name = "", action = "all", 
     {
       workdirs <- du.create.temp.workdir()
       du.check.action(action)
-      
-      if (action == "all" | action == "populate") {
-        du.populate.beta(dict_name, cohort_id, database_name)
+      du.dict.download(dict_name = dict_name, dict_kind = du.enum.dict.kind()$BETA)
+
+      if (action == du.enum.action()$ALL | action == du.enum.action()$POPULATE) {
+        du.populate.beta(dict_name, database_name)
       }
 
-      if (action == "all" | action == "reshape") {
+      if (action == du.enum.action()$ALL | action == du.enum.action()$RESHAPE) {
         if (missing(data_input_path)) {
           input_path <- readline("- Specify input path (for your data): ")
         } else if (missing(data_input_path)) {
           stop("No source file specified, Please specify your source file")
         }
         if (missing(data_input_format)) {
-          data_input_format <- "CSV"
+          data_input_format <- du.enum.input.format()$CSV
         }
         du.reshape.beta(
           upload, data_version, data_input_format, dict_version,

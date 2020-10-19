@@ -12,14 +12,14 @@ du.populate <- local(function(dict_version, cohort_id, data_version, database_na
   message("######################################################")
   message("  Start importing data dictionaries                   ")
   message("######################################################")
-  
+
   project <- paste("lc_", cohort_id, "_", dict_kind, "_", dict_version, sep = "")
 
   du.project.create(project, database_name)
-  
+
   dictionaries <- du.dict.retrieve.tables(ds_upload.globals$api_dict_released_url, dict_kind, dict_version, data_version)
-  
-  du.dict.import(project, dictionaries, data_version)
+
+  du.dict.import(project, dictionaries, dict_kind)
 
   message("######################################################")
   message("  Importing data dictionaries has finished            ")
@@ -29,16 +29,15 @@ du.populate <- local(function(dict_version, cohort_id, data_version, database_na
 #' Create tables in Opal to import the data for the beta dictionaries
 #'
 #' @param dict_name dictionary path to search on
-#' @param cohort_id cohort id specified in the dictionary
 #' @param database_name name of the database in Opal
 #'
 #' @keywords internal
-du.populate.beta <- local(function(dict_name, cohort_id, database_name) {
-  project <- paste0("lc_", dict_name, "_", cohort_id, "_", "beta")
-  
-  du.dict.project.create(project, database_name)
-  
-  dictionaries <- du.dict.retrieve.tables(ds_upload.globals$api_dict_beta_url, dict_version, "beta", data_version)
-  
-  du.dict.import(project, dictionaries)
+du.populate.beta <- local(function(dict_name, database_name) {
+  project <- paste0("lc_", dict_name, "_", du.enum.dict.kind()$BETA)
+
+  du.project.create(project, database_name)
+
+  dictionaries <- du.dict.retrieve.tables(ds_upload.globals$api_dict_beta_url, dict_name)
+
+  du.dict.import(project, dictionaries, du.enum.dict.kind()$BETA)
 })

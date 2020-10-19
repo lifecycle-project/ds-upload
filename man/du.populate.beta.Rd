@@ -4,12 +4,10 @@
 \alias{du.populate.beta}
 \title{Create tables in Opal to import the data for the beta dictionaries}
 \usage{
-du.populate.beta(dict_name, cohort_id, database_name)
+du.populate.beta(dict_name, database_name)
 }
 \arguments{
 \item{dict_name}{dictionary path to search on}
-
-\item{cohort_id}{cohort id specified in the dictionary}
 
 \item{database_name}{name of the database in Opal}
 }

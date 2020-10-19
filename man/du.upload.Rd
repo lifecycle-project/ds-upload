@@ -6,7 +6,7 @@
 \usage{
 du.upload(
   dict_version = "2_1",
-  data_version = "1_1",
+  data_version = "1_0",
   dict_kind = "core",
   cohort_id,
   database_name = "opal_data",
@@ -34,7 +34,7 @@ du.upload(
 
 \item{action}{action to be performed, can be 'reshape', 'populate' or 'all'}
 
-\item{upload}{wether to directly upload the reshaped database to the logged in DataSHIELD server}
+\item{upload}{directly upload the reshaped database to the logged in DataSHIELD server}
 
 \item{non_interactive}{if set to TRUE you will get no questions}
 

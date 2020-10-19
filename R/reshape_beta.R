@@ -3,15 +3,14 @@
 #' @param upload do you want automatically upload the files to your opal (default = true)
 #' @param data_version version of the data you are going to upload into Opal
 #' @param input_format possible formats are CSV,STATA,SPSS or SAS (default = CSV)
-#' @param dict_version version of the dictionary
-#' @param dict_kind kind of data to reshape (default = core)
+#' @param dict_name version of the dictionary
 #' @param input_path path for import file
 #' @param non_interactive if set to TRUE you will get no questions
 #'
 #' @importFrom readxl read_xlsx
 #'
 #' @keywords internal
-du.reshape <- local(function(upload = TRUE, data_version, input_format, dict_version, dict_kind, input_path, non_interactive) {
+du.reshape.beta <- local(function(upload = TRUE, data_version, input_format, dict_name, input_path, non_interactive) {
   message("######################################################")
   message("  Start reshaping data                                ")
   message("######################################################")
@@ -24,32 +23,29 @@ du.reshape <- local(function(upload = TRUE, data_version, input_format, dict_ver
 
   file_prefix <- format(Sys.time(), "%Y-%m-%d_%H-%M-%S")
 
-  file_name_nonrep <- paste0(file_prefix, "_", data_version, "_", "non_repeated_measures")
-  file_name_monthly <- paste0(file_prefix, "_", data_version, "_", "monthly_repeated_measures")
-  file_name_yearly <- paste0(file_prefix, "_", data_version, "_", "yearly_repeated_measures")
-
-  du.reshape.generate.non.repeated(
-    data, upload,
-    dict_kind, file_name_nonrep
-  )
-  du.reshape.generate.yearly.repeated(
-    data, upload, dict_kind, file_name_yearly
-  )
-  du.reshape.generate.monthly.repeated(
-    data, upload, dict_kind, file_name_monthly
-  )
-
-  if (dict_kind == du.enum.dict.kind()$OUTCOME) {
-    file_name_weekly <- paste0(file_prefix, "_", data_version, "_", "weekly_repeated_measures")
-    du.reshape.generate.weekly.repeated(
-      data, upload, dict_kind, file_name_weekly
+  if (du.enum.table.types()$NONREP %in% dict_name) {
+    du.reshape.generate.non.repeated(
+      data, upload, du.enum.dict.kind()$BETA, dict_name
     )
   }
-
-  if (dict_kind == du.enum.dict.kind()$CORE & dict_version != "1_0") {
-    file_name_trimester <- paste0(file_prefix, "_", data_version, "_", "trimster_repeated_measures")
+  if (du.enum.table.types()$MONTHLY %in% dict_name) {
+    du.reshape.generate.monthly.repeated(
+      data, upload, du.enum.dict.kind()$BETA, dict_name
+    )
+  }
+  if (du.enum.table.types()$YEARLY %in% dict_name) {
+    du.reshape.generate.yearly.repeated(
+      data, upload, du.enum.dict.kind()$BETA, dict_name
+    )
+  }
+  if (du.enum.table.types()$WEEKLY %in% dict_name) {
+    du.reshape.generate.weekly.repeated(
+      data, upload, du.enum.dict.kind()$BETA, dict_name
+    )
+  }
+  if (du.enum.table.types()$TRIMESTER %in% dict_name) {
     du.reshape.generate.trimesterly.repeated(
-      data, upload, dict_kind, file_name_trimester
+      data, upload, du.enum.dict.kind()$BETA, dict_name
     )
   }
 

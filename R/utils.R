@@ -1,19 +1,6 @@
 # Use environment to store some path variables to use in different functions
 ds_upload.globals <- new.env()
 
-cohorts <- c(
-  "dnbc", "gecko", "alspac", "genr", "moba", "sws", "bib", "chop", "elfe",
-  "eden", "ninfea", "hbcs", "inma", "isglobal", "nfbc66", "nfbc86", "raine", "rhea",
-  "abcd"
-)
-
-ds_upload.globals$input_formats <- c("CSV", "STATA", "SPSS", "SAS")
-ds_upload.globals$variable_category <- c(
-  "ALL", "META", "MATERNAL", "PATERNAL", "CHILD",
-  "HOUSEHOLD"
-)
-ds_upload.globals$cohort_ids <- cohorts
-
 ds_upload.globals$api_dict_released_url <- "https://api.github.com/repos/lifecycle-project/ds-dictionaries/contents/"
 ds_upload.globals$api_dict_beta_url <- "https://api.github.com/repos/lifecycle-project/ds-beta-dictionaries/contents/"
 
@@ -111,7 +98,7 @@ du.check.action <- function(action = "all") {
 }
 
 
-#' Create a temporary directory in the current working directory to store all temporary files 
+#' Create a temporary directory in the current working directory to store all temporary files
 #'
 #' @keywords internal
 du.create.temp.workdir <- function() {

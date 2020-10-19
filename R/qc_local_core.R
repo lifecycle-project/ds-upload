@@ -1,3 +1,10 @@
+du.enum.variable.category <- function() {
+  list(
+    "ALL", "META", "MATERNAL", "PATERNAL", "CHILD",
+    "HOUSEHOLD"
+  )
+} 
+
 #' Quality control of core harmonized variables in LifeCycle
 #'
 #'

@@ -9,7 +9,8 @@ du.upload.beta(
   dict_name = "",
   action = "all",
   data_input_path = "",
-  data_input_format = "CSV"
+  data_input_format = "CSV",
+  database_name = "opal_data"
 )
 }
 \arguments{

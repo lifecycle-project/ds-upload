@@ -1,27 +1,35 @@
 #' Download all released data dictionaries
 #'
+#' @param dict_name used for beta dictionaries
 #' @param dict_version dictionary version
 #' @param dict_kind dictionary kind (possible kinds are 'core' or 'outcome')
 #'
-#' @importFrom purrr map pluck
+#' @importFrom purrr pmap
+#' @importFrom dplyr select
 #' @importFrom utils download.file packageVersion
 #'
 #' @keywords internal
-du.dict.download.releases <- local(function(dict_version, dict_kind) {
+du.dict.download <- local(function(dict_name, dict_version, dict_kind) {
   message("######################################################")
   message("  Start download dictionaries")
   message("------------------------------------------------------")
 
   dir.create(dict_kind)
 
-  dictionaries <- du.get.response.as.dataframe(paste0(
-    ds_upload.globals$api_dict_released_url, "dictionaries/",
-    dict_kind, "/", dict_version, "?ref=", dict_version
-  ))
+  if (!missing(dict_name)) {
+    api_url <- paste0(ds_upload.globals$api_dict_beta_url, "dictionaries/", dict_name)
+  } else {
+    api_url <- paste0(
+      ds_upload.globals$api_dict_released_url, "dictionaries/",
+      dict_kind, "/", dict_version, "?ref=", dict_version
+    )
+  }
+
+  dictionaries <- du.get.response.as.dataframe(api_url)
 
   dictionaries %>%
-    pluck(c("name", "download_url")) %>%
-    map(function(name, download_url) {
+    select("name", "download_url") %>%
+    pmap(function(name, download_url) {
       message(paste0("* Download: [ ", name, " ]"))
       download.file(url = download_url, destfile = paste0(dict_kind, "/", name), mode = "wb", method = "libcurl", quiet = TRUE)
     })
@@ -70,31 +78,39 @@ du.project.create <- local(function(project, database_name) {
 #' @param dict_kind dictionary kind can be outcome, core, exposure
 #' @param data_version data version if used to create the tables
 #'
-#' @importFrom purrr map pluck
+#' @importFrom dplyr select
+#' @importFrom purrr pmap
+#' @importFrom fs path_ext_remove
 #'
 #' @return dictionaries list of tables
 #'
 #' @keywords internal
 du.dict.retrieve.tables <- function(api_url, dict_name, dict_version, data_version) {
-  api_url_path <- paste0(
-    api_url, "dictionaries/",
-    dict_name
-  )
+  beta <- TRUE
+  api_url_path <- paste0(api_url, "dictionaries/", dict_name)
 
-  if (!missing(dict_version)) {
-    api_url_path <- paste0(api_url_path, "?ref=", dict_version)
+  if (!missing(dict_version) && !missing(data_version)) {
+    message(" * Check released dictionaries")
+    api_url_path <- paste0(api_url, "dictionaries/", dict_name, "/", dict_version, "?ref=", dict_version)
+    beta <- FALSE
   }
 
   dictionaries <- du.get.response.as.dataframe(api_url_path)
 
+  if (any(names(dictionaries) == "message")) {
+    stop(paste0("There are no dictionaries avialable in the folder: [ ", dict_name, " ]"))
+  }
+
   tables <- dictionaries %>%
-    pluck("name") %>%
-    map(function(name) {
-      canonical_table_name <- strsplit(name, "_")
-      print(canonical_table_name)
-      return(paste0(
-        data_version, "_", canonical_table_name[[1]][3]
-      ))
+    select("name") %>%
+    pmap(function(name) {
+      if (!beta) {
+        canonical_table_name <- strsplit(name, "_")
+        table <- paste0(data_version, "_", canonical_table_name[[1]][3])
+      } else {
+        table <- path_ext_remove(name)
+      }
+      return(data.frame(table = table, file_name = name))
     })
 
   return(tables)
@@ -105,32 +121,33 @@ du.dict.retrieve.tables <- function(api_url, dict_name, dict_version, data_versi
 #'
 #' @param project project in which the data is imported
 #' @param dictionaries all the dictionaries pulled from the repository
-#' @param data_version data version to put into the table
+#' @param dict_kind dictionary kind
 #'
 #' @importFrom readxl read_xlsx
 #' @importFrom purrr map
 #'
 #' @keywords internal
-du.dict.import <- local(function(project, dictionaries, data_version) {
+du.dict.import <- local(function(project, dictionaries, dict_kind) {
   message("------------------------------------------------------")
   message("  Start importing dictionaries")
 
-  dictionaries %>% map(function(table) {
-    json_table <- sprintf("{\"entityType\":\"Participant\",\"name\":\"%s\"}", table)
-    tables <- opal.tables(ds_upload.globals$opal, project)
+  dictionaries %>%
+    map(function(dict) {
+      json_table <- sprintf("{\"entityType\":\"Participant\",\"name\":\"%s\"}", dict$table)
+      tables <- opal.tables(ds_upload.globals$opal, project)
+      if (!(dict$table %in% tables$name)) {
+        message(paste("* Create table: [ ", dict$table, " ]", sep = ""))
+        url <- paste0("datasource/", project, "/tables")
+        opal.post(ds_upload.globals$opal, url,
+          body = json_table,
+          contentType = "application/x-protobuf+json"
+        )
+      } else {
+        message(paste("* Table: [ ", dict$table, " ] already exists", sep = ""))
+      }
 
-    if (!(table %in% tables$name)) {
-      message(paste("* Create table: [ ", table, " ]", sep = ""))
-      opal.post(ds_upload.globals$opal, "datasource", project, "tables",
-        body = json_table,
-        contentType = "application/x-protobuf+json"
-      )
-    } else {
-      message(paste("* Table: [ ", table, " ] already exists", sep = ""))
-    }
-
-    du.match.dict.categories(project, dict_kind, table)
-  })
+      du.match.dict.categories(project, dict_kind, dict$table, dict$file_name)
+    })
 
   message("  All dictionaries are populated correctly")
 })
@@ -139,20 +156,22 @@ du.dict.import <- local(function(project, dictionaries, data_version) {
 #' Import the variables
 #'
 #' @param project project resource in Opal
-#' @param table dictionary to upload to Opal
-#' @param source_file source file for the dictionaries
+#' @param dict_kind kind of dictionary
+#' @param table table name
+#' @param file_name dictionary to upload to Opal
 #'
 #' @importFrom opalr opal.post
 #' @importFrom dplyr select %>% nest_join rename
+#' @importFrom readxl read_xlsx
 #'
 #' @keywords internal
-du.match.dict.categories <- local(function(project, dict_kind, table) {
+du.match.dict.categories <- local(function(project, dict_kind, table, file_name) {
   # workaround to avoid global variable warnings, check:
   # https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
   label <- name <- NULL
 
-  variables <- read_xlsx(path = paste0(getwd(), "/", dict_kind, "/", table, ".xlsx"), sheet = 1)
-  categories <- read_xlsx(path = paste0(getwd(), "/", dict_kind, "/", table, , ".xlsx"), sheet = 2)
+  variables <- read_xlsx(path = paste0(getwd(), "/", dict_kind, "/", file_name), sheet = 1)
+  categories <- read_xlsx(path = paste0(getwd(), "/", dict_kind, "/", file_name), sheet = 2)
 
   variables$entityType <- "Participant"
   variables$isRepeatable <- FALSE
@@ -169,11 +188,14 @@ du.match.dict.categories <- local(function(project, dict_kind, table) {
     categories <- select(categories, -c(label))
     variables <- variables %>% nest_join(categories, by = c(name = "variable"))
   }
-
+  
   message(paste("* Import variables into: [ ", table, " ]", sep = ""))
-  opal.post(ds_upload.globals$opal, "datasource", project, "table", table, "variables",
+  
+  url <- paste0("datasource/", project, "/table/", table, "/variables") 
+  opal.post(ds_upload.globals$opal, url,
     body = toJSON(variables), contentType = "application/x-protobuf+json"
   )
+  
 })
 
 #' Get the possible dictionary versions from Github
@@ -182,15 +204,44 @@ du.match.dict.categories <- local(function(project, dict_kind, table) {
 #' @param dict_version dictionary version (can be 'x_x')
 #'
 #' @keywords internal
-du.populate.dictionary.versions <- local(function(dict_kind, dict_version) {
+du.populate.dict.versions <- local(function(dict_kind, dict_version) {
   versions <- du.get.response.as.dataframe(paste0(
     ds_upload.globals$api_dict_released_url, "dictionaries/",
     dict_kind, "?ref=", dict_version
   ))
 
-  if (dict_kind == "core") {
+  if (dict_kind == du.enum.dict.kind()$CORE) {
     ds_upload.globals$dictionaries_core <- versions$name
   } else {
     ds_upload.globals$dictionaries_outcome <- versions$name
   }
+})
+
+
+#'
+#' Retrieve the right file from download directory
+#'
+#' @param dict_table which table do you want to return
+#' @param dict_kind can be 'core' or 'outcome'
+#' @param retrieve_all_by_kind do you want to retrieve all dictionaries in a certain version
+#'
+#' @importFrom readxl read_xlsx
+#'
+#' @return a raw version of the dictionary
+#'
+#' @keywords internal
+du.retrieve.dictionaries <- local(function(dict_table, dict_kind, retrieve_all_by_kind = FALSE) {
+  dict_file_list <- list.files(paste(getwd(), "/", dict_kind, sep = ""))
+
+  if (retrieve_all_by_kind == FALSE) {
+    dict_file_list <- dict_file_list[grep(dict_table, dict_file_list)]
+  }
+
+  raw_dict <- list()
+  for (file_name in dict_file_list) {
+    raw_dict <- rbind(raw_dict, read_xlsx(path = paste(dict_kind, "/", file_name,
+      sep = ""
+    ), sheet = 1))
+  }
+  return(as.data.frame(raw_dict))
 })

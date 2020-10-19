@@ -5,14 +5,16 @@
 \title{Match the categories with the variables to be import them
 Import the variables}
 \usage{
-du.match.dict.categories(project, dict_kind, table)
+du.match.dict.categories(project, dict_kind, table, file_name)
 }
 \arguments{
 \item{project}{project resource in Opal}
 
-\item{table}{dictionary to upload to Opal}
+\item{dict_kind}{kind of dictionary}
 
-\item{source_file}{source file for the dictionaries}
+\item{table}{table name}
+
+\item{file_name}{dictionary to upload to Opal}
 }
 \description{
 Match the categories with the variables to be import them
