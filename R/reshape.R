@@ -11,7 +11,7 @@
 #' @importFrom readxl read_xlsx
 #'
 #' @keywords internal
-du.reshape <- local(function(upload = TRUE, data_version, input_format, dict_version, dict_kind, input_path, non_interactive) {
+du.reshape <- function(upload = TRUE, data_version, input_format, dict_version, dict_kind, input_path, non_interactive) {
   message("######################################################")
   message("  Start reshaping data                                ")
   message("######################################################")
@@ -47,7 +47,7 @@ du.reshape <- local(function(upload = TRUE, data_version, input_format, dict_ver
   }
 
   if (dict_kind == du.enum.dict.kind()$CORE & dict_version != "1_0") {
-    file_name_trimester <- paste0(file_prefix, "_", data_version, "_", "trimster_repeated_measures")
+    file_name_trimester <- paste0(file_prefix, "_", data_version, "_", "trimester_repeated_measures")
     du.reshape.generate.trimesterly.repeated(
       data, upload, dict_kind, file_name_trimester
     )
@@ -56,4 +56,4 @@ du.reshape <- local(function(upload = TRUE, data_version, input_format, dict_ver
   message("######################################################")
   message("  Reshaping successfully finished                     ")
   message("######################################################")
-})
+}

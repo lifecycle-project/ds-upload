@@ -37,8 +37,6 @@ du.upload(
 \item{upload}{directly upload the reshaped database to the logged in DataSHIELD server}
 
 \item{non_interactive}{if set to TRUE you will get no questions}
-
-\item{data_output_path}{path where the reshaped databases will be written}
 }
 \description{
 Upload dictionaries and data into the DataSHIELD backend.

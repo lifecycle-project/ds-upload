@@ -8,9 +8,10 @@ ds_upload.globals <- new.env()
 #' @param action action to be performed, can be 'reshape', 'populate' or 'all'
 #' @param data_input_path path to the to-be-reshaped data
 #' @param data_input_format format of the database to be reshaped. Can be 'CSV', 'STATA', or 'SAS'
+#' @param database_name is the name of the data backend of DataSHIELD, default = opal_data
 #'
 #' @export
-du.upload.beta <- local(function(upload = TRUE, dict_name = "", action = "all", data_input_path = "", data_input_format = "CSV", database_name = "opal_data") {
+du.upload.beta <- function(upload = TRUE, dict_name = "", action = du.enum.action()$ALL, data_input_path = "", data_input_format = du.enum.input.format()$CSV, database_name = "opal_data") {
   du.check.package.version()
   du.check.session(upload)
 
@@ -34,8 +35,7 @@ du.upload.beta <- local(function(upload = TRUE, dict_name = "", action = "all", 
           data_input_format <- du.enum.input.format()$CSV
         }
         du.reshape.beta(
-          upload, data_version, data_input_format, dict_version,
-          dict_kind, data_input_path
+          upload = upload, input_format = data_input_format, dict_name = dict_name, input_path = data_input_path
         )
       }
     },
@@ -43,4 +43,4 @@ du.upload.beta <- local(function(upload = TRUE, dict_name = "", action = "all", 
       du.clean.temp.workdir(upload, workdirs)
     }
   )
-})
+}

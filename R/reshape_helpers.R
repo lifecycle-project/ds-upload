@@ -9,7 +9,7 @@
 #' @return dataframe with source data
 #'
 #' @keywords internal
-du.read.source.file <- local(function(input_path, input_format) {
+du.read.source.file <- function(input_path, input_format) {
   du_data <- NULL
 
   if (input_format %in% du.enum.input.format()) {
@@ -22,46 +22,38 @@ du.read.source.file <- local(function(input_path, input_format) {
     } else if (input_format == du.enum.input.format()$R) {
       data <- source(input_path)
     } else {
-      data <- read_csv(input_path, col_types = cols(.default = col_double()))
+      data <- read_csv(input_path)
     }
   } else {
-    stop(paste(input_format, " is not a valid input format, Possible input formats are: ",
-      du.enum.input.format(),
-      sep = ","
+    stop(paste0(
+      input_format, " is not a valid input format, Possible input formats are: ",
+      paste(du.enum.input.format(), collapse = ", ")
     ))
   }
 
   return(data)
-})
+}
 
 #' Uploading the generated data files
 #'
-#' @param file_prefix a date to prefix the file with
 #' @param dict_kind can be 'core' or 'outcome'
-#' @param file_version the data release version
 #' @param file_name name of the data file
 #'
-#' @importFrom opalr opal.file_upload
+#' @importFrom opalr opal.file_upload opal.file_mkdir
 #'
 #' @keywords internal
-du.reshape.upload <- local(function(file_prefix, dict_kind, file_version, file_name) {
-  upload_directory <- paste("/home/", ds_upload.globals$username, sep = "")
-  file_ext <- ".csv"
+du.reshape.upload <- function(dict_kind, file_name) {
+  upload_directory <- paste0("/home/", ds_upload.globals$username)
 
-  message(paste("* Upload: ", paste(getwd(), "/", file_prefix, "_", dict_kind, "_",
-    file_version, "_", file_name, file_ext,
-    sep = ""
-  ), sep = ""))
-  opal.file_upload(opal = ds_upload.globals$opal, source = paste(getwd(), "/", file_prefix,
-    "_", dict_kind, "_", file_version, "_", file_name, file_ext,
-    sep = ""
-  ), destination = upload_directory)
+  message(paste0("* Upload: [ ", file_name, ".csv ] to directory [ ", dict_kind, " ]"))
+  dirs <- opal.file_ls(ds_upload.globals$opal, upload_directory)
+  if (!(dict_kind %in% dirs$name)) {
+    opal.file_mkdir(ds_upload.globals$opal, paste0(upload_directory, "/", dict_kind))
+  }
+  opal.file_upload(ds_upload.globals$opal, source = paste0(getwd(), "/", file_name, ".csv"), destination = paste0(upload_directory, "/", dict_kind))
 
-  unlink(paste(getwd(), "/", file_prefix, "_", dict_kind, "_", file_version, "_", file_name,
-    file_ext,
-    sep = ""
-  ))
-})
+  unlink(paste0(getwd(), "/", file_name, ".csv"))
+}
 
 #' Importing generated data files
 #'
@@ -179,7 +171,7 @@ du.match.columns <- local(function(data_columns, dict_columns) {
 #'
 #' @keywords internal
 du.check.variables <- local(function(dict_kind, data_columns, non_interactive) {
-  variables <- du.retrieve.dictionaries("", dict_kind, retrieve_all_by_kind = TRUE)
+  variables <- du.retrieve.dictionaries(dict_kind = dict_kind)
 
   matched_columns <- du.match.columns(data_columns, variables$name)
 
@@ -219,7 +211,7 @@ du.reshape.generate.non.repeated <- local(function(data, upload, dict_kind, file
   message("* Generating: non-repeated measures")
 
   # Retrieve dictionary
-  variables_non_repeated_dict <- du.retrieve.dictionaries("non_rep", dict_kind)
+  variables_non_repeated_dict <- du.retrieve.dictionaries(du.enum.table.types()$NONREP, dict_kind)
 
   # select the non-repeated measures from the full data set
   non_repeated <- c("child_id", variables_non_repeated_dict$name)
@@ -236,13 +228,10 @@ du.reshape.generate.non.repeated <- local(function(data, upload, dict_kind, file
   )
 
   # Write as csv
-  write_csv(non_repeated_measures, paste(getwd(), "/", file_prefix, "_", dict_kind,
-    "_", file_version, "_", file_name, ".csv",
-    sep = ""
-  ), na = "")
+  write_csv(non_repeated_measures, paste0(getwd(), "/", file_name, ".csv"), na = "")
 
   if (upload) {
-    du.reshape.upload(file_prefix, dict_kind, file_version, file_name)
+    du.reshape.upload(dict_kind, file_name)
   }
 })
 
@@ -266,7 +255,7 @@ du.reshape.generate.yearly.repeated <- local(function(data, upload, dict_kind, f
 
   message("* Generating: yearly-repeated measures")
 
-  variables_yearly_repeated_dict <- du.retrieve.dictionaries("yearly_rep", dict_kind)
+  variables_yearly_repeated_dict <- du.retrieve.dictionaries(du.enum.table.types()$YEARLY, dict_kind)
   matched_columns <- du.match.columns(colnames(data), variables_yearly_repeated_dict$name)
   yearly_repeated_measures <- data[matched_columns]
 
@@ -298,7 +287,6 @@ du.reshape.generate.yearly.repeated <- local(function(data, upload, dict_kind, f
     if (!(id %in% zero_year$child_id)) {
       zero_year %<>% summarise(child_id = id, age_years = 0) %>% bind_rows(
         zero_year,
-        .
       )
     }
   }
@@ -318,7 +306,7 @@ du.reshape.generate.yearly.repeated <- local(function(data, upload, dict_kind, f
   write_csv(long_yearly, paste0(getwd(), "/", file_name, ".csv"), na = "")
 
   if (upload) {
-    du.reshape.upload(file_prefix, dict_kind, file_version, file_name)
+    du.reshape.upload(dict_kind, file_name)
   }
 })
 
@@ -342,7 +330,7 @@ du.reshape.generate.monthly.repeated <- local(function(data, upload, dict_kind, 
 
   message("* Generating: monthly-repeated measures")
 
-  variables_monthly_repeated_dict <- du.retrieve.dictionaries("monthly_rep", dict_kind)
+  variables_monthly_repeated_dict <- du.retrieve.dictionaries(du.enum.table.types()$MONTHLY, dict_kind)
   matched_columns <- du.match.columns(colnames(data), variables_monthly_repeated_dict$name)
   monthly_repeated_measures <- data[, matched_columns]
 
@@ -376,7 +364,6 @@ du.reshape.generate.monthly.repeated <- local(function(data, upload, dict_kind, 
     if (!(id %in% zero_monthly$child_id)) {
       zero_monthly %<>% summarise(child_id = id, age_months = 0) %>% bind_rows(
         zero_monthly,
-        .
       )
     }
   }
@@ -421,7 +408,7 @@ du.reshape.generate.weekly.repeated <- local(function(data, upload, dict_kind, f
 
   message("* Generating: weekly-repeated measures")
 
-  variables_weekly_repeated_dict <- du.retrieve.dictionaries("weekly_rep", dict_kind)
+  variables_weekly_repeated_dict <- du.retrieve.dictionaries(du.enum.table.types()$WEEKLY, dict_kind)
   matched_columns <- du.match.columns(colnames(data), variables_weekly_repeated_dict$name)
   weekly_repeated_measures <- data[, matched_columns]
 
@@ -456,7 +443,6 @@ du.reshape.generate.weekly.repeated <- local(function(data, upload, dict_kind, f
     if (!(id %in% zero_weekly$child_id)) {
       zero_weekly %<>% summarise(child_id = id, age_weeks = 0) %>% bind_rows(
         zero_weekly,
-        .
       )
     }
   }
@@ -502,7 +488,7 @@ du.reshape.generate.trimesterly.repeated <- local(function(data, upload, dict_ki
   message("* Generating: trimesterly-repeated measures")
 
   variables_trimesterly_repeated_dict <- du.retrieve.dictionaries(
-    "trimester_rep",
+    du.enum.table.types()$TRIMESTER,
     dict_kind
   )
   matched_columns <- du.match.columns(colnames(data), variables_trimesterly_repeated_dict$name)

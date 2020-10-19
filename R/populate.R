@@ -33,7 +33,7 @@ du.populate <- local(function(dict_version, cohort_id, data_version, database_na
 #'
 #' @keywords internal
 du.populate.beta <- local(function(dict_name, database_name) {
-  project <- paste0("lc_", dict_name, "_", du.enum.dict.kind()$BETA)
+  project <- paste0("lc_", du.enum.dict.kind()$BETA, "_", dict_name)
 
   du.project.create(project, database_name)
 

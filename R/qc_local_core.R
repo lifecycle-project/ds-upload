@@ -3,7 +3,7 @@ du.enum.variable.category <- function() {
     "ALL", "META", "MATERNAL", "PATERNAL", "CHILD",
     "HOUSEHOLD"
   )
-} 
+}
 
 #' Quality control of core harmonized variables in LifeCycle
 #'

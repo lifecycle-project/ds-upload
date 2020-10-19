@@ -11,7 +11,6 @@ ds_upload.globals <- new.env()
 #' @param data_input_format format of the database to be reshaped. Can be 'CSV', 'STATA', or 'SAS'
 #' @param upload directly upload the reshaped database to the logged in DataSHIELD server
 #' @param data_input_path path to the to-be-reshaped data
-#' @param data_output_path path where the reshaped databases will be written
 #' @param action action to be performed, can be 'reshape', 'populate' or 'all'
 #' @param non_interactive if set to TRUE you will get no questions
 #'
@@ -27,9 +26,9 @@ ds_upload.globals <- new.env()
 #' }
 #'
 #' @export
-du.upload <- local(function(dict_version = "2_1", data_version = "1_0", dict_kind = "core",
-                            cohort_id, database_name = "opal_data", data_input_format = "CSV", data_input_path,
-                            action = "all", upload = TRUE, non_interactive = FALSE) {
+du.upload <- function(dict_version = "2_1", data_version = "1_0", dict_kind = du.enum.dict.kind()$CORE,
+                            cohort_id, database_name = "opal_data", data_input_format = du.enum.input.format()$CSV, data_input_path,
+                            action = du.enum.action()$ALL, upload = TRUE, non_interactive = FALSE) {
   du.check.package.version()
 
   message("######################################################")
@@ -87,7 +86,7 @@ du.upload <- local(function(dict_version = "2_1", data_version = "1_0", dict_kin
       workdirs <- du.create.temp.workdir()
       du.dict.download(dict_version = dict_version, dict_kind = dict_kind)
       du.check.action(action)
-      
+
       if ((action == du.enum.action()$ALL | action == du.enum.action()$POPULATE) && upload == TRUE) {
         du.populate(dict_version, cohort_id, data_version, database_name, dict_kind)
       }
@@ -111,4 +110,4 @@ du.upload <- local(function(dict_version = "2_1", data_version = "1_0", dict_kin
       du.clean.temp.workdir(upload, workdirs)
     }
   )
-})
+}

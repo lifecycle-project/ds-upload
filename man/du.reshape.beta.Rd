@@ -22,9 +22,9 @@ du.reshape.beta(
 
 \item{dict_name}{version of the dictionary}
 
-\item{input_path}{path for import file}
-
 \item{non_interactive}{if set to TRUE you will get no questions}
+
+\item{data_input_path}{path for import file}
 }
 \description{
 Reshape Script for R: LifeCycle Harmonized Data

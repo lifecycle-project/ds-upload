@@ -188,14 +188,13 @@ du.match.dict.categories <- local(function(project, dict_kind, table, file_name)
     categories <- select(categories, -c(label))
     variables <- variables %>% nest_join(categories, by = c(name = "variable"))
   }
-  
+
   message(paste("* Import variables into: [ ", table, " ]", sep = ""))
-  
-  url <- paste0("datasource/", project, "/table/", table, "/variables") 
+
+  url <- paste0("datasource/", project, "/table/", table, "/variables")
   opal.post(ds_upload.globals$opal, url,
     body = toJSON(variables), contentType = "application/x-protobuf+json"
   )
-  
 })
 
 #' Get the possible dictionary versions from Github
@@ -221,19 +220,18 @@ du.populate.dict.versions <- local(function(dict_kind, dict_version) {
 #'
 #' Retrieve the right file from download directory
 #'
-#' @param dict_table which table do you want to return
+#' @param dict_table a specific table that you want to check
 #' @param dict_kind can be 'core' or 'outcome'
-#' @param retrieve_all_by_kind do you want to retrieve all dictionaries in a certain version
 #'
 #' @importFrom readxl read_xlsx
 #'
 #' @return a raw version of the dictionary
 #'
 #' @keywords internal
-du.retrieve.dictionaries <- local(function(dict_table, dict_kind, retrieve_all_by_kind = FALSE) {
+du.retrieve.dictionaries <- local(function(dict_table, dict_kind) {
   dict_file_list <- list.files(paste(getwd(), "/", dict_kind, sep = ""))
 
-  if (retrieve_all_by_kind == FALSE) {
+  if (!missing(dict_table)) {
     dict_file_list <- dict_file_list[grep(dict_table, dict_file_list)]
   }
 

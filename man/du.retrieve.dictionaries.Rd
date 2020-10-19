@@ -4,14 +4,12 @@
 \alias{du.retrieve.dictionaries}
 \title{Retrieve the right file from download directory}
 \usage{
-du.retrieve.dictionaries(dict_table, dict_kind, retrieve_all_by_kind = FALSE)
+du.retrieve.dictionaries(dict_table, dict_kind)
 }
 \arguments{
-\item{dict_table}{which table do you want to return}
+\item{dict_table}{a specific table that you want to check}
 
 \item{dict_kind}{can be 'core' or 'outcome'}
-
-\item{retrieve_all_by_kind}{do you want to retrieve all dictionaries in a certain version}
 }
 \value{
 a raw version of the dictionary
