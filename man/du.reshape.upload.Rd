@@ -4,14 +4,10 @@
 \alias{du.reshape.upload}
 \title{Uploading the generated data files}
 \usage{
-du.reshape.upload(file_prefix, dict_kind, file_version, file_name)
+du.reshape.upload(dict_kind, file_name)
 }
 \arguments{
-\item{file_prefix}{a date to prefix the file with}
-
 \item{dict_kind}{can be 'core' or 'outcome'}
-
-\item{file_version}{the data release version}
 
 \item{file_name}{name of the data file}
 }

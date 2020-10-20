@@ -4,12 +4,12 @@
 \alias{du.check.variables}
 \title{Check if there are columns not matching the dictionary.}
 \usage{
-du.check.variables(dict_kind, lc_data_columns, non_interactive)
+du.check.variables(dict_kind, data_columns, non_interactive)
 }
 \arguments{
 \item{dict_kind}{specify which dictionary you want to check}
 
-\item{lc_data_columns}{the coiumns within the data}
+\item{data_columns}{the coiumns within the data}
 
 \item{non_interactive}{if set to TRUE you will get no questions}
 }

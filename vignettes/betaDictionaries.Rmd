@@ -1,0 +1,100 @@
+---
+title: "Beta dictionaries"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Beta dictionaries}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+# Beta dictionaries
+The beta dictionaries are used to be able to initiate creation of dictonaries in the harmonisation process of new variables in a very early stage. As a PI you can manage and create new dictionaries which can be uploaded and tested by involved cohorts in a pilot phase of the project. Dictionaries can be changed and updated at any time and the network will be unaffected. After testing and approving the final beta dictionary the variables will be included in the main dictionaries and released when in the 3 months cycle.
+
+## How it works
+You need to have a few prerequisites
+- [Git](https://git-scm.com/)
+- [RStudio](https://rstudio.com/)
+- [Opal](https://)
+- [Excel](https://www.microsoft.com/nl-nl/microsoft-365/excel)
+
+## Working with ds-beta-dictionaries
+You need to 'clone' the repository on your own workingstation to be able to create new dictionaries. This means you get a copy of the directory on your own system. You can do this by executing the following command:
+
+`git clone https://github.com/lifecycle-project/ds-beta-dictionaries`
+
+Now you have your own copy to work in.
+
+## Create dictionaries
+Within the *dictionaries*-directory of the repository you need to create a dictionary for your study. This will 
+result in a structure like:
+
+- ds-beta-dictionaries
+  - dictionaries
+    - yourstudy
+      - dict_#flavor$
+      - dict_#different flavor$
+
+The flavors can be:
+- non_rep
+- weekly_rep (0-)
+- monthly_rep (0-219)
+- trimester (1-3)
+- yearly_rep (0-17)
+
+Then you need to create a dictionary based upon the variables you want to harmonise. To illustrate how you do this you can use the [example](https://github.com/lifecycle-project/ds-beta-dictionaries/example-dictionary/example-dictionary-non_rep.xlsx) as a reference.
+
+When you finished writing the dictionary you need to commit and push them to the repository on Github. Please check the [git-workflow](https://github.com/lifecycle-project/analysis-tutorials/blob/master/GIT-WORKFLOW.md) document to get the dictionaries exposed.
+
+## Upload dictionaries and data to Opal
+When a first version of a beta dictionary is available, you can upload it to opal with the following code:
+
+
+```r
+du.login(
+  hostname = "https://opal.edge.molgenis.org", 
+  password = "admin")
+#>   Login to: "https://opal.edge.molgenis.org"
+#>   Logged on to: "https://opal.edge.molgenis.org"
+  
+du.upload.beta(
+  dict_name = "example-dictionary", 
+  data_input_path = "/Users/sido/VisualStudioCodeProjects/ds-beta-dictionaries/data/example-dictionary/beta_dict_generated_data.csv")
+#>  * Create temporary workdir
+#> ######################################################
+#>   Start download dictionaries
+#> ------------------------------------------------------
+#> * Download: [ example-dictionary-non_rep.xlsx ]
+#>   Successfully downloaded dictionaries
+#> ------------------------------------------------------
+#>   Start creating project: [ lc_beta_example-dictionary ]
+#> * Project: [ lc_beta_example-dictionary ] already exists
+#> ------------------------------------------------------
+#>   Start importing dictionaries
+#> * Table: [ example-dictionary-non_rep ] already exists
+#> * Matched categories for table: [ example-dictionary-non_rep ]
+#> * Import variables into: [ example-dictionary-non_rep ]
+#>   All dictionaries are populated correctly
+#> ######################################################
+#>   Start reshaping data
+#> ######################################################
+#> * Setup: load data and set output directory
+#> ------------------------------------------------------
+#> Parsed with column specification:
+#> cols(
+#>   child_id = col_double(),
+#>   age = col_double(),
+#>   country = col_character()
+#> )
+#> * Generating: non-repeated measures
+#> * Upload: [ 2020-10-20_21-25-46_example-dictionary-non_rep.csv ] to directory [ beta ]
+#> ######################################################
+#>   Reshaping successfully finished
+#> ######################################################
+#>  * Reinstate default working directory
+#>  * Cleanup temporary directory
+```
+
+After this youj need to manually upload the data just like you would in a released data upload. 
+> Be advised: the data is now placed into directories on the target system, in this case a "beta" directory

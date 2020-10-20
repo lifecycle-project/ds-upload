@@ -6,20 +6,19 @@
 \usage{
 du.upload(
   dict_version = "2_1",
-  data_version = "1_1",
-  dict_kind = "core",
+  data_version = "1_0",
+  dict_kind = du.enum.dict.kind()$CORE,
   cohort_id,
   database_name = "opal_data",
-  data_input_format = "CSV",
+  data_input_format = du.enum.input.format()$CSV,
   data_input_path,
-  data_output_path = getwd(),
-  action = "all",
-  upload_to_opal = TRUE,
+  action = du.enum.action()$ALL,
+  upload = TRUE,
   non_interactive = FALSE
 )
 }
 \arguments{
-\item{dict_version}{version of the data dictionnary to be used}
+\item{dict_version}{version of the data dictionary to be used}
 
 \item{data_version}{version of the dataset to be uploaded}
 
@@ -27,17 +26,15 @@ du.upload(
 
 \item{cohort_id}{cohort name}
 
-\item{database_name}{is the name of the data backend of DataSHIELD backend: 'Opal'}
+\item{database_name}{is the name of the data backend of DataSHIELD, default = opal_data}
 
 \item{data_input_format}{format of the database to be reshaped. Can be 'CSV', 'STATA', or 'SAS'}
 
-\item{data_input_path}{Path to the to-be-reshaped database}
-
-\item{data_output_path}{Path where the reshaped databases will be written}
+\item{data_input_path}{path to the to-be-reshaped data}
 
 \item{action}{action to be performed, can be 'reshape', 'populate' or 'all'}
 
-\item{upload_to_opal}{Wether to directly upload the reshaped database to the logged in opal server}
+\item{upload}{directly upload the reshaped database to the logged in DataSHIELD server}
 
 \item{non_interactive}{if set to TRUE you will get no questions}
 }
@@ -48,7 +45,7 @@ Upload dictionaries and data into the DataSHIELD backend.
 \dontrun{
 du.upload(
   data_input_format = "CSV",
-  data_input_path = "~/path-to-file/all_measurements_v1_2.csv", 
+  data_input_path = "~/path-to-file/all_measurements_v1_2.csv",
   data_version = "1_0",
   dict_version = "2_1",
   cohort_id = "gecko"
