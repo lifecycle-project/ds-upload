@@ -63,7 +63,6 @@ library(dsUpload)
 # login to the DataSHIELD backend
 du.login(
   hostname = 'https://opal.edge.molgenis.org', 
-  username = 'administrator', 
   password = 'admin')
 #>   Login to: "https://opal.edge.molgenis.org"
 #>   Logged on to: "https://opal.edge.molgenis.org"
@@ -131,16 +130,16 @@ du.upload(
 #> See spec(...) for full column specifications.
 #> [WARNING] This is an unmatched column, it will be dropped : [ art ].
 #> * Generating: non-repeated measures
-#> * Upload: [ 2020-10-20_21-24-03_1_0_non_repeated_measures.csv ] to directory [ core ]
+#> * Upload: [ 2020-10-20_23-10-24_1_0_non_repeated_measures.csv ] to directory [ core ]
 #> * Generating: yearly-repeated measures
 #> Aggregate function missing, defaulting to 'length'
-#> * Upload: [ 2020-10-20_21-24-03_1_0_yearly_repeated_measures.csv ] to directory [ core ]
+#> * Upload: [ 2020-10-20_23-10-24_1_0_yearly_repeated_measures.csv ] to directory [ core ]
 #> * Generating: monthly-repeated measures
 #> Aggregate function missing, defaulting to 'length'
-#> * Upload: [ 2020-10-20_21-24-03_1_0_monthly_repeated_measures.csv ] to directory [ core ]
+#> * Upload: [ 2020-10-20_23-10-24_1_0_monthly_repeated_measures.csv ] to directory [ core ]
 #> * Generating: trimesterly-repeated measures
 #> Aggregate function missing, defaulting to 'length'
-#> * Upload: [ 2020-10-20_21-24-03_1_0_trimester_repeated_measures.csv ] to directory [ core ]
+#> * Upload: [ 2020-10-20_23-10-24_1_0_trimester_repeated_measures.csv ] to directory [ core ]
 #> ######################################################
 #>   Reshaping successfully finished
 #> ######################################################
@@ -205,13 +204,13 @@ du.upload(
 #> )
 #> See spec(...) for full column specifications.
 #> * Generating: non-repeated measures
-#> * Upload: [ 2020-10-20_21-24-34_1_0_non_repeated_measures.csv ] to directory [ outcome ]
+#> * Upload: [ 2020-10-20_23-10-56_1_0_non_repeated_measures.csv ] to directory [ outcome ]
 #> * Generating: yearly-repeated measures
-#> * Upload: [ 2020-10-20_21-24-34_1_0_yearly_repeated_measures.csv ] to directory [ outcome ]
+#> * Upload: [ 2020-10-20_23-10-56_1_0_yearly_repeated_measures.csv ] to directory [ outcome ]
 #> * Generating: monthly-repeated measures
-#> * Upload: [ 2020-10-20_21-24-34_1_0_monthly_repeated_measures.csv ] to directory [ outcome ]
+#> * Upload: [ 2020-10-20_23-10-56_1_0_monthly_repeated_measures.csv ] to directory [ outcome ]
 #> * Generating: weekly-repeated measures
-#> * Upload: [ 2020-10-20_21-24-34_1_0_weekly_repeated_measures.csv ] to directory [ outcome ]
+#> * Upload: [ 2020-10-20_23-10-56_1_0_weekly_repeated_measures.csv ] to directory [ outcome ]
 #> ######################################################
 #>   Reshaping successfully finished
 #> ######################################################

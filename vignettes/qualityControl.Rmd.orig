@@ -1,0 +1,25 @@
+---
+title: "Beta dictionaries"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Beta dictionaries}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Quality control
+The quality control measures are based upon the different variable types we have.
+- non repeated
+- yearly repeated
+- monthly repeated
+- trimester repeated
+- weekly repeated
+
+All of the 
