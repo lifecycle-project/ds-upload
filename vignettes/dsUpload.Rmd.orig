@@ -65,7 +65,6 @@ library(dsUpload)
 # login to the DataSHIELD backend
 du.login(
   hostname = 'https://opal.edge.molgenis.org', 
-  username = 'administrator', 
   password = 'admin')
 ```
 

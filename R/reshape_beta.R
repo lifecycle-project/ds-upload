@@ -21,33 +21,39 @@ du.reshape.beta <- function(upload, data_version, input_format, dict_name, input
 
   du.check.variables(du.enum.dict.kind()$BETA, colnames(data), non_interactive)
   
-  data_file_name <- paste0(format(Sys.time(), "%Y-%m-%d_%H-%M-%S"), "_", dict_name)
-
-  if (grepl(du.enum.table.types()$NONREP, dict_name, fixed=TRUE)) {
-    du.reshape.generate.non.repeated(
-      data, upload, du.enum.dict.kind()$BETA, data_file_name
-    )
-  }
-  if (grepl(du.enum.table.types()$MONTHLY, dict_name, fixed=TRUE)) {
-    du.reshape.generate.monthly.repeated(
-      data, upload, du.enum.dict.kind()$BETA, data_file_name
-    )
-  }
-  if (grepl(du.enum.table.types()$YEARLY, dict_name, fixed=TRUE)) {
-    du.reshape.generate.yearly.repeated(
-      data, upload, du.enum.dict.kind()$BETA, data_file_name
-    )
-  }
-  if (grepl(du.enum.table.types()$WEEKLY, dict_name, fixed=TRUE)) {
-    du.reshape.generate.weekly.repeated(
-      data, upload, du.enum.dict.kind()$BETA, data_file_name
-    )
-  }
-  if (grepl(du.enum.table.types()$TRIMESTER, dict_name, fixed=TRUE)) {
-    du.reshape.generate.trimesterly.repeated(
-      data, upload, du.enum.dict.kind()$BETA, data_file_name
-    )
-  }
+  tables <- du.dict.retrieve.tables(ds_upload.globals$api_dict_beta_url, dict_name)
+  
+  tables %>%
+    map(function(table) {
+      
+      data_file_name <- paste0(format(Sys.time(), "%Y-%m-%d_%H-%M-%S"), "_", table$table)
+      
+      if (grepl(du.enum.table.types()$NONREP, table$table)) {
+        du.reshape.generate.non.repeated(
+          data, upload, du.enum.dict.kind()$BETA, data_file_name
+        )
+      }
+      if (grepl(du.enum.table.types()$MONTHLY, table$table)) {
+        du.reshape.generate.monthly.repeated(
+          data, upload, du.enum.dict.kind()$BETA, data_file_name
+        )
+      }
+      if (grepl(du.enum.table.types()$YEARLY, table$table)) {
+        du.reshape.generate.yearly.repeated(
+          data, upload, du.enum.dict.kind()$BETA, data_file_name
+        )
+      }
+      if (grepl(du.enum.table.types()$WEEKLY, table$table)) {
+        du.reshape.generate.weekly.repeated(
+          data, upload, du.enum.dict.kind()$BETA, data_file_name
+        )
+      }
+      if (grepl(du.enum.table.types()$TRIMESTER, table$table)) {
+        du.reshape.generate.trimesterly.repeated(
+          data, upload, du.enum.dict.kind()$BETA, data_file_name
+        )
+      }
+    })
 
   message("######################################################")
   message("  Reshaping successfully finished                     ")

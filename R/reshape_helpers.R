@@ -39,7 +39,7 @@ du.read.source.file <- function(input_path, input_format) {
 #' @param dict_kind can be 'core' or 'outcome'
 #' @param file_name name of the data file
 #'
-#' @importFrom opalr opal.file_upload opal.file_mkdir
+#' @importFrom opalr opal.file_upload opal.file_mkdir opal.file_ls
 #'
 #' @keywords internal
 du.reshape.upload <- function(dict_kind, file_name) {

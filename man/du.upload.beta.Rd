@@ -7,9 +7,9 @@
 du.upload.beta(
   upload = TRUE,
   dict_name = "",
-  action = "all",
+  action = du.enum.action()$ALL,
   data_input_path = "",
-  data_input_format = "CSV",
+  data_input_format = du.enum.input.format()$CSV,
   database_name = "opal_data"
 )
 }

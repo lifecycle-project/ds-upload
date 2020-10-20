@@ -1,8 +1,8 @@
 ---
-title: "DSUpload"
+title: "dsUpload"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{DSUpload}
+  %\VignetteIndexEntry{dsUpload}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -28,7 +28,6 @@ You can install the package by executing the following command:
 
 ```r
 install.packages("dsUpload", repos='https://registry.molgenis.org/repository/R/', dependencies = TRUE)
-#> installing the source package 'dsUpload'
 ```
 
 ## Troubleshooting
@@ -57,8 +56,6 @@ Alternatively, execute these commands in your R-console:
 ```r
 # load the package
 library(dsUpload)
-#> Loading required package: opalr
-#> Loading required package: httr
 ```
 
 
@@ -90,6 +87,7 @@ du.upload(
 #> ######################################################
 #>   Start upload data into DataSHIELD backend
 #> ------------------------------------------------------
+#>  * Create temporary workdir
 #> ######################################################
 #>   Start download dictionaries
 #> ------------------------------------------------------
@@ -103,19 +101,20 @@ du.upload(
 #> ######################################################
 #> ------------------------------------------------------
 #>   Start creating project: [ lc_dnbc_core_2_1 ]
+#>  * Check released dictionaries
 #> ------------------------------------------------------
 #>   Start importing dictionaries
-#> * Create table: [ 2_1_core_1_0_monthly_rep ]
-#> * Import variables into: [ 2_1_core_1_0_monthly_rep ]
-#> * Create table: [ 2_1_core_1_0_non_rep ]
-#> * Matched categories for table: [ 2_1_core_1_0_non_rep ]
-#> * Import variables into: [ 2_1_core_1_0_non_rep ]
-#> * Create table: [ 2_1_core_1_0_trimester_rep ]
-#> * Matched categories for table: [ 2_1_core_1_0_trimester_rep ]
-#> * Import variables into: [ 2_1_core_1_0_trimester_rep ]
-#> * Create table: [ 2_1_core_1_0_yearly_rep ]
-#> * Matched categories for table: [ 2_1_core_1_0_yearly_rep ]
-#> * Import variables into: [ 2_1_core_1_0_yearly_rep ]
+#> * Create table: [ 1_0_monthly ]
+#> * Import variables into: [ 1_0_monthly ]
+#> * Create table: [ 1_0_non ]
+#> * Matched categories for table: [ 1_0_non ]
+#> * Import variables into: [ 1_0_non ]
+#> * Create table: [ 1_0_trimester ]
+#> * Matched categories for table: [ 1_0_trimester ]
+#> * Import variables into: [ 1_0_trimester ]
+#> * Create table: [ 1_0_yearly ]
+#> * Matched categories for table: [ 1_0_yearly ]
+#> * Import variables into: [ 1_0_yearly ]
 #>   All dictionaries are populated correctly
 #> ######################################################
 #>   Importing data dictionaries has finished
@@ -125,18 +124,23 @@ du.upload(
 #> ######################################################
 #> * Setup: load data and set output directory
 #> ------------------------------------------------------
+#> Parsed with column specification:
+#> cols(
+#>   .default = col_double()
+#> )
+#> See spec(...) for full column specifications.
 #> [WARNING] This is an unmatched column, it will be dropped : [ art ].
 #> * Generating: non-repeated measures
-#> * Upload: /Users/sido/RProjects/ds-upload/vignettes/MEXVAUEQIHDRWII/2020-09-17_09-00-21_core_1_0_non_repeated_measures.csv
+#> * Upload: [ 2020-10-20_21-24-03_1_0_non_repeated_measures.csv ] to directory [ core ]
 #> * Generating: yearly-repeated measures
 #> Aggregate function missing, defaulting to 'length'
-#> * Upload: /Users/sido/RProjects/ds-upload/vignettes/MEXVAUEQIHDRWII/2020-09-17_09-00-21_core_1_0_yearly_repeated_measures.csv
+#> * Upload: [ 2020-10-20_21-24-03_1_0_yearly_repeated_measures.csv ] to directory [ core ]
 #> * Generating: monthly-repeated measures
 #> Aggregate function missing, defaulting to 'length'
-#> * Upload: /Users/sido/RProjects/ds-upload/vignettes/MEXVAUEQIHDRWII/2020-09-17_09-00-21_core_1_0_monthly_repeated_measures.csv
+#> * Upload: [ 2020-10-20_21-24-03_1_0_monthly_repeated_measures.csv ] to directory [ core ]
 #> * Generating: trimesterly-repeated measures
 #> Aggregate function missing, defaulting to 'length'
-#> * Upload: /Users/sido/RProjects/ds-upload/vignettes/MEXVAUEQIHDRWII/2020-09-17_09-00-21_core_1_0_trimester_repeated_measures.csv
+#> * Upload: [ 2020-10-20_21-24-03_1_0_trimester_repeated_measures.csv ] to directory [ core ]
 #> ######################################################
 #>   Reshaping successfully finished
 #> ######################################################
@@ -158,6 +162,7 @@ du.upload(
 #> ######################################################
 #>   Start upload data into DataSHIELD backend
 #> ------------------------------------------------------
+#>  * Create temporary workdir
 #> ######################################################
 #>   Start download dictionaries
 #> ------------------------------------------------------
@@ -171,19 +176,20 @@ du.upload(
 #> ######################################################
 #> ------------------------------------------------------
 #>   Start creating project: [ lc_dnbc_outcome_1_1 ]
+#>  * Check released dictionaries
 #> ------------------------------------------------------
 #>   Start importing dictionaries
-#> * Create table: [ 1_1_outcome_1_0_monthly_rep ]
-#> * Matched categories for table: [ 1_1_outcome_1_0_monthly_rep ]
-#> * Import variables into: [ 1_1_outcome_1_0_monthly_rep ]
-#> * Create table: [ 1_1_outcome_1_0_non_rep ]
-#> * Matched categories for table: [ 1_1_outcome_1_0_non_rep ]
-#> * Import variables into: [ 1_1_outcome_1_0_non_rep ]
-#> * Create table: [ 1_1_outcome_1_0_weekly_rep ]
-#> * Import variables into: [ 1_1_outcome_1_0_weekly_rep ]
-#> * Create table: [ 1_1_outcome_1_0_yearly_rep ]
-#> * Matched categories for table: [ 1_1_outcome_1_0_yearly_rep ]
-#> * Import variables into: [ 1_1_outcome_1_0_yearly_rep ]
+#> * Create table: [ 1_0_monthly ]
+#> * Matched categories for table: [ 1_0_monthly ]
+#> * Import variables into: [ 1_0_monthly ]
+#> * Create table: [ 1_0_non ]
+#> * Matched categories for table: [ 1_0_non ]
+#> * Import variables into: [ 1_0_non ]
+#> * Create table: [ 1_0_weekly ]
+#> * Import variables into: [ 1_0_weekly ]
+#> * Create table: [ 1_0_yearly ]
+#> * Matched categories for table: [ 1_0_yearly ]
+#> * Import variables into: [ 1_0_yearly ]
 #>   All dictionaries are populated correctly
 #> ######################################################
 #>   Importing data dictionaries has finished
@@ -193,14 +199,19 @@ du.upload(
 #> ######################################################
 #> * Setup: load data and set output directory
 #> ------------------------------------------------------
+#> Parsed with column specification:
+#> cols(
+#>   .default = col_double()
+#> )
+#> See spec(...) for full column specifications.
 #> * Generating: non-repeated measures
-#> * Upload: /Users/sido/RProjects/ds-upload/vignettes/CVTROQVOPZEFVGZ/2020-09-17_09-00-42_outcome_1_0_non_repeated_measures.csv
+#> * Upload: [ 2020-10-20_21-24-34_1_0_non_repeated_measures.csv ] to directory [ outcome ]
 #> * Generating: yearly-repeated measures
-#> * Upload: /Users/sido/RProjects/ds-upload/vignettes/CVTROQVOPZEFVGZ/2020-09-17_09-00-42_outcome_1_0_yearly_repeated_measures.csv
+#> * Upload: [ 2020-10-20_21-24-34_1_0_yearly_repeated_measures.csv ] to directory [ outcome ]
 #> * Generating: monthly-repeated measures
-#> * Upload: /Users/sido/RProjects/ds-upload/vignettes/CVTROQVOPZEFVGZ/2020-09-17_09-00-42_outcome_1_0_monthly_repeated_measures.csv
+#> * Upload: [ 2020-10-20_21-24-34_1_0_monthly_repeated_measures.csv ] to directory [ outcome ]
 #> * Generating: weekly-repeated measures
-#> * Upload: /Users/sido/RProjects/ds-upload/vignettes/CVTROQVOPZEFVGZ/2020-09-17_09-00-42_outcome_1_0_weekly_repeated_measures.csv
+#> * Upload: [ 2020-10-20_21-24-34_1_0_weekly_repeated_measures.csv ] to directory [ outcome ]
 #> ######################################################
 #>   Reshaping successfully finished
 #> ######################################################

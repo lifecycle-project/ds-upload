@@ -5,7 +5,7 @@
 \title{Reshape Script for R: LifeCycle Harmonized Data}
 \usage{
 du.reshape.beta(
-  upload = TRUE,
+  upload,
   data_version,
   input_format,
   dict_name,

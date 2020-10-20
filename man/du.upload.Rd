@@ -7,12 +7,12 @@
 du.upload(
   dict_version = "2_1",
   data_version = "1_0",
-  dict_kind = "core",
+  dict_kind = du.enum.dict.kind()$CORE,
   cohort_id,
   database_name = "opal_data",
-  data_input_format = "CSV",
+  data_input_format = du.enum.input.format()$CSV,
   data_input_path,
-  action = "all",
+  action = du.enum.action()$ALL,
   upload = TRUE,
   non_interactive = FALSE
 )
