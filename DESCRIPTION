@@ -1,6 +1,6 @@
 Package: dsUpload
 Title: Upload functions for DataSHIELD backends
-Version: 3.0.0
+Version: 3.1.0
 Authors@R: person("Sido", "Haakma", email = "s.haakma@rug.nl",
                   role = c("aut", "cre"))
 Description: We supply standardised ways to upload and import versioned data dictionaries. 
