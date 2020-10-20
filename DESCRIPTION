@@ -12,18 +12,14 @@ BugReports: https://github.com/lifecycle-project/ds-upload/issues
 Depends: 
   R (>= 3.5.0),
   opalr (>= 1.2.0),
-  dsHelper,
   DSI (>= 1.1.0),
   dsBaseClient (>= 6.0.1)
 Imports:
   dplyr,
   maditr,
-  gmodels,
-  ggplot2,
   haven,
   httr,
   jsonlite,
-  plotly,
   purrr,
   readr,
   readxl,
@@ -34,7 +30,8 @@ Imports:
   utils,
   tibble,
   fs,
-  DSOpal
+  DSOpal,
+  dsHelper
 Suggests: 
   knitr, 
   rmarkdown,
