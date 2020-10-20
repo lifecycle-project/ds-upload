@@ -1,6 +1,6 @@
 #' Validates the variables for a certain table
 #'
-#' @importFrom DSI datashield.login newDSLoginBuilder
+#' @importFrom DSI datashield.login newDSLoginBuilder datashield.assign.table
 #' @importFrom opalr opal.projects opal.tables
 #'
 #' @export
@@ -36,14 +36,14 @@ du.quality.control <- function() {
 
 #' Check non repeated measures
 #'
-#' @importFrom dsBaseClient ds.ls
+#' @importFrom dsBaseClient ds.ls ds.colnames
 #' @importFrom dsHelper dh.getStats
 #'
 #' @keywords internal
 qc.non.repeated <- function(connections, table) {
   ds.ls(datasources = connections)
 
-  vars <- ds.colnames(conns = connections, x = table)
+  vars <- ds.colnames(datasources = connections, x = table)
 
   print(vars)
 

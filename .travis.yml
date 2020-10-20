@@ -7,12 +7,16 @@ addons:
    packages:
    - libharfbuzz-dev 
    - libfribidi-dev
+   - libnlopt-dev
 
 cache: 
   apt: true
   packages: true
 
-before_cache: Rscript -e 'remotes::install_cran("pkgdown")'
+before_cache: 
+  - Rscript -e 'remotes::install_cran("pkgdown")'
+  - Rscript -e 'remotes::install_github("datashield/dsBaseClient", ref=v6.0.1)'
+  - Rscript -e 'remotes::install_github("lifecycle-project/ds-helper", ref=master)'
 
 deploy:
   provider: script

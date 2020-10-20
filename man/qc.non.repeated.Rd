@@ -4,7 +4,7 @@
 \alias{qc.non.repeated}
 \title{Check non repeated measures}
 \usage{
-qc.non.repeated(connections)
+qc.non.repeated(connections, table)
 }
 \description{
 Check non repeated measures
