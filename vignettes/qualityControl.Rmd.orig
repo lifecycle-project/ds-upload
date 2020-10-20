@@ -22,4 +22,6 @@ The quality control measures are based upon the different variable types we have
 - trimester repeated
 - weekly repeated
 
-All of the 
+All of the measures are quakity control based upon generic algorithems and with the help of the dsHelper package.
+
+## Usage
