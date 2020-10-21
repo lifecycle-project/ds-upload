@@ -13,7 +13,8 @@ Depends:
   R (>= 3.5.0),
   opalr (>= 1.2.0),
   DSI (>= 1.1.0),
-  dsBaseClient (>= 6.0.1)
+  dsBaseClient (>= 6.0.1),
+  DSOpal (>= 1.0.0),
 Imports:
   dplyr,
   maditr,
@@ -30,7 +31,6 @@ Imports:
   utils,
   tibble,
   fs,
-  DSOpal,
   dsHelper
 Suggests: 
   knitr, 

@@ -22,7 +22,7 @@ du.read.source.file <- function(input_path, input_format) {
     } else if (input_format == du.enum.input.format()$R) {
       data <- source(input_path)
     } else {
-      data <- read_csv(input_path)
+      data <- read_csv(input_path, col_types = cols(.default = col_double()))
     }
   } else {
     stop(paste0(

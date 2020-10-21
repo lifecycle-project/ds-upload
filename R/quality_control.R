@@ -5,6 +5,9 @@
 #'
 #' @export
 du.quality.control <- function() {
+  message("  Starting quality control")
+  message("------------------------------------------------------")
+  
   projects <- opal.projects(ds_upload.globals$opal)
 
   projects$name %>%
@@ -14,6 +17,8 @@ du.quality.control <- function() {
       tables$name %>%
         as.character() %>%
         map(function(table) {
+          message(paste0(" * Starting with: ", project, " - ", table))
+          
           builder <- newDSLoginBuilder()
           builder$append(
             server = "validate", url = ds_upload.globals$hostname,
@@ -22,16 +27,28 @@ du.quality.control <- function() {
           )
           logindata <- builder$build()
 
-          connections <- datashield.login(logins = logindata, assign = FALSE)
+          conns <- datashield.login(logins = logindata, assign = FALSE)
 
           table_identifier <- paste0(project, ".", table)
-          datashield.assign.table(conns = connections, table = table_identifier, symbol = table)
+          datashield.assign.table(conns = conns, table = table_identifier, symbol = "D")
 
           if (grepl(du.enum.table.types()$NONREP, table)) {
-            qc.non.repeated(connections, table)
+            qc.non.repeated(conns, "D")
           }
         })
     })
+  
+  message("######################################################")
+  message("  Quality control has finished                        ")
+  message("######################################################")
+  
+  upload_summaries <- readline(" * Upload results to the catalogue? (yes/no): ")
+  if(upload_summaries == "yes") {
+    message("------------------------------------------------------")
+    message("  Starting to upload the results to the catalogue")
+    message("  Uploaded results succesfully")
+    message("------------------------------------------------------")
+  }
 }
 
 #' Check non repeated measures
@@ -40,17 +57,21 @@ du.quality.control <- function() {
 #' @importFrom dsHelper dh.getStats
 #'
 #' @keywords internal
-qc.non.repeated <- function(connections, table) {
-  ds.ls(datasources = connections)
+qc.non.repeated <- function(conns, table) {
 
-  vars <- ds.colnames(datasources = connections, x = table)
-
-  print(vars)
-
-  table_1 <- dh.getStats(
+  vars <- ds.colnames(datasources = conns, x = table)
+  
+  # make it a plain old vector
+  plain_vars <- as.vector(unlist(vars, use.names=FALSE))
+  
+  # strip unnecessary fields
+  plain_vars <- plain_vars[!plain_vars %in% c("child_id")]
+  
+  result <- dh.getStats(
+    conns = conns,
     df = table,
-    vars = vars
+    vars = plain_vars
   )
-
-  print(table_1)
+  
+  print(result)
 }
