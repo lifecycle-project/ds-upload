@@ -58,7 +58,6 @@ du.quality.control <- function() {
 #'
 #' @keywords internal
 qc.non.repeated <- function(conns, table) {
-
   vars <- ds.colnames(datasources = conns, x = table)
   
   # make it a plain old vector

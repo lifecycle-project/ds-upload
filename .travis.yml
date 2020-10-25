@@ -12,11 +12,11 @@ addons:
 repos:
   CRAN: https://cloud.r-project.org
   molgenis: https://registry.molgenis.org/repository/R/
-  datashield: http://cran.datashield.org/
+  datashield: https://cran.datashield.org/
 
 cache: 
-  apt: true
-  packages: true
+  apt: yes
+  packages: yes
 
 before_cache: 
   - Rscript -e 'remotes::install_cran("pkgdown")'
