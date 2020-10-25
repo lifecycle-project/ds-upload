@@ -14,7 +14,7 @@ ds_upload.globals <- new.env()
 #' @param action action to be performed, can be 'reshape', 'populate' or 'all'
 #' @param non_interactive if set to TRUE you will get no questions
 #'
-#' @example
+#' @examples
 #' \dontrun{
 #' du.upload(
 #'   data_input_format = "CSV",

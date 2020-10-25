@@ -3,7 +3,6 @@
 #' @param methylation_data_input_path path to the methylation data
 #' @param header_data_input_path path to the data that binds it to child_id's
 #' 
-#' @importFrom methylclock DNAmAge
 #' @importFrom readr read_csv
 #' 
 #' @examples
@@ -18,7 +17,7 @@
 du.clocks <- function(methylation_data_input_path, header_data_input_path) {
   methylationData <- read_csv(methylation_data_input_path)
   
-  output <- DNAmAge(methylationData)
+  output <- methylclock::DNAmAge(methylationData)
   
   output$child_id <- seq.int(nrow(output))
   
