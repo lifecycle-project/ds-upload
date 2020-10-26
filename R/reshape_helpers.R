@@ -207,7 +207,7 @@ du.check.variables <- local(function(dict_kind, data_columns, non_interactive) {
 #' @importFrom readxl read_xlsx
 #'
 #' @keywords internal
-du.reshape.generate.non.repeated <- local(function(data, upload, dict_kind, file_name) {
+du.reshape.generate.non.repeated <- function(data, upload, dict_kind, file_name) {
   message("* Generating: non-repeated measures")
 
   # Retrieve dictionary
@@ -233,7 +233,7 @@ du.reshape.generate.non.repeated <- local(function(data, upload, dict_kind, file
   if (upload) {
     du.reshape.upload(dict_kind, file_name)
   }
-})
+}
 
 #' Generate the yearly repeated measures file and write it to your local workspace
 #'
@@ -248,7 +248,7 @@ du.reshape.generate.non.repeated <- local(function(data, upload, dict_kind, file
 #' @importFrom tidyr gather
 #'
 #' @keywords internal
-du.reshape.generate.yearly.repeated <- local(function(data, upload, dict_kind, file_name) {
+du.reshape.generate.yearly.repeated <- function(data, upload, dict_kind, file_name) {
   # workaround to avoid glpobal variable warnings, check:
   # https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
   orig_var <- value <- age_years <- . <- NULL
@@ -308,7 +308,7 @@ du.reshape.generate.yearly.repeated <- local(function(data, upload, dict_kind, f
   if (upload) {
     du.reshape.upload(dict_kind, file_name)
   }
-})
+}
 
 #' Generate the monthly repeated measures file and write it to your local workspace
 #'

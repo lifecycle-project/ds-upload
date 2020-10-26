@@ -38,9 +38,10 @@ du.upload.beta <- function(upload = TRUE, dict_name = "", action = du.enum.actio
           upload = upload, input_format = data_input_format, dict_name = dict_name, input_path = data_input_path
         )
       }
-    },
-    finally = {
-      du.clean.temp.workdir(upload, workdirs)
     }
+    #,
+    #finally = {
+    #  du.clean.temp.workdir(upload, workdirs)
+    #}
   )
 }

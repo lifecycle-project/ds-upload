@@ -162,7 +162,7 @@ du.dict.import <- local(function(project, dictionaries, dict_kind) {
 #'
 #' @importFrom opalr opal.post
 #' @importFrom dplyr select %>% nest_join rename
-#' @importFrom readxl read_xlsx
+#' @importFrom readxl read_xlsx excel_sheets
 #'
 #' @keywords internal
 du.match.dict.categories <- local(function(project, dict_kind, table, file_name) {
@@ -171,8 +171,15 @@ du.match.dict.categories <- local(function(project, dict_kind, table, file_name)
   label <- name <- NULL
 
   variables <- read_xlsx(path = paste0(getwd(), "/", dict_kind, "/", file_name), sheet = 1)
-  categories <- read_xlsx(path = paste0(getwd(), "/", dict_kind, "/", file_name), sheet = 2)
-
+  
+  number_sheets <- length(excel_sheets(paste0(getwd(), "/", dict_kind, "/", file_name)))
+                          
+  if(number_sheets == 2) {
+    categories <- read_xlsx(path = paste0(getwd(), "/", dict_kind, "/", file_name), sheet = 2)  
+  } else {
+    categories <- data.frame()
+  }                          
+  
   variables$entityType <- "Participant"
   variables$isRepeatable <- FALSE
   variables$attributes <- data.frame(namespace = "", name = "label", locale = "", value = variables$label)
@@ -228,8 +235,8 @@ du.populate.dict.versions <- local(function(dict_kind, dict_version) {
 #' @return a raw version of the dictionary
 #'
 #' @keywords internal
-du.retrieve.dictionaries <- local(function(dict_table, dict_kind) {
-  dict_file_list <- list.files(paste(getwd(), "/", dict_kind, sep = ""))
+du.retrieve.dictionaries <- function(dict_table, dict_kind) {
+  dict_file_list <- list.files(paste0(getwd(), "/", dict_kind))
 
   if (!missing(dict_table)) {
     dict_file_list <- dict_file_list[grep(dict_table, dict_file_list)]
@@ -242,4 +249,4 @@ du.retrieve.dictionaries <- local(function(dict_table, dict_kind) {
     ), sheet = 1))
   }
   return(as.data.frame(raw_dict))
-})
+}
