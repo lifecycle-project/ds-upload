@@ -105,6 +105,8 @@ du.upload <- function(dict_version = "2_1", data_version = "1_0", dict_kind = du
           dict_kind, data_input_path, non_interactive
         )
       }
+      
+      du.quality.control(project)
     },
     finally = {
       du.clean.temp.workdir(upload, workdirs)

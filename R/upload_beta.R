@@ -26,7 +26,7 @@ du.upload.beta <- function(upload = TRUE, dict_name = "", action = du.enum.actio
       du.dict.download(dict_name = dict_name, dict_kind = du.enum.dict.kind()$BETA)
 
       if (action == du.enum.action()$ALL | action == du.enum.action()$POPULATE) {
-        du.populate.beta(dict_name, database_name)
+        project <- du.populate.beta(dict_name, database_name)
       }
 
       if (action == du.enum.action()$ALL | action == du.enum.action()$RESHAPE) {
@@ -43,7 +43,7 @@ du.upload.beta <- function(upload = TRUE, dict_name = "", action = du.enum.actio
         )
       }
       
-      du.quality.control()
+      du.quality.control(project)
     },
     finally = {
       du.clean.temp.workdir(upload, workdirs)
