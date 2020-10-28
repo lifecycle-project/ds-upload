@@ -4,7 +4,7 @@
 This is a collections of tools used to upload data into DataSHIELD backends. It aids data mangers in the initial stages of uploading data to DataSHIELD backends.
 
 ## Usage
-Please check [uploading to DataSHIELD guide](https://lifecycle-project.github.io/ds-upload/articles/DSUpload.html)
+Please check [uploading to DataSHIELD guide](https://lifecycle-project.github.io/ds-upload)
 
 For detailled function descrptions, please check: [references](https://lifecycle-project.github.io/ds-upload/reference/index.html) and  above.
 
