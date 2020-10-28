@@ -1,8 +1,8 @@
 ---
-title: "DSUpload"
+title: "dsUpload"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{DSUpload}
+  %\VignetteIndexEntry{dsUpload}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -122,7 +122,7 @@ Alternatively, execute these actions for Opal:
 8. Click on "Next"
 9. Click on "Next"
 10. Determine that you all variables are matched, otherwise you need to fix your source-data first
-**IMPORTANT**: make sure no NEW variables are introduce
+> **IMPORTANT**: make sure no NEW variables are introduce
 11. Click on "Finish"
 12. Check the "Task logs" (on the left side of the screen, in the icon bar)
 
