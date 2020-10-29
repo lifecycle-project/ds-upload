@@ -1,8 +1,35 @@
 Package: dsUpload
 Title: Upload functions for DataSHIELD backends
 Version: 3.1.0
-Authors@R: person("Sido", "Haakma", email = "s.haakma@rug.nl",
-                  role = c("aut", "cre"))
+Authors@R: 
+  c(person(given = "Sido",
+      family = "Haakma",
+      role = c("aut", "cre"),
+      email = "s.haakma@rug.nl",
+      comment = c(ORCID = "0000-0003-1278-9144")),
+    person(given = "Angela",
+      family = "Pinot de Moira",
+      role = c("aut"),
+      email = "anpi@sund.ku.dk")),
+      comment = c(ORCID = "0000-0003-3593-8472")),
+    person(given = "Maxime",
+      family = "Cornet",
+      role = c("aut", "cre"),
+      email = "maxime.cornet@inserm.fr"),
+    person(given = "Sebastian",
+      family = "Rauschert",
+      role = c("aut"),
+      email = "sebastian.rauschert@telethonkids.org.au",
+      comment = c(ORCID = "0000-0001-8359-6898")),
+    person(given = "Luise",
+      family = "Cederkvist",
+      role = c("ctb"),
+      email = "luise.kristiansen@sund.ku.dk",
+      comment = c(ORCID = "0000-0002-7601-9723"))
+    person(given = "Anne",
+      family = "Aurup",
+      role = c("ctb"),
+      email = "anne.aurup@sund.ku.dk"))
 Description: We supply standardised ways to upload and import versioned data dictionaries. 
   To check if your data is correct it contains a number of local functions which can be performed to
   check the quality of your data as well. It also can reshape the data into Opal format when you use other tools
