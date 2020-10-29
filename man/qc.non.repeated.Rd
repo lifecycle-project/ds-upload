@@ -4,7 +4,14 @@
 \alias{qc.non.repeated}
 \title{Check non repeated measures}
 \usage{
-qc.non.repeated(conns, table)
+qc.non.repeated(conns, table, verbose)
+}
+\arguments{
+\item{conns}{connections object for DataSHIELD backend}
+
+\item{table}{to quality check}
+
+\item{verbose}{print verbose output}
 }
 \description{
 Check non repeated measures

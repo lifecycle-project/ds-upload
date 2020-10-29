@@ -18,6 +18,9 @@ du.populate(dict_version, cohort_id, data_version, database_name, dict_kind)
 
 \item{dict_kind}{dictionnary kind, can be 'core' or 'outcome'}
 }
+\value{
+project id to use in central quality control
+}
 \description{
 Populate your Opal instance with the new version of the data dictionary
 Involves only the core variables

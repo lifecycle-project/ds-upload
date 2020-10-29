@@ -11,6 +11,9 @@ du.populate.beta(dict_name, database_name)
 
 \item{database_name}{name of the database in Opal}
 }
+\value{
+project id to use in central quality control
+}
 \description{
 Create tables in Opal to import the data for the beta dictionaries
 }

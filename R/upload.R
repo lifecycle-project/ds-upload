@@ -88,7 +88,7 @@ du.upload <- function(dict_version = "2_1", data_version = "1_0", dict_kind = du
       du.check.action(action)
 
       if ((action == du.enum.action()$ALL | action == du.enum.action()$POPULATE) && upload == TRUE) {
-        du.populate(dict_version, cohort_id, data_version, database_name, dict_kind)
+        project <- du.populate(dict_version, cohort_id, data_version, database_name, dict_kind)
       }
 
       if (action == du.enum.action()$ALL | action == du.enum.action()$RESHAPE) {

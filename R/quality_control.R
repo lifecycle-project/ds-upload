@@ -1,7 +1,7 @@
 #' Validates the variables for a certain table
 #'
-#' @param verbose ouput the functions output when set to TRUE
 #' @param project specify project you want to perform quality control on
+#' @param verbose ouput the functions output when set to TRUE
 #'
 #' @importFrom DSI datashield.login newDSLoginBuilder datashield.assign.table
 #' @importFrom opalr opal.projects opal.tables
@@ -60,6 +60,10 @@ du.quality.control <- function(project, verbose = FALSE) {
 }
 
 #' Check non repeated measures
+#' 
+#' @param conns connections object for DataSHIELD backend
+#' @param table to quality check
+#' @param verbose print verbose output 
 #'
 #' @importFrom dsBaseClient ds.ls ds.colnames
 #' @importFrom dsHelper dh.getStats

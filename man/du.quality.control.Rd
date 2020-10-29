@@ -4,7 +4,12 @@
 \alias{du.quality.control}
 \title{Validates the variables for a certain table}
 \usage{
-du.quality.control()
+du.quality.control(project, verbose = FALSE)
+}
+\arguments{
+\item{project}{specify project you want to perform quality control on}
+
+\item{verbose}{ouput the functions output when set to TRUE}
 }
 \description{
 Validates the variables for a certain table
