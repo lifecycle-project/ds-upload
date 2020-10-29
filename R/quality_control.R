@@ -37,7 +37,6 @@ du.quality.control <- function(project, verbose = FALSE) {
 
           table_identifier <- paste0(project, ".", table)
 
-
           datashield.assign.table(conns = conns, table = table_identifier, symbol = "D")
 
           if (grepl(du.enum.table.types()$NONREP, table)) {
@@ -60,10 +59,10 @@ du.quality.control <- function(project, verbose = FALSE) {
 }
 
 #' Check non repeated measures
-#' 
+#'
 #' @param conns connections object for DataSHIELD backend
 #' @param table to quality check
-#' @param verbose print verbose output 
+#' @param verbose print verbose output
 #'
 #' @importFrom dsBaseClient ds.ls ds.colnames
 #' @importFrom dsHelper dh.getStats
@@ -83,8 +82,11 @@ qc.non.repeated <- function(conns, table, verbose) {
     df = table,
     vars = plain_vars
   )
-
-  if(verbose) {
+  
+  jsonResult = toJSON(result)
+  
+  if (verbose) {
     print(result)
+    print(jsonResult)
   }
 }
