@@ -37,10 +37,15 @@ du.quality.control <- function(project, verbose = FALSE) {
 
           table_identifier <- paste0(project, ".", table)
 
-          datashield.assign.table(conns = conns, table = table_identifier, symbol = "D")
+          qc_dataframe_symbol <- "qc"
+          
+          datashield.assign.table(conns = conns, table = table_identifier, symbol = qc_dataframe_symbol)
 
           if (grepl(du.enum.table.types()$NONREP, table)) {
-            qc.non.repeated(conns, "D", verbose)
+            qc.non.repeated(conns, qc_dataframe_symbol, verbose)
+          }
+          if (grepl(du.enum.table.types()$YEARLY, table)) {
+            qc.yearly.repeated(conns, qc_dataframe_symbol, verbose)
           }
         })
     })
@@ -89,4 +94,85 @@ qc.non.repeated <- function(conns, table, verbose) {
     print(result)
     print(jsonResult)
   }
+}
+
+#' Quality control for yearly repeated measures
+#' 
+#' @param conns connection object for DataSHIELD backends
+#' @param table table to perform quality control on
+#' @param verbose print output to screen
+#'
+#' @importFrom dsBaseClient ds.colnames ds.class ds.meanSdGp ds.table
+#' @importFrom dplyr all_of
+#'
+#' @keywords internal
+qc.yearly.repeated <- function(conns, table, verbose) {
+  type <- pivot_longer <- NULL
+  
+  vars <- ds.colnames(table, datasources = conns)
+  # make it a flat list 
+  plain_vars <- as.vector(unlist(vars, use.names=FALSE))
+  # exclude variables not required:
+  plain_vars <- plain_vars[!plain_vars %in% c("child_id", "age_years")]
+  
+  
+  message("Construct dataframe")
+  types_table = data.frame(cbind("type"))
+  
+  plain_vars %>%
+    map(function(variable) {
+      message(paste0(variable," start"))
+      type_vect = ds.class(paste0(table,'$',variable))
+      types_table = cbind(types_table,unlist(type_vect))
+      message(paste0(variable," end"))  
+    })
+  
+  types_table = types_table[,-1]
+  colnames(types_table) = plain_vars
+  
+  types_table <- types_table %>%
+    pivot_longer(
+      cols = all_of(plain_vars),
+      names_to = "variable",
+      values_to = "type",
+      values_drop_na = TRUE
+    )
+  
+  message("select factor and produce output")
+  factors <- types_table %>%
+    filter(type == 'factor')
+  factors <- list(factors$variable)
+  
+  factors %>%
+    map(function(factor) {
+      message(paste0(factor," start"))
+      table_output = ds.table(paste0(table,'$',factor), paste0(table,'$',"age_years"))
+      if (verbose) {
+      print(table_output)
+      }
+      message(paste0(factor," end"))
+    })
+  
+  message("select integer and produce output")
+  
+  integers <- types_table %>%
+    filter(type == 'integer')
+  integers <- list(integers$variable)
+  
+  integers %>%
+    map(function(integer) {
+      message(paste0(integer," start"))
+      means <- ds.meanSdGp(
+        x = paste0(table,'$',integer),
+        y = paste0(table,"$age_years"),
+        type = "split",
+        do.checks = FALSE,
+        datasources = conns
+      )
+      if (verbose) {
+        print(means)
+      }
+      message(paste0(integer," end"))
+    })
+  
 }
