@@ -29,6 +29,8 @@ The quality control will be executed in the pipeline after uploading and importi
 
 ```{r, execute the quality control separatly}
 library(dsUpload)
+
+# seperate execution for quality control methods
 du.quality.control(project = "lc_gecko_core_2_1", verbose = TRUE)
 ```
 
