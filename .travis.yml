@@ -15,8 +15,8 @@ repos:
   datashield: https://cran.datashield.org/
 
 cache: 
-  apt: yes
-  packages: yes
+  apt: true
+  packages: true
 
 before_cache: 
   - Rscript -e 'remotes::install_cran("pkgdown")'
