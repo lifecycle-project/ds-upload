@@ -103,7 +103,6 @@ du.populate.dict.versions <- local(function(dict_kind, dict_version) {
   }
 })
 
-
 #'
 #' Retrieve the right file from download directory
 #'

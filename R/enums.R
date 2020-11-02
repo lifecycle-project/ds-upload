@@ -30,3 +30,11 @@ du.enum.action <- function() {
 du.enum.dict.kind <- function() {
   list(CORE = "core", OUTCOME = "outcome", BETA = "beta")
 }
+
+du.enum.projects <- function() {
+  list(LIFECYCLE = "lifecycle-project")
+}
+
+du.enum.backends <- function() {
+  list(OPAL = "OpalDriver", ARMADILLO = "ArmadilloDriver")
+}

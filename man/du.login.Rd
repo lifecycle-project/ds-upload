@@ -2,29 +2,29 @@
 % Please edit documentation in R/login.R
 \name{du.login}
 \alias{du.login}
-\title{Login into the opal instance and}
+\title{Login into the DataSHIELD backend}
 \usage{
-du.login(hostname, username = "administrator", password, insecure = FALSE)
+du.login(login_data)
 }
 \arguments{
-\item{hostname}{specify hostname of Opal instance}
-
-\item{username}{specify username (of administrator) of Opal instance (default = administrator)}
-
-\item{password}{specify password (of administrator) of Opal instance}
-
-\item{insecure}{NOT RECOMMENDED, use an insecure SSL connection}
+\item{login_data}{login data frame containing the server url}
 }
 \description{
-Login into the opal instance and
+Login into the DataSHIELD backend
 }
 \examples{
 \dontrun{
-du.login(
-  hostname = "https://cohort-datashield-server.org",
-  username = "local_dm",
-  password = "very-secret-pw"
+
+login_data <- data.frame(
+  server = "https://armadillo.dev.molgenis.org"
+  storage = "https://armadillo-minio.dev.molgenis.org"
+  username = "admin"
+  password = "admin"
+  insecure = FALSE
+  options = NULL
 )
+
+du.login(login_data)
 }
 
 }

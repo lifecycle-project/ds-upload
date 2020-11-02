@@ -14,13 +14,13 @@ du.quality.control <- function(project, verbose = FALSE) {
   if (!missing(project)) {
     projects <- data.frame(name = project)
   } else {
-    projects <- opal.projects(ds_upload.globals$opal)
+    projects <- opal.projects(ds_upload.globals$conn)
   }
 
   projects$name %>%
     as.character() %>%
     map(function(project) {
-      tables <- opal.tables(ds_upload.globals$opal, project)
+      tables <- opal.tables(ds_upload.globals$conn, project)
       tables$name %>%
         as.character() %>%
         map(function(table) {

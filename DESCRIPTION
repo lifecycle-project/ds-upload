@@ -39,6 +39,7 @@ BugReports: https://github.com/lifecycle-project/ds-upload/issues
 Depends: 
   R (>= 3.5.0),
   opalr (>= 1.2.0),
+  MolgenisArmadillo,
   DSI (>= 1.1.0),
   dsBaseClient (>= 6.0.1)
 Imports:
@@ -58,7 +59,8 @@ Imports:
   tibble,
   fs,
   dsHelper,
-  DSOpal (>= 1.0.0)
+  DSOpal,
+  DSMolgenisArmadillo
 Suggests: 
   knitr, 
   rmarkdown,

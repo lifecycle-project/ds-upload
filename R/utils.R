@@ -70,22 +70,6 @@ du.get.response.as.dataframe <- local(function(url) {
   return(fromJSON(json_response))
 })
 
-#' Check if there is an active session with a DataSHIELD backend
-#'
-#' @param upload is a session needed or not
-#'
-#' @keywords internal
-du.check.session <- function(upload = FALSE) {
-  if (upload == TRUE) {
-    if (!exists("hostname", envir = ds_upload.globals)) {
-      stop("You need to login first, please run du.login")
-    }
-    if (!exists("username", envir = ds_upload.globals)) {
-      stop("You need to login first, please run du.login")
-    }
-  }
-}
-
 #' Check is action is the correct value
 #'
 #' @param action action to perform
@@ -96,7 +80,6 @@ du.check.action <- function(action = "all") {
     stop("Unknown action type, please fill in 'populate', 'reshape' or 'all'")
   }
 }
-
 
 #' Create a temporary directory in the current working directory to store all temporary files
 #'

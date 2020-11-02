@@ -17,11 +17,16 @@ du.populate <- local(function(dict_version, cohort_id, data_version, database_na
 
   project <- paste("lc_", cohort_id, "_", dict_kind, "_", dict_version, sep = "")
 
-  du.project.create(project, database_name)
-
   dictionaries <- du.dict.retrieve.tables(ds_upload.globals$api_dict_released_url, dict_kind, dict_version, data_version)
 
-  du.dict.import(project, dictionaries, dict_kind)
+  if(ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
+    du.armadillo.create.project(project)
+  }
+  
+  if(ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
+    du.opal.project.create(project, database_name)
+    du.opal.dict.import(project, dictionaries, dict_kind)
+  }
   
   return(project)
 
@@ -41,11 +46,16 @@ du.populate <- local(function(dict_version, cohort_id, data_version, database_na
 du.populate.beta <- local(function(dict_name, database_name) {
   project <- paste0("lc_", du.enum.dict.kind()$BETA, "_", dict_name)
 
-  du.project.create(project, database_name)
-
   dictionaries <- du.dict.retrieve.tables(ds_upload.globals$api_dict_beta_url, dict_name)
-
-  du.dict.import(project, dictionaries, du.enum.dict.kind()$BETA)
+  
+  if(ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
+    du.armadillo.create.project(project)
+  }
+  
+  if(ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
+    du.opal.project.create(project, database_name)
+    du.opal.dict.import(project, dictionaries, du.enum.dict.kind()$BETA)
+  }
   
   return(project)
 })

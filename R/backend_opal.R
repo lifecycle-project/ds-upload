@@ -1,3 +1,16 @@
+#' Opal login
+#'
+#' @importFrom opalr opal.login
+#'
+#' @keywords internal
+du.opal.login <- function(login_data) {
+  opal <- opal.login(
+    username = login_data$username, password = login_data$password,
+    url = login_data$server, opts = login_data$options
+  )
+  return(opal)
+}
+
 #' Uploading the generated data files to Opal backend
 #'
 #' @param dict_kind can be 'core' or 'outcome'
@@ -6,24 +19,23 @@
 #' @importFrom opalr opal.file_upload opal.file_mkdir opal.file_ls
 #'
 #' @keywords internal
-du.reshape.upload <- function(dict_kind, file_name) {
+du.opal.upload <- function(dict_kind, file_name) {
   upload_directory <- paste0("/home/", ds_upload.globals$username)
-  
+
   message(paste0("* Upload: [ ", file_name, ".csv ] to directory [ ", dict_kind, " ]"))
-  dirs <- opal.file_ls(ds_upload.globals$opal, upload_directory)
+  dirs <- opal.file_ls(ds_upload.globals$conn, upload_directory)
   if (!(dict_kind %in% dirs$name)) {
-    opal.file_mkdir(ds_upload.globals$opal, paste0(upload_directory, "/", dict_kind))
+    opal.file_mkdir(ds_upload.globals$conn, paste0(upload_directory, "/", dict_kind))
   }
-  opal.file_upload(ds_upload.globals$opal, source = paste0(getwd(), "/", file_name, ".csv"), destination = paste0(upload_directory, "/", dict_kind))
-  
+  opal.file_upload(ds_upload.globals$conn, source = paste0(getwd(), "/", file_name, ".csv"), destination = paste0(upload_directory, "/", dict_kind))
+
   unlink(paste0(getwd(), "/", file_name, ".csv"))
 }
 
 #' Importing generated data files
 #'
-#' @param file_prefix a date to prefix the file with
+#' @param project project to import the data into
 #' @param dict_kind can be 'core' or 'outcome'
-#' @param file_version the data release version
 #' @param file_name name of the data file
 #'
 #' @importFrom readr read_csv
@@ -33,47 +45,36 @@ du.reshape.upload <- function(dict_kind, file_name) {
 #' @importFrom jsonlite toJSON
 #'
 #' @keywords internal
-du.reshape.import <- function(file_prefix, dict_kind, file_version, file_name) {
+du.opal.data.import <- function(project, dict_kind, file_name) {
   message("------------------------------------------------------")
   message("  Start importing data files")
-  
+
   file_ext <- ".csv"
-  
-  projects <- opal.projects(ds_upload.globals$opal)
-  project <- readline(paste("Which project you want to upload into: [ ", paste0(projects$name,
-                                                                                collapse = ", "
-  ), " ]: ", sep = ""))
-  
+
+  projects <- opal.projects(ds_upload.globals$conn)
+  project <- readline(paste0("Which project you want to upload into: [ ", paste0(projects$name, collapse = ", "), " ]: "))
+
   if (!(project %in% projects$name)) {
     stop(paste("Invalid projectname: [ ", project, " ]", sep = ""))
   }
-  
-  tables <- opal.tables(ds_upload.globals$opal, project)
-  
+
+  tables <- opal.tables(ds_upload.globals$conn, project)
+
   table_name <- ""
   if (file_name %in% tables$name) {
     table <- tables$name
   }
-  
-  data <- read_csv(paste(getwd(), "/", file_prefix, "_", dict_kind, "_", file_version,
-                         "_", file_name, file_ext,
-                         sep = ""
-  ))
-  
-  message(paste("* Import: ", paste(getwd(), "/", file_prefix, "_", dict_kind, "_",
-                                    file_version, "_", file_name, file_ext,
-                                    sep = ""
-  ), sep = ""))
-  opal.post(ds_upload.globals$opal, "datasource", ds_upload.globals$project, "table",
-            table_name, "variables",
-            body = toJSON(data), contentType = "application/x-protobuf+json"
+
+  data <- read_csv(paste0(getwd(), "/", dict_kind, "/", file_name))
+
+  message(paste0("* Import: ", paste0(getwd(), "/", dict_kind, "/", file_name)))
+  opal.post(ds_upload.globals$conn, "datasource", ds_upload.globals$project, "table",
+    table_name, "variables",
+    body = toJSON(data), contentType = "application/x-protobuf+json"
   )
-  
-  unlink(paste(getwd(), "/", file_prefix, "_", dict_kind, "_", file_version, "_", file_name,
-               file_ext,
-               sep = ""
-  ))
-  
+
+  unlink(paste0(getwd(), "/", dict_kind, "/", file_name))
+
   message("  Succesfully imported the files")
 }
 
@@ -86,25 +87,25 @@ du.reshape.import <- function(file_prefix, dict_kind, file_version, file_name) {
 #' @importFrom opalr opal.post
 #'
 #' @keywords internal
-du.project.create <- function(project, database_name) {
+du.opal.project.create <- function(project, database_name) {
   canonical_project_name <- strsplit(project, "_")
   dict_kind <- canonical_project_name[[1]][3]
   dict_version <- paste0(canonical_project_name[[1]][3], "_rep")
-  
+
   message("------------------------------------------------------")
   message(paste("  Start creating project: [ ", project, " ]", sep = ""))
-  
-  projects <- opal.projects(ds_upload.globals$opal)
-  
+
+  projects <- opal.projects(ds_upload.globals$conn)
+
   if (!(project %in% projects$name)) {
     json <- sprintf(
       "{\"database\":\"%s\",\"description\":\"%s\",\"name\":\"%s\",\"title\":\"%s\"}",
       database_name, paste("Project for [ ", dict_kind, " ] variables and data dictionary version: [ ",
-                           dict_version, " ]",
-                           sep = ""
+        dict_version, " ]",
+        sep = ""
       ), project, project
     )
-    opal.post(ds_upload.globals$opal, "projects", body = json, contentType = "application/x-protobuf+json")
+    opal.post(ds_upload.globals$conn, "projects", body = json, contentType = "application/x-protobuf+json")
   } else {
     message(paste("* Project: [ ", project, " ] already exists", sep = ""))
   }
@@ -120,28 +121,28 @@ du.project.create <- function(project, database_name) {
 #' @importFrom purrr map
 #'
 #' @keywords internal
-du.dict.import <- function(project, dictionaries, dict_kind) {
+du.opal.dict.import <- function(project, dictionaries, dict_kind) {
   message("------------------------------------------------------")
   message("  Start importing dictionaries")
-  
+
   dictionaries %>%
     map(function(dict) {
       json_table <- sprintf("{\"entityType\":\"Participant\",\"name\":\"%s\"}", dict$table)
-      tables <- opal.tables(ds_upload.globals$opal, project)
+      tables <- opal.tables(ds_upload.globals$conn, project)
       if (!(dict$table %in% tables$name)) {
         message(paste("* Create table: [ ", dict$table, " ]", sep = ""))
         url <- paste0("datasource/", project, "/tables")
-        opal.post(ds_upload.globals$opal, url,
-                  body = json_table,
-                  contentType = "application/x-protobuf+json"
+        opal.post(ds_upload.globals$conn, url,
+          body = json_table,
+          contentType = "application/x-protobuf+json"
         )
       } else {
         message(paste("* Table: [ ", dict$table, " ] already exists", sep = ""))
       }
-      
-      du.match.dict.categories(project, dict_kind, dict$table, dict$file_name)
+
+      du.opal.dict.match.categories(project, dict_kind, dict$table, dict$file_name)
     })
-  
+
   message("  All dictionaries are populated correctly")
 }
 
@@ -158,19 +159,19 @@ du.dict.import <- function(project, dictionaries, dict_kind) {
 #' @importFrom readxl read_xlsx
 #'
 #' @keywords internal
-du.match.dict.categories <- function(project, dict_kind, table, file_name) {
+du.opal.dict.match.categories <- function(project, dict_kind, table, file_name) {
   # workaround to avoid global variable warnings, check:
   # https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
   label <- name <- NULL
-  
+
   variables <- read_xlsx(path = paste0(getwd(), "/", dict_kind, "/", file_name), sheet = 1)
   categories <- read_xlsx(path = paste0(getwd(), "/", dict_kind, "/", file_name), sheet = 2)
-  
+
   variables$entityType <- "Participant"
   variables$isRepeatable <- FALSE
   variables$attributes <- data.frame(namespace = "", name = "label", locale = "", value = variables$label)
   variables <- select(variables, -c(label))
-  
+
   if (nrow(categories) > 0) {
     message(paste("* Matched categories for table: [ ", table, " ]", sep = ""))
     categories <- transform(categories, name = as.character(name))
@@ -181,11 +182,11 @@ du.match.dict.categories <- function(project, dict_kind, table, file_name) {
     categories <- select(categories, -c(label))
     variables <- variables %>% nest_join(categories, by = c(name = "variable"))
   }
-  
+
   message(paste("* Import variables into: [ ", table, " ]", sep = ""))
-  
+
   url <- paste0("datasource/", project, "/table/", table, "/variables")
-  opal.post(ds_upload.globals$opal, url,
-            body = toJSON(variables), contentType = "application/x-protobuf+json"
+  opal.post(ds_upload.globals$conn, url,
+    body = toJSON(variables), contentType = "application/x-protobuf+json"
   )
 }

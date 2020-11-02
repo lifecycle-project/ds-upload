@@ -152,7 +152,9 @@ du.reshape.generate.non.repeated <- local(function(data, upload, dict_kind, file
   write_csv(non_repeated_measures, paste0(getwd(), "/", file_name, ".csv"), na = "")
 
   if (upload) {
-    du.reshape.upload(dict_kind, file_name)
+    if(ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
+      du.opal.upload(dict_kind, file_name)
+    }
   }
 })
 
@@ -227,7 +229,9 @@ du.reshape.generate.yearly.repeated <- local(function(data, upload, dict_kind, f
   write_csv(long_yearly, paste0(getwd(), "/", file_name, ".csv"), na = "")
 
   if (upload) {
-    du.reshape.upload(dict_kind, file_name)
+    if(ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
+      du.opal.upload(dict_kind, file_name)
+    }
   }
 })
 
@@ -305,7 +309,9 @@ du.reshape.generate.monthly.repeated <- local(function(data, upload, dict_kind, 
   write_csv(long_monthly, paste0(getwd(), "/", file_name, ".csv"), na = "")
 
   if (upload) {
-    du.reshape.upload(dict_kind, file_name)
+    if(ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
+      du.opal.upload(dict_kind, file_name)
+    }
   }
 })
 
@@ -383,7 +389,9 @@ du.reshape.generate.weekly.repeated <- local(function(data, upload, dict_kind, f
   write_csv(long_weekly, paste0(getwd(), "/", file_name, ".csv"), na = "")
 
   if (upload) {
-    du.reshape.upload(dict_kind, file_name)
+    if(ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
+      du.opal.upload(dict_kind, file_name)
+    }
   }
 })
 
@@ -463,6 +471,8 @@ du.reshape.generate.trimesterly.repeated <- local(function(data, upload, dict_ki
   write_csv(long_trimesterly, paste0(getwd(), "/", file_name, ".csv"), na = "")
 
   if (upload) {
-    du.reshape.upload(dict_kind, file_name)
+    if(ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
+      du.opal.upload(dict_kind, file_name)
+    }
   }
 })

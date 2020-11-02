@@ -29,29 +29,30 @@ du.reshape <- function(upload = TRUE, data_version, input_format, dict_version, 
   file_name_yearly <- paste0(file_prefix, "_", data_version, "_", "yearly_repeated_measures")
 
   du.reshape.generate.non.repeated(
-    data, upload,
-    dict_kind, file_name_nonrep
+    data, dict_kind, file_name_nonrep
   )
   du.reshape.generate.yearly.repeated(
     data, upload, dict_kind, file_name_yearly
   )
   du.reshape.generate.monthly.repeated(
-    data, upload, dict_kind, file_name_monthly
+    data, dict_kind, file_name_monthly
   )
 
   if (dict_kind == du.enum.dict.kind()$OUTCOME) {
     file_name_weekly <- paste0(file_prefix, "_", data_version, "_", "weekly_repeated_measures")
     du.reshape.generate.weekly.repeated(
-      data, upload, dict_kind, file_name_weekly
+      data, dict_kind, file_name_weekly
     )
   }
 
   if (dict_kind == du.enum.dict.kind()$CORE & dict_version != "1_0") {
     file_name_trimester <- paste0(file_prefix, "_", data_version, "_", "trimester_repeated_measures")
     du.reshape.generate.trimesterly.repeated(
-      data, upload, dict_kind, file_name_trimester
+      data, dict_kind, file_name_trimester
     )
   }
+  
+  
 
   message("######################################################")
   message("  Reshaping successfully finished                     ")
