@@ -1,5 +1,5 @@
 Package: dsUpload
-Title: Upload functions for DataSHIELD backends
+Title: Upload Functions for DataSHIELD Backends
 Version: 3.1.0
 Authors@R: 
   c(person(given = "Sido",
@@ -38,16 +38,15 @@ URL: https://github.com/lifecycle-project/ds-upload
 BugReports: https://github.com/lifecycle-project/ds-upload/issues
 Depends: 
   R (>= 3.5.0),
-  opalr (>= 1.2.0)
+  opalr (>= 1.2.0),
+  DSI (>= 1.1.0),
+  dsBaseClient (>= 6.0.1)
 Imports:
   dplyr,
   maditr,
-  gmodels,
-  ggplot2,
   haven,
   httr,
   jsonlite,
-  plotly,
   purrr,
   readr,
   readxl,
@@ -57,7 +56,8 @@ Imports:
   tidyr,
   utils,
   tibble,
-  fs
+  fs,
+  dsHelper
 Suggests: 
   knitr, 
   rmarkdown,

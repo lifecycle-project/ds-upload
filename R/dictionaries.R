@@ -50,7 +50,7 @@ du.dict.download <- local(function(dict_name, dict_version, dict_kind) {
 du.project.create <- local(function(project, database_name) {
   canonical_project_name <- strsplit(project, "_")
   dict_kind <- canonical_project_name[[1]][3]
-  dict_version <- paste0(canonical_project_name[[1]][4], "_", canonical_project_name[[1]][5])
+  dict_version <- paste0(canonical_project_name[[1]][3], "_rep")
 
   message("------------------------------------------------------")
   message(paste("  Start creating project: [ ", project, " ]", sep = ""))
@@ -106,7 +106,7 @@ du.dict.retrieve.tables <- function(api_url, dict_name, dict_version, data_versi
     pmap(function(name) {
       if (!beta) {
         canonical_table_name <- strsplit(name, "_")
-        table <- paste0(data_version, "_", canonical_table_name[[1]][3])
+        table <- paste0(data_version, "_", canonical_table_name[[1]][3], "_rep")
       } else {
         table <- path_ext_remove(name)
       }

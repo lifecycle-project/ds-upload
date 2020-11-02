@@ -19,8 +19,8 @@ Participating cohorts must harmonise data, following the data harmonisation manu
 
 ## Installation
 Reference documentation:
-- [dsUpload](https://lifecycle-project.github.io/lifecycle-project/ds-upload)
-- [Armadillo](http://molgenis.github.io/molgenis/molgenis-r-armadillo)
+- [dsUpload](https://lifecycle-project.github.io/ds-upload)
+- [Armadillo](http://molgenis.github.io/molgenis-r-armadillo)
 - [Opal](http://opaldoc.obiba.org/en/latest/r-user-guide/datashield.html)
 
 You can install the package by executing the following command:
@@ -63,7 +63,6 @@ library(dsUpload)
 # login to the DataSHIELD backend
 du.login(
   hostname = 'https://opal.edge.molgenis.org', 
-  username = 'administrator', 
   password = 'admin')
 #>   Login to: "https://opal.edge.molgenis.org"
 #>   Logged on to: "https://opal.edge.molgenis.org"
@@ -104,46 +103,7 @@ du.upload(
 #>  * Check released dictionaries
 #> ------------------------------------------------------
 #>   Start importing dictionaries
-#> * Create table: [ 1_0_monthly ]
-#> * Import variables into: [ 1_0_monthly ]
-#> * Create table: [ 1_0_non ]
-#> * Matched categories for table: [ 1_0_non ]
-#> * Import variables into: [ 1_0_non ]
-#> * Create table: [ 1_0_trimester ]
-#> * Matched categories for table: [ 1_0_trimester ]
-#> * Import variables into: [ 1_0_trimester ]
-#> * Create table: [ 1_0_yearly ]
-#> * Matched categories for table: [ 1_0_yearly ]
-#> * Import variables into: [ 1_0_yearly ]
-#>   All dictionaries are populated correctly
-#> ######################################################
-#>   Importing data dictionaries has finished
-#> ######################################################
-#> ######################################################
-#>   Start reshaping data
-#> ######################################################
-#> * Setup: load data and set output directory
-#> ------------------------------------------------------
-#> Parsed with column specification:
-#> cols(
-#>   .default = col_double()
-#> )
-#> See spec(...) for full column specifications.
-#> [WARNING] This is an unmatched column, it will be dropped : [ art ].
-#> * Generating: non-repeated measures
-#> * Upload: [ 2020-10-20_21-24-03_1_0_non_repeated_measures.csv ] to directory [ core ]
-#> * Generating: yearly-repeated measures
-#> Aggregate function missing, defaulting to 'length'
-#> * Upload: [ 2020-10-20_21-24-03_1_0_yearly_repeated_measures.csv ] to directory [ core ]
-#> * Generating: monthly-repeated measures
-#> Aggregate function missing, defaulting to 'length'
-#> * Upload: [ 2020-10-20_21-24-03_1_0_monthly_repeated_measures.csv ] to directory [ core ]
-#> * Generating: trimesterly-repeated measures
-#> Aggregate function missing, defaulting to 'length'
-#> * Upload: [ 2020-10-20_21-24-03_1_0_trimester_repeated_measures.csv ] to directory [ core ]
-#> ######################################################
-#>   Reshaping successfully finished
-#> ######################################################
+#> Error: Client error: (404) Not Found; NoSuchDatasource: lc_dnbc_core_2_1
 #>  * Reinstate default working directory
 #>  * Cleanup temporary directory
 ```
@@ -179,42 +139,37 @@ du.upload(
 #>  * Check released dictionaries
 #> ------------------------------------------------------
 #>   Start importing dictionaries
-#> * Create table: [ 1_0_monthly ]
-#> * Matched categories for table: [ 1_0_monthly ]
-#> * Import variables into: [ 1_0_monthly ]
-#> * Create table: [ 1_0_non ]
-#> * Matched categories for table: [ 1_0_non ]
-#> * Import variables into: [ 1_0_non ]
-#> * Create table: [ 1_0_weekly ]
-#> * Import variables into: [ 1_0_weekly ]
-#> * Create table: [ 1_0_yearly ]
-#> * Matched categories for table: [ 1_0_yearly ]
-#> * Import variables into: [ 1_0_yearly ]
+#> * Create table: [ 1_0_monthly_rep ]
+#> * Matched categories for table: [ 1_0_monthly_rep ]
+#> * Import variables into: [ 1_0_monthly_rep ]
+#> * Create table: [ 1_0_non_rep ]
+#> * Matched categories for table: [ 1_0_non_rep ]
+#> * Import variables into: [ 1_0_non_rep ]
+#> * Create table: [ 1_0_weekly_rep ]
+#> * Import variables into: [ 1_0_weekly_rep ]
+#> * Create table: [ 1_0_yearly_rep ]
+#> * Matched categories for table: [ 1_0_yearly_rep ]
+#> * Import variables into: [ 1_0_yearly_rep ]
 #>   All dictionaries are populated correctly
-#> ######################################################
-#>   Importing data dictionaries has finished
-#> ######################################################
 #> ######################################################
 #>   Start reshaping data
 #> ######################################################
 #> * Setup: load data and set output directory
 #> ------------------------------------------------------
-#> Parsed with column specification:
-#> cols(
-#>   .default = col_double()
-#> )
-#> See spec(...) for full column specifications.
 #> * Generating: non-repeated measures
-#> * Upload: [ 2020-10-20_21-24-34_1_0_non_repeated_measures.csv ] to directory [ outcome ]
+#> * Upload: [ 2020-11-02_11-45-42_1_0_non_repeated_measures.csv ] to directory [ outcome ]
 #> * Generating: yearly-repeated measures
-#> * Upload: [ 2020-10-20_21-24-34_1_0_yearly_repeated_measures.csv ] to directory [ outcome ]
+#> * Upload: [ 2020-11-02_11-45-42_1_0_yearly_repeated_measures.csv ] to directory [ outcome ]
 #> * Generating: monthly-repeated measures
-#> * Upload: [ 2020-10-20_21-24-34_1_0_monthly_repeated_measures.csv ] to directory [ outcome ]
+#> * Upload: [ 2020-11-02_11-45-42_1_0_monthly_repeated_measures.csv ] to directory [ outcome ]
 #> * Generating: weekly-repeated measures
-#> * Upload: [ 2020-10-20_21-24-34_1_0_weekly_repeated_measures.csv ] to directory [ outcome ]
+#> * Upload: [ 2020-11-02_11-45-42_1_0_weekly_repeated_measures.csv ] to directory [ outcome ]
 #> ######################################################
 #>   Reshaping successfully finished
 #> ######################################################
+#>   Starting quality control
+#> ------------------------------------------------------
+#> Error in du.quality.control(project): object 'project' not found
 #>  * Reinstate default working directory
 #>  * Cleanup temporary directory
 ```

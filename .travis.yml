@@ -7,12 +7,19 @@ addons:
    packages:
    - libharfbuzz-dev 
    - libfribidi-dev
+   - libnlopt-dev
+
+repos:
+  CRAN: https://cloud.r-project.org
+  molgenis: https://registry.molgenis.org/repository/R/
+  datashield: https://cran.datashield.org/
 
 cache: 
   apt: true
   packages: true
 
-before_cache: Rscript -e 'remotes::install_cran("pkgdown")'
+before_cache: 
+  - Rscript -e 'remotes::install_cran("pkgdown")'
 
 deploy:
   provider: script

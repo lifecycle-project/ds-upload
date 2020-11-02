@@ -27,8 +27,8 @@ ds_upload.globals <- new.env()
 #'
 #' @export
 du.upload <- function(dict_version = "2_1", data_version = "1_0", dict_kind = du.enum.dict.kind()$CORE,
-                            cohort_id, database_name = "opal_data", data_input_format = du.enum.input.format()$CSV, data_input_path,
-                            action = du.enum.action()$ALL, upload = TRUE, non_interactive = FALSE) {
+                      cohort_id, database_name = "opal_data", data_input_format = du.enum.input.format()$CSV, data_input_path,
+                      action = du.enum.action()$ALL, upload = TRUE, non_interactive = FALSE) {
   du.check.package.version()
 
   message("######################################################")
@@ -88,7 +88,7 @@ du.upload <- function(dict_version = "2_1", data_version = "1_0", dict_kind = du
       du.check.action(action)
 
       if ((action == du.enum.action()$ALL | action == du.enum.action()$POPULATE) && upload == TRUE) {
-        du.populate(dict_version, cohort_id, data_version, database_name, dict_kind)
+        project <- du.populate(dict_version, cohort_id, data_version, database_name, dict_kind)
       }
 
       if (action == du.enum.action()$ALL | action == du.enum.action()$RESHAPE) {
@@ -105,6 +105,8 @@ du.upload <- function(dict_version = "2_1", data_version = "1_0", dict_kind = du
           dict_kind, data_input_path, non_interactive
         )
       }
+      
+      du.quality.control(project)
     },
     finally = {
       du.clean.temp.workdir(upload, workdirs)

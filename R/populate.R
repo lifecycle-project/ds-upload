@@ -6,6 +6,8 @@
 #' @param data_version version of the data (specific to the cohort)
 #' @param database_name the database name specified in your Opal instance (defaults to 'opal_data')
 #' @param dict_kind dictionnary kind, can be 'core' or 'outcome'
+#' 
+#' @return project id to use in central quality control
 #'
 #' @keywords internal
 du.populate <- local(function(dict_version, cohort_id, data_version, database_name, dict_kind) {
@@ -20,6 +22,8 @@ du.populate <- local(function(dict_version, cohort_id, data_version, database_na
   dictionaries <- du.dict.retrieve.tables(ds_upload.globals$api_dict_released_url, dict_kind, dict_version, data_version)
 
   du.dict.import(project, dictionaries, dict_kind)
+  
+  return(project)
 
   message("######################################################")
   message("  Importing data dictionaries has finished            ")
@@ -30,7 +34,9 @@ du.populate <- local(function(dict_version, cohort_id, data_version, database_na
 #'
 #' @param dict_name dictionary path to search on
 #' @param database_name name of the database in Opal
-#'
+#' 
+#' @return project id to use in central quality control
+#' 
 #' @keywords internal
 du.populate.beta <- local(function(dict_name, database_name) {
   project <- paste0("lc_", du.enum.dict.kind()$BETA, "_", dict_name)
@@ -40,4 +46,6 @@ du.populate.beta <- local(function(dict_name, database_name) {
   dictionaries <- du.dict.retrieve.tables(ds_upload.globals$api_dict_beta_url, dict_name)
 
   du.dict.import(project, dictionaries, du.enum.dict.kind()$BETA)
+  
+  return(project)
 })

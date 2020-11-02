@@ -1,0 +1,43 @@
+---
+title: "Quality control"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Quality control}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+# Quality control
+The quality control measures are based upon the different variable types we have.
+- non repeated
+- yearly repeated
+- monthly repeated
+- trimester repeated
+- weekly repeated
+
+All of the measures are quakity control based upon generic algorithems and with the help of the [dsHelper](https://github.com/lifecycle-project/ds-helper) package.
+
+## Usage
+The quality control will be executed in the pipeline after uploading and importing the data into a DataSHIELD backend. However you can execute the flow seperatly as well.
+
+
+```r
+library(dsUpload)
+du.quality.control(project = "lc_gecko_core_2_1", verbose = TRUE)
+#>   Starting quality control
+#> ------------------------------------------------------
+#> Error: Client error: (404) Not Found; NoSuchDatasource: lc_gecko_core_2_1
+```
+
+### Table types
+For each of the types there is a different analysis that needs to be done. So in non-repeated we distinguish conituous and categorical values and for repeated measures we will investigate for each of the types which is the most valueble approach to get the ouput as useful as possible.
+
+### Exposing results
+When you run the upload it will not show the summary statistics and it will push them directly into the catalogue. 
+
+## Output
+When the results are pushed to the catalogue we first create a PDF to distribute the output to the cohorts. You can display the through specifying `verbose = TRUE`.
+
+

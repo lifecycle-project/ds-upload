@@ -24,8 +24,8 @@ Participating cohorts must harmonise data, following the data harmonisation manu
 
 ## Installation
 Reference documentation:
-- [dsUpload](https://lifecycle-project.github.io/lifecycle-project/ds-upload)
-- [Armadillo](http://molgenis.github.io/molgenis/molgenis-r-armadillo)
+- [dsUpload](https://lifecycle-project.github.io/ds-upload)
+- [Armadillo](http://molgenis.github.io/molgenis-r-armadillo)
 - [Opal](http://opaldoc.obiba.org/en/latest/r-user-guide/datashield.html)
 
 You can install the package by executing the following command:
