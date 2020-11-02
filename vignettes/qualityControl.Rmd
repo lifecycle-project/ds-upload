@@ -7,12 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
+
 
 # Quality control
 The quality control measures are based upon the different variable types we have.
@@ -27,9 +22,13 @@ All of the measures are quakity control based upon generic algorithems and with 
 ## Usage
 The quality control will be executed in the pipeline after uploading and importing the data into a DataSHIELD backend. However you can execute the flow seperatly as well.
 
-```{r, execute the quality control separatly}
+
+```r
 library(dsUpload)
 du.quality.control(project = "lc_gecko_core_2_1", verbose = TRUE)
+#>   Starting quality control
+#> ------------------------------------------------------
+#> Error in curl::curl_fetch_memory(url, handle = handle): Protocol "" not supported or disabled in libcurl
 ```
 
 ### Table types

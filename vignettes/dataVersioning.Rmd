@@ -15,9 +15,9 @@ We suggest to version the data that you upload. This is needed because of the re
 
 ### Semantic versioning
 The implementation of semantic versioning is as follows.
-- **Major**
+- Major
   - Amending your dataset with new data
-- **Minor**
+- Minor
   - Correcting errors in the data (e.g. categories which are encoded the wrong way)
 
 ## Table scheme 

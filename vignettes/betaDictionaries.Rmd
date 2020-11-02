@@ -43,7 +43,7 @@ The flavors can be:
 - trimester (1-3)
 - yearly_rep (0-17)
 
-Then you need to create a dictionary based upon the variables you want to harmonise. To illustrate how you do this you can use the [example](https://github.com/lifecycle-project/ds-beta-dictionaries/example-dictionary/example-dictionary-non_rep.xlsx) as a reference.
+Then you need to create a dictionary based upon the variables you want to harmonise. To illustrate how you do this you can use the [example](https://github.com/lifecycle-project/ds-beta-dictionaries/blob/master/dictionaries/example-dictionary/example-dictionary-non_rep.xlsx?raw=true) as a reference.
 
 When you finished writing the dictionary you need to commit and push them to the repository on Github. Please check the [git-workflow](https://github.com/lifecycle-project/analysis-tutorials/blob/master/GIT-WORKFLOW.md) document to get the dictionaries exposed.
 
@@ -56,11 +56,14 @@ du.login(
   hostname = "https://opal.edge.molgenis.org", 
   password = "admin")
 #>   Login to: "https://opal.edge.molgenis.org"
-#>   Logged on to: "https://opal.edge.molgenis.org"
+#> Error: Client error: (404) Not Found
   
 du.upload.beta(
   dict_name = "example-dictionary", 
   data_input_path = "/Users/sido/VisualStudioCodeProjects/ds-beta-dictionaries/data/example-dictionary/beta_dict_generated_data.csv")
+#> ######################################################
+#>   Start upload BETA data into DataSHIELD backend
+#> ------------------------------------------------------
 #>  * Create temporary workdir
 #> ######################################################
 #>   Start download dictionaries
@@ -69,29 +72,7 @@ du.upload.beta(
 #>   Successfully downloaded dictionaries
 #> ------------------------------------------------------
 #>   Start creating project: [ lc_beta_example-dictionary ]
-#> * Project: [ lc_beta_example-dictionary ] already exists
-#> ------------------------------------------------------
-#>   Start importing dictionaries
-#> * Table: [ example-dictionary-non_rep ] already exists
-#> * Matched categories for table: [ example-dictionary-non_rep ]
-#> * Import variables into: [ example-dictionary-non_rep ]
-#>   All dictionaries are populated correctly
-#> ######################################################
-#>   Start reshaping data
-#> ######################################################
-#> * Setup: load data and set output directory
-#> ------------------------------------------------------
-#> Parsed with column specification:
-#> cols(
-#>   child_id = col_double(),
-#>   age = col_double(),
-#>   country = col_character()
-#> )
-#> * Generating: non-repeated measures
-#> * Upload: [ 2020-10-20_21-25-46_example-dictionary-non_rep.csv ] to directory [ beta ]
-#> ######################################################
-#>   Reshaping successfully finished
-#> ######################################################
+#> Error in curl::curl_fetch_memory(url, handle = handle): Protocol "" not supported or disabled in libcurl
 #>  * Reinstate default working directory
 #>  * Cleanup temporary directory
 ```
