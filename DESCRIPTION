@@ -57,7 +57,8 @@ Imports:
   utils,
   tibble,
   fs,
-  dsHelper
+  dsHelper,
+  DSOpal (>= 1.0.0)
 Suggests: 
   knitr, 
   rmarkdown,
