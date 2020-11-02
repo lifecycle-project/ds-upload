@@ -56,12 +56,6 @@ Alternatively, execute these commands in your R-console:
 ```r
 # load the package
 library(dsUpload)
-#> Loading required package: opalr
-#> Loading required package: httr
-#> Loading required package: DSI
-#> Loading required package: progress
-#> Loading required package: R6
-#> Loading required package: dsBaseClient
 ```
 
 
@@ -71,7 +65,7 @@ du.login(
   hostname = 'https://opal.edge.molgenis.org', 
   password = 'admin')
 #>   Login to: "https://opal.edge.molgenis.org"
-#> Error: Client error: (404) Not Found
+#>   Logged on to: "https://opal.edge.molgenis.org"
 ```
 
 
@@ -106,7 +100,10 @@ du.upload(
 #> ######################################################
 #> ------------------------------------------------------
 #>   Start creating project: [ lc_dnbc_core_2_1 ]
-#> Error in curl::curl_fetch_memory(url, handle = handle): Protocol "" not supported or disabled in libcurl
+#>  * Check released dictionaries
+#> ------------------------------------------------------
+#>   Start importing dictionaries
+#> Error: Client error: (404) Not Found; NoSuchDatasource: lc_dnbc_core_2_1
 #>  * Reinstate default working directory
 #>  * Cleanup temporary directory
 ```
@@ -139,7 +136,40 @@ du.upload(
 #> ######################################################
 #> ------------------------------------------------------
 #>   Start creating project: [ lc_dnbc_outcome_1_1 ]
-#> Error in curl::curl_fetch_memory(url, handle = handle): Protocol "" not supported or disabled in libcurl
+#>  * Check released dictionaries
+#> ------------------------------------------------------
+#>   Start importing dictionaries
+#> * Create table: [ 1_0_monthly_rep ]
+#> * Matched categories for table: [ 1_0_monthly_rep ]
+#> * Import variables into: [ 1_0_monthly_rep ]
+#> * Create table: [ 1_0_non_rep ]
+#> * Matched categories for table: [ 1_0_non_rep ]
+#> * Import variables into: [ 1_0_non_rep ]
+#> * Create table: [ 1_0_weekly_rep ]
+#> * Import variables into: [ 1_0_weekly_rep ]
+#> * Create table: [ 1_0_yearly_rep ]
+#> * Matched categories for table: [ 1_0_yearly_rep ]
+#> * Import variables into: [ 1_0_yearly_rep ]
+#>   All dictionaries are populated correctly
+#> ######################################################
+#>   Start reshaping data
+#> ######################################################
+#> * Setup: load data and set output directory
+#> ------------------------------------------------------
+#> * Generating: non-repeated measures
+#> * Upload: [ 2020-11-02_11-45-42_1_0_non_repeated_measures.csv ] to directory [ outcome ]
+#> * Generating: yearly-repeated measures
+#> * Upload: [ 2020-11-02_11-45-42_1_0_yearly_repeated_measures.csv ] to directory [ outcome ]
+#> * Generating: monthly-repeated measures
+#> * Upload: [ 2020-11-02_11-45-42_1_0_monthly_repeated_measures.csv ] to directory [ outcome ]
+#> * Generating: weekly-repeated measures
+#> * Upload: [ 2020-11-02_11-45-42_1_0_weekly_repeated_measures.csv ] to directory [ outcome ]
+#> ######################################################
+#>   Reshaping successfully finished
+#> ######################################################
+#>   Starting quality control
+#> ------------------------------------------------------
+#> Error in du.quality.control(project): object 'project' not found
 #>  * Reinstate default working directory
 #>  * Cleanup temporary directory
 ```

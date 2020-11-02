@@ -56,7 +56,7 @@ du.login(
   hostname = "https://opal.edge.molgenis.org", 
   password = "admin")
 #>   Login to: "https://opal.edge.molgenis.org"
-#> Error: Client error: (404) Not Found
+#>   Logged on to: "https://opal.edge.molgenis.org"
   
 du.upload.beta(
   dict_name = "example-dictionary", 
@@ -72,7 +72,28 @@ du.upload.beta(
 #>   Successfully downloaded dictionaries
 #> ------------------------------------------------------
 #>   Start creating project: [ lc_beta_example-dictionary ]
-#> Error in curl::curl_fetch_memory(url, handle = handle): Protocol "" not supported or disabled in libcurl
+#> ------------------------------------------------------
+#>   Start importing dictionaries
+#> * Create table: [ example-dictionary-non_rep ]
+#> * Matched categories for table: [ example-dictionary-non_rep ]
+#> * Import variables into: [ example-dictionary-non_rep ]
+#>   All dictionaries are populated correctly
+#> ######################################################
+#>   Start reshaping data
+#> ######################################################
+#> * Setup: load data and set output directory
+#> ------------------------------------------------------
+#> * Generating: non-repeated measures
+#> * Upload: [ 2020-11-02_12-05-26_example-dictionary-non_rep.csv ] to directory [ beta ]
+#> ######################################################
+#>   Reshaping successfully finished
+#> ######################################################
+#>   Starting quality control
+#> ------------------------------------------------------
+#>  * Starting with: lc_beta_example-dictionary - example-dictionary-non_rep
+#> 
+#> Logging into the collaborating servers
+#> Error in getClass(Class, where = topenv(parent.frame())): "OpalDriver" is not a defined class
 #>  * Reinstate default working directory
 #>  * Cleanup temporary directory
 ```
