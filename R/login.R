@@ -1,4 +1,6 @@
-#' Login into the opal instance and
+ds_upload.globals <- new.env()
+
+#' Login into the DataSHIELD backend
 #'
 #' @param hostname specify hostname of Opal instance
 #' @param username specify username (of administrator) of Opal instance (default = administrator)

@@ -5,6 +5,7 @@
 #'
 #' @importFrom DSI datashield.login newDSLoginBuilder datashield.assign.table
 #' @importFrom opalr opal.projects opal.tables
+#' @importFrom dplyr %>%
 #'
 #' @export
 du.quality.control <- function(project, verbose = FALSE) {
@@ -71,6 +72,7 @@ du.quality.control <- function(project, verbose = FALSE) {
 #'
 #' @importFrom dsBaseClient ds.ls ds.colnames
 #' @importFrom dsHelper dh.getStats
+#' 
 #'
 #' @keywords internal
 qc.non.repeated <- function(conns, table, verbose) {
@@ -103,7 +105,8 @@ qc.non.repeated <- function(conns, table, verbose) {
 #' @param verbose print output to screen
 #'
 #' @importFrom dsBaseClient ds.colnames ds.class ds.meanSdGp ds.table
-#' @importFrom dplyr all_of
+#' @importFrom dplyr all_of %>%
+#' @importFrom purrr map
 #'
 #' @keywords internal
 qc.yearly.repeated <- function(conns, table, verbose) {
