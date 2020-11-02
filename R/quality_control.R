@@ -11,26 +11,34 @@
 du.quality.control <- function(project, verbose = FALSE) {
   message("  Starting quality control")
   message("------------------------------------------------------")
+  du.check.session(TRUE)
+  if(ds_upload.globals$login_data$driver == du.enum.backends()$OPAL){
+    projects <- opal.projects(ds_upload.globals$conn)  
+  } else {
+    
+  }
+  
   if (!missing(project)) {
     projects <- data.frame(name = project)
-  } else {
-    projects <- opal.projects(ds_upload.globals$conn)
   }
-
+  
   projects$name %>%
     as.character() %>%
     map(function(project) {
-      tables <- opal.tables(ds_upload.globals$conn, project)
+      if(ds_upload.globals$login_data$driver == du.enum.backends()$OPAL){
+        tables <- opal.tables(ds_upload.globals$conn, project)  
+      } else {
+        
+      }
       tables$name %>%
         as.character() %>%
         map(function(table) {
           message(paste0(" * Starting with: ", project, " - ", table))
-
           builder <- newDSLoginBuilder()
           builder$append(
-            server = "validate", url = ds_upload.globals$hostname,
-            user = ds_upload.globals$username, password = ds_upload.globals$password,
-            driver = "OpalDriver"
+            server = "validate", url = as.character(ds_upload.globals$login_data$server),
+            user = as.character(ds_upload.globals$login_data$username), password = as.character(ds_upload.globals$login_data$password),
+            driver = as.character(ds_upload.globals$login_data$driver)
           )
           logindata <- builder$build()
 

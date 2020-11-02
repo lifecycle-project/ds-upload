@@ -6,6 +6,9 @@
 \usage{
 du.opal.login(login_data)
 }
+\arguments{
+\item{login_data}{data frame containing login credentials}
+}
 \description{
 Opal login
 }

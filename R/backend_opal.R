@@ -1,12 +1,15 @@
 #' Opal login
 #'
+#' @param login_data data frame containing login credentials
+#'
 #' @importFrom opalr opal.login
 #'
 #' @keywords internal
 du.opal.login <- function(login_data) {
+  
   opal <- opal.login(
-    username = login_data$username, password = login_data$password,
-    url = login_data$server, opts = login_data$options
+    username = as.character(login_data$username), password = as.character(login_data$password),
+    url = as.character(login_data$server), opts = login_data$options
   )
   return(opal)
 }

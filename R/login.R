@@ -24,22 +24,26 @@ ds_upload.globals <- new.env()
 #' @export
 du.login <- function(login_data) {
   
-  if (missing(login_data$server)) {
-    hostname <- readline("- Hostname (e.g. https://my-own-datashield-backend.org): ")
-    username <- readline("- Username: ")
+  if (is.null(login_data$server)) {
+    login_data$server <- readline("- Hostname (e.g. https://my-own-datashield-backend.org): ")
+    login_data$username <- readline("- Username: ")
   }
-  if (missing(password)) {
+  if (is.null(login_data$usernam)) {
+    login_data$username <- "administrator"
+  }
+  
+  if (is.null(login_data$password)) {
     password <- readline("- Password: ")
   }
 
   du.check.package.version()
   
-  if(missing(login_data$driver)) {
+  if(is.null(login_data$driver)) {
     login_data$driver = du.enum.backends()$OPAL
   }
   
-  if (login_data$insecure) {
-    login_data$options <- list(ssl.verifyhost = FALSE, ssl.verifypeer = FALSE)
+  if (is.null(login_data$insecure)) {
+    login_data$options <- data.frame(ssl.verifyhost = FALSE, ssl.verifypeer = FALSE)
   }
   
   message(paste("  Login to: \"", login_data$server, "\"", sep = ""))
