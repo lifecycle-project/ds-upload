@@ -1,5 +1,5 @@
 Package: dsUpload
-Title: Upload functions for DataSHIELD backends
+Title: Upload Functions for DataSHIELD Backends
 Version: 3.1.0
 Authors@R: person("Sido", "Haakma", email = "s.haakma@rug.nl",
                   role = c("aut", "cre"))
