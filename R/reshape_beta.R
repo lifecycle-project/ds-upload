@@ -57,6 +57,8 @@ du.reshape.beta <- function(upload, project, data_version, input_format, dict_na
           data, du.enum.dict.kind()$BETA
         )
       }
+      
+      write_csv(data, paste0(getwd(), "/", file_name, ".csv"), na = "")  
 
       if (upload) {
         if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
@@ -65,8 +67,6 @@ du.reshape.beta <- function(upload, project, data_version, input_format, dict_na
         if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
           du.armadillo.import(project = project, data = data, dict_kind = du.enum.dict.kind()$BETA, table_type = table_type)
         }
-      } else {
-        write_csv(data, paste0(getwd(), "/", file_name, ".csv"), na = "")
       }
     })
 
