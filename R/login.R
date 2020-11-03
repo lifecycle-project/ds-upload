@@ -8,52 +8,56 @@ ds_upload.globals <- new.env()
 #'
 #' @examples
 #' \dontrun{
-#' 
+#'
 #' login_data <- data.frame(
-#'   server = "https://armadillo.dev.molgenis.org"
-#'   storage = "https://armadillo-minio.dev.molgenis.org"
-#'   username = "admin"
-#'   password = "admin"
-#'   insecure = FALSE
+#'   server = "https://armadillo.dev.molgenis.org",
+#'   storage = "https://armadillo-minio.dev.molgenis.org",
+#'   username = "admin",
+#'   password = "admin",
+#'   insecure = FALSE,
 #'   options = NULL
 #' )
-#' 
+#'
 #' du.login(login_data)
 #' }
-#'
 #' @export
 du.login <- function(login_data) {
-  
   if (is.null(login_data$server)) {
     login_data$server <- readline("- Hostname (e.g. https://my-own-datashield-backend.org): ")
     login_data$username <- readline("- Username: ")
   }
-  if (is.null(login_data$usernam)) {
+
+  if (is.null(login_data$driver)) {
+    backend <- readline("- Which server are you logging on to (opal/armadillo): ")
+    if (backend == "opal") {
+      login_data$driver <- du.enum.backends()$OPAL
+    } else {
+      login_data$driver <- du.enum.backends()$ARMADILLO
+    }
+  }
+
+  if (is.null(login_data$username) & login_data$driver == du.enum.backends()$OPAL) {
     login_data$username <- "administrator"
   }
-  
-  if (is.null(login_data$password)) {
+
+  if (is.null(login_data$password) & !is.null(login_data$username)) {
     password <- readline("- Password: ")
   }
 
   du.check.package.version()
-  
-  if(is.null(login_data$driver)) {
-    login_data$driver = du.enum.backends()$OPAL
-  }
-  
+
   if (is.null(login_data$insecure)) {
     login_data$options <- data.frame(ssl.verifyhost = FALSE, ssl.verifypeer = FALSE)
   }
-  
+
   message(paste("  Login to: \"", login_data$server, "\"", sep = ""))
-  if(login_data$driver == du.enum.backends()$OPAL) {
+  if (login_data$driver == du.enum.backends()$OPAL) {
     ds_upload.globals$conn <- du.opal.login(login_data)
   } else {
     du.armadillo.login(login_data)
   }
   message(paste("  Logged on to: \"", login_data$server, "\"", sep = ""))
-  
+
   ds_upload.globals$login_data <- login_data
 }
 

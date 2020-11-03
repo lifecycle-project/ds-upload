@@ -6,7 +6,7 @@
 #'
 #' @keywords internal
 du.opal.login <- function(login_data) {
-  
+  requireNamespace("opalr")
   opal <- opal.login(
     username = as.character(login_data$username), password = as.character(login_data$password),
     url = as.character(login_data$server), opts = login_data$options
@@ -23,7 +23,8 @@ du.opal.login <- function(login_data) {
 #'
 #' @keywords internal
 du.opal.upload <- function(dict_kind, file_name) {
-  upload_directory <- paste0("/home/", ds_upload.globals$username)
+  requireNamespace("opalr")
+  upload_directory <- paste0("/home/", ds_upload.globals$login_data$username)
 
   message(paste0("* Upload: [ ", file_name, ".csv ] to directory [ ", dict_kind, " ]"))
   dirs <- opal.file_ls(ds_upload.globals$conn, upload_directory)
@@ -49,6 +50,7 @@ du.opal.upload <- function(dict_kind, file_name) {
 #'
 #' @keywords internal
 du.opal.data.import <- function(project, dict_kind, file_name) {
+  requireNamespace("opalr")
   message("------------------------------------------------------")
   message("  Start importing data files")
 
@@ -91,6 +93,7 @@ du.opal.data.import <- function(project, dict_kind, file_name) {
 #'
 #' @keywords internal
 du.opal.project.create <- function(project, database_name) {
+  requireNamespace("opalr")
   canonical_project_name <- strsplit(project, "_")
   dict_kind <- canonical_project_name[[1]][3]
   dict_version <- paste0(canonical_project_name[[1]][3], "_rep")
@@ -125,6 +128,7 @@ du.opal.project.create <- function(project, database_name) {
 #'
 #' @keywords internal
 du.opal.dict.import <- function(project, dictionaries, dict_kind) {
+  requireNamespace("opalr")
   message("------------------------------------------------------")
   message("  Start importing dictionaries")
 
@@ -163,6 +167,7 @@ du.opal.dict.import <- function(project, dictionaries, dict_kind) {
 #'
 #' @keywords internal
 du.opal.dict.match.categories <- function(project, dict_kind, table, file_name) {
+  requireNamespace("opalr")
   # workaround to avoid global variable warnings, check:
   # https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
   label <- name <- NULL

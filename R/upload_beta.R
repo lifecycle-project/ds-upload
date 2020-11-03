@@ -14,7 +14,7 @@ ds_upload.globals <- new.env()
 du.upload.beta <- function(upload = TRUE, dict_name = "", action = du.enum.action()$ALL, data_input_path = "", data_input_format = du.enum.input.format()$CSV, database_name = "opal_data") {
   du.check.package.version()
   du.check.session(upload)
-  
+
   message("######################################################")
   message("  Start upload BETA data into DataSHIELD backend")
   message("------------------------------------------------------")
@@ -39,11 +39,11 @@ du.upload.beta <- function(upload = TRUE, dict_name = "", action = du.enum.actio
           data_input_format <- du.enum.input.format()$CSV
         }
         du.reshape.beta(
-          upload = upload, input_format = data_input_format, dict_name = dict_name, input_path = data_input_path
+          upload = upload, project, input_format = data_input_format, dict_name = dict_name, input_path = data_input_path
         )
       }
-      
-      du.quality.control(project)
+
+      # du.quality.control(project)
     },
     finally = {
       du.clean.temp.workdir(upload, workdirs)

@@ -6,6 +6,7 @@
 \usage{
 du.reshape(
   upload = TRUE,
+  project,
   data_version,
   input_format,
   dict_version,

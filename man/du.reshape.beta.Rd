@@ -6,6 +6,7 @@
 \usage{
 du.reshape.beta(
   upload,
+  project,
   data_version,
   input_format,
   dict_name,

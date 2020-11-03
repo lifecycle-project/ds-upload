@@ -4,12 +4,25 @@
 \alias{du.armadillo.import}
 \title{Import data into Armadillo}
 \usage{
-du.armadillo.import(project, file_name)
+du.armadillo.import(
+  project,
+  data,
+  dict_version,
+  dict_kind,
+  data_version,
+  table_type
+)
 }
 \arguments{
-\item{project}{the target project where the data should be put into}
+\item{data}{data to upload}
 
-\item{file_name}{file_name that should be loaded to generate the data from}
+\item{dict_version}{data model version}
+
+\item{dict_kind}{data model version}
+
+\item{data_version}{data model version}
+
+\item{table_type}{data model version}
 }
 \description{
 Import data into Armadillo

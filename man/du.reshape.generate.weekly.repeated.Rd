@@ -4,16 +4,12 @@
 \alias{du.reshape.generate.weekly.repeated}
 \title{Generate the weekly repeated measures file and write it to your local workspace}
 \usage{
-du.reshape.generate.weekly.repeated(data, upload, dict_kind, file_name)
+du.reshape.generate.weekly.repeated(data, dict_kind)
 }
 \arguments{
 \item{data}{data frame with all the data based upon the CSV file}
 
-\item{upload}{do you want to upload to Opal (default = true)}
-
 \item{dict_kind}{can be 'core' or 'outcome'}
-
-\item{file_name}{non-repeated, monthly-repeated, weekly, trimesterly or yearly-repeated}
 }
 \description{
 Generate the weekly repeated measures file and write it to your local workspace

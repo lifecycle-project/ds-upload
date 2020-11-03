@@ -16,15 +16,14 @@ Login into the DataSHIELD backend
 \dontrun{
 
 login_data <- data.frame(
-  server = "https://armadillo.dev.molgenis.org"
-  storage = "https://armadillo-minio.dev.molgenis.org"
-  username = "admin"
-  password = "admin"
-  insecure = FALSE
+  server = "https://armadillo.dev.molgenis.org",
+  storage = "https://armadillo-minio.dev.molgenis.org",
+  username = "admin",
+  password = "admin",
+  insecure = FALSE,
   options = NULL
 )
 
 du.login(login_data)
 }
-
 }

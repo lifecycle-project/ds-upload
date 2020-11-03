@@ -11,9 +11,9 @@
 #' @importFrom readxl read_xlsx
 #'
 #' @keywords internal
-du.reshape <- function(upload = TRUE, data_version, input_format, dict_version, dict_kind, input_path, non_interactive) {
+du.reshape <- function(upload = TRUE, project, data_version, input_format, dict_version, dict_kind, input_path, non_interactive) {
   message("######################################################")
-  message("  Start reshaping data                                ")
+  message("  Start converting and uploading data                 ")
   message("######################################################")
   message("* Setup: load data and set output directory")
   message("------------------------------------------------------")
@@ -28,33 +28,62 @@ du.reshape <- function(upload = TRUE, data_version, input_format, dict_version, 
   file_name_monthly <- paste0(file_prefix, "_", data_version, "_", "monthly_repeated_measures")
   file_name_yearly <- paste0(file_prefix, "_", data_version, "_", "yearly_repeated_measures")
 
-  du.reshape.generate.non.repeated(
-    data, dict_kind, file_name_nonrep
+  nonrep_data <- du.reshape.generate.non.repeated(
+    data, dict_kind
   )
-  du.reshape.generate.yearly.repeated(
-    data, upload, dict_kind, file_name_yearly
+  yearlyrep_data <- du.reshape.generate.yearly.repeated(
+    data, dict_kind
   )
-  du.reshape.generate.monthly.repeated(
-    data, dict_kind, file_name_monthly
+  monthlyrep_data <- du.reshape.generate.monthly.repeated(
+    data, dict_kind
   )
 
   if (dict_kind == du.enum.dict.kind()$OUTCOME) {
     file_name_weekly <- paste0(file_prefix, "_", data_version, "_", "weekly_repeated_measures")
-    du.reshape.generate.weekly.repeated(
-      data, dict_kind, file_name_weekly
+    weeklyrep_data <- du.reshape.generate.weekly.repeated(
+      data, dict_kind
     )
+    if (upload) {
+      if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
+        du.armadillo.import(project, weeklyrep_data, dict_version, dict_kind, data_version, du.enum.table.types()$WEEKLY)
+      }
+    } else {
+      write_csv(weeklyrep_data, paste0(getwd(), "/", file_name_weekly, ".csv"), na = "")
+    }
   }
 
   if (dict_kind == du.enum.dict.kind()$CORE & dict_version != "1_0") {
     file_name_trimester <- paste0(file_prefix, "_", data_version, "_", "trimester_repeated_measures")
-    du.reshape.generate.trimesterly.repeated(
-      data, dict_kind, file_name_trimester
+    trimester_data <- du.reshape.generate.trimesterly.repeated(
+      data, dict_kind
     )
+    if (upload) {
+      if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
+        du.armadillo.import(project, trimester_data, dict_version, dict_kind, data_version, du.enum.table.types()$TRIMESTER)
+      }
+    } else {
+      write_csv(trimester_data, paste0(getwd(), "/", file_name_trimester, ".csv"), na = "")
+    }
   }
-  
-  
+
+  if (upload) {
+    if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
+      du.opal.upload(dict_kind, file_name_nonrep)
+      du.opal.upload(dict_kind, file_name_yearly)
+      du.opal.upload(dict_kind, file_name_monthly)
+    }
+    if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
+      du.armadillo.import(project = project, data = nonrep_data, dict_version, dict_kind, data_version, du.enum.table.types()$NONREP)
+      du.armadillo.import(project = project, data = yearlyrep_data, dict_version, dict_kind, data_version, du.enum.table.types()$YEARLY)
+      du.armadillo.import(project = project, data = monthlyrep_data, dict_version, dict_kind, data_version, du.enum.table.types()$MONTHLY)
+    }
+  } else {
+    write_csv(nonrep_data, paste0(getwd(), "/", file_name_nonrep, ".csv"), na = "")
+    write_csv(yearlyrep_data, paste0(getwd(), "/", file_name_yearly, ".csv"), na = "")
+    write_csv(monthlyrep_data, paste0(getwd(), "/", file_name_monthly, ".csv"), na = "")
+  }
 
   message("######################################################")
-  message("  Reshaping successfully finished                     ")
+  message("  Converting and import successfully finished         ")
   message("######################################################")
 }

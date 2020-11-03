@@ -101,12 +101,12 @@ du.upload <- function(dict_version = "2_1", data_version = "1_0", dict_kind = du
           data_input_format <- du.enum.input.format()$CSV
         }
         du.reshape(
-          upload, data_version, data_input_format, dict_version,
+          upload, project, data_version, data_input_format, dict_version,
           dict_kind, data_input_path, non_interactive
         )
       }
-      
-      du.quality.control(project)
+
+      # du.quality.control(project)
     },
     finally = {
       du.clean.temp.workdir(upload, workdirs)
