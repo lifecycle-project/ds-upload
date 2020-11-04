@@ -51,7 +51,7 @@ du.reshape <- function(upload = TRUE, project, data_version, input_format, dict_
       if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
         du.armadillo.import(project, weeklyrep_data, dict_version, dict_kind, data_version, du.enum.table.types()$WEEKLY)
       }
-      if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
+      if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL & !is.null(weeklyrep_data)) {
         du.opal.upload(dict_kind, file_name_weekly)
       }
     }
@@ -67,7 +67,7 @@ du.reshape <- function(upload = TRUE, project, data_version, input_format, dict_
       if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
         du.armadillo.import(project, trimester_data, dict_version, dict_kind, data_version, du.enum.table.types()$TRIMESTER)
       }
-      if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
+      if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL & !is.null(trimester_data)) {
         du.opal.upload(dict_kind, file_name_trimester)
       }
     }
@@ -75,9 +75,9 @@ du.reshape <- function(upload = TRUE, project, data_version, input_format, dict_
 
   if (upload) {
     if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
-      du.opal.upload(dict_kind, file_name_nonrep)
-      du.opal.upload(dict_kind, file_name_yearly)
-      du.opal.upload(dict_kind, file_name_monthly)
+      if(!is.null(nonrep_data)) du.opal.upload(dict_kind, file_name_nonrep)
+      if(!is.null(yearlyrep_data)) du.opal.upload(dict_kind, file_name_yearly)
+      if(!is.null(monthlyrep_data)) du.opal.upload(dict_kind, file_name_monthly)
     }
     if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
       du.armadillo.import(project = project, data = nonrep_data, dict_version, dict_kind, data_version, du.enum.table.types()$NONREP)
