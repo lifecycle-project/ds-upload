@@ -15,11 +15,22 @@ du.quality.control <- function(project, folder, verbose = FALSE) {
   message("  Starting quality control")
   message("------------------------------------------------------")
   du.check.session(TRUE)
+  builder <- newDSLoginBuilder()
+  builder$append(
+    server = "validate", url = as.character(ds_upload.globals$login_data$server),
+    driver = as.character(ds_upload.globals$login_data$driver)
+  )
   if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
     requireNamespace("DSOpal")
     projects <- opal.projects(ds_upload.globals$conn)
+    builder$append(
+      user = as.character(ds_upload.globals$login_data$username),
+      password = as.character(ds_upload.globals$login_data$password)
+    )
   } else {
+    requireNamespace("DSMolgenisArmadillo")
     projects <- armadillo.list_projects()
+    builder$append(token = as.character(ds_upload.globals$login_data$token))
   }
 
   if (!missing(project)) {
@@ -31,28 +42,19 @@ du.quality.control <- function(project, folder, verbose = FALSE) {
     map(function(project) {
       if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
         tables <- opal.tables(ds_upload.globals$conn, project)
-      } else {
+      }
+      if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
         tables <- armadillo.list_tables(project)
       }
       tables$name %>%
         as.character() %>%
         map(function(table) {
           message(paste0(" * Starting with: ", project, " - ", table))
-          builder <- newDSLoginBuilder()
-          builder$append(
-            server = "validate", url = as.character(ds_upload.globals$login_data$server),
-            user = as.character(ds_upload.globals$login_data$username), password = as.character(ds_upload.globals$login_data$password),
-            driver = as.character(ds_upload.globals$login_data$driver)
-          )
-          logindata <- builder$build()
-
-          conns <- datashield.login(logins = logindata, assign = FALSE)
-
-          table_identifier <- paste0(project, ".", table)
+          conns <- datashield.login(logins = builder$build(), assign = FALSE)
 
           qc_dataframe_symbol <- "qc"
 
-          datashield.assign.table(conns = conns, table = table_identifier, symbol = qc_dataframe_symbol)
+          datashield.assign.table(conns = conns, table = paste0(project, ".", table), symbol = qc_dataframe_symbol)
 
           if (grepl(du.enum.table.types()$NONREP, table)) {
             qc.non.repeated(conns, qc_dataframe_symbol, verbose)
@@ -66,14 +68,6 @@ du.quality.control <- function(project, folder, verbose = FALSE) {
   message("######################################################")
   message("  Quality control has finished                        ")
   message("######################################################")
-
-  upload_summaries <- readline(" * Upload results to the catalogue? (yes/no): ")
-  if (upload_summaries == "yes") {
-    message("------------------------------------------------------")
-    message("  Starting to upload the results to the catalogue")
-    message("  Uploaded results succesfully")
-    message("------------------------------------------------------")
-  }
 }
 
 #' Check non repeated measures
@@ -84,7 +78,7 @@ du.quality.control <- function(project, folder, verbose = FALSE) {
 #'
 #' @importFrom dsBaseClient ds.ls ds.colnames
 #' @importFrom dsHelper dh.getStats
-#'
+#' @importFrom jsonlite toJSON
 #'
 #' @keywords internal
 qc.non.repeated <- function(conns, table, verbose) {
@@ -106,7 +100,6 @@ qc.non.repeated <- function(conns, table, verbose) {
 
   if (verbose) {
     print(result)
-    print(jsonResult)
   }
 }
 

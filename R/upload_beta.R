@@ -43,7 +43,13 @@ du.upload.beta <- function(upload = TRUE, dict_name = "", action = du.enum.actio
         )
       }
 
-      # du.quality.control(project)
+      if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
+        du.quality.control(project)
+      }
+      if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
+        armadillo_project <- str_replace_all(dict_name, "-", "")
+        du.quality.control(armadillo_project)
+      }
     },
     finally = {
       du.clean.temp.workdir(upload, workdirs)
