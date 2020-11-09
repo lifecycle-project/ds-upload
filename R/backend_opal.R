@@ -4,7 +4,7 @@
 #'
 #' @importFrom opalr opal.login
 #'
-#' @keywords internal
+#' @noRd
 du.opal.login <- function(login_data) {
   requireNamespace("opalr")
   opal <- opal.login(
@@ -21,7 +21,7 @@ du.opal.login <- function(login_data) {
 #'
 #' @importFrom opalr opal.file_upload opal.file_mkdir opal.file_ls
 #'
-#' @keywords internal
+#' @noRd
 du.opal.upload <- function(dict_kind, file_name) {
   requireNamespace("opalr")
   upload_directory <- paste0("/home/", ds_upload.globals$login_data$username)
@@ -48,7 +48,7 @@ du.opal.upload <- function(dict_kind, file_name) {
 #' @importFrom opalr opal.tables
 #' @importFrom jsonlite toJSON
 #'
-#' @keywords internal
+#' @noRd
 du.opal.data.import <- function(project, dict_kind, file_name) {
   requireNamespace("opalr")
   message("------------------------------------------------------")
@@ -91,7 +91,7 @@ du.opal.data.import <- function(project, dict_kind, file_name) {
 #' @importFrom dplyr between
 #' @importFrom opalr opal.post
 #'
-#' @keywords internal
+#' @noRd
 du.opal.project.create <- function(project, database_name) {
   requireNamespace("opalr")
   canonical_project_name <- strsplit(project, "_")
@@ -126,7 +126,7 @@ du.opal.project.create <- function(project, database_name) {
 #' @importFrom readxl read_xlsx
 #' @importFrom purrr map
 #'
-#' @keywords internal
+#' @noRd
 du.opal.dict.import <- function(project, dictionaries, dict_kind) {
   requireNamespace("opalr")
   message("------------------------------------------------------")
@@ -165,7 +165,7 @@ du.opal.dict.import <- function(project, dictionaries, dict_kind) {
 #' @importFrom dplyr select %>% nest_join rename
 #' @importFrom readxl read_xlsx
 #'
-#' @keywords internal
+#' @noRd
 du.opal.dict.match.categories <- function(project, dict_kind, table, file_name) {
   requireNamespace("opalr")
   # workaround to avoid global variable warnings, check:

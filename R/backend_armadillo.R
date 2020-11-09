@@ -2,12 +2,50 @@
 #'
 #' @param login_data contains the server credentials to authenticate in Armadillo
 #'
-#' @importFrom MolgenisArmadillo armadillo.login
+#' @importFrom MolgenisArmadillo armadillo.get_token armadillo.assume_role_with_web_identity
 #'
-#' @keywords internal
+#' @return jwt token to login to Armadillo
+#'
+#' @noRd
 du.armadillo.login <- function(login_data) {
   requireNamespace("MolgenisArmadillo")
-  armadillo.login(armadillo = as.character(login_data$server), minio = as.character(login_data$storage))
+  token <- armadillo.get_token(server = as.character(login_data$server))
+  armadillo.assume_role_with_web_identity(server = as.character(login_data$storage), token = token)
+  return(token)
+}
+
+#' List projects
+#'
+#' @importFrom MolgenisArmadillo armadillo.list_projects armadillo.assume_role_with_web_identity
+#'
+#' @noRd
+du.armadillo.list.projects <- function() {
+  requireNamespace("MolgenisArmadillo")
+  armadillo.assume_role_with_web_identity(
+    server = as.character(ds_upload.globals$login_data$storage),
+    token = as.character(ds_upload.globals$login_data$token)
+  )
+  print("haal projecten op")
+  projects <- armadillo.list_projects()
+  return(projects)
+}
+
+#' List tables
+#'
+#' @param project project to limit the scope
+#'
+#' @importFrom MolgenisArmadillo armadillo.list_tables armadillo.assume_role_with_web_identity
+#'
+#' @noRd
+du.armadillo.list.tables <- function(project) {
+  requireNamespace("MolgenisArmadillo")
+  print("haal tabellen op")
+  armadillo.assume_role_with_web_identity(
+    server = as.character(ds_upload.globals$login_data$storage),
+    token = as.character(ds_upload.globals$login_data$token)
+  )
+  tables <- armadillo.list_tables(project)
+  return(tables)
 }
 
 #' Create projects in Armadillo
@@ -16,7 +54,7 @@ du.armadillo.login <- function(login_data) {
 #'
 #' @importFrom MolgenisArmadillo armadillo.create_project armadillo.list_projects
 #'
-#' @keywords internal
+#' @noRd
 du.armadillo.create.project <- function(project) {
   requireNamespace("MolgenisArmadillo")
 
@@ -41,7 +79,7 @@ du.armadillo.create.project <- function(project) {
 #' @importFrom stringr str_split str_replace_all
 #' @importFrom utils tail
 #'
-#' @keywords internal
+#' @noRd
 du.armadillo.import <- function(project, data, dict_version, dict_kind, data_version, table_type) {
   requireNamespace("MolgenisArmadillo")
 
