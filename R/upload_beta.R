@@ -43,12 +43,15 @@ du.upload.beta <- function(upload = TRUE, dict_name = "", action = du.enum.actio
         )
       }
 
-      if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
-        du.quality.control(project)
-      }
-      if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
-        armadillo_project <- str_replace_all(dict_name, "-", "")
-        du.quality.control(armadillo_project)
+      run_cqc <- readline("- Do you want to run quakity control? (y/n): ")
+      if (run_cqc == "y") {
+        if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
+          du.quality.control(project)
+        }
+        if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
+          armadillo_project <- str_replace_all(dict_name, "-", "")
+          du.quality.control(armadillo_project)
+        }
       }
     },
     finally = {

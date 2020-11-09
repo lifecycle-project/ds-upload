@@ -5,12 +5,12 @@
 #' @param dict_name version of the dictionary
 #' @param input_format possible formats are CSV,STATA,SPSS or SAS (default = CSV)
 #' @param data_input_path path for import file
-#' @param non_interactive if set to TRUE you will get no questions
+#' @param run_mode default = NORMAL, can be TEST and NON_INTERACTIIVE
 #'
 #' @importFrom readxl read_xlsx
 #'
-#' @keywords internal
-du.reshape.beta <- function(upload, project, data_version, input_format, dict_name, input_path, non_interactive) {
+#' @noRd
+du.reshape.beta <- function(upload, project, data_version, input_format, dict_name, input_path, run_mode) {
   message("######################################################")
   message("  Start converting and importing data                 ")
   message("######################################################")
@@ -19,7 +19,7 @@ du.reshape.beta <- function(upload, project, data_version, input_format, dict_na
 
   data <- du.read.source.file(input_path, input_format)
 
-  du.check.variables(du.enum.dict.kind()$BETA, colnames(data), non_interactive)
+  du.check.variables(du.enum.dict.kind()$BETA, colnames(data), run_mode)
 
   tables <- du.dict.retrieve.tables(ds_upload.globals$api_dict_beta_url, dict_name)
 
@@ -57,8 +57,8 @@ du.reshape.beta <- function(upload, project, data_version, input_format, dict_na
           data, du.enum.dict.kind()$BETA
         )
       }
-      
-      write_csv(data, paste0(getwd(), "/", file_name, ".csv"), na = "")  
+
+      write_csv(data, paste0(getwd(), "/", file_name, ".csv"), na = "")
 
       if (upload) {
         if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {

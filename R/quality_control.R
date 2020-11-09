@@ -29,7 +29,7 @@ du.quality.control <- function(project, folder, verbose = FALSE) {
     )
   } else {
     requireNamespace("DSMolgenisArmadillo")
-    projects <- armadillo.list_projects()
+    projects <- du.armadillo.list.projects()
     builder$append(token = as.character(ds_upload.globals$login_data$token))
   }
 
@@ -44,7 +44,7 @@ du.quality.control <- function(project, folder, verbose = FALSE) {
         tables <- opal.tables(ds_upload.globals$conn, project)
       }
       if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
-        tables <- armadillo.list_tables(project)
+        tables <- du.armadillo.list.tables(project)
       }
       tables$name %>%
         as.character() %>%
@@ -80,7 +80,7 @@ du.quality.control <- function(project, folder, verbose = FALSE) {
 #' @importFrom dsHelper dh.getStats
 #' @importFrom jsonlite toJSON
 #'
-#' @keywords internal
+#' @noRd
 qc.non.repeated <- function(conns, table, verbose) {
   vars <- ds.colnames(datasources = conns, x = table)
 
@@ -113,7 +113,7 @@ qc.non.repeated <- function(conns, table, verbose) {
 #' @importFrom dplyr all_of %>%
 #' @importFrom purrr map
 #'
-#' @keywords internal
+#' @noRd
 qc.yearly.repeated <- function(conns, table, verbose) {
   type <- pivot_longer <- NULL
 

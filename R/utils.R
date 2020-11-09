@@ -12,7 +12,7 @@ ds_upload.globals$api_dict_beta_url <- "https://api.github.com/repos/lifecycle-p
 #'
 #' @importFrom stringr str_extract
 #'
-#' @keywords internal
+#' @noRd
 du.num.extract <- local(function(input_string) {
   str_extract(input_string, "\\d*$")
 })
@@ -28,7 +28,7 @@ du.num.extract <- local(function(input_string) {
 #'
 #' @return a summary of the data
 #'
-#' @keywords internal
+#' @noRd
 du.summarize <- local(function(df, .var) {
   .var <- sym(.var)
 
@@ -48,7 +48,7 @@ du.summarize <- local(function(df, .var) {
 #'
 #' @importFrom stringr str_detect
 #'
-#' @keywords internal
+#' @noRd
 du.check.version <- local(function(version) {
   return(str_detect(version, "\\d+\\_\\d+"))
 })
@@ -63,7 +63,7 @@ du.check.version <- local(function(version) {
 #'
 #' @return response as dataframe
 #'
-#' @keywords internal
+#' @noRd
 du.get.response.as.dataframe <- local(function(url) {
   response <- GET(url)
   json_response <- content(response, as = "text")
@@ -74,7 +74,7 @@ du.get.response.as.dataframe <- local(function(url) {
 #'
 #' @param action action to perform
 #'
-#' @keywords internal
+#' @noRd
 du.check.action <- function(action = "all") {
   if (!(action %in% c("all", "reshape", "populate"))) {
     stop("Unknown action type, please fill in 'populate', 'reshape' or 'all'")
@@ -83,7 +83,7 @@ du.check.action <- function(action = "all") {
 
 #' Create a temporary directory in the current working directory to store all temporary files
 #'
-#' @keywords internal
+#' @noRd
 du.create.temp.workdir <- function() {
   message(" * Create temporary workdir")
   original_workdir <- getwd()
@@ -104,7 +104,7 @@ du.create.temp.workdir <- function() {
 #' @param upload should we upload the contents to the backend
 #' @param workdirs a list containing the original workdir and the created workdir
 #'
-#' @keywords internal
+#' @noRd
 du.clean.temp.workdir <- function(upload, workdirs) {
   message(" * Reinstate default working directory")
   original_workdir <- unlist(workdirs)[1]

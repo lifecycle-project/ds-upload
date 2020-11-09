@@ -8,7 +8,7 @@
 #'
 #' @return dataframe with source data
 #'
-#' @keywords internal
+#' @noRd
 du.read.source.file <- function(input_path, input_format) {
   du_data <- NULL
 
@@ -44,7 +44,7 @@ du.read.source.file <- function(input_path, input_format) {
 #'
 #' @return dataframe without the na values
 #'
-#' @keywords internal
+#' @noRd
 du.data.frame.remove.all.na.rows <- local(function(dataframe) {
   df <- dataframe[-c(1)]
 
@@ -65,7 +65,7 @@ du.data.frame.remove.all.na.rows <- local(function(dataframe) {
 #'
 #' @return matched_columns in source data
 #'
-#' @keywords internal
+#' @noRd
 du.match.columns <- local(function(data_columns, dict_columns) {
   matched_columns <- character()
 
@@ -86,12 +86,12 @@ du.match.columns <- local(function(data_columns, dict_columns) {
 #'
 #' @param dict_kind specify which dictionary you want to check
 #' @param data_columns the coiumns within the data
-#' @param non_interactive if set to TRUE you will get no questions
+#' @param run_mode default = NORMAL, can be TEST and NON_INTERACTIIVE
 #'
 #' @return stops the program if someone terminates
 #'
-#' @keywords internal
-du.check.variables <- local(function(dict_kind, data_columns, non_interactive) {
+#' @noRd
+du.check.variables <- local(function(dict_kind, data_columns, run_mode) {
   variables <- du.retrieve.dictionaries(dict_kind = dict_kind)
 
   matched_columns <- du.match.columns(data_columns, variables$name)
@@ -103,7 +103,7 @@ du.check.variables <- local(function(dict_kind, data_columns, non_interactive) {
       "[WARNING] This is an unmatched column, it will be dropped : [ ",
       columns_not_matched, " ].\n"
     ))
-    if (!non_interactive) {
+    if (run_mode != du.enum.run.mode()$NON_INTERACTIVE) {
       proceed <- readline("Do you want to proceed (y/n)")
     } else {
       proceed <- "y"
@@ -125,7 +125,7 @@ du.check.variables <- local(function(dict_kind, data_columns, non_interactive) {
 #' @importFrom dplyr %>%
 #' @importFrom readxl read_xlsx
 #'
-#' @keywords internal
+#' @noRd
 du.reshape.generate.non.repeated <- function(data, dict_kind) {
   message("* Generating: non-repeated measures")
 
@@ -159,7 +159,7 @@ du.reshape.generate.non.repeated <- function(data, dict_kind) {
 #' @importFrom maditr dcast as.data.table %<>%
 #' @importFrom tidyr gather
 #'
-#' @keywords internal
+#' @noRd
 du.reshape.generate.yearly.repeated <- function(data, dict_kind) {
   # workaround to avoid glpobal variable warnings, check:
   # https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
@@ -228,7 +228,7 @@ du.reshape.generate.yearly.repeated <- function(data, dict_kind) {
 #' @importFrom maditr dcast as.data.table %<>%
 #' @importFrom tidyr gather
 #'
-#' @keywords internal
+#' @noRd
 du.reshape.generate.monthly.repeated <- function(data, dict_kind) {
   # workaround to avoid glpobal variable warnings, check:
   # https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
@@ -299,7 +299,7 @@ du.reshape.generate.monthly.repeated <- function(data, dict_kind) {
 #' @importFrom maditr dcast as.data.table %<>%
 #' @importFrom tidyr gather
 #'
-#' @keywords internal
+#' @noRd
 du.reshape.generate.weekly.repeated <- function(data, dict_kind) {
   # workaround to avoid glpobal variable warnings, check:
   # https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
@@ -372,7 +372,7 @@ du.reshape.generate.weekly.repeated <- function(data, dict_kind) {
 #' @importFrom maditr dcast as.data.table %<>%
 #' @importFrom tidyr gather
 #'
-#' @keywords internal
+#' @noRd
 du.reshape.generate.trimesterly.repeated <- function(data, dict_kind) {
   # workaround to avoid glpobal variable warnings, check:
   # https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when

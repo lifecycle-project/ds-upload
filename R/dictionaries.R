@@ -8,7 +8,7 @@
 #' @importFrom dplyr select %>%
 #' @importFrom utils download.file packageVersion
 #'
-#' @keywords internal
+#' @noRd
 du.dict.download <- local(function(dict_name, dict_version, dict_kind) {
   message("######################################################")
   message("  Start download dictionaries")
@@ -52,7 +52,7 @@ du.dict.download <- local(function(dict_name, dict_version, dict_kind) {
 #'
 #' @return dictionaries list of tables
 #'
-#' @keywords internal
+#' @noRd
 du.dict.retrieve.tables <- function(api_url, dict_name, dict_version, data_version) {
   beta <- TRUE
   api_url_path <- paste0(api_url, "dictionaries/", dict_name)
@@ -89,7 +89,7 @@ du.dict.retrieve.tables <- function(api_url, dict_name, dict_version, data_versi
 #' @param dict_kind dictionary kind (can be 'core' or 'outcome')
 #' @param dict_version dictionary version (can be 'x_x')
 #'
-#' @keywords internal
+#' @noRd
 du.populate.dict.versions <- local(function(dict_kind, dict_version) {
   versions <- du.get.response.as.dataframe(paste0(
     ds_upload.globals$api_dict_released_url, "dictionaries/",
@@ -113,7 +113,7 @@ du.populate.dict.versions <- local(function(dict_kind, dict_version) {
 #'
 #' @return a raw version of the dictionary
 #'
-#' @keywords internal
+#' @noRd
 du.retrieve.dictionaries <- local(function(dict_table, dict_kind) {
   dict_file_list <- list.files(paste(getwd(), "/", dict_kind, sep = ""))
 

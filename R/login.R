@@ -54,7 +54,8 @@ du.login <- function(login_data) {
   if (login_data$driver == du.enum.backends()$OPAL) {
     ds_upload.globals$conn <- du.opal.login(login_data)
   } else {
-    du.armadillo.login(login_data)
+    token <- du.armadillo.login(login_data)
+    login_data$token <- token
   }
   message(paste("  Logged on to: \"", login_data$server, "\"", sep = ""))
 

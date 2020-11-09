@@ -6,12 +6,12 @@
 #' @param dict_version version of the dictionary
 #' @param dict_kind kind of data to reshape (default = core)
 #' @param input_path path for import file
-#' @param non_interactive if set to TRUE you will get no questions
+#' @param run_mode default = NORMAL, can be TEST and NON_INTERACTIIVE
 #'
 #' @importFrom readxl read_xlsx
 #'
-#' @keywords internal
-du.reshape <- function(upload = TRUE, project, data_version, input_format, dict_version, dict_kind, input_path, non_interactive) {
+#' @noRd
+du.reshape <- function(upload = TRUE, project, data_version, input_format, dict_version, dict_kind, input_path, run_mode) {
   message("######################################################")
   message("  Start converting and uploading data                 ")
   message("######################################################")
@@ -20,7 +20,7 @@ du.reshape <- function(upload = TRUE, project, data_version, input_format, dict_
 
   data <- du.read.source.file(input_path, input_format)
 
-  du.check.variables(dict_kind, colnames(data), non_interactive)
+  du.check.variables(dict_kind, colnames(data), run_mode)
 
   file_prefix <- format(Sys.time(), "%Y-%m-%d_%H-%M-%S")
 
@@ -75,9 +75,9 @@ du.reshape <- function(upload = TRUE, project, data_version, input_format, dict_
 
   if (upload) {
     if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
-      if(!is.null(nonrep_data)) du.opal.upload(dict_kind, file_name_nonrep)
-      if(!is.null(yearlyrep_data)) du.opal.upload(dict_kind, file_name_yearly)
-      if(!is.null(monthlyrep_data)) du.opal.upload(dict_kind, file_name_monthly)
+      if (!is.null(nonrep_data)) du.opal.upload(dict_kind, file_name_nonrep)
+      if (!is.null(yearlyrep_data)) du.opal.upload(dict_kind, file_name_yearly)
+      if (!is.null(monthlyrep_data)) du.opal.upload(dict_kind, file_name_monthly)
     }
     if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
       du.armadillo.import(project = project, data = nonrep_data, dict_version, dict_kind, data_version, du.enum.table.types()$NONREP)

@@ -9,7 +9,7 @@
 #'
 #' @return project id to use in central quality control
 #'
-#' @keywords internal
+#' @noRd
 du.populate <- local(function(dict_version, cohort_id, data_version, database_name, dict_kind) {
   message("######################################################")
   message("  Start importing data dictionaries                   ")
@@ -45,7 +45,7 @@ du.populate <- local(function(dict_version, cohort_id, data_version, database_na
 #'
 #' @return project id to use in central quality control
 #'
-#' @keywords internal
+#' @noRd
 du.populate.beta <- function(dict_name, database_name) {
   project <- paste0("lc_", du.enum.dict.kind()$BETA, "_", dict_name)
 
