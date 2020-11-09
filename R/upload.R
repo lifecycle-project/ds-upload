@@ -45,7 +45,7 @@ du.upload <- function(dict_version = "2_1", data_version = "1_0", dict_kind = du
   if (cohort_id == "") {
     stop("No cohort identifier is specified! Program is terminated.")
   } else {
-    if (!(cohort_id %in% du.enum.cohorts())) {
+    if (!(cohort_id %in% du.enum.cohorts()) & run_mode != du.enum.run.mode()$TEST) {
       stop(
         "Cohort: [ ", cohort_id, " ] is not know LifeCycle project. Please choose from: [ ",
         paste(du.enum.cohorts(), collapse = ", "), " ]"
