@@ -1,6 +1,6 @@
 Package: dsUpload
 Title: Upload Functions for DataSHIELD Backends
-Version: 3.1.0
+Version: 4.0.0
 Authors@R: 
   c(person(given = "Sido",
       family = "Haakma",
@@ -55,12 +55,12 @@ Imports:
   utils,
   tibble,
   fs,
-  MolgenisArmadillo,
+  MolgenisArmadillo (>= 0.2.0),
   opalr (>= 1.2.0),
-  DSOpal,
-  DSMolgenisArmadillo,
+  DSOpal (>= 1.0.0),
+  DSMolgenisArmadillo (>= 1.2.0),
   dsHelper,
-  dsBaseClient
+  dsBaseClient (>= 6.0.1),
 Suggests: 
   knitr, 
   rmarkdown,
