@@ -62,8 +62,8 @@ Please following the instruction below to upload the core and outcome variables 
 
 ```r
 login_data <- data.frame(
-  server = "https://armadillo.dev.molgenis.org", 
-  storage = "https://armadillo-minio.dev.molgenis.org", 
+  server = "https://armadillo.test.molgenis.org", 
+  storage = "https://armadillo-minio.test.molgenis.org", 
   driver = "ArmadilloDriver")
 ```
 
@@ -71,9 +71,9 @@ login_data <- data.frame(
 ```r
 # login to the Armadillo server
 du.login(login_data = login_data)
-#>   Login to: "https://armadillo.dev.molgenis.org"
-#> [1] "We're opening a browser so you can log in with code 2FB2ST"
-#>   Logged on to: "https://armadillo.dev.molgenis.org"
+#>   Login to: "https://armadillo.test.molgenis.org"
+#> [1] "We're opening a browser so you can log in with code DGWSMP"
+#>   Logged on to: "https://armadillo.test.molgenis.org"
 ```
 
 
@@ -89,7 +89,7 @@ du.upload(
   data_version = '1_0', 
   data_input_format = 'CSV',
   data_input_path = 'https://github.com/lifecycle-project/ds-upload/blob/master/tests/data/WP1/data/all_measurements_v1_2.csv?raw=true',
-  non_interactive = TRUE
+  run_mode = "non_interactive"
 )
 #> ######################################################
 #>   Start upload data into DataSHIELD backend
@@ -123,27 +123,30 @@ du.upload(
 #> Aggregate function missing, defaulting to 'length'
 #> * Start importing: 2_1_core_1_0 into project: dnbc
 #> Compressing...
-#>   |                                                                                         |                                                                                 |   0%  |                                                                                         |=================================================================================| 100%
+#>   |                                                                                                                |                                                                                                        |   0%  |                                                                                                                |========================================================================================================| 100%
 #> Uploaded 2_1_core_1_0/trimester
 #> * Import finished successfully
 #> * Start importing: 2_1_core_1_0 into project: dnbc
 #> Compressing...
-#>   |                                                                                         |                                                                                 |   0%  |                                                                                         |============                                                                     |  15%  |                                                                                         |========================                                                         |  29%  |                                                                                         |===================================                                              |  44%  |                                                                                         |===============================================                                  |  58%  |                                                                                         |===========================================================                      |  73%  |                                                                                         |=======================================================================          |  87%  |                                                                                         |=================================================================================| 100%
+#>   |                                                                                                                |                                                                                                        |   0%  |                                                                                                                |===============                                                                                         |  15%  |                                                                                                                |==============================                                                                          |  29%  |                                                                                                                |=============================================                                                           |  44%  |                                                                                                                |=============================================================                                           |  58%  |                                                                                                                |============================================================================                            |  73%  |                                                                                                                |===========================================================================================             |  87%  |                                                                                                                |========================================================================================================| 100%
 #> Uploaded 2_1_core_1_0/non_rep
 #> * Import finished successfully
 #> * Start importing: 2_1_core_1_0 into project: dnbc
 #> Compressing...
-#>   |                                                                                         |                                                                                 |   0%  |                                                                                         |=================================================================================| 100%
+#>   |                                                                                                                |                                                                                                        |   0%  |                                                                                                                |========================================================================================================| 100%
 #> Uploaded 2_1_core_1_0/yearly_rep
 #> * Import finished successfully
 #> * Start importing: 2_1_core_1_0 into project: dnbc
 #> Compressing...
-#>   |                                                                                         |                                                                                 |   0%  |                                                                                         |=================================================================================| 100%
+#>   |                                                                                                                |                                                                                                        |   0%  |                                                                                                                |========================================================================================================| 100%
 #> Uploaded 2_1_core_1_0/monthly_rep
 #> * Import finished successfully
 #> ######################################################
 #>   Converting and import successfully finished
 #> ######################################################
+#>   Starting quality control
+#> ------------------------------------------------------
+#> Error in private$.is.empty(server): argument "server" is missing, with no default
 #>  * Reinstate default working directory
 #>  * Cleanup temporary directory
 ```
@@ -157,7 +160,7 @@ du.upload(
   data_version = '1_0', 
   data_input_format = 'CSV',
   data_input_path = 'https://github.com/lifecycle-project/ds-upload/blob/master/tests/data/WP6/nd_data_wp6.csv?raw=true',
-  non_interactive = TRUE
+  run_mode = "non_interactive"
 )
 #> ######################################################
 #>   Start upload data into DataSHIELD backend
@@ -187,27 +190,30 @@ du.upload(
 #> * Generating: weekly-repeated measures
 #> * Start importing: 1_1_outcome_1_0 into project: dnbc
 #> Compressing...
-#>   |                                                                                         |                                                                                 |   0%  |                                                                                         |=================================================================================| 100%
+#>   |                                                                                                                |                                                                                                        |   0%  |                                                                                                                |========================================================================================================| 100%
 #> Uploaded 1_1_outcome_1_0/weekly_rep
 #> * Import finished successfully
 #> * Start importing: 1_1_outcome_1_0 into project: dnbc
 #> Compressing...
-#>   |                                                                                         |                                                                                 |   0%  |                                                                                         |=================================================================================| 100%
+#>   |                                                                                                                |                                                                                                        |   0%  |                                                                                                                |========================================================================================================| 100%
 #> Uploaded 1_1_outcome_1_0/non_rep
 #> * Import finished successfully
 #> * Start importing: 1_1_outcome_1_0 into project: dnbc
 #> Compressing...
-#>   |                                                                                         |                                                                                 |   0%  |                                                                                         |======                                                                           |   8%  |                                                                                         |=============                                                                    |  16%  |                                                                                         |===================                                                              |  24%  |                                                                                         |=========================                                                        |  31%  |                                                                                         |================================                                                 |  39%  |                                                                                         |======================================                                           |  47%  |                                                                                         |=============================================                                    |  55%  |                                                                                         |===================================================                              |  63%  |                                                                                         |=========================================================                        |  71%  |                                                                                         |================================================================                 |  79%  |                                                                                         |======================================================================           |  86%  |                                                                                         |============================================================================     |  94%  |                                                                                         |=================================================================================| 100%
+#>   |                                                                                                                |                                                                                                        |   0%  |                                                                                                                |========                                                                                                |   8%  |                                                                                                                |================                                                                                        |  16%  |                                                                                                                |=========================                                                                               |  24%  |                                                                                                                |=================================                                                                       |  31%  |                                                                                                                |=========================================                                                               |  39%  |                                                                                                                |=================================================                                                       |  47%  |                                                                                                                |=========================================================                                               |  55%  |                                                                                                                |=================================================================                                       |  63%  |                                                                                                                |==========================================================================                              |  71%  |                                                                                                                |==================================================================================                      |  79%  |                                                                                                                |==========================================================================================              |  86%  |                                                                                                                |==================================================================================================      |  94%  |                                                                                                                |========================================================================================================| 100%
 #> Uploaded 1_1_outcome_1_0/yearly_rep
 #> * Import finished successfully
 #> * Start importing: 1_1_outcome_1_0 into project: dnbc
 #> Compressing...
-#>   |                                                                                         |                                                                                 |   0%  |                                                                                         |=================================================================================| 100%
+#>   |                                                                                                                |                                                                                                        |   0%  |                                                                                                                |========================================================================================================| 100%
 #> Uploaded 1_1_outcome_1_0/monthly_rep
 #> * Import finished successfully
 #> ######################################################
 #>   Converting and import successfully finished
 #> ######################################################
+#>   Starting quality control
+#> ------------------------------------------------------
+#> Error in private$.is.empty(server): argument "server" is missing, with no default
 #>  * Reinstate default working directory
 #>  * Cleanup temporary directory
 ```
@@ -249,7 +255,7 @@ du.upload(
   data_version = '1_0', 
   data_input_format = 'CSV',
   data_input_path = 'https://github.com/lifecycle-project/ds-upload/blob/master/tests/data/WP1/data/all_measurements_v1_2.csv?raw=true',
-  non_interactive = TRUE
+  run_mode = "non_interactive"
 )
 #> ######################################################
 #>   Start upload data into DataSHIELD backend
@@ -272,15 +278,15 @@ du.upload(
 #> * Project: [ lc_dnbc_core_2_1 ] already exists
 #> ------------------------------------------------------
 #>   Start importing dictionaries
-#> * Create table: [ 1_0_monthly_rep ]
+#> * Table: [ 1_0_monthly_rep ] already exists
 #> * Import variables into: [ 1_0_monthly_rep ]
-#> * Create table: [ 1_0_non_rep ]
+#> * Table: [ 1_0_non_rep ] already exists
 #> * Matched categories for table: [ 1_0_non_rep ]
 #> * Import variables into: [ 1_0_non_rep ]
-#> * Create table: [ 1_0_trimester_rep ]
+#> * Table: [ 1_0_trimester_rep ] already exists
 #> * Matched categories for table: [ 1_0_trimester_rep ]
 #> * Import variables into: [ 1_0_trimester_rep ]
-#> * Create table: [ 1_0_yearly_rep ]
+#> * Table: [ 1_0_yearly_rep ] already exists
 #> * Matched categories for table: [ 1_0_yearly_rep ]
 #> * Import variables into: [ 1_0_yearly_rep ]
 #>   All dictionaries are populated correctly
@@ -297,13 +303,17 @@ du.upload(
 #> Aggregate function missing, defaulting to 'length'
 #> * Generating: trimesterly-repeated measures
 #> Aggregate function missing, defaulting to 'length'
-#> * Upload: [ 2020-11-04_21-29-14_1_0_trimester_repeated_measures.csv ] to directory [ core ]
-#> * Upload: [ 2020-11-04_21-29-14_1_0_non_repeated_measures.csv ] to directory [ core ]
-#> * Upload: [ 2020-11-04_21-29-14_1_0_yearly_repeated_measures.csv ] to directory [ core ]
-#> * Upload: [ 2020-11-04_21-29-14_1_0_monthly_repeated_measures.csv ] to directory [ core ]
+#> * Upload: [ 2020-11-09_23-27-58_1_0_trimester_repeated_measures.csv ] to directory [ core ]
+#> * Upload: [ 2020-11-09_23-27-58_1_0_non_repeated_measures.csv ] to directory [ core ]
+#> * Upload: [ 2020-11-09_23-27-58_1_0_yearly_repeated_measures.csv ] to directory [ core ]
+#> * Upload: [ 2020-11-09_23-27-58_1_0_monthly_repeated_measures.csv ] to directory [ core ]
 #> ######################################################
 #>   Converting and import successfully finished
 #> ######################################################
+#>   Starting quality control
+#> ------------------------------------------------------
+#> Loading required namespace: DSOpal
+#> Error in private$.is.empty(server): argument "server" is missing, with no default
 #>  * Reinstate default working directory
 #>  * Cleanup temporary directory
 ```
@@ -317,7 +327,7 @@ du.upload(
   data_version = '1_0', 
   data_input_format = 'CSV',
   data_input_path = 'https://github.com/lifecycle-project/ds-upload/blob/master/tests/data/WP6/nd_data_wp6.csv?raw=true',
-  non_interactive = TRUE
+  run_mode = "non_interactive"
 )
 #> ######################################################
 #>   Start upload data into DataSHIELD backend
@@ -361,13 +371,16 @@ du.upload(
 #> * Generating: yearly-repeated measures
 #> * Generating: monthly-repeated measures
 #> * Generating: weekly-repeated measures
-#> * Upload: [ 2020-11-04_21-29-43_1_0_weekly_repeated_measures.csv ] to directory [ outcome ]
-#> * Upload: [ 2020-11-04_21-29-43_1_0_non_repeated_measures.csv ] to directory [ outcome ]
-#> * Upload: [ 2020-11-04_21-29-43_1_0_yearly_repeated_measures.csv ] to directory [ outcome ]
-#> * Upload: [ 2020-11-04_21-29-43_1_0_monthly_repeated_measures.csv ] to directory [ outcome ]
+#> * Upload: [ 2020-11-09_23-29-08_1_0_weekly_repeated_measures.csv ] to directory [ outcome ]
+#> * Upload: [ 2020-11-09_23-29-08_1_0_non_repeated_measures.csv ] to directory [ outcome ]
+#> * Upload: [ 2020-11-09_23-29-08_1_0_yearly_repeated_measures.csv ] to directory [ outcome ]
+#> * Upload: [ 2020-11-09_23-29-08_1_0_monthly_repeated_measures.csv ] to directory [ outcome ]
 #> ######################################################
 #>   Converting and import successfully finished
 #> ######################################################
+#>   Starting quality control
+#> ------------------------------------------------------
+#> Error in private$.is.empty(server): argument "server" is missing, with no default
 #>  * Reinstate default working directory
 #>  * Cleanup temporary directory
 ```

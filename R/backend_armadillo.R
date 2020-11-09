@@ -10,7 +10,9 @@
 du.armadillo.login <- function(login_data) {
   requireNamespace("MolgenisArmadillo")
   token <- armadillo.get_token(server = as.character(login_data$server))
-  armadillo.assume_role_with_web_identity(server = as.character(login_data$storage), token = token)
+  armadillo.assume_role_with_web_identity(
+    token = token,
+    server = as.character(login_data$storage))
   return(token)
 }
 
@@ -22,10 +24,8 @@ du.armadillo.login <- function(login_data) {
 du.armadillo.list.projects <- function() {
   requireNamespace("MolgenisArmadillo")
   armadillo.assume_role_with_web_identity(
-    server = as.character(ds_upload.globals$login_data$storage),
-    token = as.character(ds_upload.globals$login_data$token)
-  )
-  print("haal projecten op")
+    token = as.character(ds_upload.globals$login_data$token),
+    server = as.character(ds_upload.globals$login_data$storage))
   projects <- armadillo.list_projects()
   return(projects)
 }
@@ -39,11 +39,9 @@ du.armadillo.list.projects <- function() {
 #' @noRd
 du.armadillo.list.tables <- function(project) {
   requireNamespace("MolgenisArmadillo")
-  print("haal tabellen op")
   armadillo.assume_role_with_web_identity(
-    server = as.character(ds_upload.globals$login_data$storage),
-    token = as.character(ds_upload.globals$login_data$token)
-  )
+    token = as.character(ds_upload.globals$login_data$token),
+  server = as.character(ds_upload.globals$login_data$storage))
   tables <- armadillo.list_tables(project)
   return(tables)
 }

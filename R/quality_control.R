@@ -16,21 +16,25 @@ du.quality.control <- function(project, folder, verbose = FALSE) {
   message("------------------------------------------------------")
   du.check.session(TRUE)
   builder <- newDSLoginBuilder()
-  builder$append(
-    server = "validate", url = as.character(ds_upload.globals$login_data$server),
-    driver = as.character(ds_upload.globals$login_data$driver)
-  )
   if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
     requireNamespace("DSOpal")
     projects <- opal.projects(ds_upload.globals$conn)
     builder$append(
+      server = "validate", 
+      url = as.character(ds_upload.globals$login_data$server),
+      driver = as.character(ds_upload.globals$login_data$driver),
       user = as.character(ds_upload.globals$login_data$username),
       password = as.character(ds_upload.globals$login_data$password)
     )
   } else {
     requireNamespace("DSMolgenisArmadillo")
     projects <- du.armadillo.list.projects()
-    builder$append(token = as.character(ds_upload.globals$login_data$token))
+    builder$append(
+      server = "validate", 
+      url = as.character(ds_upload.globals$login_data$server),
+      driver = as.character(ds_upload.globals$login_data$driver),
+      token = as.character(ds_upload.globals$login_data$token)
+    )
   }
 
   if (!missing(project)) {
@@ -52,7 +56,7 @@ du.quality.control <- function(project, folder, verbose = FALSE) {
           message(paste0(" * Starting with: ", project, " - ", table))
           conns <- datashield.login(logins = builder$build(), assign = FALSE)
 
-          qc_dataframe_symbol <- "qc"
+          qc_dataframe_symbol <- "QC"
 
           datashield.assign.table(conns = conns, table = paste0(project, ".", table), symbol = qc_dataframe_symbol)
 
