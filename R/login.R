@@ -1,50 +1,66 @@
-#' Login into the opal instance and
+ds_upload.globals <- new.env()
+
+#' Login into the DataSHIELD backend
 #'
-#' @param hostname specify hostname of Opal instance
-#' @param username specify username (of administrator) of Opal instance (default = administrator)
-#' @param password specify password (of administrator) of Opal instance
-#' @param insecure NOT RECOMMENDED, use an insecure SSL connection
+#' @param login_data login data frame containing the server url
 #'
 #' @importFrom opalr opal.login
 #'
 #' @examples
 #' \dontrun{
-#' du.login(
-#'   hostname = "https://cohort-datashield-server.org",
-#'   username = "local_dm",
-#'   password = "very-secret-pw"
-#' )
-#' }
 #'
+#' login_data <- data.frame(
+#'   server = "https://armadillo.dev.molgenis.org",
+#'   storage = "https://armadillo-minio.dev.molgenis.org",
+#'   username = "admin",
+#'   password = "admin",
+#'   insecure = FALSE,
+#'   options = NULL
+#' )
+#'
+#' du.login(login_data)
+#' }
 #' @export
-du.login <- local(function(hostname, username = "administrator", password, insecure = FALSE) {
-  if (missing(hostname)) {
-    hostname <- readline("- Hostname (e.g. https://my-own-opal.org): ")
-    username <- readline("- Username: ")
+du.login <- function(login_data) {
+  if (is.null(login_data$server)) {
+    login_data$server <- readline("- Hostname (e.g. https://my-own-datashield-backend.org): ")
+    login_data$username <- readline("- Username: ")
   }
-  if (missing(password)) {
+
+  if (is.null(login_data$driver)) {
+    backend <- readline("- Which server are you logging on to (opal/armadillo): ")
+    if (backend == "opal") {
+      login_data$driver <- du.enum.backends()$OPAL
+    } else {
+      login_data$driver <- du.enum.backends()$ARMADILLO
+    }
+  }
+
+  if (is.null(login_data$username) & login_data$driver == du.enum.backends()$OPAL) {
+    login_data$username <- "administrator"
+  }
+
+  if (is.null(login_data$password) & !is.null(login_data$username)) {
     password <- readline("- Password: ")
   }
 
   du.check.package.version()
 
-  ds_upload.globals$hostname <- hostname
-  ds_upload.globals$username <- username
-  ds_upload.globals$password <- password
-
-  options <- list()
-
-  if (insecure) {
-    options <- list(ssl.verifyhost = FALSE, ssl.verifypeer = FALSE)
+  if (is.null(login_data$insecure)) {
+    login_data$options <- data.frame(ssl.verifyhost = FALSE, ssl.verifypeer = FALSE)
   }
 
-  message(paste("  Login to: \"", ds_upload.globals$hostname, "\"", sep = ""))
-  ds_upload.globals$opal <- opal.login(
-    username = ds_upload.globals$username, password = ds_upload.globals$password,
-    url = ds_upload.globals$hostname, opts = options
-  )
-  message(paste("  Logged on to: \"", ds_upload.globals$hostname, "\"", sep = ""))
-})
+  message(paste("  Login to: \"", login_data$server, "\"", sep = ""))
+  if (login_data$driver == du.enum.backends()$OPAL) {
+    ds_upload.globals$conn <- du.opal.login(login_data)
+  } else {
+    token <- du.armadillo.login(login_data)
+    login_data$token <- token
+  }
+  message(paste("  Logged on to: \"", login_data$server, "\"", sep = ""))
+
+  ds_upload.globals$login_data <- login_data
+}
 
 #'
 #' Check the package version
@@ -70,5 +86,18 @@ du.check.package.version <- function() {
       max(result$items$version)
     ))
     message(paste0("***********************************************************************************"))
+  }
+}
+
+#' Check if there is an active session with a DataSHIELD backend
+#'
+#' @param upload is a session needed or not
+#'
+#' @keywords internal
+du.check.session <- function(upload = FALSE) {
+  if (upload == TRUE) {
+    if (!exists("login_data", envir = ds_upload.globals)) {
+      stop("You need to login first, please run du.login")
+    }
   }
 }

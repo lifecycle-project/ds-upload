@@ -12,7 +12,7 @@ ds_upload.globals <- new.env()
 #' @param upload directly upload the reshaped database to the logged in DataSHIELD server
 #' @param data_input_path path to the to-be-reshaped data
 #' @param action action to be performed, can be 'reshape', 'populate' or 'all'
-#' @param non_interactive if set to TRUE you will get no questions
+#' @param run_mode default = NORMAL, can be TEST and NON_INTERACTIIVE
 #'
 #' @examples
 #' \dontrun{
@@ -28,7 +28,7 @@ ds_upload.globals <- new.env()
 #' @export
 du.upload <- function(dict_version = "2_1", data_version = "1_0", dict_kind = du.enum.dict.kind()$CORE,
                       cohort_id, database_name = "opal_data", data_input_format = du.enum.input.format()$CSV, data_input_path,
-                      action = du.enum.action()$ALL, upload = TRUE, non_interactive = FALSE) {
+                      action = du.enum.action()$ALL, upload = TRUE, run_mode = du.enum.run.mode()$NORMAL) {
   du.check.package.version()
 
   message("######################################################")
@@ -39,13 +39,13 @@ du.upload <- function(dict_version = "2_1", data_version = "1_0", dict_kind = du
 
   du.check.session(upload)
 
-  if (missing(cohort_id) & !non_interactive) {
+  if (missing(cohort_id) & run_mode != du.enum.run.mode()$NON_INTERACTIVE) {
     cohort_id <- readline("- Specify cohort identifier (e.g. dnbc): ")
   }
   if (cohort_id == "") {
     stop("No cohort identifier is specified! Program is terminated.")
   } else {
-    if (!(cohort_id %in% du.enum.cohorts())) {
+    if (!(cohort_id %in% du.enum.cohorts()) & run_mode != du.enum.run.mode()$TEST) {
       stop(
         "Cohort: [ ", cohort_id, " ] is not know LifeCycle project. Please choose from: [ ",
         paste(du.enum.cohorts(), collapse = ", "), " ]"
@@ -53,7 +53,7 @@ du.upload <- function(dict_version = "2_1", data_version = "1_0", dict_kind = du
     }
   }
 
-  if (missing(data_version) & !non_interactive) {
+  if (missing(data_version) & run_mode != du.enum.run.mode()$NON_INTERACTIVE) {
     data_version <- readline("- Specify version of cohort data upload (e.g. 1_0): ")
   }
 
@@ -92,21 +92,33 @@ du.upload <- function(dict_version = "2_1", data_version = "1_0", dict_kind = du
       }
 
       if (action == du.enum.action()$ALL | action == du.enum.action()$RESHAPE) {
-        if (missing(data_input_path) & !non_interactive) {
+        if (missing(data_input_path) & run_mode != du.enum.run.mode()$NON_INTERACTIVE) {
           input_path <- readline("- Specify input path (for your data): ")
-        } else if (missing(data_input_path) & non_interactive) {
+        } else if (missing(data_input_path) & run_mode == du.enum.run.mode()$NON_INTERACTIVE) {
           stop("No source file specified, Please specify your source file")
         }
         if (missing(data_input_format)) {
           data_input_format <- du.enum.input.format()$CSV
         }
         du.reshape(
-          upload, data_version, data_input_format, dict_version,
-          dict_kind, data_input_path, non_interactive
+          upload, project, data_version, data_input_format, dict_version,
+          dict_kind, data_input_path, run_mode
         )
       }
-      
-      du.quality.control(project)
+
+      if(run_mode != du.enum.run.mode()$NON_INTERACTIVE) {
+        run_cqc <- readline("- Do you want to run quality control? (y/n): ")
+      } else {
+        run_cqc = "y" 
+      }
+      if (run_cqc == "y") {
+        if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
+          du.quality.control(project)
+        }
+        if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
+          du.quality.control(cohort_id)
+        }
+      }
     },
     finally = {
       du.clean.temp.workdir(upload, workdirs)

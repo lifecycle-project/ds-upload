@@ -5,56 +5,72 @@
 #' @param dict_name version of the dictionary
 #' @param input_format possible formats are CSV,STATA,SPSS or SAS (default = CSV)
 #' @param data_input_path path for import file
-#' @param non_interactive if set to TRUE you will get no questions
+#' @param run_mode default = NORMAL, can be TEST and NON_INTERACTIIVE
 #'
 #' @importFrom readxl read_xlsx
 #'
-#' @keywords internal
-du.reshape.beta <- function(upload, data_version, input_format, dict_name, input_path, non_interactive) {
+#' @noRd
+du.reshape.beta <- function(upload, project, data_version, input_format, dict_name, input_path, run_mode) {
   message("######################################################")
-  message("  Start reshaping data                                ")
+  message("  Start converting and importing data                 ")
   message("######################################################")
   message("* Setup: load data and set output directory")
   message("------------------------------------------------------")
 
   data <- du.read.source.file(input_path, input_format)
 
-  du.check.variables(du.enum.dict.kind()$BETA, colnames(data), non_interactive)
+  du.check.variables(du.enum.dict.kind()$BETA, colnames(data), run_mode)
 
   tables <- du.dict.retrieve.tables(ds_upload.globals$api_dict_beta_url, dict_name)
 
   tables %>%
     map(function(table) {
-      data_file_name <- paste0(format(Sys.time(), "%Y-%m-%d_%H-%M-%S"), "_", table$table)
+      file_name <- paste0(format(Sys.time(), "%Y-%m-%d_%H-%M-%S"), "_", table$table)
 
       if (grepl(du.enum.table.types()$NONREP, table$table)) {
-        du.reshape.generate.non.repeated(
-          data, upload, du.enum.dict.kind()$BETA, data_file_name
+        table_type <- du.enum.table.types()$NONREP
+        data <- du.reshape.generate.non.repeated(
+          data, du.enum.dict.kind()$BETA
         )
       }
       if (grepl(du.enum.table.types()$MONTHLY, table$table)) {
-        du.reshape.generate.monthly.repeated(
-          data, upload, du.enum.dict.kind()$BETA, data_file_name
+        table_type <- du.enum.table.types()$MONTHLY
+        data <- du.reshape.generate.monthly.repeated(
+          data, du.enum.dict.kind()$BETA
         )
       }
       if (grepl(du.enum.table.types()$YEARLY, table$table)) {
-        du.reshape.generate.yearly.repeated(
-          data, upload, du.enum.dict.kind()$BETA, data_file_name
+        table_type <- du.enum.table.types()$YEARLY
+        data <- du.reshape.generate.yearly.repeated(
+          data, du.enum.dict.kind()$BETA
         )
       }
       if (grepl(du.enum.table.types()$WEEKLY, table$table)) {
-        du.reshape.generate.weekly.repeated(
-          data, upload, du.enum.dict.kind()$BETA, data_file_name
+        table_type <- du.enum.table.types()$WEEKLY
+        data <- du.reshape.generate.weekly.repeated(
+          data, du.enum.dict.kind()$BETA
         )
       }
       if (grepl(du.enum.table.types()$TRIMESTER, table$table)) {
-        du.reshape.generate.trimesterly.repeated(
-          data, upload, du.enum.dict.kind()$BETA, data_file_name
+        table_type <- du.enum.table.types()$TRIMESTER
+        data <- du.reshape.generate.trimesterly.repeated(
+          data, du.enum.dict.kind()$BETA
         )
+      }
+
+      write_csv(data, paste0(getwd(), "/", file_name, ".csv"), na = "")
+
+      if (upload) {
+        if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
+          du.opal.upload(du.enum.dict.kind()$BETA, file_name)
+        }
+        if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
+          du.armadillo.import(project = project, data = data, dict_kind = du.enum.dict.kind()$BETA, table_type = table_type)
+        }
       }
     })
 
   message("######################################################")
-  message("  Reshaping successfully finished                     ")
+  message("  Converting and import successfully finished         ")
   message("######################################################")
 }
