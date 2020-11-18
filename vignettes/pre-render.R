@@ -1,0 +1,4 @@
+knitr::knit("vignettes/dsUpload.Rmd.orig", output = "vignettes/dsUpload.Rmd")
+knitr::knit("vignettes/betaDictionaries.Rmd.orig", output = "vignettes/betaDictionaries.Rmd")
+knitr::knit("vignettes/dataVersioning.Rmd.orig", output = "vignettes/dataVersioning.Rmd")
+knitr::knit("vignettes/qualityControl.Rmd.orig", output = "vignettes/qualityControl.Rmd")
