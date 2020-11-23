@@ -20,6 +20,8 @@ cache:
 
 before_cache: 
   - Rscript -e 'remotes::install_cran("pkgdown")'
+  - Rscript -e 'remotes::install_cran("usethis")'
+  - Rscript -e 'remotes::install_cran("devtools")'
 
 deploy:
   - provider: script

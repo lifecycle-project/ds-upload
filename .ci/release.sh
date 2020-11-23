@@ -1,3 +1,5 @@
+#!/bin/bash
+
 Rscript -e "usethis::use_version('${RELEASE_SCOPE}')"
 TAG=$(grep Version DESCRIPTION | head -n1 | cut -d':' -f2)
 PACKAGE=$(grep Package DESCRIPTION | head -n1 | cut -d':' -f2)
