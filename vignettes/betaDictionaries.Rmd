@@ -16,7 +16,8 @@ The beta dictionaries are used to be able to initiate creation of dictonaries in
 You need to have a few prerequisites
 - [Git](https://git-scm.com/)
 - [RStudio](https://rstudio.com/)
-- [Opal](https://)
+- [Opal](https://github.com/obiba/opal)
+- [Opal](https://github.com/molgenis/molgenis-service-armadillo)
 - [Excel](https://www.microsoft.com/nl-nl/microsoft-365/excel)
 
 ## Working with ds-beta-dictionaries
@@ -52,11 +53,12 @@ When a first version of a beta dictionary is available, you can upload it to opa
 
 
 ```r
-du.login(
-  hostname = "https://opal.edge.molgenis.org", 
-  password = "admin")
-#>   Login to: "https://opal.edge.molgenis.org"
-#>   Logged on to: "https://opal.edge.molgenis.org"
+login_data <- data.frame(server = "https://armadillo.test.molgenis.org", storage = "https://armadillo-minio.test.molgenis.org", driver = "ArmadilloDriver")
+
+du.login(login_data)
+#>   Login to: "https://armadillo.test.molgenis.org"
+#> [1] "We're opening a browser so you can log in with code YB9FBS"
+#>   Logged on to: "https://armadillo.test.molgenis.org"
   
 du.upload.beta(
   dict_name = "example-dictionary", 
@@ -69,31 +71,29 @@ du.upload.beta(
 #>   Start download dictionaries
 #> ------------------------------------------------------
 #> * Download: [ example-dictionary-non_rep.xlsx ]
+#> * Download: [ example-dictionary-yearly_rep.xlsx ]
 #>   Successfully downloaded dictionaries
-#> ------------------------------------------------------
-#>   Start creating project: [ lc_beta_example-dictionary ]
-#> ------------------------------------------------------
-#>   Start importing dictionaries
-#> * Create table: [ example-dictionary-non_rep ]
-#> * Matched categories for table: [ example-dictionary-non_rep ]
-#> * Import variables into: [ example-dictionary-non_rep ]
-#>   All dictionaries are populated correctly
+#> Created project 'exampledictionary'
 #> ######################################################
-#>   Start reshaping data
+#>   Start converting and importing data
 #> ######################################################
 #> * Setup: load data and set output directory
 #> ------------------------------------------------------
 #> * Generating: non-repeated measures
-#> * Upload: [ 2020-11-02_12-05-26_example-dictionary-non_rep.csv ] to directory [ beta ]
+#> * Start importing: beta into project: exampledictionary
+#> Compressing...
+#>   |                                                                                                       |                                                                                               |   0%  |                                                                                                       |===============================================================================================| 100%
+#> Uploaded beta/non_rep
+#> * Import finished successfully
+#> * Generating: yearly-repeated measures
+#> * Start importing: beta into project: exampledictionary
+#> Compressing...
+#>   |                                                                                                       |                                                                                               |   0%  |                                                                                                       |=============================                                                                  |  31%  |                                                                                                       |===========================================================                                    |  62%  |                                                                                                       |========================================================================================       |  93%  |                                                                                                       |===============================================================================================| 100%
+#> Uploaded beta/yearly_rep
+#> * Import finished successfully
 #> ######################################################
-#>   Reshaping successfully finished
+#>   Converting and import successfully finished
 #> ######################################################
-#>   Starting quality control
-#> ------------------------------------------------------
-#>  * Starting with: lc_beta_example-dictionary - example-dictionary-non_rep
-#> 
-#> Logging into the collaborating servers
-#> Error in getClass(Class, where = topenv(parent.frame())): "OpalDriver" is not a defined class
 #>  * Reinstate default working directory
 #>  * Cleanup temporary directory
 ```

@@ -21,7 +21,8 @@ The beta dictionaries are used to be able to initiate creation of dictonaries in
 You need to have a few prerequisites
 - [Git](https://git-scm.com/)
 - [RStudio](https://rstudio.com/)
-- [Opal](https://)
+- [Opal](https://github.com/obiba/opal)
+- [Opal](https://github.com/molgenis/molgenis-service-armadillo)
 - [Excel](https://www.microsoft.com/nl-nl/microsoft-365/excel)
 
 ## Working with ds-beta-dictionaries
@@ -56,9 +57,9 @@ When you finished writing the dictionary you need to commit and push them to the
 When a first version of a beta dictionary is available, you can upload it to opal with the following code:
 
 ```{r, uploading beta dictionaries}
-du.login(
-  hostname = "https://opal.edge.molgenis.org", 
-  password = "admin")
+login_data <- data.frame(server = "https://armadillo.test.molgenis.org", storage = "https://armadillo-minio.test.molgenis.org", driver = "ArmadilloDriver")
+
+du.login(login_data)
   
 du.upload.beta(
   dict_name = "example-dictionary", 

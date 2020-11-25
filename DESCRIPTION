@@ -30,6 +30,7 @@ Authors@R:
       family = "Aurup",
       role = "ctb",
       email = "anne.aurup@sund.ku.dk"))
+Maintainer: Sido Haakma <s.haakma@rug.nl>
 Description: We supply standardised ways to upload and import versioned data dictionaries. 
   To check if your data is correct it contains a number of local functions which can be performed to
   check the quality of your data as well. It also can reshape the data into Opal format when you use other tools
@@ -55,10 +56,10 @@ Imports:
   utils,
   tibble,
   fs,
-  MolgenisArmadillo (>= 0.2.0),
   opalr (>= 1.2.0),
   DSOpal (>= 1.0.0),
   DSMolgenisArmadillo (>= 1.2.0),
+  MolgenisArmadillo (>= 0.2.0),
   dsHelper,
   dsBaseClient (>= 6.0.1),
 Suggests: 
