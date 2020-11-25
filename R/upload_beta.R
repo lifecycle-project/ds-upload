@@ -15,6 +15,10 @@ du.upload.beta <- function(upload = TRUE, dict_name = "", action = du.enum.actio
   du.check.package.version()
   du.check.session(upload)
 
+  message("######################################################")
+  message("  Start upload BETA data into DataSHIELD backend")
+  message("------------------------------------------------------")
+
   tryCatch(
     {
       workdirs <- du.create.temp.workdir()
@@ -22,7 +26,7 @@ du.upload.beta <- function(upload = TRUE, dict_name = "", action = du.enum.actio
       du.dict.download(dict_name = dict_name, dict_kind = du.enum.dict.kind()$BETA)
 
       if (action == du.enum.action()$ALL | action == du.enum.action()$POPULATE) {
-        du.populate.beta(dict_name, database_name)
+        project <- du.populate.beta(dict_name, database_name)
       }
 
       if (action == du.enum.action()$ALL | action == du.enum.action()$RESHAPE) {
@@ -35,13 +39,23 @@ du.upload.beta <- function(upload = TRUE, dict_name = "", action = du.enum.actio
           data_input_format <- du.enum.input.format()$CSV
         }
         du.reshape.beta(
-          upload = upload, input_format = data_input_format, dict_name = dict_name, input_path = data_input_path
+          upload = upload, project, input_format = data_input_format, dict_name = dict_name, input_path = data_input_path
         )
       }
+
+      run_cqc <- readline("- Do you want to run quakity control? (y/n): ")
+      if (run_cqc == "y") {
+        if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
+          du.quality.control(project)
+        }
+        if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
+          armadillo_project <- str_replace_all(dict_name, "-", "")
+          du.quality.control(armadillo_project)
+        }
+      }
+    },
+    finally = {
+      du.clean.temp.workdir(upload, workdirs)
     }
-    #,
-    #finally = {
-    #  du.clean.temp.workdir(upload, workdirs)
-    #}
   )
 }

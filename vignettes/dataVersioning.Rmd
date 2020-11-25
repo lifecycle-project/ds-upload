@@ -1,0 +1,65 @@
+---
+title: "Data versioning"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Data versioning}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+
+## Data versioning
+We suggest to version the data that you upload. This is needed because of the reproducibility of the research that is going to be performed on the datasets. We are suggesting to do this based upon ([semantic versioning](https://semver.org)). A better explanation on using semantic versioning in data can be found here: [semantic versioning for data products](https://medium.com/data-architect/semantic-versioning-for-data-products-2b060962093).
+
+### Semantic versioning
+The implementation of semantic versioning is as follows.
+
+- **Major**
+  - Amending your dataset with new data
+- **Minor**
+  - Correcting errors in the data (e.g. categories which are encoded the wrong way)
+
+## Table scheme 
+The table scheme we use is composed of 2 components, the data version and the table name.
+
+- **data-major _ data_minor - tablename**
+
+##### Examples for the 'core' tables
+- 1_0-non_rep
+- 1_0-monthly_rep
+- 1_0-trimester_rep
+- 1_0-monthly_rep
+
+##### Examples for the 'outcome' tables
+- 1_0-non_rep
+- 1_0-weekly_rep
+- 1_0-monthly_rep
+- 1_0-yearly_rep
+
+### Other approaches
+Semantic versioning is just one of the strategies you can use. Date-based versioning is also a good way to deal with this examples can be:
+
+##### Examples for the 'core' tables
+
+*Full datetime*
+
+- 2020-11-02 21:36
+  - 20201102_2136-non_rep
+  
+*Date only*
+
+- 2020-11-02
+  - 202011_02-monthly_rep
+  
+*Date month* - if you have less iterations 
+
+- 2020-11
+  - 2020-11-trimester_rep
+
+## Changelogs
+To keep track of all the changed within the different versions of the data you uploaded you can keep track of a changelog.
+
+To view an example, please check out the [changelogs](https://github.com/lifecycle-project/ds-dictionaries/tree/master/changelogs) of the dictionaries. You can use the same format, but for the data. When you archived the project it becomes less relevant.  
+

@@ -1,8 +1,8 @@
 ---
-title: "DSUpload"
+title: "dsUpload"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{DSUpload}
+  %\VignetteIndexEntry{dsUpload}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -24,14 +24,21 @@ Participating cohorts must harmonise data, following the data harmonisation manu
 
 ## Installation
 Reference documentation:
-- [dsUpload](https://lifecycle-project.github.io/lifecycle-project/ds-upload)
-- [Armadillo](http://molgenis.github.io/molgenis/molgenis-r-armadillo)
+- [dsUpload](https://lifecycle-project.github.io/ds-upload)
+- [Armadillo](http://molgenis.github.io/molgenis-r-armadillo)
 - [Opal](http://opaldoc.obiba.org/en/latest/r-user-guide/datashield.html)
 
 You can install the package by executing the following command:
 
 ```{r, install the package, eval = FALSE}
 install.packages("dsUpload", repos='https://registry.molgenis.org/repository/R/', dependencies = TRUE)
+```
+
+When you want to use it you need to load it.
+
+```{r, setup}
+# load the package
+library(dsUpload)
 ```
 
 ## Troubleshooting
@@ -46,29 +53,28 @@ To simplify the upload and importing of data dictionaries this package is writte
   
   Merge all the variables that are obtained in the dictionary of the core variables. 
   So in general that means merge the data of WP1 and WP3 into one set.
+
 - Upload outcome variables
+
   Merge all the variables that are obtained in the dictionary of the outcome variables. 
   So in general this means merge the data of WP4, WP5 and WP6 into one set. 
 
-A video guiding you through the process can be found here:
+### Using Armadillo
+Please following the instruction below to upload the core and outcome variables in the Aramdillo.
 
-Check youtube channel: [upload data dictionaries and data into opal](https://youtu.be/fUrpbstPCsU)
-
-Alternatively, execute these commands in your R-console:
-
-```{r, setup}
-# load the package
-library(dsUpload)
+```{r, create Armadillo dataframe}
+login_data <- data.frame(
+  server = "https://armadillo.test.molgenis.org", 
+  storage = "https://armadillo-minio.test.molgenis.org", 
+  driver = "ArmadilloDriver")
 ```
 
 ```{r, login to the datashield backend}
-# login to the DataSHIELD backend
-du.login(
-  hostname = 'https://opal.edge.molgenis.org', 
-  password = 'admin')
+# login to the Armadillo server
+du.login(login_data = login_data)
 ```
 
-```{r, upload the core variables}
+```{r, upload and import the core variables for the Armadillo}
 # upload the data into the DataSHIELD backend
 # these are the core variables
 # be advised the default input format is 'CSV'
@@ -80,10 +86,10 @@ du.upload(
   data_version = '1_0', 
   data_input_format = 'CSV',
   data_input_path = 'https://github.com/lifecycle-project/ds-upload/blob/master/tests/data/WP1/data/all_measurements_v1_2.csv?raw=true',
-  non_interactive = TRUE
+  run_mode = "non_interactive"
 )
 ```
-```{r, upload the outcome variables}
+```{r, upload and import the outcome variables for Armadillo}
 # upload the outcome variables
 du.upload(
   cohort_id = 'dnbc', 
@@ -92,7 +98,55 @@ du.upload(
   data_version = '1_0', 
   data_input_format = 'CSV',
   data_input_path = 'https://github.com/lifecycle-project/ds-upload/blob/master/tests/data/WP6/nd_data_wp6.csv?raw=true',
-  non_interactive = TRUE
+  run_mode = "non_interactive"
+)
+```
+
+### Using Opal
+A video guiding you through the process can be found here:
+
+Check youtube channel: [upload data dictionaries and data into Opal](https://youtu.be/fUrpbstPCsU)
+
+Alternatively, execute these commands in your R-console:
+
+```{r, create Opal dataframe}
+login_data <- data.frame(
+  server = "https://opal.edge.molgenis.org", 
+  user = "administrator", 
+  password = "admin",
+  driver = "OpalDriver")
+```
+
+```{r, login to the Opal}
+# login to the DataSHIELD backend
+du.login(login_data = login_data)
+```
+
+```{r, upload and import the core variables for the Opal}
+# upload the data into the DataSHIELD backend
+# these are the core variables
+# be advised the default input format is 'CSV'
+# you can use STATA, SPSS, SAS and CSV's as source files
+du.upload(
+  cohort_id = 'dnbc', 
+  dict_version = '2_1', 
+  dict_kind = 'core', 
+  data_version = '1_0', 
+  data_input_format = 'CSV',
+  data_input_path = 'https://github.com/lifecycle-project/ds-upload/blob/master/tests/data/WP1/data/all_measurements_v1_2.csv?raw=true',
+  run_mode = "non_interactive"
+)
+```
+```{r, upload and import the outcome variables for Opal}
+# upload the outcome variables
+du.upload(
+  cohort_id = 'dnbc', 
+  dict_version = '1_1', 
+  dict_kind = 'outcome', 
+  data_version = '1_0', 
+  data_input_format = 'CSV',
+  data_input_path = 'https://github.com/lifecycle-project/ds-upload/blob/master/tests/data/WP6/nd_data_wp6.csv?raw=true',
+  run_mode = "non_interactive"
 )
 ```
 
@@ -122,7 +176,7 @@ Alternatively, execute these actions for Opal:
 8. Click on "Next"
 9. Click on "Next"
 10. Determine that you all variables are matched, otherwise you need to fix your source-data first
-**IMPORTANT**: make sure no NEW variables are introduce
+> **IMPORTANT**: make sure no NEW variables are introduce
 11. Click on "Finish"
 12. Check the "Task logs" (on the left side of the screen, in the icon bar)
 

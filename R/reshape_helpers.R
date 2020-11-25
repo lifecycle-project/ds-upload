@@ -8,7 +8,7 @@
 #'
 #' @return dataframe with source data
 #'
-#' @keywords internal
+#' @noRd
 du.read.source.file <- function(input_path, input_format) {
   du_data <- NULL
 
@@ -22,7 +22,7 @@ du.read.source.file <- function(input_path, input_format) {
     } else if (input_format == du.enum.input.format()$R) {
       data <- source(input_path)
     } else {
-      data <- read_csv(input_path)
+      data <- read_csv(input_path, col_types = cols(.default = col_double()))
     }
   } else {
     stop(paste0(
@@ -34,85 +34,6 @@ du.read.source.file <- function(input_path, input_format) {
   return(data)
 }
 
-#' Uploading the generated data files
-#'
-#' @param dict_kind can be 'core' or 'outcome'
-#' @param file_name name of the data file
-#'
-#' @importFrom opalr opal.file_upload opal.file_mkdir opal.file_ls
-#'
-#' @keywords internal
-du.reshape.upload <- function(dict_kind, file_name) {
-  upload_directory <- paste0("/home/", ds_upload.globals$username)
-
-  message(paste0("* Upload: [ ", file_name, ".csv ] to directory [ ", dict_kind, " ]"))
-  dirs <- opal.file_ls(ds_upload.globals$opal, upload_directory)
-  if (!(dict_kind %in% dirs$name)) {
-    opal.file_mkdir(ds_upload.globals$opal, paste0(upload_directory, "/", dict_kind))
-  }
-  opal.file_upload(ds_upload.globals$opal, source = paste0(getwd(), "/", file_name, ".csv"), destination = paste0(upload_directory, "/", dict_kind))
-
-  unlink(paste0(getwd(), "/", file_name, ".csv"))
-}
-
-#' Importing generated data files
-#'
-#' @param file_prefix a date to prefix the file with
-#' @param dict_kind can be 'core' or 'outcome'
-#' @param file_version the data release version
-#' @param file_name name of the data file
-#'
-#' @importFrom readr read_csv
-#' @importFrom opalr opal.post
-#' @importFrom opalr opal.projects
-#' @importFrom opalr opal.tables
-#' @importFrom jsonlite toJSON
-#'
-#' @keywords internal
-du.reshape.import <- local(function(file_prefix, dict_kind, file_version, file_name) {
-  message("------------------------------------------------------")
-  message("  Start importing data files")
-
-  file_ext <- ".csv"
-
-  projects <- opal.projects(ds_upload.globals$opal)
-  project <- readline(paste("Which project you want to upload into: [ ", paste0(projects$name,
-    collapse = ", "
-  ), " ]: ", sep = ""))
-
-  if (!(project %in% projects$name)) {
-    stop(paste("Invalid projectname: [ ", project, " ]", sep = ""))
-  }
-
-  tables <- opal.tables(ds_upload.globals$opal, project)
-
-  table_name <- ""
-  if (file_name %in% tables$name) {
-    table <- tables$name
-  }
-
-  data <- read_csv(paste(getwd(), "/", file_prefix, "_", dict_kind, "_", file_version,
-    "_", file_name, file_ext,
-    sep = ""
-  ))
-
-  message(paste("* Import: ", paste(getwd(), "/", file_prefix, "_", dict_kind, "_",
-    file_version, "_", file_name, file_ext,
-    sep = ""
-  ), sep = ""))
-  opal.post(ds_upload.globals$opal, "datasource", ds_upload.globals$project, "table",
-    table_name, "variables",
-    body = toJSON(data), contentType = "application/x-protobuf+json"
-  )
-
-  unlink(paste(getwd(), "/", file_prefix, "_", dict_kind, "_", file_version, "_", file_name,
-    file_ext,
-    sep = ""
-  ))
-
-  message("  Succesfully imported the files")
-})
-
 #' Get the table without rows containing only NA's.
 #'
 #' We have to remove the first column (child_id), that is generated always.
@@ -123,7 +44,7 @@ du.reshape.import <- local(function(file_prefix, dict_kind, file_version, file_n
 #'
 #' @return dataframe without the na values
 #'
-#' @keywords internal
+#' @noRd
 du.data.frame.remove.all.na.rows <- local(function(dataframe) {
   df <- dataframe[-c(1)]
 
@@ -144,7 +65,7 @@ du.data.frame.remove.all.na.rows <- local(function(dataframe) {
 #'
 #' @return matched_columns in source data
 #'
-#' @keywords internal
+#' @noRd
 du.match.columns <- local(function(data_columns, dict_columns) {
   matched_columns <- character()
 
@@ -165,12 +86,12 @@ du.match.columns <- local(function(data_columns, dict_columns) {
 #'
 #' @param dict_kind specify which dictionary you want to check
 #' @param data_columns the coiumns within the data
-#' @param non_interactive if set to TRUE you will get no questions
+#' @param run_mode default = NORMAL, can be TEST and NON_INTERACTIIVE
 #'
 #' @return stops the program if someone terminates
 #'
-#' @keywords internal
-du.check.variables <- local(function(dict_kind, data_columns, non_interactive) {
+#' @noRd
+du.check.variables <- local(function(dict_kind, data_columns, run_mode) {
   variables <- du.retrieve.dictionaries(dict_kind = dict_kind)
 
   matched_columns <- du.match.columns(data_columns, variables$name)
@@ -182,7 +103,7 @@ du.check.variables <- local(function(dict_kind, data_columns, non_interactive) {
       "[WARNING] This is an unmatched column, it will be dropped : [ ",
       columns_not_matched, " ].\n"
     ))
-    if (!non_interactive) {
+    if (run_mode != du.enum.run.mode()$NON_INTERACTIVE) {
       proceed <- readline("Do you want to proceed (y/n)")
     } else {
       proceed <- "y"
@@ -198,16 +119,15 @@ du.check.variables <- local(function(dict_kind, data_columns, non_interactive) {
 #' Generate the yearly repeated measures file and write it to your local workspace
 #'
 #' @param data data frame with all the data based upon the CSV file
-#' @param upload do you want to upload to Opal (default = true)
 #' @param dict_kind can be 'core' or 'outcome'
-#' @param file_name non-repeated, monthly-repeated or yearly-repeated
 #'
 #' @importFrom readr write_csv
 #' @importFrom dplyr %>%
 #' @importFrom readxl read_xlsx
 #'
-#' @keywords internal
-du.reshape.generate.non.repeated <- function(data, upload, dict_kind, file_name) {
+#' @noRd
+du.reshape.generate.non.repeated <- function(data, dict_kind) {
+  
   message("* Generating: non-repeated measures")
 
   # Retrieve dictionary
@@ -227,28 +147,21 @@ du.reshape.generate.non.repeated <- function(data, upload, dict_kind, file_name)
     non_repeated_measures
   )
 
-  # Write as csv
-  write_csv(non_repeated_measures, paste0(getwd(), "/", file_name, ".csv"), na = "")
-
-  if (upload) {
-    du.reshape.upload(dict_kind, file_name)
-  }
+  return(non_repeated_measures)
 }
 
 #' Generate the yearly repeated measures file and write it to your local workspace
 #'
 #' @param data data frame with all the data based upon the CSV file
-#' @param upload do you want to upload to Opal (default = true)
 #' @param dict_kind can be 'core' or 'outcome'
-#' @param file_name non-repeated, monthly-repeated, weekly, trimesterly or yearly-repeated
 #'
 #' @importFrom readr write_csv
 #' @importFrom dplyr %>% filter summarise bind_rows
 #' @importFrom maditr dcast as.data.table %<>%
 #' @importFrom tidyr gather
 #'
-#' @keywords internal
-du.reshape.generate.yearly.repeated <- function(data, upload, dict_kind, file_name) {
+#' @noRd
+du.reshape.generate.yearly.repeated <- function(data, dict_kind) {
   # workaround to avoid glpobal variable warnings, check:
   # https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
   orig_var <- value <- age_years <- . <- NULL
@@ -303,27 +216,21 @@ du.reshape.generate.yearly.repeated <- function(data, upload, dict_kind, file_na
   # Arrange the variable names based on the original order
   long_yearly <- long_2[, c("row_id", "child_id", "age_years", unique(long_1$variable_trunc))]
 
-  write_csv(long_yearly, paste0(getwd(), "/", file_name, ".csv"), na = "")
-
-  if (upload) {
-    du.reshape.upload(dict_kind, file_name)
-  }
+  return(long_yearly)
 }
 
 #' Generate the monthly repeated measures file and write it to your local workspace
 #'
 #' @param data data frame with all the data based upon the CSV file
-#' @param upload do you want to upload to Opal (default = true)
 #' @param dict_kind can be 'core' or 'outcome'
-#' @param file_name non-repeated, monthly-repeated, weekly, trimesterly or yearly-repeated
 #'
 #' @importFrom readr write_csv
 #' @importFrom dplyr %>% filter summarise bind_rows
 #' @importFrom maditr dcast as.data.table %<>%
 #' @importFrom tidyr gather
 #'
-#' @keywords internal
-du.reshape.generate.monthly.repeated <- local(function(data, upload, dict_kind, file_name) {
+#' @noRd
+du.reshape.generate.monthly.repeated <- function(data, dict_kind) {
   # workaround to avoid glpobal variable warnings, check:
   # https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
   orig_var <- value <- age_months <- . <- NULL
@@ -380,28 +287,21 @@ du.reshape.generate.monthly.repeated <- local(function(data, upload, dict_kind, 
   # Arrange the variable names based on the original order
   long_monthly <- long_2[, c("row_id", "child_id", "age_years", "age_months", unique(long_1$variable_trunc))]
 
-
-  write_csv(long_monthly, paste0(getwd(), "/", file_name, ".csv"), na = "")
-
-  if (upload) {
-    du.reshape.upload(dict_kind, file_name)
-  }
-})
+  return(long_monthly)
+}
 
 #' Generate the weekly repeated measures file and write it to your local workspace
 #'
 #' @param data data frame with all the data based upon the CSV file
-#' @param upload do you want to upload to Opal (default = true)
 #' @param dict_kind can be 'core' or 'outcome'
-#' @param file_name non-repeated, monthly-repeated, weekly, trimesterly or yearly-repeated
 #'
 #' @importFrom readr write_csv
 #' @importFrom dplyr %>% filter summarise bind_rows
 #' @importFrom maditr dcast as.data.table %<>%
 #' @importFrom tidyr gather
 #'
-#' @keywords internal
-du.reshape.generate.weekly.repeated <- local(function(data, upload, dict_kind, file_name) {
+#' @noRd
+du.reshape.generate.weekly.repeated <- function(data, dict_kind) {
   # workaround to avoid glpobal variable warnings, check:
   # https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
   orig_var <- value <- age_weeks <- . <- NULL # Gestational age in weeks
@@ -459,28 +359,22 @@ du.reshape.generate.weekly.repeated <- local(function(data, upload, dict_kind, f
   # Arrange the variable names based on the original order
   long_weekly <- long_2[, c("row_id", "child_id", "age_years", "age_weeks", unique(long_1$variable_trunc))]
 
-  write_csv(long_weekly, paste0(getwd(), "/", file_name, ".csv"), na = "")
-
-  if (upload) {
-    du.reshape.upload(dict_kind, file_name)
-  }
-})
+  return(long_weekly)
+}
 
 
 #' Generate the trimesterly repeated measures file and write it to your local workspace
 #'
 #' @param data data frame with all the data based upon the CSV file
-#' @param upload do you want to upload to Opal (default = true)
 #' @param dict_kind can be 'core' or 'outcome'
-#' @param file_name non-repeated, monthly-repeated, weekly, trimesterly or yearly-repeated
 #'
 #' @importFrom readr write_csv
 #' @importFrom dplyr %>% filter summarise bind_rows
 #' @importFrom maditr dcast as.data.table %<>%
 #' @importFrom tidyr gather
 #'
-#' @keywords internal
-du.reshape.generate.trimesterly.repeated <- local(function(data, upload, dict_kind, file_name) {
+#' @noRd
+du.reshape.generate.trimesterly.repeated <- function(data, dict_kind) {
   # workaround to avoid glpobal variable warnings, check:
   # https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
   orig_var <- value <- age_trimester <- . <- NULL
@@ -539,9 +433,5 @@ du.reshape.generate.trimesterly.repeated <- local(function(data, upload, dict_ki
   # Arrange the variable names based on the original order
   long_trimesterly <- long_2[, c("row_id", "child_id", "age_trimester", unique(long_1$variable_trunc))]
 
-  write_csv(long_trimesterly, paste0(getwd(), "/", file_name, ".csv"), na = "")
-
-  if (upload) {
-    du.reshape.upload(dict_kind, file_name)
-  }
-})
+  return(long_trimesterly)
+}

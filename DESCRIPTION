@@ -1,8 +1,36 @@
 Package: dsUpload
-Title: Upload functions for DataSHIELD backends
-Version: 3.1.0
-Authors@R: person("Sido", "Haakma", email = "s.haakma@rug.nl",
-                  role = c("aut", "cre"))
+Title: Upload Functions for DataSHIELD Backends
+Version: 4.0.3.9000
+Authors@R: 
+  c(person(given = "Sido",
+      family = "Haakma",
+      role = c("aut", "cre"),
+      email = "s.haakma@rug.nl",
+      comment = c(ORCID = "0000-0003-1278-9144")),
+    person(given = "Angela",
+      family = "Pinot de Moira",
+      role = "aut",
+      email = "anpi@sund.ku.dk",
+      comment = c(ORCID = "0000-0003-3593-8472")),
+    person(given = "Maxime",
+      family = "Cornet",
+      role = "aut",
+      email = "maxime.cornet@inserm.fr"),
+    person(given = "Sebastian",
+      family = "Rauschert",
+      role = "aut",
+      email = "sebastian.rauschert@telethonkids.org.au",
+      comment = c(ORCID = "0000-0001-8359-6898")),
+    person(given = "Luise",
+      family = "Cederkvist",
+      role = "ctb",
+      email = "luise.kristiansen@sund.ku.dk",
+      comment = c(ORCID = "0000-0002-7601-9723")),
+    person(given = "Anne",
+      family = "Aurup",
+      role = "ctb",
+      email = "anne.aurup@sund.ku.dk"))
+Maintainer: Sido Haakma <s.haakma@rug.nl>
 Description: We supply standardised ways to upload and import versioned data dictionaries. 
   To check if your data is correct it contains a number of local functions which can be performed to
   check the quality of your data as well. It also can reshape the data into Opal format when you use other tools
@@ -11,16 +39,13 @@ URL: https://github.com/lifecycle-project/ds-upload
 BugReports: https://github.com/lifecycle-project/ds-upload/issues
 Depends: 
   R (>= 3.5.0),
-  opalr (>= 1.2.0)
+  DSI (>= 1.1.0)
 Imports:
   dplyr,
   maditr,
-  gmodels,
-  ggplot2,
   haven,
   httr,
   jsonlite,
-  plotly,
   purrr,
   readr,
   readxl,
@@ -30,7 +55,13 @@ Imports:
   tidyr,
   utils,
   tibble,
-  fs
+  fs,
+  opalr (>= 1.2.0),
+  DSOpal (>= 1.0.0),
+  DSMolgenisArmadillo (>= 1.2.0),
+  MolgenisArmadillo (>= 0.2.0),
+  dsHelper,
+  dsBaseClient (>= 6.0.1),
 Suggests: 
   knitr, 
   rmarkdown,

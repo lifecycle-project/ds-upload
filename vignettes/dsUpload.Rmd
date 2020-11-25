@@ -1,0 +1,418 @@
+---
+title: "dsUpload"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{dsUpload}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+# DataSHIELD upload tools
+
+## Background
+The aim of the EU Child Cohort Network is to bring together data from existing child cohorts into one open and sustainable, multi-disciplinary network.
+To ensure sure that the EU Child Cohort Network is both open and sustainable, the consortia are using the data-sharing platform DataSHIELD. 
+
+Participating cohorts must harmonise data, following the data harmonisation manuals. Secondly, perform quality-control checks on their harmonised data. Thirdly, upload descriptions of harmonisation to the cohort catalogue. The last step is uploading the data into the DataSHIELD backends. The guide below guides you through the process.
+
+## Installation
+Reference documentation:
+- [dsUpload](https://lifecycle-project.github.io/ds-upload)
+- [Armadillo](http://molgenis.github.io/molgenis-r-armadillo)
+- [Opal](http://opaldoc.obiba.org/en/latest/r-user-guide/datashield.html)
+
+You can install the package by executing the following command:
+
+
+```r
+install.packages("dsUpload", repos='https://registry.molgenis.org/repository/R/', dependencies = TRUE)
+```
+
+When you want to use it you need to load it.
+
+
+```r
+# load the package
+library(dsUpload)
+```
+
+## Troubleshooting
+Check: [troubleshooting guide](https://github.com/lifecycle-project/ds-upload/blob/master/TROUBLESHOOTING.md)
+
+## Usage
+To simplify the upload and importing of data dictionaries this package is written to import and upload the data dictionaries and data in one run. When running the package, you need to specify the data dictionary version and the data input file. When you use data formats other than CSV use need to specify the data format as well
+
+**Prerequisites**
+
+- Upload core variables
+  
+  Merge all the variables that are obtained in the dictionary of the core variables. 
+  So in general that means merge the data of WP1 and WP3 into one set.
+
+- Upload outcome variables
+
+  Merge all the variables that are obtained in the dictionary of the outcome variables. 
+  So in general this means merge the data of WP4, WP5 and WP6 into one set. 
+
+### Using Armadillo
+Please following the instruction below to upload the core and outcome variables in the Aramdillo.
+
+
+```r
+login_data <- data.frame(
+  server = "https://armadillo.test.molgenis.org", 
+  storage = "https://armadillo-minio.test.molgenis.org", 
+  driver = "ArmadilloDriver")
+```
+
+
+```r
+# login to the Armadillo server
+du.login(login_data = login_data)
+#>   Login to: "https://armadillo.test.molgenis.org"
+#> [1] "We're opening a browser so you can log in with code DGWSMP"
+#>   Logged on to: "https://armadillo.test.molgenis.org"
+```
+
+
+```r
+# upload the data into the DataSHIELD backend
+# these are the core variables
+# be advised the default input format is 'CSV'
+# you can use STATA, SPSS, SAS and CSV's as source files
+du.upload(
+  cohort_id = 'dnbc', 
+  dict_version = '2_1', 
+  dict_kind = 'core', 
+  data_version = '1_0', 
+  data_input_format = 'CSV',
+  data_input_path = 'https://github.com/lifecycle-project/ds-upload/blob/master/tests/data/WP1/data/all_measurements_v1_2.csv?raw=true',
+  run_mode = "non_interactive"
+)
+#> ######################################################
+#>   Start upload data into DataSHIELD backend
+#> ------------------------------------------------------
+#>  * Create temporary workdir
+#> ######################################################
+#>   Start download dictionaries
+#> ------------------------------------------------------
+#> * Download: [ 2_1_monthly_rep.xlsx ]
+#> * Download: [ 2_1_non_rep.xlsx ]
+#> * Download: [ 2_1_trimester_rep.xlsx ]
+#> * Download: [ 2_1_yearly_rep.xlsx ]
+#>   Successfully downloaded dictionaries
+#> ######################################################
+#>   Start importing data dictionaries
+#> ######################################################
+#>  * Check released dictionaries
+#> Created project 'dnbc'
+#> ######################################################
+#>   Start converting and uploading data
+#> ######################################################
+#> * Setup: load data and set output directory
+#> ------------------------------------------------------
+#> [WARNING] This is an unmatched column, it will be dropped : [ art ].
+#> * Generating: non-repeated measures
+#> * Generating: yearly-repeated measures
+#> Aggregate function missing, defaulting to 'length'
+#> * Generating: monthly-repeated measures
+#> Aggregate function missing, defaulting to 'length'
+#> * Generating: trimesterly-repeated measures
+#> Aggregate function missing, defaulting to 'length'
+#> * Start importing: 2_1_core_1_0 into project: dnbc
+#> Compressing...
+#>   |                                                                                                                |                                                                                                        |   0%  |                                                                                                                |========================================================================================================| 100%
+#> Uploaded 2_1_core_1_0/trimester
+#> * Import finished successfully
+#> * Start importing: 2_1_core_1_0 into project: dnbc
+#> Compressing...
+#>   |                                                                                                                |                                                                                                        |   0%  |                                                                                                                |===============                                                                                         |  15%  |                                                                                                                |==============================                                                                          |  29%  |                                                                                                                |=============================================                                                           |  44%  |                                                                                                                |=============================================================                                           |  58%  |                                                                                                                |============================================================================                            |  73%  |                                                                                                                |===========================================================================================             |  87%  |                                                                                                                |========================================================================================================| 100%
+#> Uploaded 2_1_core_1_0/non_rep
+#> * Import finished successfully
+#> * Start importing: 2_1_core_1_0 into project: dnbc
+#> Compressing...
+#>   |                                                                                                                |                                                                                                        |   0%  |                                                                                                                |========================================================================================================| 100%
+#> Uploaded 2_1_core_1_0/yearly_rep
+#> * Import finished successfully
+#> * Start importing: 2_1_core_1_0 into project: dnbc
+#> Compressing...
+#>   |                                                                                                                |                                                                                                        |   0%  |                                                                                                                |========================================================================================================| 100%
+#> Uploaded 2_1_core_1_0/monthly_rep
+#> * Import finished successfully
+#> ######################################################
+#>   Converting and import successfully finished
+#> ######################################################
+#>   Starting quality control
+#> ------------------------------------------------------
+#> Error in private$.is.empty(server): argument "server" is missing, with no default
+#>  * Reinstate default working directory
+#>  * Cleanup temporary directory
+```
+
+```r
+# upload the outcome variables
+du.upload(
+  cohort_id = 'dnbc', 
+  dict_version = '1_1', 
+  dict_kind = 'outcome', 
+  data_version = '1_0', 
+  data_input_format = 'CSV',
+  data_input_path = 'https://github.com/lifecycle-project/ds-upload/blob/master/tests/data/WP6/nd_data_wp6.csv?raw=true',
+  run_mode = "non_interactive"
+)
+#> ######################################################
+#>   Start upload data into DataSHIELD backend
+#> ------------------------------------------------------
+#>  * Create temporary workdir
+#> ######################################################
+#>   Start download dictionaries
+#> ------------------------------------------------------
+#> * Download: [ 1_1_monthly_rep.xlsx ]
+#> * Download: [ 1_1_non_rep.xlsx ]
+#> * Download: [ 1_1_weekly_rep.xlsx ]
+#> * Download: [ 1_1_yearly_rep.xlsx ]
+#>   Successfully downloaded dictionaries
+#> ######################################################
+#>   Start importing data dictionaries
+#> ######################################################
+#>  * Check released dictionaries
+#> * Project : dnbc already exists
+#> ######################################################
+#>   Start converting and uploading data
+#> ######################################################
+#> * Setup: load data and set output directory
+#> ------------------------------------------------------
+#> * Generating: non-repeated measures
+#> * Generating: yearly-repeated measures
+#> * Generating: monthly-repeated measures
+#> * Generating: weekly-repeated measures
+#> * Start importing: 1_1_outcome_1_0 into project: dnbc
+#> Compressing...
+#>   |                                                                                                                |                                                                                                        |   0%  |                                                                                                                |========================================================================================================| 100%
+#> Uploaded 1_1_outcome_1_0/weekly_rep
+#> * Import finished successfully
+#> * Start importing: 1_1_outcome_1_0 into project: dnbc
+#> Compressing...
+#>   |                                                                                                                |                                                                                                        |   0%  |                                                                                                                |========================================================================================================| 100%
+#> Uploaded 1_1_outcome_1_0/non_rep
+#> * Import finished successfully
+#> * Start importing: 1_1_outcome_1_0 into project: dnbc
+#> Compressing...
+#>   |                                                                                                                |                                                                                                        |   0%  |                                                                                                                |========                                                                                                |   8%  |                                                                                                                |================                                                                                        |  16%  |                                                                                                                |=========================                                                                               |  24%  |                                                                                                                |=================================                                                                       |  31%  |                                                                                                                |=========================================                                                               |  39%  |                                                                                                                |=================================================                                                       |  47%  |                                                                                                                |=========================================================                                               |  55%  |                                                                                                                |=================================================================                                       |  63%  |                                                                                                                |==========================================================================                              |  71%  |                                                                                                                |==================================================================================                      |  79%  |                                                                                                                |==========================================================================================              |  86%  |                                                                                                                |==================================================================================================      |  94%  |                                                                                                                |========================================================================================================| 100%
+#> Uploaded 1_1_outcome_1_0/yearly_rep
+#> * Import finished successfully
+#> * Start importing: 1_1_outcome_1_0 into project: dnbc
+#> Compressing...
+#>   |                                                                                                                |                                                                                                        |   0%  |                                                                                                                |========================================================================================================| 100%
+#> Uploaded 1_1_outcome_1_0/monthly_rep
+#> * Import finished successfully
+#> ######################################################
+#>   Converting and import successfully finished
+#> ######################################################
+#>   Starting quality control
+#> ------------------------------------------------------
+#> Error in private$.is.empty(server): argument "server" is missing, with no default
+#>  * Reinstate default working directory
+#>  * Cleanup temporary directory
+```
+
+### Using Opal
+A video guiding you through the process can be found here:
+
+Check youtube channel: [upload data dictionaries and data into Opal](https://youtu.be/fUrpbstPCsU)
+
+Alternatively, execute these commands in your R-console:
+
+
+```r
+login_data <- data.frame(
+  server = "https://opal.edge.molgenis.org", 
+  user = "administrator", 
+  password = "admin",
+  driver = "OpalDriver")
+```
+
+
+```r
+# login to the DataSHIELD backend
+du.login(login_data = login_data)
+#>   Login to: "https://opal.edge.molgenis.org"
+#>   Logged on to: "https://opal.edge.molgenis.org"
+```
+
+
+```r
+# upload the data into the DataSHIELD backend
+# these are the core variables
+# be advised the default input format is 'CSV'
+# you can use STATA, SPSS, SAS and CSV's as source files
+du.upload(
+  cohort_id = 'dnbc', 
+  dict_version = '2_1', 
+  dict_kind = 'core', 
+  data_version = '1_0', 
+  data_input_format = 'CSV',
+  data_input_path = 'https://github.com/lifecycle-project/ds-upload/blob/master/tests/data/WP1/data/all_measurements_v1_2.csv?raw=true',
+  run_mode = "non_interactive"
+)
+#> ######################################################
+#>   Start upload data into DataSHIELD backend
+#> ------------------------------------------------------
+#>  * Create temporary workdir
+#> ######################################################
+#>   Start download dictionaries
+#> ------------------------------------------------------
+#> * Download: [ 2_1_monthly_rep.xlsx ]
+#> * Download: [ 2_1_non_rep.xlsx ]
+#> * Download: [ 2_1_trimester_rep.xlsx ]
+#> * Download: [ 2_1_yearly_rep.xlsx ]
+#>   Successfully downloaded dictionaries
+#> ######################################################
+#>   Start importing data dictionaries
+#> ######################################################
+#>  * Check released dictionaries
+#> ------------------------------------------------------
+#>   Start creating project: [ lc_dnbc_core_2_1 ]
+#> * Project: [ lc_dnbc_core_2_1 ] already exists
+#> ------------------------------------------------------
+#>   Start importing dictionaries
+#> * Table: [ 1_0_monthly_rep ] already exists
+#> * Import variables into: [ 1_0_monthly_rep ]
+#> * Table: [ 1_0_non_rep ] already exists
+#> * Matched categories for table: [ 1_0_non_rep ]
+#> * Import variables into: [ 1_0_non_rep ]
+#> * Table: [ 1_0_trimester_rep ] already exists
+#> * Matched categories for table: [ 1_0_trimester_rep ]
+#> * Import variables into: [ 1_0_trimester_rep ]
+#> * Table: [ 1_0_yearly_rep ] already exists
+#> * Matched categories for table: [ 1_0_yearly_rep ]
+#> * Import variables into: [ 1_0_yearly_rep ]
+#>   All dictionaries are populated correctly
+#> ######################################################
+#>   Start converting and uploading data
+#> ######################################################
+#> * Setup: load data and set output directory
+#> ------------------------------------------------------
+#> [WARNING] This is an unmatched column, it will be dropped : [ art ].
+#> * Generating: non-repeated measures
+#> * Generating: yearly-repeated measures
+#> Aggregate function missing, defaulting to 'length'
+#> * Generating: monthly-repeated measures
+#> Aggregate function missing, defaulting to 'length'
+#> * Generating: trimesterly-repeated measures
+#> Aggregate function missing, defaulting to 'length'
+#> * Upload: [ 2020-11-09_23-27-58_1_0_trimester_repeated_measures.csv ] to directory [ core ]
+#> * Upload: [ 2020-11-09_23-27-58_1_0_non_repeated_measures.csv ] to directory [ core ]
+#> * Upload: [ 2020-11-09_23-27-58_1_0_yearly_repeated_measures.csv ] to directory [ core ]
+#> * Upload: [ 2020-11-09_23-27-58_1_0_monthly_repeated_measures.csv ] to directory [ core ]
+#> ######################################################
+#>   Converting and import successfully finished
+#> ######################################################
+#>   Starting quality control
+#> ------------------------------------------------------
+#> Loading required namespace: DSOpal
+#> Error in private$.is.empty(server): argument "server" is missing, with no default
+#>  * Reinstate default working directory
+#>  * Cleanup temporary directory
+```
+
+```r
+# upload the outcome variables
+du.upload(
+  cohort_id = 'dnbc', 
+  dict_version = '1_1', 
+  dict_kind = 'outcome', 
+  data_version = '1_0', 
+  data_input_format = 'CSV',
+  data_input_path = 'https://github.com/lifecycle-project/ds-upload/blob/master/tests/data/WP6/nd_data_wp6.csv?raw=true',
+  run_mode = "non_interactive"
+)
+#> ######################################################
+#>   Start upload data into DataSHIELD backend
+#> ------------------------------------------------------
+#>  * Create temporary workdir
+#> ######################################################
+#>   Start download dictionaries
+#> ------------------------------------------------------
+#> * Download: [ 1_1_monthly_rep.xlsx ]
+#> * Download: [ 1_1_non_rep.xlsx ]
+#> * Download: [ 1_1_weekly_rep.xlsx ]
+#> * Download: [ 1_1_yearly_rep.xlsx ]
+#>   Successfully downloaded dictionaries
+#> ######################################################
+#>   Start importing data dictionaries
+#> ######################################################
+#>  * Check released dictionaries
+#> ------------------------------------------------------
+#>   Start creating project: [ lc_dnbc_outcome_1_1 ]
+#> * Project: [ lc_dnbc_outcome_1_1 ] already exists
+#> ------------------------------------------------------
+#>   Start importing dictionaries
+#> * Table: [ 1_0_monthly_rep ] already exists
+#> * Matched categories for table: [ 1_0_monthly_rep ]
+#> * Import variables into: [ 1_0_monthly_rep ]
+#> * Table: [ 1_0_non_rep ] already exists
+#> * Matched categories for table: [ 1_0_non_rep ]
+#> * Import variables into: [ 1_0_non_rep ]
+#> * Table: [ 1_0_weekly_rep ] already exists
+#> * Import variables into: [ 1_0_weekly_rep ]
+#> * Table: [ 1_0_yearly_rep ] already exists
+#> * Matched categories for table: [ 1_0_yearly_rep ]
+#> * Import variables into: [ 1_0_yearly_rep ]
+#>   All dictionaries are populated correctly
+#> ######################################################
+#>   Start converting and uploading data
+#> ######################################################
+#> * Setup: load data and set output directory
+#> ------------------------------------------------------
+#> * Generating: non-repeated measures
+#> * Generating: yearly-repeated measures
+#> * Generating: monthly-repeated measures
+#> * Generating: weekly-repeated measures
+#> * Upload: [ 2020-11-09_23-29-08_1_0_weekly_repeated_measures.csv ] to directory [ outcome ]
+#> * Upload: [ 2020-11-09_23-29-08_1_0_non_repeated_measures.csv ] to directory [ outcome ]
+#> * Upload: [ 2020-11-09_23-29-08_1_0_yearly_repeated_measures.csv ] to directory [ outcome ]
+#> * Upload: [ 2020-11-09_23-29-08_1_0_monthly_repeated_measures.csv ] to directory [ outcome ]
+#> ######################################################
+#>   Converting and import successfully finished
+#> ######################################################
+#>   Starting quality control
+#> ------------------------------------------------------
+#> Error in private$.is.empty(server): argument "server" is missing, with no default
+#>  * Reinstate default working directory
+#>  * Cleanup temporary directory
+```
+
+>**IMPORTANT**: Check if the data is correctly imported in the tables in Opal. Randomly select some values and check if they are correct with your actual data. That should be sufficient to know if the data is imported correctly, 
+
+>**IMPORTANT**: You can run this package for the core variables and for the outcome variables. Each of them requires changing some parameters in the function call. So dict_kind specific 'core' or 'outcome' variables and dict_version specifies the data dictionary version (check the changelogs here: https://github.com/lifecycle-project/ds-dictionaries/tree/master/changelogs). 
+
+>**IMPORTANT** You can specify your upload format! So you do not have to export to CSV first. Supported upload formats are: 'SPSS', 'SAS', 'STATA' and 'CSV'.
+
+If you run these commands, your data will be uploaded to the DataSHIELD backend. 
+
+If you use Opal, you can now import these data into the tables manually.
+
+A video guiding you through the process can be found here:
+
+Check youtube channel: [import data into Opal](https://youtu.be/BKDnIAQzpdY)
+
+Alternatively, execute these actions for Opal:
+
+1. Navigate to the Opal web interface
+2. Login with you credentials
+3. Select "Projects" 
+4. Select "lc_#cohort#_#dict_kind#_x_x" 
+5. Select "Import"
+6. Choose the CSV-file
+7. Select the target table (depending on your choice regarding the file you have chosen)
+8. Click on "Next"
+9. Click on "Next"
+10. Determine that you all variables are matched, otherwise you need to fix your source-data first
+> **IMPORTANT**: make sure no NEW variables are introduce
+11. Click on "Finish"
+12. Check the "Task logs" (on the left side of the screen, in the icon bar)
+
+It will match your data dictionary and determine which variables are matched or not. You can re-upload the source files as often as needed.
