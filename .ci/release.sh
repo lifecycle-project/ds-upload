@@ -2,8 +2,8 @@
 
 git checkout master
 Rscript -e "usethis::use_version('${RELEASE_SCOPE}')"
-TAG=$(grep Version DESCRIPTION | head -n1 | cut -d':' -f2)
-PACKAGE=$(grep Package DESCRIPTION | head -n1 | cut -d':' -f2)
+TAG=$(grep Version DESCRIPTION | head -n1 | cut -d':' -f2 | xargs)
+PACKAGE=$(grep Package DESCRIPTION | head -n1 | cut -d':' -f2 | xargs)
 git commit -a -m "Created release: ${TAG}"
 echo "Releasing ${PACKAGE} ${TAG}"
 R CMD build .
