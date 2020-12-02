@@ -109,23 +109,35 @@ du.populate.dict.versions <- local(function(dict_kind, dict_version) {
 #' @param dict_table a specific table that you want to check
 #' @param dict_kind can be 'core' or 'outcome'
 #'
-#' @importFrom readxl read_xlsx
+#' @importFrom readxl read_xlsx excel_sheets
+#' @importFrom dplyr %>% nest_join mutate rename
+#' @importFrom purrr map
+#' @importFrom tibble as_tibble
 #'
 #' @return a raw version of the dictionary
 #'
 #' @noRd
-du.retrieve.dictionaries <- local(function(dict_table, dict_kind) {
-  dict_file_list <- list.files(paste(getwd(), "/", dict_kind, sep = ""))
+du.retrieve.dictionaries <- function(dict_table, dict_kind) {
+  dict_file_list <- list.files(paste0(getwd(), "/", dict_kind))
 
   if (!missing(dict_table)) {
     dict_file_list <- dict_file_list[grep(dict_table, dict_file_list)]
   }
-
-  raw_dict <- list()
-  for (file_name in dict_file_list) {
-    raw_dict <- rbind(raw_dict, read_xlsx(path = paste(dict_kind, "/", file_name,
-      sep = ""
-    ), sheet = 1))
-  }
-  return(as.data.frame(raw_dict))
-})
+  
+  enriched_vars <- dict_file_list %>%
+    map(function(file_name) {
+      filename <- paste0(dict_kind, "/", file_name)
+      vars <- read_xlsx(path = filename, sheet = 1)
+      if(length(excel_sheets(filename)) == 2) {
+        cats <- read_xlsx(path = filename, sheet = 2)
+        cats <- cats %>%
+          as_tibble(cats) %>%
+          rename(value = name, name = variable) %>%
+          mutate(name = as.character(name), label = as.character(label))
+        vars %>%
+          as_tibble(vars) %>%
+          nest_join(cats, by = "name")
+      }
+    })
+  return(enriched_vars %>% bind_rows())
+}
