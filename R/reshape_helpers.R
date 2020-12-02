@@ -116,6 +116,13 @@ du.check.variables <- local(function(dict_kind, data_columns, run_mode) {
   }
 })
 
+convertType <- function(type, column, data) {
+  #print(paste0("type: ", type, " | column: ", column))
+  if(type == "integer") {
+    mutate_at(data, c(column), as.integer)
+  }
+}
+
 #' Generate the yearly repeated measures file and write it to your local workspace
 #'
 #' @param data data frame with all the data based upon the CSV file
@@ -124,18 +131,36 @@ du.check.variables <- local(function(dict_kind, data_columns, run_mode) {
 #' @importFrom readr write_csv
 #' @importFrom dplyr %>%
 #' @importFrom readxl read_xlsx
+#' @importFrom purrr pmap map
 #'
 #' @noRd
 du.reshape.generate.non.repeated <- function(data, dict_kind) {
   message("* Generating: non-repeated measures")
 
   # Retrieve dictionary
+  dict_kind <- "outcome"
   variables_non_repeated_dict <- du.retrieve.dictionaries(du.enum.table.types()$NONREP, dict_kind)
 
   # select the non-repeated measures from the full data set
   non_repeated <- c("child_id", variables_non_repeated_dict$name)
   non_repeated_measures <- data[, which(colnames(data) %in% non_repeated)]
+  
+  colnames(data) %>%
+    map(function(column) {
+      variables_non_repeated_dict %>%
+        reduce()
+        pmap(function(name, valueType, cats, ...) {
+          print(paste0(column, name))
+          if(column == name) {
+            print(paste0("matching: ", name, " and ", column))
+            convertType(valueType, column, data)
+          }
+        })
+    })
 
+  data
+  
+  
   # strip the rows with na values
   non_repeated_measures <- non_repeated_measures[, colSums(is.na(non_repeated_measures)) <
     nrow(non_repeated_measures)]
