@@ -72,7 +72,7 @@ login_data <- data.frame(
 # login to the Armadillo server
 du.login(login_data = login_data)
 #>   Login to: "https://armadillo.test.molgenis.org"
-#> [1] "We're opening a browser so you can log in with code DGWSMP"
+#> [1] "We're opening a browser so you can log in with code 2696NM"
 #>   Logged on to: "https://armadillo.test.molgenis.org"
 ```
 
@@ -83,12 +83,12 @@ du.login(login_data = login_data)
 # be advised the default input format is 'CSV'
 # you can use STATA, SPSS, SAS and CSV's as source files
 du.upload(
-  cohort_id = 'dnbc', 
+  cohort_id = 'gecko', 
   dict_version = '2_1', 
   dict_kind = 'core', 
   data_version = '1_0', 
   data_input_format = 'CSV',
-  data_input_path = 'https://github.com/lifecycle-project/ds-upload/blob/master/tests/data/WP1/data/all_measurements_v1_2.csv?raw=true',
+  data_input_path = 'https://github.com/lifecycle-project/ds-upload/blob/master/inst/examples/data/WP1/data/all_measurements_v1_2.csv?raw=true',
   run_mode = "non_interactive"
 )
 #> ######################################################
@@ -107,7 +107,7 @@ du.upload(
 #>   Start importing data dictionaries
 #> ######################################################
 #>  * Check released dictionaries
-#> Created project 'dnbc'
+#> * Project : gecko already exists
 #> ######################################################
 #>   Start converting and uploading data
 #> ######################################################
@@ -121,24 +121,52 @@ du.upload(
 #> Aggregate function missing, defaulting to 'length'
 #> * Generating: trimesterly-repeated measures
 #> Aggregate function missing, defaulting to 'length'
-#> * Start importing: 2_1_core_1_0 into project: dnbc
+#> * Start importing: 2_1_core_1_0 into project: gecko
 #> Compressing...
-#>   |                                                                                                                |                                                                                                        |   0%  |                                                                                                                |========================================================================================================| 100%
+#> 
+  |                                                                                          
+  |                                                                                    |   0%
+  |                                                                                          
+  |====================================================================================| 100%
 #> Uploaded 2_1_core_1_0/trimester
 #> * Import finished successfully
-#> * Start importing: 2_1_core_1_0 into project: dnbc
+#> * Start importing: 2_1_core_1_0 into project: gecko
 #> Compressing...
-#>   |                                                                                                                |                                                                                                        |   0%  |                                                                                                                |===============                                                                                         |  15%  |                                                                                                                |==============================                                                                          |  29%  |                                                                                                                |=============================================                                                           |  44%  |                                                                                                                |=============================================================                                           |  58%  |                                                                                                                |============================================================================                            |  73%  |                                                                                                                |===========================================================================================             |  87%  |                                                                                                                |========================================================================================================| 100%
+#> 
+  |                                                                                          
+  |                                                                                    |   0%
+  |                                                                                          
+  |============                                                                        |  15%
+  |                                                                                          
+  |========================                                                            |  29%
+  |                                                                                          
+  |=====================================                                               |  44%
+  |                                                                                          
+  |=================================================                                   |  58%
+  |                                                                                          
+  |=============================================================                       |  73%
+  |                                                                                          
+  |=========================================================================           |  87%
+  |                                                                                          
+  |====================================================================================| 100%
 #> Uploaded 2_1_core_1_0/non_rep
 #> * Import finished successfully
-#> * Start importing: 2_1_core_1_0 into project: dnbc
+#> * Start importing: 2_1_core_1_0 into project: gecko
 #> Compressing...
-#>   |                                                                                                                |                                                                                                        |   0%  |                                                                                                                |========================================================================================================| 100%
+#> 
+  |                                                                                          
+  |                                                                                    |   0%
+  |                                                                                          
+  |====================================================================================| 100%
 #> Uploaded 2_1_core_1_0/yearly_rep
 #> * Import finished successfully
-#> * Start importing: 2_1_core_1_0 into project: dnbc
+#> * Start importing: 2_1_core_1_0 into project: gecko
 #> Compressing...
-#>   |                                                                                                                |                                                                                                        |   0%  |                                                                                                                |========================================================================================================| 100%
+#> 
+  |                                                                                          
+  |                                                                                    |   0%
+  |                                                                                          
+  |====================================================================================| 100%
 #> Uploaded 2_1_core_1_0/monthly_rep
 #> * Import finished successfully
 #> ######################################################
@@ -146,7 +174,7 @@ du.upload(
 #> ######################################################
 #>   Starting quality control
 #> ------------------------------------------------------
-#> Error in private$.is.empty(server): argument "server" is missing, with no default
+#> Error in tables$name: $ operator is invalid for atomic vectors
 #>  * Reinstate default working directory
 #>  * Cleanup temporary directory
 ```
@@ -154,12 +182,12 @@ du.upload(
 ```r
 # upload the outcome variables
 du.upload(
-  cohort_id = 'dnbc', 
+  cohort_id = 'gecko', 
   dict_version = '1_1', 
   dict_kind = 'outcome', 
   data_version = '1_0', 
   data_input_format = 'CSV',
-  data_input_path = 'https://github.com/lifecycle-project/ds-upload/blob/master/tests/data/WP6/nd_data_wp6.csv?raw=true',
+  data_input_path = 'https://github.com/lifecycle-project/ds-upload/blob/master/inst/examples/data/WP6/nd_data_wp6.csv?raw=true',
   run_mode = "non_interactive"
 )
 #> ######################################################
@@ -178,7 +206,7 @@ du.upload(
 #>   Start importing data dictionaries
 #> ######################################################
 #>  * Check released dictionaries
-#> * Project : dnbc already exists
+#> * Project : gecko already exists
 #> ######################################################
 #>   Start converting and uploading data
 #> ######################################################
@@ -188,34 +216,69 @@ du.upload(
 #> * Generating: yearly-repeated measures
 #> * Generating: monthly-repeated measures
 #> * Generating: weekly-repeated measures
-#> * Start importing: 1_1_outcome_1_0 into project: dnbc
+#> * Start importing: 1_1_outcome_1_0 into project: gecko
 #> Compressing...
-#>   |                                                                                                                |                                                                                                        |   0%  |                                                                                                                |========================================================================================================| 100%
+#> 
+  |                                                                                          
+  |                                                                                    |   0%
+  |                                                                                          
+  |====================================================================================| 100%
 #> Uploaded 1_1_outcome_1_0/weekly_rep
 #> * Import finished successfully
-#> * Start importing: 1_1_outcome_1_0 into project: dnbc
+#> * Start importing: 1_1_outcome_1_0 into project: gecko
 #> Compressing...
-#>   |                                                                                                                |                                                                                                        |   0%  |                                                                                                                |========================================================================================================| 100%
+#> 
+  |                                                                                          
+  |                                                                                    |   0%
+  |                                                                                          
+  |====================================================================================| 100%
 #> Uploaded 1_1_outcome_1_0/non_rep
 #> * Import finished successfully
-#> * Start importing: 1_1_outcome_1_0 into project: dnbc
+#> * Start importing: 1_1_outcome_1_0 into project: gecko
 #> Compressing...
-#>   |                                                                                                                |                                                                                                        |   0%  |                                                                                                                |========                                                                                                |   8%  |                                                                                                                |================                                                                                        |  16%  |                                                                                                                |=========================                                                                               |  24%  |                                                                                                                |=================================                                                                       |  31%  |                                                                                                                |=========================================                                                               |  39%  |                                                                                                                |=================================================                                                       |  47%  |                                                                                                                |=========================================================                                               |  55%  |                                                                                                                |=================================================================                                       |  63%  |                                                                                                                |==========================================================================                              |  71%  |                                                                                                                |==================================================================================                      |  79%  |                                                                                                                |==========================================================================================              |  86%  |                                                                                                                |==================================================================================================      |  94%  |                                                                                                                |========================================================================================================| 100%
+#> 
+  |                                                                                          
+  |                                                                                    |   0%
+  |                                                                                          
+  |=======                                                                             |   8%
+  |                                                                                          
+  |=============                                                                       |  16%
+  |                                                                                          
+  |====================                                                                |  24%
+  |                                                                                          
+  |==========================                                                          |  31%
+  |                                                                                          
+  |=================================                                                   |  39%
+  |                                                                                          
+  |========================================                                            |  47%
+  |                                                                                          
+  |==============================================                                      |  55%
+  |                                                                                          
+  |=====================================================                               |  63%
+  |                                                                                          
+  |===========================================================                         |  71%
+  |                                                                                          
+  |==================================================================                  |  79%
+  |                                                                                          
+  |=========================================================================           |  86%
+  |                                                                                          
+  |===============================================================================     |  94%
+  |                                                                                          
+  |====================================================================================| 100%
 #> Uploaded 1_1_outcome_1_0/yearly_rep
 #> * Import finished successfully
-#> * Start importing: 1_1_outcome_1_0 into project: dnbc
+#> * Start importing: 1_1_outcome_1_0 into project: gecko
 #> Compressing...
-#>   |                                                                                                                |                                                                                                        |   0%  |                                                                                                                |========================================================================================================| 100%
+#> 
+  |                                                                                          
+  |                                                                                    |   0%
+  |                                                                                          
+  |====================================================================================| 100%
 #> Uploaded 1_1_outcome_1_0/monthly_rep
 #> * Import finished successfully
 #> ######################################################
 #>   Converting and import successfully finished
 #> ######################################################
-#>   Starting quality control
-#> ------------------------------------------------------
-#> Error in private$.is.empty(server): argument "server" is missing, with no default
-#>  * Reinstate default working directory
-#>  * Cleanup temporary directory
 ```
 
 ### Using Opal
@@ -230,7 +293,7 @@ Alternatively, execute these commands in your R-console:
 login_data <- data.frame(
   server = "https://opal.edge.molgenis.org", 
   user = "administrator", 
-  password = "admin",
+  password = "Ui3thahr",
   driver = "OpalDriver")
 ```
 
@@ -249,12 +312,12 @@ du.login(login_data = login_data)
 # be advised the default input format is 'CSV'
 # you can use STATA, SPSS, SAS and CSV's as source files
 du.upload(
-  cohort_id = 'dnbc', 
+  cohort_id = 'gecko', 
   dict_version = '2_1', 
   dict_kind = 'core', 
   data_version = '1_0', 
   data_input_format = 'CSV',
-  data_input_path = 'https://github.com/lifecycle-project/ds-upload/blob/master/tests/data/WP1/data/all_measurements_v1_2.csv?raw=true',
+  data_input_path = 'https://github.com/lifecycle-project/ds-upload/blob/master/inst/examples/data/WP1/data/all_measurements_v1_2.csv?raw=true',
   run_mode = "non_interactive"
 )
 #> ######################################################
@@ -274,19 +337,18 @@ du.upload(
 #> ######################################################
 #>  * Check released dictionaries
 #> ------------------------------------------------------
-#>   Start creating project: [ lc_dnbc_core_2_1 ]
-#> * Project: [ lc_dnbc_core_2_1 ] already exists
+#>   Start creating project: [ lc_gecko_core_2_1 ]
 #> ------------------------------------------------------
 #>   Start importing dictionaries
-#> * Table: [ 1_0_monthly_rep ] already exists
+#> * Create table: [ 1_0_monthly_rep ]
 #> * Import variables into: [ 1_0_monthly_rep ]
-#> * Table: [ 1_0_non_rep ] already exists
+#> * Create table: [ 1_0_non_rep ]
 #> * Matched categories for table: [ 1_0_non_rep ]
 #> * Import variables into: [ 1_0_non_rep ]
-#> * Table: [ 1_0_trimester_rep ] already exists
+#> * Create table: [ 1_0_trimester_rep ]
 #> * Matched categories for table: [ 1_0_trimester_rep ]
 #> * Import variables into: [ 1_0_trimester_rep ]
-#> * Table: [ 1_0_yearly_rep ] already exists
+#> * Create table: [ 1_0_yearly_rep ]
 #> * Matched categories for table: [ 1_0_yearly_rep ]
 #> * Import variables into: [ 1_0_yearly_rep ]
 #>   All dictionaries are populated correctly
@@ -303,30 +365,24 @@ du.upload(
 #> Aggregate function missing, defaulting to 'length'
 #> * Generating: trimesterly-repeated measures
 #> Aggregate function missing, defaulting to 'length'
-#> * Upload: [ 2020-11-09_23-27-58_1_0_trimester_repeated_measures.csv ] to directory [ core ]
-#> * Upload: [ 2020-11-09_23-27-58_1_0_non_repeated_measures.csv ] to directory [ core ]
-#> * Upload: [ 2020-11-09_23-27-58_1_0_yearly_repeated_measures.csv ] to directory [ core ]
-#> * Upload: [ 2020-11-09_23-27-58_1_0_monthly_repeated_measures.csv ] to directory [ core ]
+#> * Upload: [ 2020-12-02_15-29-42_1_0_trimester_repeated_measures.csv ] to directory [ core ]
+#> * Upload: [ 2020-12-02_15-29-42_1_0_non_repeated_measures.csv ] to directory [ core ]
+#> * Upload: [ 2020-12-02_15-29-42_1_0_yearly_repeated_measures.csv ] to directory [ core ]
+#> * Upload: [ 2020-12-02_15-29-42_1_0_monthly_repeated_measures.csv ] to directory [ core ]
 #> ######################################################
 #>   Converting and import successfully finished
 #> ######################################################
-#>   Starting quality control
-#> ------------------------------------------------------
-#> Loading required namespace: DSOpal
-#> Error in private$.is.empty(server): argument "server" is missing, with no default
-#>  * Reinstate default working directory
-#>  * Cleanup temporary directory
 ```
 
 ```r
 # upload the outcome variables
 du.upload(
-  cohort_id = 'dnbc', 
+  cohort_id = 'gecko', 
   dict_version = '1_1', 
   dict_kind = 'outcome', 
   data_version = '1_0', 
   data_input_format = 'CSV',
-  data_input_path = 'https://github.com/lifecycle-project/ds-upload/blob/master/tests/data/WP6/nd_data_wp6.csv?raw=true',
+  data_input_path = 'https://github.com/lifecycle-project/ds-upload/blob/master/inst/examples/data/WP6/nd_data_wp6.csv?raw=true',
   run_mode = "non_interactive"
 )
 #> ######################################################
@@ -346,8 +402,8 @@ du.upload(
 #> ######################################################
 #>  * Check released dictionaries
 #> ------------------------------------------------------
-#>   Start creating project: [ lc_dnbc_outcome_1_1 ]
-#> * Project: [ lc_dnbc_outcome_1_1 ] already exists
+#>   Start creating project: [ lc_gecko_outcome_1_1 ]
+#> * Project: [ lc_gecko_outcome_1_1 ] already exists
 #> ------------------------------------------------------
 #>   Start importing dictionaries
 #> * Table: [ 1_0_monthly_rep ] already exists
@@ -371,18 +427,13 @@ du.upload(
 #> * Generating: yearly-repeated measures
 #> * Generating: monthly-repeated measures
 #> * Generating: weekly-repeated measures
-#> * Upload: [ 2020-11-09_23-29-08_1_0_weekly_repeated_measures.csv ] to directory [ outcome ]
-#> * Upload: [ 2020-11-09_23-29-08_1_0_non_repeated_measures.csv ] to directory [ outcome ]
-#> * Upload: [ 2020-11-09_23-29-08_1_0_yearly_repeated_measures.csv ] to directory [ outcome ]
-#> * Upload: [ 2020-11-09_23-29-08_1_0_monthly_repeated_measures.csv ] to directory [ outcome ]
+#> * Upload: [ 2020-12-02_15-31-57_1_0_weekly_repeated_measures.csv ] to directory [ outcome ]
+#> * Upload: [ 2020-12-02_15-31-57_1_0_non_repeated_measures.csv ] to directory [ outcome ]
+#> * Upload: [ 2020-12-02_15-31-57_1_0_yearly_repeated_measures.csv ] to directory [ outcome ]
+#> * Upload: [ 2020-12-02_15-31-57_1_0_monthly_repeated_measures.csv ] to directory [ outcome ]
 #> ######################################################
 #>   Converting and import successfully finished
 #> ######################################################
-#>   Starting quality control
-#> ------------------------------------------------------
-#> Error in private$.is.empty(server): argument "server" is missing, with no default
-#>  * Reinstate default working directory
-#>  * Cleanup temporary directory
 ```
 
 >**IMPORTANT**: Check if the data is correctly imported in the tables in Opal. Randomly select some values and check if they are correct with your actual data. That should be sufficient to know if the data is imported correctly, 
@@ -411,6 +462,7 @@ Alternatively, execute these actions for Opal:
 8. Click on "Next"
 9. Click on "Next"
 10. Determine that you all variables are matched, otherwise you need to fix your source-data first
+
 > **IMPORTANT**: make sure no NEW variables are introduce
 11. Click on "Finish"
 12. Check the "Task logs" (on the left side of the screen, in the icon bar)

@@ -14,6 +14,7 @@ The beta dictionaries are used to be able to initiate creation of dictonaries in
 
 ## How it works
 You need to have a few prerequisites
+
 - [Git](https://git-scm.com/)
 - [RStudio](https://rstudio.com/)
 - [Opal](https://github.com/obiba/opal)
@@ -38,6 +39,7 @@ result in a structure like:
       - dict_#different flavor$
 
 The flavors can be:
+
 - non_rep
 - weekly_rep (0-)
 - monthly_rep (0-219)
@@ -48,8 +50,14 @@ Then you need to create a dictionary based upon the variables you want to harmon
 
 When you finished writing the dictionary you need to commit and push them to the repository on Github. Please check the [git-workflow](https://github.com/lifecycle-project/analysis-tutorials/blob/master/GIT-WORKFLOW.md) document to get the dictionaries exposed.
 
-## Upload dictionaries and data to Opal
-When a first version of a beta dictionary is available, you can upload it to opal with the following code:
+## Upload dictionaries and data
+We now support multiple backend with the beta-dictionaries.
+
+- Armadillo
+- Opal
+
+### Upload to Armadillo
+When a first version of a beta dictionary is available, you can upload it to the Armadillo with the following code:
 
 
 ```r
@@ -57,7 +65,7 @@ login_data <- data.frame(server = "https://armadillo.test.molgenis.org", storage
 
 du.login(login_data)
 #>   Login to: "https://armadillo.test.molgenis.org"
-#> [1] "We're opening a browser so you can log in with code YB9FBS"
+#> [1] "We're opening a browser so you can log in with code HXMBW6"
 #>   Logged on to: "https://armadillo.test.molgenis.org"
   
 du.upload.beta(
@@ -73,7 +81,7 @@ du.upload.beta(
 #> * Download: [ example-dictionary-non_rep.xlsx ]
 #> * Download: [ example-dictionary-yearly_rep.xlsx ]
 #>   Successfully downloaded dictionaries
-#> Created project 'exampledictionary'
+#> * Project : exampledictionary already exists
 #> ######################################################
 #>   Start converting and importing data
 #> ######################################################
@@ -82,13 +90,13 @@ du.upload.beta(
 #> * Generating: non-repeated measures
 #> * Start importing: beta into project: exampledictionary
 #> Compressing...
-#>   |                                                                                                       |                                                                                               |   0%  |                                                                                                       |===============================================================================================| 100%
+#>   |                                                                                            |                                                                                    |   0%  |                                                                                            |====================================================================================| 100%
 #> Uploaded beta/non_rep
 #> * Import finished successfully
 #> * Generating: yearly-repeated measures
 #> * Start importing: beta into project: exampledictionary
 #> Compressing...
-#>   |                                                                                                       |                                                                                               |   0%  |                                                                                                       |=============================                                                                  |  31%  |                                                                                                       |===========================================================                                    |  62%  |                                                                                                       |========================================================================================       |  93%  |                                                                                                       |===============================================================================================| 100%
+#>   |                                                                                            |                                                                                    |   0%  |                                                                                            |==========================                                                          |  31%  |                                                                                            |====================================================                                |  62%  |                                                                                            |==============================================================================      |  93%  |                                                                                            |====================================================================================| 100%
 #> Uploaded beta/yearly_rep
 #> * Import finished successfully
 #> ######################################################
@@ -98,5 +106,59 @@ du.upload.beta(
 #>  * Cleanup temporary directory
 ```
 
-After this youj need to manually upload the data just like you would in a released data upload. 
+You will be able to check the data in the Armadillo immediately.
+
+## Upload to Opal
+When a first version of a beta dictionary is available, you can upload it to Opal with the following code:
+
+
+```r
+login_data <- data.frame(server = "https://opal.edge.molgenis.org", password = "Ui3thahr", driver = "OpalDriver")
+
+du.login(login_data)
+#>   Login to: "https://opal.edge.molgenis.org"
+#>   Logged on to: "https://opal.edge.molgenis.org"
+  
+du.upload.beta(
+  dict_name = "example-dictionary", 
+  data_input_path = "/Users/sido/VisualStudioCodeProjects/ds-beta-dictionaries/data/example-dictionary/beta_dict_generated_data.csv")
+#> ######################################################
+#>   Start upload BETA data into DataSHIELD backend
+#> ------------------------------------------------------
+#>  * Create temporary workdir
+#> ######################################################
+#>   Start download dictionaries
+#> ------------------------------------------------------
+#> * Download: [ example-dictionary-non_rep.xlsx ]
+#> * Download: [ example-dictionary-yearly_rep.xlsx ]
+#>   Successfully downloaded dictionaries
+#> ------------------------------------------------------
+#>   Start creating project: [ lc_beta_example-dictionary ]
+#> * Project: [ lc_beta_example-dictionary ] already exists
+#> ------------------------------------------------------
+#>   Start importing dictionaries
+#> * Table: [ example-dictionary-non_rep ] already exists
+#> * Matched categories for table: [ example-dictionary-non_rep ]
+#> * Import variables into: [ example-dictionary-non_rep ]
+#> * Table: [ example-dictionary-yearly_rep ] already exists
+#> * Import variables into: [ example-dictionary-yearly_rep ]
+#>   All dictionaries are populated correctly
+#> ######################################################
+#>   Start converting and importing data
+#> ######################################################
+#> * Setup: load data and set output directory
+#> ------------------------------------------------------
+#> * Generating: non-repeated measures
+#> * Upload: [ 2020-12-02_15-07-38_example-dictionary-non_rep.csv ] to directory [ beta ]
+#> * Generating: yearly-repeated measures
+#> * Upload: [ 2020-12-02_15-07-38_example-dictionary-yearly_rep.csv ] to directory [ beta ]
+#> ######################################################
+#>   Converting and import successfully finished
+#> ######################################################
+#>  * Reinstate default working directory
+#>  * Cleanup temporary directory
+```
+
+After this you need to manually upload the data just like you would in a released data upload. 
+
 > Be advised: the data is now placed into directories on the target system, in this case a "beta" directory
