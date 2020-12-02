@@ -1,6 +1,6 @@
 Package: dsUpload
 Title: Upload Functions for DataSHIELD Backends
-Version: 4.0.3.9002
+Version: 4.0.4
 Authors@R: 
   c(person(given = "Sido",
       family = "Haakma",
