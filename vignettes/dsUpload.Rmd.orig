@@ -69,7 +69,7 @@ login_data <- data.frame(
   driver = "ArmadilloDriver")
 ```
 
-```{r, login to the datashield backend}
+```{r, login to the Armadillo}
 # login to the Armadillo server
 du.login(login_data = login_data)
 ```
@@ -80,24 +80,25 @@ du.login(login_data = login_data)
 # be advised the default input format is 'CSV'
 # you can use STATA, SPSS, SAS and CSV's as source files
 du.upload(
-  cohort_id = 'dnbc', 
+  cohort_id = 'gecko', 
   dict_version = '2_1', 
   dict_kind = 'core', 
   data_version = '1_0', 
   data_input_format = 'CSV',
-  data_input_path = 'https://github.com/lifecycle-project/ds-upload/blob/master/tests/data/WP1/data/all_measurements_v1_2.csv?raw=true',
+  data_input_path = 'https://github.com/lifecycle-project/ds-upload/blob/master/inst/examples/data/WP1/data/all_measurements_v1_2.csv?raw=true',
   run_mode = "non_interactive"
 )
 ```
+
 ```{r, upload and import the outcome variables for Armadillo}
 # upload the outcome variables
 du.upload(
-  cohort_id = 'dnbc', 
+  cohort_id = 'gecko', 
   dict_version = '1_1', 
   dict_kind = 'outcome', 
   data_version = '1_0', 
   data_input_format = 'CSV',
-  data_input_path = 'https://github.com/lifecycle-project/ds-upload/blob/master/tests/data/WP6/nd_data_wp6.csv?raw=true',
+  data_input_path = 'https://github.com/lifecycle-project/ds-upload/blob/master/inst/examples/data/WP6/nd_data_wp6.csv?raw=true',
   run_mode = "non_interactive"
 )
 ```
@@ -113,7 +114,7 @@ Alternatively, execute these commands in your R-console:
 login_data <- data.frame(
   server = "https://opal.edge.molgenis.org", 
   user = "administrator", 
-  password = "admin",
+  password = "Ui3thahr",
   driver = "OpalDriver")
 ```
 
@@ -128,24 +129,24 @@ du.login(login_data = login_data)
 # be advised the default input format is 'CSV'
 # you can use STATA, SPSS, SAS and CSV's as source files
 du.upload(
-  cohort_id = 'dnbc', 
+  cohort_id = 'gecko', 
   dict_version = '2_1', 
   dict_kind = 'core', 
   data_version = '1_0', 
   data_input_format = 'CSV',
-  data_input_path = 'https://github.com/lifecycle-project/ds-upload/blob/master/tests/data/WP1/data/all_measurements_v1_2.csv?raw=true',
+  data_input_path = 'https://github.com/lifecycle-project/ds-upload/blob/master/inst/examples/data/WP1/data/all_measurements_v1_2.csv?raw=true',
   run_mode = "non_interactive"
 )
 ```
 ```{r, upload and import the outcome variables for Opal}
 # upload the outcome variables
 du.upload(
-  cohort_id = 'dnbc', 
+  cohort_id = 'gecko', 
   dict_version = '1_1', 
   dict_kind = 'outcome', 
   data_version = '1_0', 
   data_input_format = 'CSV',
-  data_input_path = 'https://github.com/lifecycle-project/ds-upload/blob/master/tests/data/WP6/nd_data_wp6.csv?raw=true',
+  data_input_path = 'https://github.com/lifecycle-project/ds-upload/blob/master/inst/examples/data/WP6/nd_data_wp6.csv?raw=true',
   run_mode = "non_interactive"
 )
 ```
@@ -176,6 +177,7 @@ Alternatively, execute these actions for Opal:
 8. Click on "Next"
 9. Click on "Next"
 10. Determine that you all variables are matched, otherwise you need to fix your source-data first
+
 > **IMPORTANT**: make sure no NEW variables are introduce
 11. Click on "Finish"
 12. Check the "Task logs" (on the left side of the screen, in the icon bar)
