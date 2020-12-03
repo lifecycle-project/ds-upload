@@ -141,3 +141,44 @@ SET @@global.innodb_large_prefix = 1;
 ```
 
 This options is persisted in the database and allows you to create larger indexes on the SQL server.
+
+#### The URL protocol is not set
+When you do not specify the protocol in the URL.
+
+Incorrect: 
+
+```
+builder <- newDSLoginBuilder()
+builder.append(server = "opal.cohort-example.org")
+```
+
+Results in:
+
+```
+Error in curl::curl_fetch_memory(url, handle = handle) :
+Protocol "" not supported or disabled in libcurl
+```
+
+Correct:
+
+```
+builder <- newDSLoginBuilder()
+builder.append(server = "https://opal.cohort-example.org")
+```
+
+#### Non-default database name
+When you receive the error below, you need to specify the `database_name` in the `du.upload()` method.
+
+```
+Error: Client error: (404) Not Found; NoSuchDatabase: opal_data
+```
+
+Example:
+
+```
+du.upload(database_name = "example_database_name", .....)
+```
+
+You can check the database name in the "Administration"-tab and then "Databases". The second database has a name that you need to specify.
+
+
