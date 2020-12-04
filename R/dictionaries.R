@@ -9,7 +9,7 @@
 #' @importFrom utils download.file packageVersion
 #'
 #' @noRd
-du.dict.download <- local(function(dict_name, dict_version, dict_kind) {
+du.dict.download <- function(dict_name, dict_version, dict_kind) {
   message("######################################################")
   message("  Start download dictionaries")
   message("------------------------------------------------------")
@@ -35,9 +35,7 @@ du.dict.download <- local(function(dict_name, dict_version, dict_kind) {
     })
 
   message("  Successfully downloaded dictionaries")
-})
-
-
+}
 
 #' Retrieve the released dictionaries from 'ds-dictionaries' to match against
 #'
@@ -103,7 +101,6 @@ du.populate.dict.versions <- local(function(dict_kind, dict_version) {
   }
 })
 
-#'
 #' Retrieve the right file from download directory
 #'
 #' @param dict_table a specific table that you want to check
@@ -139,5 +136,6 @@ du.retrieve.dictionaries <- function(dict_table, dict_kind) {
           nest_join(cats, by = "name")
       }
     })
+  
   return(enriched_vars %>% bind_rows())
 }

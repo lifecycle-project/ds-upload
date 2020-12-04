@@ -148,7 +148,6 @@ du.reshape.generate.non.repeated <- function(data, dict_kind) {
   colnames(data) %>%
     map(function(column) {
       variables_non_repeated_dict %>%
-        reduce()
         pmap(function(name, valueType, cats, ...) {
           print(paste0(column, name))
           if(column == name) {
@@ -158,7 +157,8 @@ du.reshape.generate.non.repeated <- function(data, dict_kind) {
         })
     })
 
-  data
+  data <- data_raw
+  
   
   
   # strip the rows with na values
