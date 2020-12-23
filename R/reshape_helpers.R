@@ -116,19 +116,13 @@ du.check.variables <- local(function(dict_kind, data_columns, run_mode) {
   }
 })
 
-convertType <- function(type, column, data) {
-  #print(paste0("type: ", type, " | column: ", column))
-  if(type == "integer") {
-    mutate_at(data, c(column), as.integer)
-  }
-}
-
 #' Generate the yearly repeated measures file and write it to your local workspace
 #'
 #' @param data data frame with all the data based upon the CSV file
 #' @param dict_kind can be 'core' or 'outcome'
 #'
 #' @importFrom readr write_csv
+#' @importFrom stringr str_detect
 #' @importFrom dplyr %>%
 #' @importFrom readxl read_xlsx
 #' @importFrom purrr pmap map
@@ -136,7 +130,8 @@ convertType <- function(type, column, data) {
 #' @noRd
 du.reshape.generate.non.repeated <- function(data, dict_kind) {
   message("* Generating: non-repeated measures")
-
+  data <- read_csv("/Users/sido/RProjects/ds-helper/inst/examples/cohort1-data/outcome_1_0.csv")
+  data <- read_spss("/Users/sido/RProjects/ds-upload/inst/examples/data/WP5/random_generated_dataset_WP5_GENR_dict_1_1.sav")
   # Retrieve dictionary
   dict_kind <- "outcome"
   variables_non_repeated_dict <- du.retrieve.dictionaries(du.enum.table.types()$NONREP, dict_kind)
@@ -145,21 +140,30 @@ du.reshape.generate.non.repeated <- function(data, dict_kind) {
   non_repeated <- c("child_id", variables_non_repeated_dict$name)
   non_repeated_measures <- data[, which(colnames(data) %in% non_repeated)]
   
-  colnames(data) %>%
+  out <- colnames(non_repeated_measures) %>%
     map(function(column) {
       variables_non_repeated_dict %>%
-        pmap(function(name, valueType, cats, ...) {
-          print(paste0(column, name))
-          if(column == name) {
+        filter(name == gsub('([0-9]+).*$', '', column)) %>%
+          pmap(function(name, valueType, cats, ...) {
             print(paste0("matching: ", name, " and ", column))
-            convertType(valueType, column, data)
-          }
+            if(valueType == "integer" & ncol(cats) > 0) {
+              new_column <- lapply(data[column], factor, levels = cats$value, labels = cats$label)
+            } else if (valueType == "integer") {
+              new_column <- lapply(data[column], as.integer)
+            } else if (valueType == "decimal" &  ncol(cats) > 0) {
+              new_column <- lapply(data[column], factor, levels = cats$value, labels = cats$label)
+            } else if (valueType == "decimal") {
+              new_column <- lapply(data[column], as.double)
+            } else {
+              new_column <- lapply(data[column], as.character)
+            }
+            return(as.data.frame(new_column))
         })
-    })
-
-  data <- data_raw
-  
-  
+    }) %>%
+      unlist(recursive = FALSE)
+        
+  out %>%
+    f
   
   # strip the rows with na values
   non_repeated_measures <- non_repeated_measures[, colSums(is.na(non_repeated_measures)) <

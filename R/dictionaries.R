@@ -107,7 +107,7 @@ du.populate.dict.versions <- local(function(dict_kind, dict_version) {
 #' @param dict_kind can be 'core' or 'outcome'
 #'
 #' @importFrom readxl read_xlsx excel_sheets
-#' @importFrom dplyr %>% nest_join mutate rename
+#' @importFrom dplyr %>% nest_join mutate rename bind_rows
 #' @importFrom purrr map
 #' @importFrom tibble as_tibble
 #'
