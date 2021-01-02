@@ -137,7 +137,8 @@ du.retrieve.dictionaries <- function(dict_kind, dict_table = NULL) {
           as_tibble() %>%
           nest_join(cats, by = "name")
       }
-    })
+    }) %>%
+    bind_rows()
 
-  return(enriched_vars %>% bind_rows())
+  return(enriched_vars)
 }

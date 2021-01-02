@@ -1,12 +1,12 @@
 #' Read the input file from different sources
 #'
 #' @param input_format possible formats are CSV,STATA,SPSS or SAS (default = CSV)
-#' @param input_path path for importfile
+#' @param input_path path for file to be imported
 #'
 #' @importFrom readr read_csv cols col_double
 #' @importFrom haven read_dta read_sas read_spss
 #'
-#' @return dataframe with source data
+#' @return data frame with source data
 #'
 #' @noRd
 du.read.source.file <- function(input_path, input_format) {
@@ -61,22 +61,15 @@ du.data.frame.remove.all.na.rows <- function(dataframe) {
 #' @param data_columns columns obtained from raw data
 #' @param dict_columns columns matched in the dictionary
 #'
-#' @importFrom stringr str_subset
+#' @importFrom dplyr select starts_with
 #'
 #' @return matched_columns in source data
 #'
 #' @noRd
 du.match.columns <- function(data_columns, dict_columns) {
-dict_columns
-  # match the dictionary in the data
-  matched_data_columns <- sapply(data_columns, grep, dict_columns$name) %>% names()
-  
-  matched_data_columns
-  
-  matched_columns <- dict_columns %>% filter(name %in% matched_data_columns)
-  matched_columns <- subset(dict_columns, name %in% matched_data_columns)
-  print(matched_columns)
-  # Select the non-repeated measures from the full data set
+  matched_data_columns <- sapply(data_columns, grep, dict_columns$name) %>% names() %>% as_tibble()
+  matched_columns <- dict_columns[grep(paste0('^(', paste(dict_columns$name, collapse = '|'), ').*'), matched_data_columns$value),]
+  matched_columns <-  matched_columns$row_id 
   return(matched_columns)
 }
 
@@ -86,6 +79,8 @@ dict_columns
 #' @param dict_kind specify which dictionary you want to check
 #' @param data_columns the coiumns within the data
 #' @param run_mode default = NORMAL, can be TEST and NON_INTERACTIIVE
+#' 
+#' @importFrom stringr str_detect
 #'
 #' @return stops the program if someone terminates
 #'
@@ -93,14 +88,21 @@ dict_columns
 du.check.variables <- function(dict_kind, data_columns, run_mode) {
   variables <- du.retrieve.dictionaries(dict_kind)
 
-  matched_columns <- du.match.columns(data_columns, variables$name)
-
-  columns_not_matched <- data_columns[!(data_columns %in% matched_columns)]
-
-  if (length(columns_not_matched) > 0) {
+  matched_columns <- du.match.columns(data_columns, variables)
+  
+  matched_columns
+  
+  
+  regex <- paste(matched_columns$name, collapse = '|')
+  regex <- paste0('^(', regex, ').*')
+  
+  data_columns <- as_tibble(data_columns)
+  columns_not_matched <- data_columns[!str_detect(data_columns$value, regex),]
+  
+  if (length(columns_not_matched$value) > 0) {
     message(paste0(
       "[WARNING] This is an unmatched column, it will be dropped : [ ",
-      columns_not_matched, " ].\n"
+      columns_not_matched$value, " ].\n"
     ))
     if (run_mode != du.enum.run.mode()$NON_INTERACTIVE) {
       proceed <- readline("Do you want to proceed (y/n)")
@@ -128,17 +130,9 @@ du.check.variables <- function(dict_kind, data_columns, run_mode) {
 du.match.column.types <- function(data, table_type, dict_kind) {
   name <- orig_var <- value <- dictionary <- NULL
   
-  
-  table_type <- du.enum.table.types()$YEARLY
-  dict_kind <- "core"
   matched_dictionary <- du.retrieve.dictionaries(dict_kind = dict_kind, dict_table = table_type)
-  if (table_type != du.enum.table.types()$NONREP) {
-    matched_columns <- du.match.columns(colnames(data), matched_dictionary)
-    data <- data[, matched_columns]
-  } else {
-    data <- data[, which(colnames(data) %in% matched_dictionary$name)]
-    matched_columns <- matched_dictionary
-  }
+  matched_columns <- du.match.columns(colnames(data), matched_dictionary)
+  data <- data[, matched_columns$name]
   
   if (nrow(du.data.frame.remove.all.na.rows(data)) <= 0) {
     message(paste0("* WARNING: No ", table_type, "-repeated measures found in this set"))
@@ -160,7 +154,6 @@ du.match.column.types <- function(data, table_type, dict_kind) {
           } else if (valueType == "decimal") {
             new_column <- lapply(data[column], as.double)
           } else {
-            ?factor
             new_column <- lapply(data[column], as.character)
           }
           return(as.data.frame(new_column))
