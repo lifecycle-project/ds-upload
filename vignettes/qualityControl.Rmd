@@ -11,6 +11,7 @@ vignette: >
 
 # Quality control
 The quality control measures are based upon the different variable types we have.
+
 - non repeated
 - yearly repeated
 - monthly repeated
@@ -24,11 +25,30 @@ The quality control will be executed in the pipeline after uploading and importi
 
 
 ```r
+login_data <- data.frame(server = "https://armadillo.test.molgenis.org", storage = "https://armadillo-minio.test.molgenis.org", driver = "ArmadilloDriver")
+
+du.login(login_data)
+#>   Login to: "https://armadillo.test.molgenis.org"
+#> [1] "We're opening a browser so you can log in with code MJKLKK"
+#>   Logged on to: "https://armadillo.test.molgenis.org"
+
 library(dsUpload)
-du.quality.control(project = "lc_gecko_core_2_1", verbose = TRUE)
+du.quality.control(project = "gecko", verbose = TRUE)
 #>   Starting quality control
 #> ------------------------------------------------------
-#> Error: Client error: (404) Not Found; NoSuchDatasource: lc_gecko_core_2_1
+#> Loading required namespace: DSMolgenisArmadillo
+#>  * Starting with: gecko - 1_1_outcome_1_0/monthly_rep
+#> 
+#> Logging into the collaborating servers
+#>   Assigned all table (QC <- ...) [=======================================================] 100% / 0s
+#>  * Starting with: gecko - 1_1_outcome_1_0/non_rep
+#> 
+#> Logging into the collaborating servers
+#>   Assigned all table (QC <- ...) [=======================================================] 100% / 0s
+#>  * Starting with: non repeated measures
+#>  Quantiles of the pooled data
+#>  Quantiles of the pooled data
+#> Error: argument of length 0
 ```
 
 ### Table types

@@ -14,7 +14,7 @@ du.upload(
   data_input_path,
   action = du.enum.action()$ALL,
   upload = TRUE,
-  non_interactive = FALSE
+  run_mode = du.enum.run.mode()$NORMAL
 )
 }
 \arguments{
@@ -36,7 +36,7 @@ du.upload(
 
 \item{upload}{directly upload the reshaped database to the logged in DataSHIELD server}
 
-\item{non_interactive}{if set to TRUE you will get no questions}
+\item{run_mode}{default = NORMAL, can be TEST and NON_INTERACTIIVE}
 }
 \description{
 Upload dictionaries and data into the DataSHIELD backend.

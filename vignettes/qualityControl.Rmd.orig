@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 
 # Quality control
 The quality control measures are based upon the different variable types we have.
+
 - non repeated
 - yearly repeated
 - monthly repeated
@@ -28,10 +29,18 @@ All of the measures are quakity control based upon generic algorithems and with 
 The quality control will be executed in the pipeline after uploading and importing the data into a DataSHIELD backend. However you can execute the flow seperatly as well.
 
 ```{r, execute the quality control separatly}
+login_data <- data.frame(server = "https://armadillo.test.molgenis.org", storage = "https://armadillo-minio.test.molgenis.org", driver = "ArmadilloDriver")
+
+du.login(login_data)
+
 library(dsUpload)
+<<<<<<< HEAD
 
 # seperate execution for quality control methods
 du.quality.control(project = "lc_gecko_core_2_1", verbose = TRUE)
+=======
+du.quality.control(project = "gecko", verbose = TRUE)
+>>>>>>> 843d4bfda5ce4e3dabd507ac9db985ca64f0f5c9
 ```
 
 ### Table types
