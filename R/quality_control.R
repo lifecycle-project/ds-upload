@@ -85,7 +85,7 @@ du.quality.control <- function(project, assign_threshold = 20, verbose = FALSE) 
           if (grepl(du.enum.table.types()$MONTHLY, table)) {
             qc.monthly.repeated(conns, qc_dataframe_symbol, verbose)
           }
-          if (grepl(du.enum.table.types()$TRIMSTER, table)) {
+          if (grepl(du.enum.table.types()$TRIMESTER, table)) {
             qc.trimester(conns, qc_dataframe_symbol, verbose)
           }
         })
@@ -151,10 +151,6 @@ qc.yearly.repeated <- function(conns, table, verbose) {
   # exclude variables not required:
   vars <- vars[!vars %in% c("child_id", "age_years")]
 
-
-  # Create vectors of factors and integers (I've replaced my previous code with Tim's code)
-
-
   ## Create vector of full names for datashield
   full_var_names <- paste0(table, "$", vars)
 
@@ -179,18 +175,19 @@ qc.yearly.repeated <- function(conns, table, verbose) {
   # Convert age_years to a factor variable (required for the table):
   ds.asFactor(
     input.var.name = paste0(table, "$age_years"),
-    newobj.name = "age_years2"
+    newobj.name = "age_years2",
+    datasources = conns
   )
-  ds.cbind(x = c(table, "age_years2"), newobj = table)
+  ds.cbind(x = c(table, "age_years2"), newobj = table, datasources = conns)
   # Store some summary information:
-  summary2 <- ds.levels(paste0(table, "$age_years2"))
-  n2 <- length(summary2$dnbc$Levels) # how can I replace "dnbc" with "names(conns)"?
-  levels <- summary2$dnbc$Levels
+  summary2 <- ds.levels(paste0(table, "$age_years2"), datasources = conns)
+  n2 <- length(summary2$validate$Levels)
+  levels <- summary2$validate$Levels
 
   for (j in 1:length(factors)) {
-    print(paste0(factors[j], " start"))
-    summary1 <- ds.summary(paste0(table, "$", factors[j]))
-    n <- length(summary1$dnbc$categories) # how can I replace "dnbc" with "names(conns)"?
+    message(" * Start evaluating factor: [ ", paste0(factors[j]), " ]")
+    summary1 <- ds.summary(paste0(table, "$", factors[j]), datasources = conns)
+    n <- length(summary1$validate$categories) 
     output <- ds.table(paste0(table, "$", factors[j]), paste0(table, "$age_years2"), datasources = conns)
     counts <- data.frame(matrix(unlist(output$output.list$TABLE_STUDY.1_counts), nrow = n + 1, ncol = n2, byrow = F))
     prop <- data.frame(matrix(unlist(output$output.list$TABLES.COMBINED_all.sources_col.props), nrow = n + 1, ncol = n2, byrow = F))
@@ -207,36 +204,18 @@ qc.yearly.repeated <- function(conns, table, verbose) {
     }
 
     eval(parse(text = paste0("colnames(out_", factors[j], ") <- c(colnames)")))
-    eval(parse(text = paste0("rownames(out_", factors[j], ") <- c(summary1$dnbc$categories, 'NA')")))
+    eval(parse(text = paste0("rownames(out_", factors[j], ") <- c(summary1$validate$categories, 'NA')")))
 
     rm(summary1, n, output, counts, prop, colnames)
   }
 
-  # To produce the output for intergers, we first need to create a data frame of complete cases for each variable.
-  # This is because the "ds.meanByClass" function just includes NA in its "length" output.
-  # This will make the function quite slow, but the alternative "ds.meanSDGroup" often fails if there are small cells
-  # would be nice to include median(IQR), but this would require a bit more work (reshaping etc)
+
+  output <- data.frame()
   for (j in 1:length(integers)) {
-    print(paste0(integers[j], " start"))
-
-    ds.dataFrame(x = c(paste0(table, "$", integers[j]), paste0(table, "$age_years2")), newobj = "complete")
-    ds.completeCases(x1 = "complete", newobj = "complete")
-
-    eval(parse(text = (paste0("out_", integers[j], " <- ds.meanByClass(x = 'complete',
-               outvar = paste0('", integers[j], "'),
-               covar = 'age_years2',
-               type = 'combine')"))))
-
-    colnames <- c("Age 0")
-    for (i in 2:length(levels)) {
-      colnames <- c(colnames, paste0("Age ", levels[i]))
-    }
-
-    eval(parse(text = paste0("colnames(out_", integers[j], ") <- c(colnames)")))
-
-    rm(colnames)
-    ds.rm("complete")
+    out <- qc.process.integer.vars(integers[j], table, levels, conns)
+    cbind(output, out)
   }
+  print(output)
 }
 
 #' Quality control for monthly repeated measures
@@ -255,12 +234,7 @@ qc.monthly.repeated <- function(conns, table, verbose) {
   # make it a flat list
   vars <- as.vector(unlist(vars, use.names = FALSE))
   # exclude variables not required:
-  vars <- vars[!vars %in% c("child_id", "age_months", "age_years", "height_age", "weight_age")]
-
-  ################################################################ 3
-
-  # Create vectors of factors and integers (I've replaced my previous code with Tim's code)
-
+  vars <- vars[!vars %in% c("row_id", "child_id", "age_months", "age_years", "height_age", "weight_age")]
 
   ## Create vector of full names for datashield
   full_var_names <- paste0(table, "$", vars)
@@ -284,54 +258,41 @@ qc.monthly.repeated <- function(conns, table, verbose) {
   # Convert age_months to a factor variable:
   ds.asFactor(
     input.var.name = paste0(table, "$age_months"),
-    newobj.name = "age_months2"
+    newobj.name = "age_months2",
+    datasources = conns
   )
-  ds.cbind(x = c(table, "age_months2"), newobj = table)
+  ds.cbind(x = c(table, "age_months2"), newobj = table, datasources = conns)
 
-  summary1 <- ds.levels(paste0(table, "$age_months2"))
-  n1 <- length(summary2$dnbc$Levels) # how can I replace "dnbc" with "names(conns)"?
-
+  summary1 <- ds.levels(paste0(table, "$age_months2"), datasources = conns)
+  n1 <- length(summary1$validate$Levels) 
 
   # Convert age_years to a factor variable (required for the tables):
   ds.asFactor(
     input.var.name = paste0(table, "$age_years"),
-    newobj.name = "age_years2"
+    newobj.name = "age_years2",
+    datasources = conns
   )
-  ds.cbind(x = c(table, "age_years2"), newobj = table)
+  ds.cbind(x = c(table, "age_years2"), newobj = table, datasources = conns)
 
   # summarise some information from age_years2
-  summary2 <- ds.levels(paste0(table, "$age_years2"))
-  n2 <- length(summary2$dnbc$Levels) # how can I replace "dnbc" with "names(conns)"?
-  levels <- summary2$dnbc$Levels
+  
+  summary2 <- ds.levels(paste0(table, "$age_years2"), datasources = conns)
+  n2 <- length(summary2$validate$Levels)
+  levels <- summary2$validate$Levels
 
-  # There are no factor variables
-
-  # Integers
-
+  output <- data.frame()
+  
   for (j in 1:length(integers)) {
-    print(paste0(integers[j], " start"))
-
-    ds.dataFrame(x = c(paste0(table, "$", integers[j]), paste0(table, "$age_years2")), newobj = "complete")
-    ds.completeCases(x1 = "complete", newobj = "complete")
-
-    eval(parse(text = (paste0("out_", integers[j], " <- ds.meanByClass(x = 'complete',
-               outvar = paste0('", integers[j], "'),
-               covar = 'age_years2',
-               type = 'combine')"))))
-
-    colnames <- c("Age 0") # this is OK as the reshape script keeps time 0?
-    for (i in 2:length(levels)) {
-      colnames <- c(colnames, paste0("Age ", levels[i]))
-    }
-
-    eval(parse(text = paste0("colnames(out_", integers[j], ") <- c(colnames)")))
-
-    rm(colnames)
-    ds.rm("complete")
+    out <- qc.process.integer.vars(integers[j], table, levels, conns)
+    print("gelukt!")
+    cbind(output, out)
+    print("ook gelukt")
   }
+  print("klaar")
+  print(output)
 }
 
-#' Quality control for trimster measures
+#' Quality control for trimester measures
 #'
 #' @param conns connection object for DataSHIELD backends
 #' @param table table to perform quality control on
@@ -348,10 +309,6 @@ qc.trimester <- function(conns, table, verbose) {
   vars <- as.vector(unlist(vars, use.names = FALSE))
   # exclude variables not required:
   vars <- vars[!vars %in% c("child_id", "age_trimester")]
-
-
-  # Create vectors of factors and integers (I've replaced my previous code with Tim's code)
-
 
   ## Create vector of full names for datashield
   full_var_names <- paste0(table, "$", vars)
@@ -377,20 +334,19 @@ qc.trimester <- function(conns, table, verbose) {
   # Convert age_trimester to a factor variable (required for the table):
   ds.asFactor(
     input.var.name = paste0(table, "$age_trimester"),
-    newobj.name = "age_trimester2"
+    newobj.name = "age_trimester2",
+    datasources = conns
   )
-  ds.cbind(x = c(table, "age_trimester2"), newobj = table)
+  ds.cbind(x = c(table, "age_trimester2"), newobj = table, datasources = conns)
   # Store some summary information:
   summary2 <- ds.levels(paste0(table, "$age_trimester2"))
   n2 <- length(summary2$dnbc$Levels) # how can I replace "dnbc" with "names(conns)"?
   levels <- summary2$dnbc$Levels
 
-
-
   for (j in 1:length(factors)) {
     print(paste0(factors[j], " start"))
-    summary1 <- ds.levels(paste0(table, "$", factors[j]))
-    n <- length(summary1$dnbc$Levels) # how can I replace "dnbc" with "names(conns)"?
+    summary1 <- ds.levels(paste0(table, "$", factors[j]), datasources = conns)
+    n <- length(summary1$dnbc$Levels) 
     output <- ds.table(paste0(table, "$", factors[j]), paste0(table, "$age_trimester2"), datasources = conns)
     counts <- data.frame(matrix(unlist(output$output.list$TABLE_STUDY.1_counts), nrow = n + 1, ncol = n2, byrow = F))
     prop <- data.frame(matrix(unlist(output$output.list$TABLES.COMBINED_all.sources_col.props), nrow = n + 1, ncol = n2, byrow = F))
@@ -409,4 +365,46 @@ qc.trimester <- function(conns, table, verbose) {
     eval(parse(text = paste0("rownames(out_", factors[j], ") <- c(summary1$dnbc$Levels, 'NA')")))
     rm(summary1, n, output, counts, prop, colnames)
   }
+}
+
+#' To produce the output for integers, we first need to create a data frame of complete cases for each variable.
+#' This is because the "ds.meanByClass" function just includes NA in its "length" output.
+#' 
+#' This will make the function quite slow, but the alternative "ds.meanSDGroup" often fails if there are small cells
+#' would be nice to include median(IQR), but this would require a bit more work (reshaping etc)
+#' 
+#' @param integer the age specification of the variable
+#' @param table the table in the DataSHIELD backend you want to query
+#' @param levels these are possible variable levels
+#' @param conns connections to the DataSHIELD backends
+#' 
+#' @return a table of mean by class information
+#' 
+#' @noRd
+qc.process.integer.vars <- function(int_var, table, levels, conns) {
+  message(paste0(" * Start evaluating integer: [ ", int_var, " ]"))
+    
+  ds.dataFrame(x = c(paste0(table, "$", int_var), paste0(table, "$age_years2")), newobj = "complete", datasources = conns)
+  ds.completeCases(x1 = "complete", newobj = "complete", datasources = conns)
+    
+  output <- ds.meanByClass(x = 'complete',
+              outvar = int_var,
+              covar = 'age_years2',
+              type = 'combine',
+              datasources = conns)
+
+  # this is OK as the reshape script keeps time 0?
+  colnames <- c("Age 0") 
+  for (i in 2:length(levels)) {
+    colnames <- c(colnames, paste0("Age ", levels[i]))
+  }
+  
+  colnames(output) <- c(colnames)
+   
+  rm(colnames)
+  ds.rm("complete", datasources = conns)
+  
+  message(paste0(" * Succesfully evaluated: [ ", int_var, " ]"))
+  
+  return(output)
 }
