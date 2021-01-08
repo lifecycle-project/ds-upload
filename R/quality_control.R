@@ -114,18 +114,18 @@ qc.non.repeated <- function(conns, table, verbose) {
   plain_vars <- as.vector(unlist(vars, use.names = FALSE))
 
   # strip unnecessary fields
-  plain_vars <- plain_vars[!plain_vars %in% c("child_id")]
-
-  result <- dh.getStats(
+  plain_vars <- plain_vars[!plain_vars %in% c("row_id", "child_id")]
+  
+  outputNonRep <- dh.getStats(
     conns = conns,
-    table = table,
+    df = table,
     vars = plain_vars
   )
 
-  jsonResult <- toJSON(result)
+  jsonOutputNonRep <- toJSON(outputNonRep)
 
   if (verbose) {
-    print(result)
+    print(jsonOutputNonRep)
   }
 }
 
@@ -180,42 +180,25 @@ qc.yearly.repeated <- function(conns, table, verbose) {
   )
   ds.cbind(x = c(table, "age_years2"), newobj = table, datasources = conns)
   # Store some summary information:
-  summary2 <- ds.levels(paste0(table, "$age_years2"), datasources = conns)
-  n2 <- length(summary2$validate$Levels)
-  levels <- summary2$validate$Levels
+  summary <- ds.levels(paste0(table, "$age_years2"), datasources = conns)
+  levels <- summary$validate$Levels
 
-  for (j in 1:length(factors)) {
-    message(" * Start evaluating factor: [ ", paste0(factors[j]), " ]")
-    summary1 <- ds.summary(paste0(table, "$", factors[j]), datasources = conns)
-    n <- length(summary1$validate$categories) 
-    output <- ds.table(paste0(table, "$", factors[j]), paste0(table, "$age_years2"), datasources = conns)
-    counts <- data.frame(matrix(unlist(output$output.list$TABLE_STUDY.1_counts), nrow = n + 1, ncol = n2, byrow = F))
-    prop <- data.frame(matrix(unlist(output$output.list$TABLES.COMBINED_all.sources_col.props), nrow = n + 1, ncol = n2, byrow = F))
-    eval(parse(text = (paste0("out_", factors[j], " <- data.frame(cbind(paste0(counts[,c(1)],' (',prop[,c(1)],')')))"))))
-
-
-    for (i in 2:n2) {
-      eval(parse(text = (paste0("out_", factors[j], " <- data.frame(cbind(out_", factors[j], ",paste0(counts[,c(", i, ")],' (',prop[,c(", i, ")],')')))"))))
-    }
-
-    colnames <- c("N (proportion) age 0") # all cohorts should have age 0
-    for (i in 2:length(levels)) {
-      colnames <- c(colnames, paste0("N (proportion) age ", levels[i]))
-    }
-
-    eval(parse(text = paste0("colnames(out_", factors[j], ") <- c(colnames)")))
-    eval(parse(text = paste0("rownames(out_", factors[j], ") <- c(summary1$validate$categories, 'NA')")))
-
-    rm(summary1, n, output, counts, prop, colnames)
+  outputFactVars <- factors %>%
+    map(function(factVar) { 
+      summaryVar <- ds.summary(paste0(table, "$", factVar), datasources = conns)
+      qc.process.factor.vars(factVar, table, levels, summaryVar$validate$categories, "age_years2", conns) }) %>%
+    rbind() %>%
+    toJSON()
+  
+  outputIntVars <- integers %>% 
+    map(function(intVar) { qc.process.integer.vars(intVar, table, levels, conns) }) %>%
+    rbind() %>%
+    toJSON()
+  
+  if (verbose) {
+    print(outputIntVars)
+    print(outputFactVars)
   }
-
-
-  output <- data.frame()
-  for (j in 1:length(integers)) {
-    out <- qc.process.integer.vars(integers[j], table, levels, conns)
-    cbind(output, out)
-  }
-  print(output)
 }
 
 #' Quality control for monthly repeated measures
@@ -276,20 +259,16 @@ qc.monthly.repeated <- function(conns, table, verbose) {
 
   # summarise some information from age_years2
   
-  summary2 <- ds.levels(paste0(table, "$age_years2"), datasources = conns)
-  n2 <- length(summary2$validate$Levels)
-  levels <- summary2$validate$Levels
-
-  output <- data.frame()
+  summary <- ds.levels(paste0(table, "$age_years2"), datasources = conns)
+  levels <- summary$validate$Levels
   
-  for (j in 1:length(integers)) {
-    out <- qc.process.integer.vars(integers[j], table, levels, conns)
-    print("gelukt!")
-    cbind(output, out)
-    print("ook gelukt")
+  outputIntVars <- integers %>% 
+    map(function(intVar) { qc.process.integer.vars(intVar, table, levels, conns) }) %>%
+    rbind()
+  
+  if(verbose) {
+    print(outputIntVars)  
   }
-  print("klaar")
-  print(output)
 }
 
 #' Quality control for trimester measures
@@ -308,7 +287,7 @@ qc.trimester <- function(conns, table, verbose) {
   # make it a flat list
   vars <- as.vector(unlist(vars, use.names = FALSE))
   # exclude variables not required:
-  vars <- vars[!vars %in% c("child_id", "age_trimester")]
+  vars <- vars[!vars %in% c("row_id", "child_id", "age_trimester")]
 
   ## Create vector of full names for datashield
   full_var_names <- paste0(table, "$", vars)
@@ -339,31 +318,19 @@ qc.trimester <- function(conns, table, verbose) {
   )
   ds.cbind(x = c(table, "age_trimester2"), newobj = table, datasources = conns)
   # Store some summary information:
-  summary2 <- ds.levels(paste0(table, "$age_trimester2"))
-  n2 <- length(summary2$dnbc$Levels) # how can I replace "dnbc" with "names(conns)"?
-  levels <- summary2$dnbc$Levels
+  summary <- ds.levels(paste0(table, "$age_trimester2"))
+  levels <- summary$validate$Levels
 
-  for (j in 1:length(factors)) {
-    print(paste0(factors[j], " start"))
-    summary1 <- ds.levels(paste0(table, "$", factors[j]), datasources = conns)
-    n <- length(summary1$dnbc$Levels) 
-    output <- ds.table(paste0(table, "$", factors[j]), paste0(table, "$age_trimester2"), datasources = conns)
-    counts <- data.frame(matrix(unlist(output$output.list$TABLE_STUDY.1_counts), nrow = n + 1, ncol = n2, byrow = F))
-    prop <- data.frame(matrix(unlist(output$output.list$TABLES.COMBINED_all.sources_col.props), nrow = n + 1, ncol = n2, byrow = F))
-    eval(parse(text = (paste0("out_", factors[j], " <- data.frame(cbind(paste0(counts[,c(1)],' (',prop[,c(1)],')')))"))))
-
-    for (i in 2:n2) {
-      eval(parse(text = (paste0("out_", factors[j], " <- data.frame(cbind(out_", factors[j], ",paste0(counts[,c(", i, ")],' (',prop[,c(", i, ")],')')))"))))
-    }
-
-    colnames <- c("N (proportion) trimester 1") # all cohorts have trimester 1?
-    for (i in 2:length(levels)) {
-      colnames <- c(colnames, paste0("N (proportion) trimester ", levels[i]))
-    }
-
-    eval(parse(text = paste0("colnames(out_", factors[j], ") <- c(colnames)")))
-    eval(parse(text = paste0("rownames(out_", factors[j], ") <- c(summary1$dnbc$Levels, 'NA')")))
-    rm(summary1, n, output, counts, prop, colnames)
+  outputFactVars <- factors %>%
+    map(function(factVar) { 
+      summaryVar <- ds.levels(paste0(table, "$", factVar), datasources = conns)
+      qc.process.factor.vars(factVar, table, levels, summaryVar$validate$Levels, "age_trimester2", conns) 
+      }) %>%
+    cbind() %>%
+    toJSON()
+    
+  if(verbose) {
+    print(outputFactVars)
   }
 }
 
@@ -381,14 +348,14 @@ qc.trimester <- function(conns, table, verbose) {
 #' @return a table of mean by class information
 #' 
 #' @noRd
-qc.process.integer.vars <- function(int_var, table, levels, conns) {
-  message(paste0(" * Start evaluating integer: [ ", int_var, " ]"))
+qc.process.integer.vars <- function(intVar, table, levels, conns) {
+  message(paste0(" * Start evaluating integer: [ ", intVar, " ]"))
     
-  ds.dataFrame(x = c(paste0(table, "$", int_var), paste0(table, "$age_years2")), newobj = "complete", datasources = conns)
+  ds.dataFrame(x = c(paste0(table, "$", intVar), paste0(table, "$age_years2")), newobj = "complete", datasources = conns)
   ds.completeCases(x1 = "complete", newobj = "complete", datasources = conns)
     
   output <- ds.meanByClass(x = 'complete',
-              outvar = int_var,
+              outvar = intVar,
               covar = 'age_years2',
               type = 'combine',
               datasources = conns)
@@ -404,7 +371,46 @@ qc.process.integer.vars <- function(int_var, table, levels, conns) {
   rm(colnames)
   ds.rm("complete", datasources = conns)
   
-  message(paste0(" * Succesfully evaluated: [ ", int_var, " ]"))
+  message(paste0(" * Succesfully evaluated: [ ", intVar, " ]"))
   
   return(output)
+}
+
+#' 
+#'
+#'
+#' @param factVar
+#' @param table
+#' @param levels
+#' @param options
+#' @param ageVariable
+#' @param conns
+#' 
+#' @noRd
+qc.process.factor.vars <- function(factVar, table, levels, options, ageVariable, conns) {
+  message(paste0(" * Start evaluating factor: [ ", factVar, " ]"))
+  n <- length(options)
+  n2 <- length(levels)
+  output <- ds.table(paste0(table, "$", factVar), paste0(table, "$", ageVariable), datasources = conns)
+  counts <- data.frame(matrix(unlist(output$output.list$TABLE_STUDY.1_counts), nrow = n + 1, ncol = n2, byrow = F))
+  prop <- data.frame(matrix(unlist(output$output.list$TABLES.COMBINED_all.sources_col.props), nrow = n + 1, ncol = n2, byrow = F))
+  eval(parse(text = (paste0("out_", factVar, " <- data.frame(cbind(paste0(counts[,c(1)],' (',prop[,c(1)],')')))"))))
+  
+  for (i in 2:n2) {
+    eval(parse(text = (paste0("out_", factVar, " <- data.frame(cbind(out_", factVar, ",paste0(counts[,c(", i, ")],' (',prop[,c(", i, ")],')')))"))))
+  }
+  
+  colnames <- c("N (proportion) age 0")
+  for (i in 2:length(levels)) {
+    colnames <- c(colnames, paste0("N (proportion) age ", levels[i]))
+  }
+  
+  eval(parse(text = paste0("colnames(out_", factVar, ") <- c(colnames)")))
+  eval(parse(text = paste0("rownames(out_", factVar, ") <- c(options, 'NA')")))
+  
+  rm(summary1, n, output, counts, prop, colnames)
+  
+  message(paste0(" * Succesfully evaluated: [ ", factVar, " ]"))
+  
+  return(data.frame())
 }
