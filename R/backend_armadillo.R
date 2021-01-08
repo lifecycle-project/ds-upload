@@ -77,7 +77,7 @@ du.armadillo.create.project <- function(project) {
 #' @param table_type data model version
 #'
 #' @importFrom MolgenisArmadillo armadillo.upload_table
-#' @importFrom stringr str_split str_replace_all
+#' @importFrom stringr str_split str_replace_all str_detect
 #' @importFrom utils tail
 #'
 #' @noRd
@@ -85,9 +85,12 @@ du.armadillo.import <- function(project, data, dict_version, dict_kind, data_ver
   requireNamespace("MolgenisArmadillo")
 
   if (!is.null(data)) {
-    project_elements <- str_split(project, "_")
-
-    armadillo_project <- str_replace_all(sapply(project_elements, "[[", 2), "-", "")
+    if(str_detect(project, "\\_")) {
+      project_elements <- str_split(project, "_")
+      armadillo_project <- str_replace_all(sapply(project_elements, "[[", 2), "-", "")
+    } else {
+      armadillo_project <- project
+    }
 
     if (dict_kind == du.enum.dict.kind()$BETA) {
       armadillo_project <- str_replace_all(sapply(project_elements, tail, 1), "-", "")

@@ -41,7 +41,7 @@ du.upload.methyl.clocks <- function(upload = TRUE, dict_name = "", action = du.e
       if (action == du.enum.action()$ALL | action == du.enum.action()$POPULATE) {
         project <- du.populate.beta(dict_name, database_name)
       }
-
+      
       if (action == du.enum.action()$ALL) {
         if (missing(data_input_path)) {
           input_path <- readline("- Specify input path (for your data): ")
@@ -60,7 +60,7 @@ du.upload.methyl.clocks <- function(upload = TRUE, dict_name = "", action = du.e
             du.opal.upload(du.enum.dict.kind()$BETA, file_name)
           }
           if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
-            du.armadillo.import(project = dict_name, data = data, dict_kind = du.enum.dict.kind()$BETA, table_type = data_version)
+            du.armadillo.import(project = project, data = data, dict_kind = du.enum.dict.kind()$BETA, table_type = data_version)
           }
         }
       }

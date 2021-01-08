@@ -52,9 +52,9 @@ du.populate.beta <- function(dict_name, database_name) {
   dictionaries <- du.dict.retrieve.tables(ds_upload.globals$api_dict_beta_url, dict_name)
 
   if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
-    armadillo_project <- str_replace_all(dict_name, "-", "")
-    armadillo_project <- str_replace_all(dict_name, "_", "")
-    du.armadillo.create.project(armadillo_project)
+    project <- str_replace_all(dict_name, "-", "")
+    project <- str_replace_all(dict_name, "_", "")
+    du.armadillo.create.project(project)
   }
 
   if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {

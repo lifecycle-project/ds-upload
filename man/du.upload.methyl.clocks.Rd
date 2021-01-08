@@ -2,7 +2,7 @@
 % Please edit documentation in R/upload_methyl.R
 \name{du.upload.methyl.clocks}
 \alias{du.upload.methyl.clocks}
-\title{Generate clocks for uploading to Opal}
+\title{Uploading methylation data to the DataSHIELD backends}
 \usage{
 du.upload.methyl.clocks(
   upload = TRUE,
@@ -19,7 +19,7 @@ du.upload.methyl.clocks(
 
 \item{dict_name}{name of the dictionary located on Github usually something like this: diabetes/test_vars_01}
 
-\item{action}{action to be performed, can be 'reshape', 'populate' or 'all'}
+\item{action}{action to be performed, can be 'populate' or 'all'}
 
 \item{data_input_path}{path to the methylation data}
 
@@ -30,7 +30,7 @@ du.upload.methyl.clocks(
 \item{database_name}{is the name of the data backend of DataSHIELD, default = opal_data}
 }
 \description{
-Generate clocks for uploading to Opal
+Uploading methylation data to the DataSHIELD backends
 }
 \examples{
 
