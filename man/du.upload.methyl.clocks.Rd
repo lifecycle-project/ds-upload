@@ -8,9 +8,9 @@ du.upload.methyl.clocks(
   upload = TRUE,
   dict_name = "",
   action = du.enum.action()$ALL,
-  data_input_path = "",
+  methyl_data_input_path = "",
+  covariate_data_input_path = "",
   data_version = "1_0",
-  age_when_measured,
   database_name = "opal_data"
 )
 }
@@ -21,11 +21,11 @@ du.upload.methyl.clocks(
 
 \item{action}{action to be performed, can be 'populate' or 'all'}
 
-\item{data_input_path}{path to the methylation data}
+\item{methyl_data_input_path}{path to the methylation data}
+
+\item{covariate_data_input_path}{path to the covariate data to measure the age}
 
 \item{data_version}{version of the raw data}
-
-\item{age_when_measured}{age of the child when the measurement took place (in months)}
 
 \item{database_name}{is the name of the data backend of DataSHIELD, default = opal_data}
 }
@@ -37,8 +37,9 @@ Uploading methylation data to the DataSHIELD backends
 \dontrun{
 du.upload.methyl.clocks(
   dict_name = "methylation_clocks",
-  data_input_path = "https://github.com/isglobal-brge/methylclock/blob/master/inst/extdata/MethylationDataExample55.csv?raw=true",
-  age_when_measured = 44
+  methyl_data_input_path = "~/path-to-file",
+  covariate_data_input_path = "~/path-to-file",
+  data_version = "1_0"
 )
 }
 

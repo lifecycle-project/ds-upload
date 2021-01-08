@@ -18,14 +18,14 @@ ds_upload.globals <- new.env()
 #' \dontrun{
 #' du.upload.methyl.clocks(
 #'   dict_name = "methylation_clocks",
-#'   methyl_data_input_path = "https://github.com/isglobal-brge/methylclock/blob/master/inst/extdata/MethylationDataExample55.csv?raw=true",
-#'   covariate_data_input_path = "https://raw.githubusercontent.com/isglobal-brge/methylclock/master/inst/extdata/SampleAnnotationExample55.csv?raw=true",
+#'   methyl_data_input_path = "~/path-to-file",
+#'   covariate_data_input_path = "~/path-to-file",
 #'   data_version = "1_0"
 #' )
 #' }
 #'
 #' @export
-du.upload.methyl.clocks <- function(upload = TRUE, dict_name = "", action = du.enum.action()$ALL, methyl_data_input_path = "", covariate_data_input_path = "", data_version = "1_0", age_when_measured, database_name = "opal_data") {
+du.upload.methyl.clocks <- function(upload = TRUE, dict_name = "", action = du.enum.action()$ALL, methyl_data_input_path = "", covariate_data_input_path = "", data_version = "1_0", database_name = "opal_data") {
   du.check.package.version()
   du.check.session(upload)
 
