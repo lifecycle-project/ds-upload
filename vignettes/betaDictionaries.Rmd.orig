@@ -19,6 +19,7 @@ The beta dictionaries are used to be able to initiate creation of dictonaries in
 
 ## How it works
 You need to have a few prerequisites
+
 - [Git](https://git-scm.com/)
 - [RStudio](https://rstudio.com/)
 - [Opal](https://github.com/obiba/opal)
@@ -43,6 +44,7 @@ result in a structure like:
       - dict_#different flavor$
 
 The flavors can be:
+
 - non_rep
 - weekly_rep (0-)
 - monthly_rep (0-219)
@@ -53,10 +55,16 @@ Then you need to create a dictionary based upon the variables you want to harmon
 
 When you finished writing the dictionary you need to commit and push them to the repository on Github. Please check the [git-workflow](https://github.com/lifecycle-project/analysis-tutorials/blob/master/GIT-WORKFLOW.md) document to get the dictionaries exposed.
 
-## Upload dictionaries and data to Opal
-When a first version of a beta dictionary is available, you can upload it to opal with the following code:
+## Upload dictionaries and data
+We now support multiple backend with the beta-dictionaries.
 
-```{r, uploading beta dictionaries}
+- Armadillo
+- Opal
+
+### Upload to Armadillo
+When a first version of a beta dictionary is available, you can upload it to the Armadillo with the following code:
+
+```{r, uploading beta dictionaries to Armadillo}
 login_data <- data.frame(server = "https://armadillo.test.molgenis.org", storage = "https://armadillo-minio.test.molgenis.org", driver = "ArmadilloDriver")
 
 du.login(login_data)
@@ -66,5 +74,21 @@ du.upload.beta(
   data_input_path = "/Users/sido/VisualStudioCodeProjects/ds-beta-dictionaries/data/example-dictionary/beta_dict_generated_data.csv")
 ```
 
-After this youj need to manually upload the data just like you would in a released data upload. 
+You will be able to check the data in the Armadillo immediately.
+
+## Upload to Opal
+When a first version of a beta dictionary is available, you can upload it to Opal with the following code:
+
+```{r, uploading beta dictionaries to Opal}
+login_data <- data.frame(server = "https://opal.edge.molgenis.org", password = "Ui3thahr", driver = "OpalDriver")
+
+du.login(login_data)
+  
+du.upload.beta(
+  dict_name = "example-dictionary", 
+  data_input_path = "/Users/sido/VisualStudioCodeProjects/ds-beta-dictionaries/data/example-dictionary/beta_dict_generated_data.csv")
+```
+
+After this you need to manually upload the data just like you would in a released data upload. 
+
 > Be advised: the data is now placed into directories on the target system, in this case a "beta" directory

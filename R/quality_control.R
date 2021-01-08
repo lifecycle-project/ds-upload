@@ -46,19 +46,27 @@ du.quality.control <- function(project, folder, verbose = FALSE) {
     map(function(project) {
       if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
         tables <- opal.tables(ds_upload.globals$conn, project)
+        tables <- tables$name
       }
       if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
         tables <- du.armadillo.list.tables(project)
       }
-      tables$name %>%
+      
+      tables %>%
         as.character() %>%
         map(function(table) {
           message(paste0(" * Starting with: ", project, " - ", table))
           conns <- datashield.login(logins = builder$build(), assign = FALSE)
 
           qc_dataframe_symbol <- "QC"
+          
+          tables_to_assign <- paste0(project, ".", table)
+            
+          if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
+            tables_to_assign <- paste0(project, "/", table)
+          }
 
-          datashield.assign.table(conns = conns, table = paste0(project, ".", table), symbol = qc_dataframe_symbol)
+          datashield.assign.table(conns = conns, table = tables_to_assign, symbol = qc_dataframe_symbol)
 
           if (grepl(du.enum.table.types()$NONREP, table)) {
             qc.non.repeated(conns, qc_dataframe_symbol, verbose)
