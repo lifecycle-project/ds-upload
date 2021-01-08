@@ -127,7 +127,6 @@ du.check.variables <- local(function(dict_kind, data_columns, run_mode) {
 #'
 #' @noRd
 du.reshape.generate.non.repeated <- function(data, dict_kind) {
-  
   message("* Generating: non-repeated measures")
 
   # Retrieve dictionary

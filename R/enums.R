@@ -38,7 +38,7 @@ du.enum.dict.kind <- function() {
 }
 
 #' Projects that are containing dictionaries. Repositories containing these dictionaries should be:
-#' 
+#'
 #' - ds-dictionaries
 #' - ds-beta-dictionaries
 #'

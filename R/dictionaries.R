@@ -138,15 +138,15 @@ du.match.dict.categories <- local(function(project, dict_kind, table, file_name)
   label <- name <- NULL
 
   variables <- read_xlsx(path = paste0(getwd(), "/", dict_kind, "/", file_name), sheet = 1)
-  
+
   number_sheets <- length(excel_sheets(paste0(getwd(), "/", dict_kind, "/", file_name)))
-                          
-  if(number_sheets == 2) {
-    categories <- read_xlsx(path = paste0(getwd(), "/", dict_kind, "/", file_name), sheet = 2)  
+
+  if (number_sheets == 2) {
+    categories <- read_xlsx(path = paste0(getwd(), "/", dict_kind, "/", file_name), sheet = 2)
   } else {
     categories <- data.frame()
-  }                          
-  
+  }
+
   variables$entityType <- "Participant"
   variables$isRepeatable <- FALSE
   variables$attributes <- data.frame(namespace = "", name = "label", locale = "", value = variables$label)
@@ -203,7 +203,7 @@ du.populate.dict.versions <- function(dict_kind, dict_version) {
 #' @noRd
 du.retrieve.dictionaries <- function(dict_table, dict_kind) {
   dict_file_list <- list.files(paste0(getwd(), "/", dict_kind))
-  
+
   if (!missing(dict_table)) {
     dict_file_list <- dict_file_list[grep(dict_table, dict_file_list)]
   }

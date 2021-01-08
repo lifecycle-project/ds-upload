@@ -20,7 +20,7 @@ du.quality.control <- function(project, folder, verbose = FALSE) {
     requireNamespace("DSOpal")
     projects <- opal.projects(ds_upload.globals$conn)
     builder$append(
-      server = "validate", 
+      server = "validate",
       url = as.character(ds_upload.globals$login_data$server),
       driver = as.character(ds_upload.globals$login_data$driver),
       user = as.character(ds_upload.globals$login_data$username),
@@ -30,7 +30,7 @@ du.quality.control <- function(project, folder, verbose = FALSE) {
     requireNamespace("DSMolgenisArmadillo")
     projects <- du.armadillo.list.projects()
     builder$append(
-      server = "validate", 
+      server = "validate",
       url = as.character(ds_upload.globals$login_data$server),
       driver = as.character(ds_upload.globals$login_data$driver),
       token = as.character(ds_upload.globals$login_data$token)
@@ -51,7 +51,7 @@ du.quality.control <- function(project, folder, verbose = FALSE) {
       if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
         tables <- du.armadillo.list.tables(project)
       }
-      
+
       tables %>%
         as.character() %>%
         map(function(table) {
@@ -59,9 +59,9 @@ du.quality.control <- function(project, folder, verbose = FALSE) {
           conns <- datashield.login(logins = builder$build(), assign = FALSE)
 
           qc_dataframe_symbol <- "QC"
-          
+
           tables_to_assign <- paste0(project, ".", table)
-            
+
           if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
             tables_to_assign <- paste0(project, "/", table)
           }
