@@ -86,9 +86,9 @@ du.generate.methyl.data <- function(data_input_path, age_when_measured) {
 
   data <- methylclock::DNAmAge(methyl_data)
 
-  colnames(output)[colnames(output) == "id"] <- "child_id"
+  colnames(data)[colnames(data) == "id"] <- "child_id"
 
-  data <- cbind(row_id = seq.int(nrow(output)), data)
+  data <- cbind(row_id = seq.int(nrow(data)), data)
   data <- cbind(age = age_when_measured, data)
 
   return(data)
