@@ -19,12 +19,13 @@ ds_upload.globals <- new.env()
 #' du.upload.methyl.clocks(
 #'   dict_name = "methylation_clocks",
 #'   methyl_data_input_path = "https://github.com/isglobal-brge/methylclock/blob/master/inst/extdata/MethylationDataExample55.csv?raw=true",
-#'   covariate_data_input_path = "https://raw.githubusercontent.com/isglobal-brge/methylclock/master/inst/extdata/SampleAnnotationExample55.csv"
+#'   covariate_data_input_path = "https://raw.githubusercontent.com/isglobal-brge/methylclock/master/inst/extdata/SampleAnnotationExample55.csv?raw=true",
+#'   data_version = "1_0"
 #' )
 #' }
 #'
 #' @export
-du.upload.methyl.clocks <- function(upload = TRUE, dict_name = "", action = du.enum.action()$ALL, methyl_data_input_path = "", covariates_data_input_path =, data_version = "1_0", age_when_measured, database_name = "opal_data") {
+du.upload.methyl.clocks <- function(upload = TRUE, dict_name = "", action = du.enum.action()$ALL, methyl_data_input_path = "", covariate_data_input_path = "", data_version = "1_0", age_when_measured, database_name = "opal_data") {
   du.check.package.version()
   du.check.session(upload)
 
@@ -43,14 +44,19 @@ du.upload.methyl.clocks <- function(upload = TRUE, dict_name = "", action = du.e
       }
       
       if (action == du.enum.action()$ALL) {
-        if (missing(data_input_path)) {
-          input_path <- readline("- Specify input path (for your data): ")
-        } else if (missing(data_input_path)) {
-          stop("No source file specified, Please specify your source file")
+        if (missing(methyl_data_input_path)) {
+          input_path <- readline("- Specify input path (for your methylation data): ")
+        } else if (missing(methyl_data_input_path)) {
+          stop("No source file for methylation data specified, please specify your source for methylation data file")
+        }
+        if (missing(covariate_data_input_path)) {
+          input_path <- readline("- Specify input path (for your covoriate data): ")
+        } else if (missing(covariate_data_input_path)) {
+          stop("No source file for covariate data specified, please specify your source for covariate data file")
         }
         data_input_format <- du.enum.input.format()$CSV
 
-        data <- du.generate.methyl.data(data_input_path, age_when_measured)
+        data <- du.generate.methyl.data(methyl_data_input_path, covariate_data_input_path)
 
         file_name <- paste0(format(Sys.time(), "%Y-%m-%d_%H-%M-%S"), "_", dict_name, "_", data_version)
         write_csv(data, paste0(getwd(), "/", file_name, ".csv"), na = "")
