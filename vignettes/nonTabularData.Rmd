@@ -7,12 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
+
 
 We have now dedicated processes to handle non-tabular data. We now support the following data.
 
@@ -21,7 +16,8 @@ We have now dedicated processes to handle non-tabular data. We now support the f
 ## Methylation data
 We use the [methylclock](https://github.com/isglobal-brge/methylclock) package to generate the tabular methylation clocks. Which allows us to upload it to the DataSHIELD backends. You need to make sure to install the package as well. You can do this by executing the following command:
 
-```{r, installing methylclock, eval = FALSE}
+
+```r
 install.packages("methylclock", repos = "https://registry.molgenis.org/repository/R", dependencies = TRUE)
 ```
 
@@ -38,7 +34,8 @@ Preparation steps:
 ### Upload to Armadillo
 You can generate the clocks and upload to the Armadillo using these commands:
 
-```{r, uploading the methylation data to the Armadillo, eval = FALSE}
+
+```r
 login_data <- data.frame(server = "https://armadillo.test.molgenis.org", storage = "https://armadillo-minio.test.molgenis.org", driver = "ArmadilloDriver")
 
 du.login(login_data)
@@ -53,7 +50,8 @@ du.upload.methyl.clocks(
 ### Upload to Opal
 You can generate the clocks and upload to the Opal using these commands:
 
-```{r, uploading the methylation data to the Opal, eval = FALSE}
+
+```r
 login_data <- data.frame(server = "https://opal.edge.molgenis.org", username = "administrator", password = "ouf0uPh6", driver = "OpalDriver")
 
 du.login(login_data)
