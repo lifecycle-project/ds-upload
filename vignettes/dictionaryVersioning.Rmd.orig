@@ -1,12 +1,17 @@
 ---
-title: "dictionaryVersioning"
+title: "Dictionairy versioning"
 author: "Sido Haakma"
-date: "05/01/2021"
-output: html_document
+vignette: >
+  %\VignetteIndexEntry{Dictionairy versioning}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
 ```
 
 You can add new content and release the dictionaries for all consortia.

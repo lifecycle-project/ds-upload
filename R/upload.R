@@ -107,9 +107,9 @@ du.upload <- function(dict_version = "2_1", data_version = "1_0", dict_kind = du
       }
 
       if (run_mode != du.enum.run.mode()$NON_INTERACTIVE) {
-        run_cqc <- readline("- Do you want to run quality control? (y/n): ")
+        run_cqc <- readline("- Do you want to run quality control (make sure you imported the data!)? (y/n): ")
       } else {
-        run_cqc <- "y"
+        run_cqc <- "n"
       }
       if (run_cqc == "y") {
         if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {

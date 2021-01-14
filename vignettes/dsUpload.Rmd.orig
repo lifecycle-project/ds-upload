@@ -114,7 +114,7 @@ Alternatively, execute these commands in your R-console:
 login_data <- data.frame(
   server = "https://opal.edge.molgenis.org", 
   user = "administrator", 
-  password = "Ui3thahr",
+  password = "ouf0uPh6",
   driver = "OpalDriver")
 ```
 

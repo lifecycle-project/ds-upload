@@ -345,6 +345,8 @@ qc.trimester <- function(conns, table, verbose) {
 #' @param levels these are possible variable levels
 #' @param conns connections to the DataSHIELD backends
 #' 
+#' @importFrom dsBaseClient ds.meanByClass ds.dataFrame ds.completeCases
+#' 
 #' @return a table of mean by class information
 #' 
 #' @noRd
@@ -376,15 +378,16 @@ qc.process.integer.vars <- function(intVar, table, levels, conns) {
   return(output)
 }
 
+#' Generate summary statistics for factors
+#'
+#' @param factVar variable name that needs to checked
+#' @param table table where the variable should be located
+#' @param levels repeats number of the variable
+#' @param options categories of the variable
+#' @param ageVariable the type of age variable
+#' @param conns connections to the backend
 #' 
-#'
-#'
-#' @param factVar
-#' @param table
-#' @param levels
-#' @param options
-#' @param ageVariable
-#' @param conns
+#' @importFrom dsBaseClient ds.table
 #' 
 #' @noRd
 qc.process.factor.vars <- function(factVar, table, levels, options, ageVariable, conns) {
@@ -394,10 +397,10 @@ qc.process.factor.vars <- function(factVar, table, levels, options, ageVariable,
   output <- ds.table(paste0(table, "$", factVar), paste0(table, "$", ageVariable), datasources = conns)
   counts <- data.frame(matrix(unlist(output$output.list$TABLE_STUDY.1_counts), nrow = n + 1, ncol = n2, byrow = F))
   prop <- data.frame(matrix(unlist(output$output.list$TABLES.COMBINED_all.sources_col.props), nrow = n + 1, ncol = n2, byrow = F))
-  eval(parse(text = (paste0("out_", factVar, " <- data.frame(cbind(paste0(counts[,c(1)],' (',prop[,c(1)],')')))"))))
+  out <- data.frame(cbind(counts[,c(1)],prop[,c(1)]))
   
   for (i in 2:n2) {
-    eval(parse(text = (paste0("out_", factVar, " <- data.frame(cbind(out_", factVar, ",paste0(counts[,c(", i, ")],' (',prop[,c(", i, ")],')')))"))))
+    eval(parse(text = (paste0("out_", factVar, " <- data.frame(cbind(out,paste0(counts[,c(", i, ")],' (',prop[,c(", i, ")],')')))"))))
   }
   
   colnames <- c("N (proportion) age 0")
@@ -408,7 +411,7 @@ qc.process.factor.vars <- function(factVar, table, levels, options, ageVariable,
   eval(parse(text = paste0("colnames(out_", factVar, ") <- c(colnames)")))
   eval(parse(text = paste0("rownames(out_", factVar, ") <- c(options, 'NA')")))
   
-  rm(summary1, n, output, counts, prop, colnames)
+  rm(n, output, counts, prop, colnames)
   
   message(paste0(" * Succesfully evaluated: [ ", factVar, " ]"))
   
