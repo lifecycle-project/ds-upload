@@ -20,10 +20,10 @@ The quality control measures are based upon the different variable types we have
 - yearly repeated
 - monthly repeated
 - trimester repeated
-- weekly repeated
 
 ## Checks
 For each of the types there is a different analysis that needs to be done. We support at the moment 4 table types.
+
 - non-repeated
 - monthly-repeated
 - yearly-repeated
@@ -48,7 +48,11 @@ The quality control will be executed in the pipeline after uploading and importi
 ### For Armadillo
 ```{r, execute the quality control separatly for Armadillo}
 library(dsUpload)
-login_data <- data.frame(server = "https://armadillo.test.molgenis.org", storage = "https://armadillo-minio.test.molgenis.org", driver = "ArmadilloDriver")
+login_data <- data.frame(
+  server = "https://armadillo.test.molgenis.org", 
+  storage = "https://armadillo-minio.test.molgenis.org", 
+  driver = "ArmadilloDriver"
+)
 
 du.login(login_data)
 
@@ -56,9 +60,14 @@ du.quality.control(project = "gecko", verbose = TRUE)
 ```
 
 ### For Opal
-```{r, execute the quality control separatly for Armadillo}
+```{r, execute the quality control separatly for Opal}
 library(dsUpload)
-login_data <- data.frame(server = "https://opal.edge.molgenis.org", storage = "https://opal.edge.molgenis.org", driver = "OpalDriver")
+login_data <- data.frame(
+  server = "https://opal.edge.molgenis.org", 
+  username = "administrator", 
+  password = "ouf0uPh6", 
+  driver = "OpalDriver"
+)
 
 du.login(login_data)
 

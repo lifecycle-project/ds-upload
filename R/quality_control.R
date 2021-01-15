@@ -196,8 +196,8 @@ qc.yearly.repeated <- function(conns, table, verbose) {
     toJSON()
   
   if (verbose) {
-    print(outputIntVars)
-    print(outputFactVars)
+    print(outputIntVars[[1]])
+    print(outputFactVars[[1]])
   }
 }
 
