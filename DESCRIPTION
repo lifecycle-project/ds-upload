@@ -45,6 +45,7 @@ Imports:
   maditr,
   haven,
   httr,
+  RCurl,
   jsonlite,
   purrr,
   readr,

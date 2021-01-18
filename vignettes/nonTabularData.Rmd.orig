@@ -48,11 +48,13 @@ login_data <- data.frame(
   driver = "ArmadilloDriver"
 )
 
+library(dsUpload)
+
 du.login(login_data)
   
 du.upload.methyl.clocks(
   dict_name = "methylclocks", 
-  methyl_data_input_path = "https://github.com/isglobal-brge/methylclock/blob/master/inst/extdata/MethylationDataExample55.csv?raw=true",
+  methyl_data_input_path = "https://github.com/isglobal-brge/methylclock/raw/master/inst/extdata/MethylationDataExample55.csv?raw=true",
   covariate_data_input_path = "https://github.com/isglobal-brge/methylclock/raw/master/inst/extdata/SampleAnnotationExample55.csv?raw=true",
   data_version = "1_0")
 ```
@@ -60,7 +62,7 @@ du.upload.methyl.clocks(
 ### Upload to Opal
 You can generate the clocks and upload to the Opal using these commands:
 
-```{r, uploading the methylation data to the Opal, eval = FALSE}
+```{r, uploading the methylation data to the Opal}
 login_data <- data.frame(
   server = "https://opal.edge.molgenis.org", 
   username = "administrator", 
@@ -68,11 +70,13 @@ login_data <- data.frame(
   driver = "OpalDriver"
 )
 
+library(dsUpload)
+
 du.login(login_data)
   
 du.upload.methyl.clocks(
   dict_name = "methylclocks", 
-  methyl_data_input_path = "https://github.com/isglobal-brge/methylclock/blob/master/inst/extdata/MethylationDataExample55.csv?raw=true",
+  methyl_data_input_path = "https://github.com/isglobal-brge/methylclock/raw/master/inst/extdata/MethylationDataExample55.csv?raw=true",
   covariate_data_input_path = "https://github.com/isglobal-brge/methylclock/raw/master/inst/extdata/SampleAnnotationExample55.csv?raw=true",
   data_version = "1_0")
 ```

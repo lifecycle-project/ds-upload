@@ -57,7 +57,7 @@ du.upload.methyl.clocks <- function(upload = TRUE, dict_name = "", action = du.e
         }
         data_input_format <- du.enum.input.format()$CSV
 
-        data <- du.generate.methyl.data(methyl_data_input_path, covariate_data_input_path)
+        data <- du.generate.methyl.data(data_format, methyl_data_input_path, covariate_data_input_path)
 
         file_name <- paste0(format(Sys.time(), "%Y-%m-%d_%H-%M-%S"), "_", dict_name, "_", data_version)
         write_csv(data, paste0(getwd(), "/", file_name, ".csv"), na = "")
@@ -81,24 +81,29 @@ du.upload.methyl.clocks <- function(upload = TRUE, dict_name = "", action = du.e
 #' Generate the actual clocks.
 #' 
 #' Make sure you have an "Age" columns in the covariate data. It needs to be spelled exactly like that.
-#'
+#' 
+#' @param data_format can be CSV or Rdata
 #' @param methyl_data_input_path input path of the raw methylation data
 #' @param covariate_data_input_path input path of the covariate data (this can be used to determine the ages of the methylation clocks)
-#' @param data_format can be CSV or Rdata
 #'
 #' @importFrom readr read_csv
 #' @importFrom tibble add_column
+#' @importFrom RCurl url.exists
 #'
 #' @return the generated clocks with converted columns for child_id and the age_measured attached
 #'
 #' @noRd
 du.generate.methyl.data <- function(data_format, methyl_data_input_path, covariate_data_input_path) {
   requireNamespace("methylclock")
-
   
   if(data_format == du.enum.input.format()$CSV) {
-    methyl_data <- read_csv(methyl_data_input_path)
-    covariate_data <- read_csv(covariate_data_input_path)
+    if(url.exists(methyl_data_input_path) & url.exists(covariate_data_input_path)) {
+      methyl_data <- read_csv(url(methyl_data_input_path))
+      covariate_data <- read_csv(url(covariate_data_input_path))
+    } else {
+      methyl_data <- read_csv(methyl_data_input_path)
+      covariate_data <- read_csv(covariate_data_input_path)
+    }
   } else {
     methyl_data <- load(methyl_data_input_path)
     covariate_data <- load(covariate_data_input_path) 
