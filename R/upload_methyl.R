@@ -109,7 +109,7 @@ du.generate.methyl.data <- function(data_format, methyl_data_input_path, covaria
     covariate_data <- load(covariate_data_input_path) 
   }
 
-  data <- methylclock::DNAmAge(methyl_data, age = covariate_data$Age)
+  data <- methylclock::DNAmAge(methyl_data, age = covariate_data$Age, cell.count = FALSE)
 
   colnames(data)[colnames(data) == "id"] <- "child_id"
 
