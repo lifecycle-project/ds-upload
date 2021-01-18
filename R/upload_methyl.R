@@ -114,7 +114,7 @@ du.generate.methyl.data <- function(data_format, methyl_data_input_path, covaria
   colnames(data)[colnames(data) == "id"] <- "child_id"
 
   row_id = seq.int(nrow(data))
-  data <- add_column(data, row_id, before = 1)
+  data <- add_column(data, row_id, .before = 1)
 
   return(data)
 }
