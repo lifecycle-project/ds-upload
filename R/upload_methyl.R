@@ -9,6 +9,7 @@ ds_upload.globals <- new.env()
 #' @param methyl_data_input_path path to the methylation data
 #' @param covariate_data_input_path path to the covariate data to measure the age
 #' @param data_version version of the raw data
+#' @param data_format can be CSV or RData
 #' @param database_name is the name of the data backend of DataSHIELD, default = opal_data
 #'
 #' @importFrom readr read_csv write_csv
@@ -25,7 +26,7 @@ ds_upload.globals <- new.env()
 #' }
 #'
 #' @export
-du.upload.methyl.clocks <- function(upload = TRUE, dict_name = "", action = du.enum.action()$ALL, methyl_data_input_path = "", covariate_data_input_path = "", data_version = "1_0", database_name = "opal_data") {
+du.upload.methyl.clocks <- function(upload = TRUE, dict_name = "", action = du.enum.action()$ALL, methyl_data_input_path = "", covariate_data_input_path = "", data_version = "1_0", data_format = du.enum.input.format()$CSV, database_name = "opal_data") {
   du.check.package.version()
   du.check.session(upload)
 
@@ -77,10 +78,13 @@ du.upload.methyl.clocks <- function(upload = TRUE, dict_name = "", action = du.e
   )
 }
 
-#' Generate the actual clocks
+#' Generate the actual clocks.
+#' 
+#' Make sure you have an "Age" columns in the covariate data. It needs to be spelled exactly like that.
 #'
-#' @param data_input_path input path of the raw methylation data
-#' @param age_when_measured age of the child when the measurement took place (in months)
+#' @param methyl_data_input_path input path of the raw methylation data
+#' @param covariate_data_input_path input path of the covariate data (this can be used to determine the ages of the methylation clocks)
+#' @param data_format can be CSV or Rdata
 #'
 #' @importFrom readr read_csv
 #' @importFrom tibble add_column
@@ -88,11 +92,17 @@ du.upload.methyl.clocks <- function(upload = TRUE, dict_name = "", action = du.e
 #' @return the generated clocks with converted columns for child_id and the age_measured attached
 #'
 #' @noRd
-du.generate.methyl.data <- function(methyl_data_input_path, covariate_data_input_path) {
+du.generate.methyl.data <- function(data_format, methyl_data_input_path, covariate_data_input_path) {
   requireNamespace("methylclock")
 
-  methyl_data <- read_csv(methyl_data_input_path)
-  covariate_data <- read_csv(covariate_data_input_path)
+  
+  if(data_format == du.enum.input.format()$CSV) {
+    methyl_data <- read_csv(methyl_data_input_path)
+    covariate_data <- read_csv(covariate_data_input_path)
+  } else {
+    methyl_data <- load(methyl_data_input_path)
+    covariate_data <- load(covariate_data_input_path) 
+  }
 
   data <- methylclock::DNAmAge(methyl_data, age = covariate_data$Age)
 

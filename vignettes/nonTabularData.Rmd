@@ -34,14 +34,13 @@ Preparation steps:
 ### Upload to Armadillo
 You can generate the clocks and upload to the Armadillo using these commands:
 
-
 ```r
 login_data <- data.frame(server = "https://armadillo.test.molgenis.org", storage = "https://armadillo-minio.test.molgenis.org", driver = "ArmadilloDriver")
 
 du.login(login_data)
   
 du.upload.methyl.clocks(
-  dict_name = "methylation_clocks", 
+  dict_name = "methylclocks", 
   methyl_data_input_path = "https://github.com/isglobal-brge/methylclock/blob/master/inst/extdata/MethylationDataExample55.csv?raw=true",
   covariate_data_input_path = "https://github.com/isglobal-brge/methylclock/raw/master/inst/extdata/SampleAnnotationExample55.csv?raw=true",
   data_version = "1_0")
@@ -57,8 +56,11 @@ login_data <- data.frame(server = "https://opal.edge.molgenis.org", username = "
 du.login(login_data)
   
 du.upload.methyl.clocks(
-  dict_name = "methylation_clocks", 
+  dict_name = "methylclocks", 
   methyl_data_input_path = "https://github.com/isglobal-brge/methylclock/blob/master/inst/extdata/MethylationDataExample55.csv?raw=true",
   covariate_data_input_path = "https://github.com/isglobal-brge/methylclock/raw/master/inst/extdata/SampleAnnotationExample55.csv?raw=true",
   data_version = "1_0")
 ```
+
+
+

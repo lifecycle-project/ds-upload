@@ -28,23 +28,30 @@ install.packages("methylclock", repos = "https://registry.molgenis.org/repositor
 When installed the package successfully. You can start with uploading the data. The raw data is processed by the `ds-upload` package and the autmatically uploaded to the DataSHIELD backend.
 
 Preparation steps:
+
 - Reformat **id** to **child_id-value**: 
   When you prepared the raw data make sure the ID column in the raw data corresponds with the right child_id in you other data. 
   For instance in the *core* of *outcome* variables. 
 - Add *age* information to the methylation data
   When you generate the methylation data you need to add the covariates data as well. 
-  You can do this by filling in the input path for the covariate data in the `du.upload.methyl.clock(covariate_data_input_path = "c:\tmp\covariate_data.csv")`
+  You can do this by filling in the input path for the covariate data in the `du.upload.methyl.clock(covariate_data_input_path = "C:\tmp\covariate_data.csv")`
+  Make sure you have and "Age" column in the data to use in the clock generation process.
+
+You can generate the clocks and upload to the Armadillo using these commands
   
 ### Upload to Armadillo
-You can generate the clocks and upload to the Armadillo using these commands:
 
 ```{r, uploading the methylation data to the Armadillo, eval = FALSE}
-login_data <- data.frame(server = "https://armadillo.test.molgenis.org", storage = "https://armadillo-minio.test.molgenis.org", driver = "ArmadilloDriver")
+login_data <- data.frame(
+  server = "https://armadillo.test.molgenis.org", 
+  storage = "https://armadillo-minio.test.molgenis.org", 
+  driver = "ArmadilloDriver"
+)
 
 du.login(login_data)
   
 du.upload.methyl.clocks(
-  dict_name = "methylation_clocks", 
+  dict_name = "methylclocks", 
   methyl_data_input_path = "https://github.com/isglobal-brge/methylclock/blob/master/inst/extdata/MethylationDataExample55.csv?raw=true",
   covariate_data_input_path = "https://github.com/isglobal-brge/methylclock/raw/master/inst/extdata/SampleAnnotationExample55.csv?raw=true",
   data_version = "1_0")
@@ -54,13 +61,38 @@ du.upload.methyl.clocks(
 You can generate the clocks and upload to the Opal using these commands:
 
 ```{r, uploading the methylation data to the Opal, eval = FALSE}
-login_data <- data.frame(server = "https://opal.edge.molgenis.org", username = "administrator", password = "ouf0uPh6", driver = "OpalDriver")
+login_data <- data.frame(
+  server = "https://opal.edge.molgenis.org", 
+  username = "administrator", 
+  password = "ouf0uPh6", 
+  driver = "OpalDriver"
+)
 
 du.login(login_data)
   
 du.upload.methyl.clocks(
-  dict_name = "methylation_clocks", 
+  dict_name = "methylclocks", 
   methyl_data_input_path = "https://github.com/isglobal-brge/methylclock/blob/master/inst/extdata/MethylationDataExample55.csv?raw=true",
   covariate_data_input_path = "https://github.com/isglobal-brge/methylclock/raw/master/inst/extdata/SampleAnnotationExample55.csv?raw=true",
   data_version = "1_0")
 ```
+
+## Troubleshooting
+You can run into trouble running the methylation upload into Opal. Here are some answers to questions you can encouter.
+
+### Files are not loaded
+If the input files are not picked up directly please make sure the whole input path is specified:
+
+Example: 
+```r{specify whole input paths, eval = FALSE}
+du.upload.methyl.clocks(
+  dict_name = "methylation_clocks", 
+  methyl_data_input_path = "C:\Users\yourself\raw_clock_data.csv",
+  covariate_data_input_path = "C:\Users\yourself\raw_covariate_data.csv",
+  data_version = "1_0")
+```
+
+### Cannot allocate of size ????
+Running the methylation data generation can be memory consuming. You need to allocate enough memory to perform the action. You can exceute
+
+```r{increase memory size, eval = FALSE}

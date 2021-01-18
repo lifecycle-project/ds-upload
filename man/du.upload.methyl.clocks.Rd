@@ -11,6 +11,7 @@ du.upload.methyl.clocks(
   methyl_data_input_path = "",
   covariate_data_input_path = "",
   data_version = "1_0",
+  data_format = du.enum.input.format()$CSV,
   database_name = "opal_data"
 )
 }
@@ -26,6 +27,8 @@ du.upload.methyl.clocks(
 \item{covariate_data_input_path}{path to the covariate data to measure the age}
 
 \item{data_version}{version of the raw data}
+
+\item{data_format}{can be CSV or RData}
 
 \item{database_name}{is the name of the data backend of DataSHIELD, default = opal_data}
 }
