@@ -45,6 +45,7 @@ Imports:
   maditr,
   haven,
   httr,
+  RCurl,
   jsonlite,
   purrr,
   readr,
@@ -65,7 +66,8 @@ Imports:
 Suggests: 
   knitr, 
   rmarkdown,
-  testthat
+  testthat,
+  methylclock
 VignetteBuilder: knitr
 License: GPL-3
 Encoding: UTF-8
