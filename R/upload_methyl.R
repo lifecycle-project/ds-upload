@@ -64,7 +64,7 @@ du.upload.methyl.clocks <- function(upload = TRUE, dict_name = "", action = du.e
 
         if (upload) {
           if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
-            du.login(login_data)
+            du.login(ds_upload.globals$login_data)
             du.opal.upload(du.enum.dict.kind()$BETA, file_name)
           }
           if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
