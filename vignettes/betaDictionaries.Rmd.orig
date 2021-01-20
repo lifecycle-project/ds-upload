@@ -22,8 +22,8 @@ You need to have a few prerequisites
 
 - [Git](https://git-scm.com/)
 - [RStudio](https://rstudio.com/)
+- [Armadillo](https://galaxy.ansible.com/molgenis/armadillo)
 - [Opal](https://github.com/obiba/opal)
-- [Opal](https://github.com/molgenis/molgenis-service-armadillo)
 - [Excel](https://www.microsoft.com/nl-nl/microsoft-365/excel)
 
 ## Working with ds-beta-dictionaries
