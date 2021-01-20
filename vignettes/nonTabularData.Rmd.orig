@@ -96,7 +96,7 @@ du.upload.methyl.clocks(
   data_version = "1_0")
 ```
 
-### Cannot allocate of size ????
+### Cannot allocate vector of size n Mb ...
 Running the methylation data generation can be memory consuming. You need to allocate enough memory to perform the action. You can exceute
 
 ```r{increase memory size, eval = FALSE}

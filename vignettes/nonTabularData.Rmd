@@ -96,9 +96,56 @@ du.upload.methyl.clocks(
 #> * Table: [ mc-yearly-rep ] already exists
 #> * Import variables into: [ mc-yearly-rep ]
 #>   All dictionaries are populated correctly
-#> Warning in readChar(con, 5L, useBytes = TRUE): cannot open compressed file 'https://github.com/isglobal-brge/methylclock/raw/master/inst/
-#> extdata/SampleAnnotationExample55.csv?raw=true', probable reason 'No such file or directory'
-#> Error in readChar(con, 5L, useBytes = TRUE): cannot open the connection
+#> 
+#> ── Column specification ───────────────────────────────────────────────────────────────────────────────
+#> cols(
+#>   ProbeID = col_character(),
+#>   GSM946048 = col_double(),
+#>   GSM946049 = col_double(),
+#>   GSM946052 = col_double(),
+#>   GSM946054 = col_double(),
+#>   GSM946055 = col_double(),
+#>   GSM946056 = col_double(),
+#>   GSM946059 = col_double(),
+#>   GSM946062 = col_double(),
+#>   GSM946064 = col_double(),
+#>   GSM946065 = col_double(),
+#>   GSM946066 = col_double(),
+#>   GSM946067 = col_double(),
+#>   GSM946073 = col_double(),
+#>   GSM946074 = col_double(),
+#>   GSM946075 = col_double(),
+#>   GSM946076 = col_double()
+#> )
+#> 
+#> ── Column specification ───────────────────────────────────────────────────────────────────────────────
+#> cols(
+#>   OriginalOrder = col_double(),
+#>   id = col_character(),
+#>   title = col_character(),
+#>   geo_accession = col_character(),
+#>   TissueDetailed = col_character(),
+#>   Tissue = col_character(),
+#>   diseaseStatus = col_double(),
+#>   Age = col_double(),
+#>   PostMortemInterval = col_double(),
+#>   CauseofDeath = col_character(),
+#>   individual = col_double(),
+#>   Female = col_double(),
+#>   Caucasian = col_logical(),
+#>   FemaleOriginal = col_logical()
+#> )
+#> Warning in predAge(cpgs.imp, coefHannum, intercept = FALSE): The number of missing CpGs for Hannum clock exceeds 80%.
+#>   ---> This DNAm clock will be NA.
+#> Warning in predAge(cpgs.imp, coefSkin, intercept = TRUE): The number of missing CpGs for Skin clock exceeds 80%.
+#>   ---> This DNAm clock will be NA.
+#> Warning in predAge(cpgs.imp, coefPedBE, intercept = TRUE): The number of missing CpGs for PedBE clock exceeds 80%.
+#>   ---> This DNAm clock will be NA.
+#> Warning in predAge(cpgs.imp, coefTL, intercept = TRUE): The number of missing CpGs for TL clock exceeds 80%.
+#>   ---> This DNAm clock will be NA.
+#>   Login to: "https://opal.edge.molgenis.org"
+#>   Logged on to: "https://opal.edge.molgenis.org"
+#> * Upload: [ 2021-01-20_17-38-18_methylclocks_1_0.csv ] to directory [ beta ]
 #>  * Reinstate default working directory
 #>  * Cleanup temporary directory
 ```
@@ -118,7 +165,7 @@ du.upload.methyl.clocks(
   data_version = "1_0")
 ```
 
-### Cannot allocate of size ????
+### Cannot allocate vector of size n Mb ...
 Running the methylation data generation can be memory consuming. You need to allocate enough memory to perform the action. You can exceute
 
 ```r{increase memory size, eval = FALSE}
