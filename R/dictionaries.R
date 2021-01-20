@@ -76,7 +76,7 @@ du.dict.retrieve.tables <- function(api_url, dict_name, dict_version, data_versi
         canonical_table_name <- strsplit(name, "_")
         table <- paste0(data_version, "_", canonical_table_name[[1]][3], "_rep")
       } else {
-        table <- path_ext_remove(name)
+        table <- paste0(data_version, "_", path_ext_remove(name))
       }
       return(data.frame(table = table, file_name = name))
     })
