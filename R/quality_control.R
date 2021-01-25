@@ -2,6 +2,7 @@
 #'
 #' @param project specify project you want to perform quality control on
 #' @param verbose output the functions output when set to TRUE
+#' @param limit limit the tables to run (can be non_rep, yearly_rep, monthly_rep, weekly_rep or trimester)
 #'
 #' @importFrom DSI datashield.login newDSLoginBuilder datashield.assign.table
 #' @importFrom opalr opal.projects opal.tables
@@ -9,7 +10,7 @@
 #' @importFrom dplyr %>%
 #'
 #' @export
-du.quality.control <- function(project, verbose = FALSE) {
+du.quality.control <- function(project, verbose = FALSE, limit = du.enum.table.types()$ALL) {
   requireNamespace("dsBaseClient")
   message("  Starting quality control")
   message("------------------------------------------------------")
@@ -54,10 +55,6 @@ du.quality.control <- function(project, verbose = FALSE) {
       tables %>%
         as.character() %>%
         map(function(table) {
-          message(paste0(" * Starting with: ", project, " - ", table))
-
-          conns <- datashield.login(logins = builder$build(), assign = FALSE)
-
           qc_dataframe_symbol <- "QC"
 
           tables_to_assign <- paste0(project, ".", table)
@@ -65,26 +62,29 @@ du.quality.control <- function(project, verbose = FALSE) {
             tables_to_assign <- paste0(project, "/", table)
           }
 
-          tryCatch(
-            {
-              datashield.assign.table(conns = conns, table = tables_to_assign, symbol = qc_dataframe_symbol)
-            },
-            error = function(e) {
-              stop("Please decrease the number of variables assigned in one run")
-            }
-          )
-
-          if (grepl(du.enum.table.types()$NONREP, table)) {
+          if (grepl(du.enum.table.types()$NONREP, table) && (limit == du.enum.table.types()$NONREP | limit == du.enum.table.types()$ALL)) {
+            message(paste0(" * Starting with: ", project, " - ", table))
+            conns <- datashield.login(logins = builder$build(), assign = FALSE)
+            datashield.assign.table(conns = conns, table = tables_to_assign, symbol = qc_dataframe_symbol)
             qc.non.repeated(conns, qc_dataframe_symbol, verbose)
-          }
-          if (grepl(du.enum.table.types()$YEARLY, table)) {
+          } else if(grepl(du.enum.table.types()$YEARLY, table) && (limit == du.enum.table.types()$YEARLY | limit == du.enum.table.types()$ALL)) {
+            message(paste0(" * Starting with: ", project, " - ", table))
+            conns <- datashield.login(logins = builder$build(), assign = FALSE)
+            datashield.assign.table(conns = conns, table = tables_to_assign, symbol = qc_dataframe_symbol)
             qc.yearly.repeated(conns, qc_dataframe_symbol, verbose)
-          }
-          if (grepl(du.enum.table.types()$MONTHLY, table)) {
+          } else if (grepl(du.enum.table.types()$MONTHLY, table) && (limit == du.enum.table.types()$MONTHLY | limit == du.enum.table.types()$ALL)) {
+            message(paste0(" * Starting with: ", project, " - ", table))
+            conns <- datashield.login(logins = builder$build(), assign = FALSE)
+            datashield.assign.table(conns = conns, table = tables_to_assign, symbol = qc_dataframe_symbol)
             qc.monthly.repeated(conns, qc_dataframe_symbol, verbose)
-          }
-          if (grepl(du.enum.table.types()$TRIMESTER, table)) {
+          } else if (grepl(du.enum.table.types()$TRIMESTER, table) && (limit == du.enum.table.types()$TRIMESTER | limit == du.enum.table.types()$ALL)) {
+            message(paste0(" * Starting with: ", project, " - ", table))
+            conns <- datashield.login(logins = builder$build(), assign = FALSE)
+            datashield.assign.table(conns = conns, table = tables_to_assign, symbol = qc_dataframe_symbol)
             qc.trimester(conns, qc_dataframe_symbol, verbose)
+          } else {
+            message(paste0(" * Skipping: ", project, " - ", table))
+            return()
           }
         })
     })
@@ -190,8 +190,7 @@ qc.yearly.repeated <- function(conns, table, verbose) {
   
   outputIntVars <- integers %>% 
     map(function(intVar) { qc.process.integer.vars(intVar, table, levels, conns) }) %>%
-    rbind() %>%
-    toJSON()
+    rbind()
   
   if (verbose) {
     print(outputIntVars[[1]])
@@ -324,8 +323,7 @@ qc.trimester <- function(conns, table, verbose) {
       summaryVar <- ds.levels(paste0(table, "$", factVar), datasources = conns)
       qc.process.factor.vars(factVar, table, levels, summaryVar$validate$Levels, "age_trimester2", conns) 
       }) %>%
-    cbind() %>%
-    toJSON()
+    cbind()
     
   if(verbose) {
     print(outputFactVars)
