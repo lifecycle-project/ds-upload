@@ -1,7 +1,6 @@
 #' Validates the variables for a certain table
 #'
 #' @param project specify project you want to perform quality control on
-#' @param assign_threshold specify number of variables to assign in one run (default = 20)
 #' @param verbose output the functions output when set to TRUE
 #'
 #' @importFrom DSI datashield.login newDSLoginBuilder datashield.assign.table
@@ -10,7 +9,7 @@
 #' @importFrom dplyr %>%
 #'
 #' @export
-du.quality.control <- function(project, assign_threshold = 20, verbose = FALSE) {
+du.quality.control <- function(project, verbose = FALSE) {
   requireNamespace("dsBaseClient")
   message("  Starting quality control")
   message("------------------------------------------------------")
@@ -71,8 +70,7 @@ du.quality.control <- function(project, assign_threshold = 20, verbose = FALSE) 
               datashield.assign.table(conns = conns, table = tables_to_assign, symbol = qc_dataframe_symbol)
             },
             error = function(e) {
-              message("Please decrease the number of variables assigned in one go")
-              return()
+              stop("Please decrease the number of variables assigned in one run")
             }
           )
 

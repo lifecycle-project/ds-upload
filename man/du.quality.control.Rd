@@ -4,12 +4,10 @@
 \alias{du.quality.control}
 \title{Validates the variables for a certain table}
 \usage{
-du.quality.control(project, assign_threshold = 20, verbose = FALSE)
+du.quality.control(project, verbose = FALSE)
 }
 \arguments{
 \item{project}{specify project you want to perform quality control on}
-
-\item{assign_threshold}{specify number of variables to assign in one run (default = 20)}
 
 \item{verbose}{output the functions output when set to TRUE}
 }
