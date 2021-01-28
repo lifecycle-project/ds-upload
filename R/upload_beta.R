@@ -43,7 +43,7 @@ du.upload.beta <- function(upload = TRUE, dict_name = "", action = du.enum.actio
         )
       }
 
-      run_cqc <- readline("- Do you want to run quality control? (y/n): ")
+      run_cqc <- readline("- Do you want to run quality control (make sure you imported the data!)? (y/n): ")
       if (run_cqc == "y") {
         if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
           du.quality.control(project)

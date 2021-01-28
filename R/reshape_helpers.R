@@ -172,7 +172,7 @@ du.reshape.generate.yearly.repeated <- function(data, dict_kind) {
   yearly_repeated_measures <- data[matched_columns]
 
   if (nrow(du.data.frame.remove.all.na.rows(yearly_repeated_measures)) <= 0) {
-    message("* WARNING: No yearly-repeated measures found in this set")
+    message("[WARNING] No yearly-repeated measures found in this set")
     return()
   }
 
@@ -241,7 +241,7 @@ du.reshape.generate.monthly.repeated <- function(data, dict_kind) {
   monthly_repeated_measures <- data[, matched_columns]
 
   if (nrow(du.data.frame.remove.all.na.rows(monthly_repeated_measures)) <= 0) {
-    message("* WARNING: No monthly-repeated measures found in this set")
+    message("[WARNING] No monthly-repeated measures found in this set")
     return()
   }
 
@@ -312,7 +312,7 @@ du.reshape.generate.weekly.repeated <- function(data, dict_kind) {
   weekly_repeated_measures <- data[, matched_columns]
 
   if (nrow(du.data.frame.remove.all.na.rows(weekly_repeated_measures)) <= 0) {
-    message("* WARNING: No weekly-repeated measures found in this set")
+    message("[WARNING] No weekly-repeated measures found in this set")
     return()
   }
 
@@ -388,7 +388,7 @@ du.reshape.generate.trimesterly.repeated <- function(data, dict_kind) {
   trimesterly_repeated_measures <- data[, matched_columns]
 
   if (nrow(du.data.frame.remove.all.na.rows(trimesterly_repeated_measures)) <= 0) {
-    message("* WARNING: No trimesterly-repeated measures found in this set")
+    message("[WARNING] No trimesterly-repeated measures found in this set")
     return()
   }
 

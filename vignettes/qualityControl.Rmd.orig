@@ -14,36 +14,68 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Quality control
 The quality control measures are based upon the different variable types we have.
 
 - non repeated
 - yearly repeated
 - monthly repeated
 - trimester repeated
-- weekly repeated
 
-All of the measures are quakity control based upon generic algorithems and with the help of the [dsHelper](https://github.com/lifecycle-project/ds-helper) package.
+## Checks
+For each of the types there is a different analysis that needs to be done. We support at the moment 4 table types.
+
+- non-repeated
+- monthly-repeated
+- yearly-repeated
+- trimester
+
+### Non-repeated measures
+So in non-repeated we distinguish conituous and categorical values and for repeated measures we will investigate for each of the types which is the most valueble approach to get the ouput as useful as possible.
+
+### Monthly repeated measures
+
+### Yearly repeated measures
+
+### Trimester measures
+
+
+## Results
+The results are pushed to a central server which generates a PDF based upon the uploaded results. You can obtain the PDF by emailing molgenis-support@umcg.nl. You can display the output of the function by specifying `verbose = TRUE` in the method signature.
 
 ## Usage
 The quality control will be executed in the pipeline after uploading and importing the data into a DataSHIELD backend. However you can execute the flow seperatly as well.
 
-```{r, execute the quality control separatly}
-login_data <- data.frame(server = "https://armadillo.test.molgenis.org", storage = "https://armadillo-minio.test.molgenis.org", driver = "ArmadilloDriver")
+### For Armadillo
+```{r, execute the quality control separatly for Armadillo}
+library(dsUpload)
+login_data <- data.frame(
+  server = "https://armadillo.test.molgenis.org", 
+  storage = "https://armadillo-minio.test.molgenis.org", 
+  driver = "ArmadilloDriver"
+)
 
 du.login(login_data)
 
-library(dsUpload)
 du.quality.control(project = "gecko", verbose = TRUE)
 ```
 
-### Table types
-For each of the types there is a different analysis that needs to be done. So in non-repeated we distinguish conituous and categorical values and for repeated measures we will investigate for each of the types which is the most valueble approach to get the ouput as useful as possible.
+### For Opal
+```{r, execute the quality control separatly for Opal}
+library(dsUpload)
+login_data <- data.frame(
+  server = "https://opal.edge.molgenis.org", 
+  username = "administrator", 
+  password = "ouf0uPh6", 
+  driver = "OpalDriver"
+)
 
-### Exposing results
-When you run the upload it will not show the summary statistics and it will push them directly into the catalogue. 
+du.login(login_data)
 
-## Output
-When the results are pushed to the catalogue we first create a PDF to distribute the output to the cohorts. You can display the through specifying `verbose = TRUE`.
+du.quality.control(project = "lc_gecko_core_2_1", verbose = TRUE)
+```
+
+> All of the measures are quality control based upon generic algorithems and with the help of the [dsHelper](https://github.com/lifecycle-project/ds-helper) package.
+
+
 
 

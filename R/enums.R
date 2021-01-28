@@ -13,7 +13,7 @@ du.enum.cohorts <- function() {
 #'
 #' @noRd
 du.enum.table.types <- function() {
-  list(NONREP = "non_rep", MONTHLY = "monthly_rep", YEARLY = "yearly_rep", WEEKLY = "weekly_rep", TRIMESTER = "trimester")
+  list(NONREP = "non_rep", MONTHLY = "monthly_rep", YEARLY = "yearly_rep", WEEKLY = "weekly_rep", TRIMESTER = "trimester", ALL = "all")
 }
 
 #' Supported input formats
@@ -38,7 +38,7 @@ du.enum.dict.kind <- function() {
 }
 
 #' Projects that are containing dictionaries. Repositories containing these dictionaries should be:
-#' 
+#'
 #' - ds-dictionaries
 #' - ds-beta-dictionaries
 #'
