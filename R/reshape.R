@@ -1,4 +1,4 @@
-#' Reshape Script for R: LifeCycle Harmonized Data
+#' Reshape: harmonized data
 #'
 #' @param upload do you want automatically upload the files to your opal (default = true)
 #' @param data_version version of the data you are going to upload into Opal
