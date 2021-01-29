@@ -8,5 +8,5 @@ TROUBLESHOOTING.md
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
-docs/*
-inst/examples/*
+docs/
+inst/examples/data

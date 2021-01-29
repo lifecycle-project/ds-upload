@@ -104,7 +104,7 @@ du.populate.dict.versions <- local(function(dict_kind, dict_version) {
 #' Retrieve the right file from download directory
 #'
 #' @param dict_table a specific table that you want to check
-#' @param dict_kind can be 'core' or 'outcome'
+#' @param dict_kind is referring to the dictionary type
 #'
 #' @importFrom readxl read_xlsx excel_sheets
 #' @importFrom dplyr %>% nest_join mutate rename bind_rows
@@ -120,6 +120,7 @@ du.retrieve.dictionaries <- function(dict_table, dict_kind) {
   dict_file_list <- list.files(paste0(getwd(), "/", dict_kind))
 
   if (!missing(dict_table)) {
+    print(paste0("does not work", dict_table))
     dict_file_list <- dict_file_list[grep(dict_table, dict_file_list)]
   }
   

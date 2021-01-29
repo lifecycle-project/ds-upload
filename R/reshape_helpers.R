@@ -91,7 +91,7 @@ du.match.columns <- function(data_columns, dict_columns) {
 #' @return stops the program if someone terminates
 #'
 #' @noRd
-du.check.variables <- local(function(dict_kind, data_columns, run_mode) {
+du.check.variables <- function(dict_kind, data_columns, run_mode) {
   variables <- du.retrieve.dictionaries(dict_kind = dict_kind)
 
   matched_columns <- du.match.columns(data_columns, variables$name)
@@ -114,22 +114,22 @@ du.check.variables <- local(function(dict_kind, data_columns, run_mode) {
   if (proceed == "n") {
     stop("Program is terminated. There are unmatched columns in your source data.")
   }
-})
+}
 
 #' Match subset the data and convert to the right the column types according to the dictionary
 #' 
 #' @param data the imported data
-#' @param dict_kind are the variables core or outcome
 #' @param table_type is it repeated or non-repeated
+#' @param dict_kind what kind of dictionary flavor
 #' 
 #' @importFrom dplyr %>% filter
 #' @importFrom purrr map pmap
 #' 
 #' @noRd
-du.match.column.types <- function(data, dict_kind, table_type) {
+du.match.column.types <- function(data, table_type, dict_kind) {
   name <- orig_var <- value <- dictionary <- NULL
   
-  matched_dictionary <- du.retrieve.dictionaries(table_type, dict_kind)
+  matched_dictionary <- du.retrieve.dictionaries(dict_table = table_type, dict_kind = dict_kind)
   matched_dictionary <- c("child_id", matched_dictionary$name)
   if(table_type != du.enum.table.types()$NON_REP) {
     matched_columns <- du.match.columns(colnames(data), matched_dictionary$name)

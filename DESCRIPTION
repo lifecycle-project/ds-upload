@@ -47,6 +47,7 @@ Imports:
   jsonlite,
   purrr,
   readr,
+  stats,
   readxl,
   rlang,
   stringr,
