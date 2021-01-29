@@ -4,12 +4,14 @@
 \alias{du.quality.control}
 \title{Validates the variables for a certain table}
 \usage{
-du.quality.control(project, verbose = FALSE)
+du.quality.control(project, verbose = FALSE, limit = du.enum.table.types()$ALL)
 }
 \arguments{
 \item{project}{specify project you want to perform quality control on}
 
 \item{verbose}{output the functions output when set to TRUE}
+
+\item{limit}{limit the tables to run (can be non_rep, yearly_rep, monthly_rep, weekly_rep or trimester)}
 }
 \description{
 Validates the variables for a certain table
