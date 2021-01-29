@@ -103,8 +103,8 @@ du.populate.dict.versions <- local(function(dict_kind, dict_version) {
 
 #' Retrieve the right file from download directory
 #'
-#' @param dict_table a specific table that you want to check
 #' @param dict_kind is referring to the dictionary type
+#' @param dict_table a specific table that you want to check
 #'
 #' @importFrom readxl read_xlsx excel_sheets
 #' @importFrom dplyr %>% nest_join mutate rename bind_rows
@@ -114,21 +114,20 @@ du.populate.dict.versions <- local(function(dict_kind, dict_version) {
 #' @return a raw version of the dictionary
 #'
 #' @noRd
-du.retrieve.dictionaries <- function(dict_table, dict_kind) {
+du.retrieve.dictionaries <- function(dict_kind, dict_table = NULL) {
   name <- variable <- label <- NULL
-  
-  dict_file_list <- list.files(paste0(getwd(), "/", dict_kind))
 
-  if (!missing(dict_table)) {
-    print(paste0("does not work", dict_table))
+  dict_file_list <- list.files(paste0(getwd(), "/", dict_kind))
+  
+  if (!is.null(dict_table)) {
     dict_file_list <- dict_file_list[grep(dict_table, dict_file_list)]
   }
-  
+
   enriched_vars <- dict_file_list %>%
     map(function(file_name) {
       filename <- paste0(dict_kind, "/", file_name)
       vars <- read_xlsx(path = filename, sheet = 1)
-      if(length(excel_sheets(filename)) == 2) {
+      if (length(excel_sheets(filename)) == 2) {
         cats <- read_xlsx(path = filename, sheet = 2)
         cats <- cats %>%
           as_tibble(cats) %>%
@@ -139,6 +138,6 @@ du.retrieve.dictionaries <- function(dict_table, dict_kind) {
           nest_join(cats, by = "name")
       }
     })
-  
+
   return(enriched_vars %>% bind_rows())
 }

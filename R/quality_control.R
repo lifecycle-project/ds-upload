@@ -9,13 +9,8 @@
 #' @importFrom dplyr %>%
 #'
 #' @export
-<<<<<<< HEAD
 du.quality.control <- function(project, verbose = FALSE, limit = du.enum.table.types()$ALL) {
   requireNamespace("dsBaseClient")
-=======
-du.quality.control <- function(project, folder, verbose = FALSE) {
-  requireNamespace("DSI")
->>>>>>> 84c64df... feat: embed column type matching in dsUpload
   message("  Starting quality control")
   message("------------------------------------------------------")
   du.check.session(TRUE)
@@ -61,6 +56,7 @@ du.quality.control <- function(project, folder, verbose = FALSE) {
           qc_dataframe_symbol <- "QC"
 
           tables_to_assign <- paste0(project, ".", table)
+
           if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
             tables_to_assign <- paste0(project, "/", table)
           }

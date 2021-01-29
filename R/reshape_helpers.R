@@ -45,7 +45,7 @@ du.read.source.file <- function(input_path, input_format) {
 #' @return dataframe without the na values
 #'
 #' @noRd
-du.data.frame.remove.all.na.rows <- local(function(dataframe) {
+du.data.frame.remove.all.na.rows <- function(dataframe) {
   df <- dataframe[-c(1)]
 
   naLines <- df %>%
@@ -53,7 +53,7 @@ du.data.frame.remove.all.na.rows <- local(function(dataframe) {
     apply(MARGIN = 1, FUN = all)
 
   return(df[!naLines, ])
-})
+}
 #'
 #' Matched the columns in the source data.
 #' You can then match the found column against the dictionary.
@@ -67,16 +67,15 @@ du.data.frame.remove.all.na.rows <- local(function(dataframe) {
 #'
 #' @noRd
 du.match.columns <- function(data_columns, dict_columns) {
-  matched_columns <- character()
-
-  matched_columns <- data_columns[data_columns %in% dict_columns]
-
-  for (variable in dict_columns) {
-    matched_columns <- c(matched_columns, data_columns %>% str_subset(pattern = paste0("^",
-      variable, "\\d+",
-      sep = ""
-    )))
-  }
+dict_columns
+  # match the dictionary in the data
+  matched_data_columns <- sapply(data_columns, grep, dict_columns$name) %>% names()
+  
+  matched_data_columns
+  
+  matched_columns <- dict_columns %>% filter(name %in% matched_data_columns)
+  matched_columns <- subset(dict_columns, name %in% matched_data_columns)
+  print(matched_columns)
   # Select the non-repeated measures from the full data set
   return(matched_columns)
 }
@@ -92,7 +91,7 @@ du.match.columns <- function(data_columns, dict_columns) {
 #'
 #' @noRd
 du.check.variables <- function(dict_kind, data_columns, run_mode) {
-  variables <- du.retrieve.dictionaries(dict_kind = dict_kind)
+  variables <- du.retrieve.dictionaries(dict_kind)
 
   matched_columns <- du.match.columns(data_columns, variables$name)
 
@@ -117,45 +116,51 @@ du.check.variables <- function(dict_kind, data_columns, run_mode) {
 }
 
 #' Match subset the data and convert to the right the column types according to the dictionary
-#' 
+#'
 #' @param data the imported data
 #' @param table_type is it repeated or non-repeated
 #' @param dict_kind what kind of dictionary flavor
-#' 
+#'
 #' @importFrom dplyr %>% filter
 #' @importFrom purrr map pmap
-#' 
+#'
 #' @noRd
 du.match.column.types <- function(data, table_type, dict_kind) {
   name <- orig_var <- value <- dictionary <- NULL
   
-  matched_dictionary <- du.retrieve.dictionaries(dict_table = table_type, dict_kind = dict_kind)
-  matched_dictionary <- c("child_id", matched_dictionary$name)
-  if(table_type != du.enum.table.types()$NON_REP) {
-    matched_columns <- du.match.columns(colnames(data), matched_dictionary$name)
+  
+  table_type <- du.enum.table.types()$YEARLY
+  dict_kind <- "core"
+  matched_dictionary <- du.retrieve.dictionaries(dict_kind = dict_kind, dict_table = table_type)
+  if (table_type != du.enum.table.types()$NONREP) {
+    matched_columns <- du.match.columns(colnames(data), matched_dictionary)
+    data <- data[, matched_columns]
+  } else {
+    data <- data[, which(colnames(data) %in% matched_dictionary$name)]
+    matched_columns <- matched_dictionary
   }
-  data <- data[, matched_columns]
   
   if (nrow(du.data.frame.remove.all.na.rows(data)) <= 0) {
-    message("* WARNING: No monthly-repeated measures found in this set")
+    message(paste0("* WARNING: No ", table_type, "-repeated measures found in this set"))
     return()
   }
-  
+
   matched_data <- colnames(data) %>%
     map(function(column) {
-      dictionary %>%
-        filter(name == gsub('([0-9]+).*$', '', column)) %>%
+      matched_columns %>%
+        filter(name == gsub("([0-9]+).*$", "", column)) %>%
         pmap(function(name, valueType, cats, ...) {
           print(paste0("matching: ", name, " and ", column))
-          if(valueType == "integer" & ncol(cats) > 0) {
-            new_column <- lapply(data[column], factor, levels = cats$value, labels = cats$label)
+          if (valueType == "integer" & ncol(cats) > 0) {
+            new_column <- lapply(data[column], factor, levels = cats$value, labels = cats$label, exclude = NULL)
           } else if (valueType == "integer") {
             new_column <- lapply(data[column], as.integer)
-          } else if (valueType == "decimal" &  ncol(cats) > 0) {
-            new_column <- lapply(data[column], factor, levels = cats$value, labels = cats$label)
+          } else if (valueType == "decimal" & ncol(cats) > 0) {
+            new_column <- lapply(data[column], factor, levels = cats$value, labels = cats$label, exclude = NULL)
           } else if (valueType == "decimal") {
             new_column <- lapply(data[column], as.double)
           } else {
+            ?factor
             new_column <- lapply(data[column], as.character)
           }
           return(as.data.frame(new_column))
@@ -163,13 +168,13 @@ du.match.column.types <- function(data, table_type, dict_kind) {
     }) %>%
     unlist(recursive = FALSE) %>%
     cbind.data.frame()
-  
-    if(table_type != du.enum.table.types()$NON_REP) {
-      matched_data <- matched_data %>% gather(orig_var, value, matched_columns[matched_columns !=
-                                                                       "child_id"], na.rm = TRUE)
-    }
-  
-    return(matched_data)
+
+  if (table_type != du.enum.table.types()$NONREP) {
+    matched_data <- matched_data %>% gather(orig_var, value, matched_columns[matched_columns !=
+      "child_id"], na.rm = TRUE)
+  }
+
+  return(matched_data)
 }
 
 #' Generate the yearly repeated measures file and write it to your local workspace
@@ -184,9 +189,8 @@ du.match.column.types <- function(data, table_type, dict_kind) {
 #' @noRd
 du.reshape.generate.non.repeated <- function(data, dict_kind) {
   message("* Generating: non-repeated measures")
-  
-  matched_data <- du.match.column.types(data, du.enum.table.types()$NON_REP, dict_kind)
-  
+  matched_data <- du.match.column.types(data, du.enum.table.types()$NONREP, dict_kind)
+
   # strip the rows with na values
   matched_data <- matched_data[, colSums(is.na(matched_data)) <
     nrow(matched_data)]
@@ -217,21 +221,7 @@ du.reshape.generate.yearly.repeated <- function(data, dict_kind) {
 
   message("* Generating: yearly-repeated measures")
 
-<<<<<<< HEAD
-  variables_yearly_repeated_dict <- du.retrieve.dictionaries(du.enum.table.types()$YEARLY, dict_kind)
-  matched_columns <- du.match.columns(colnames(data), variables_yearly_repeated_dict$name)
-  yearly_repeated_measures <- data[matched_columns]
-
-  if (nrow(du.data.frame.remove.all.na.rows(yearly_repeated_measures)) <= 0) {
-    message("[WARNING] No yearly-repeated measures found in this set")
-    return()
-  }
-
-  long_1 <- yearly_repeated_measures %>% gather(orig_var, value, matched_columns[matched_columns !=
-    "child_id"], na.rm = TRUE)
-=======
   matched_data <- du.match.column.types(data, du.enum.table.types()$YEARLY, dict_kind)
->>>>>>> 84c64df... feat: embed column type matching in dsUpload
 
   # Create the age_years variable with the regular expression extraction of the year
   matched_data$age_years <- as.numeric(du.num.extract(matched_data$orig_var))
@@ -400,7 +390,7 @@ du.reshape.generate.weekly.repeated <- function(data, dict_kind) {
 #' @param dict_kind can be 'core' or 'outcome'
 #'
 #' @importFrom dplyr %>% filter summarise bind_rows
-#' @importFrom maditr dcast %<>% 
+#' @importFrom maditr dcast %<>%
 #' @importFrom tidyr gather
 #'
 #' @noRd

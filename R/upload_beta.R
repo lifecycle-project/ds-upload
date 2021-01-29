@@ -44,10 +44,10 @@ du.upload.beta <- function(upload = TRUE, dict_name = "", action = du.enum.actio
         )
       }
 
-      if(run_mode != du.enum.run.mode()$NON_INTERACTIVE) {
+      if (run_mode != du.enum.run.mode()$NON_INTERACTIVE) {
         run_cqc <- readline("- Do you want to run quality control? (y/n): ")
       } else {
-        run_cqc = "n" 
+        run_cqc <- "n"
       }
       if (run_cqc == "y") {
         if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
