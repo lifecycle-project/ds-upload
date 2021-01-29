@@ -1,6 +1,5 @@
 ---
 title: "Dictionairy versioning"
-author: "Sido Haakma"
 vignette: >
   %\VignetteIndexEntry{Dictionairy versioning}
   %\VignetteEngine{knitr::rmarkdown}

@@ -152,23 +152,18 @@ du.upload(
 )
 ```
 
->**IMPORTANT**: Check if the data is correctly imported in the tables in Opal. Randomly select some values and check if they are correct with your actual data. That should be sufficient to know if the data is imported correctly, 
-
 >**IMPORTANT**: You can run this package for the core variables and for the outcome variables. Each of them requires changing some parameters in the function call. So dict_kind specific 'core' or 'outcome' variables and dict_version specifies the data dictionary version (check the changelogs here: https://github.com/lifecycle-project/ds-dictionaries/tree/master/changelogs). 
 
 >**IMPORTANT** You can specify your upload format! So you do not have to export to CSV first. Supported upload formats are: 'SPSS', 'SAS', 'STATA' and 'CSV'.
 
-If you run these commands, your data will be uploaded to the DataSHIELD backend. 
+#### Import the data
+If you run these commands, your data will be uploaded to the DataSHIELD backend. If you use Opal, you can now import these data into the tables manually.
 
-If you use Opal, you can now import these data into the tables manually.
-
-A video guiding you through the process can be found here:
-
-Check youtube channel: [import data into Opal](https://youtu.be/BKDnIAQzpdY)
+A video guiding you through the process can be found here: [import data into Opal](https://youtu.be/BKDnIAQzpdY)
 
 Alternatively, execute these actions for Opal:
 
-1. Navigate to the Opal web interface
+1. Navigate to the Opal webinterface
 2. Login with you credentials
 3. Select "Projects" 
 4. Select "lc_#cohort#_#dict_kind#_x_x" 

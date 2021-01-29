@@ -19,6 +19,7 @@ Participating cohorts must harmonise data, following the data harmonisation manu
 
 ## Installation
 Reference documentation:
+
 - [dsUpload](https://lifecycle-project.github.io/ds-upload)
 - [Armadillo](http://molgenis.github.io/molgenis-r-armadillo)
 - [Opal](http://opaldoc.obiba.org/en/latest/r-user-guide/datashield.html)
@@ -36,6 +37,9 @@ When you want to use it you need to load it.
 ```r
 # load the package
 library(dsUpload)
+#> Loading required package: DSI
+#> Loading required package: progress
+#> Loading required package: R6
 ```
 
 ## Troubleshooting
@@ -71,8 +75,14 @@ login_data <- data.frame(
 ```r
 # login to the Armadillo server
 du.login(login_data = login_data)
+#> ***********************************************************************************
+#>   [WARNING] You are not running the latest version of the dsUpload-package.
+#>   [WARNING] If you want to upgrade to newest version : [ 4.0.6 ],
+#>   [WARNING] Please run 'install.packages("dsUpload", repos = "https://registry.molgenis.org/repository/R/")'
+#>   [WARNING] Check the release notes here: https://github.com/lifecycle-project/analysis-protocols/releases/tag/4.0.6
+#> ***********************************************************************************
 #>   Login to: "https://armadillo.test.molgenis.org"
-#> [1] "We're opening a browser so you can log in with code 2696NM"
+#> [1] "We're opening a browser so you can log in with code GFL6Q6"
 #>   Logged on to: "https://armadillo.test.molgenis.org"
 ```
 
@@ -91,6 +101,12 @@ du.upload(
   data_input_path = 'https://github.com/lifecycle-project/ds-upload/blob/master/inst/examples/data/WP1/data/all_measurements_v1_2.csv?raw=true',
   run_mode = "non_interactive"
 )
+#> ***********************************************************************************
+#>   [WARNING] You are not running the latest version of the dsUpload-package.
+#>   [WARNING] If you want to upgrade to newest version : [ 4.0.6 ],
+#>   [WARNING] Please run 'install.packages("dsUpload", repos = "https://registry.molgenis.org/repository/R/")'
+#>   [WARNING] Check the release notes here: https://github.com/lifecycle-project/analysis-protocols/releases/tag/4.0.6
+#> ***********************************************************************************
 #> ######################################################
 #>   Start upload data into DataSHIELD backend
 #> ------------------------------------------------------
@@ -123,61 +139,31 @@ du.upload(
 #> Aggregate function missing, defaulting to 'length'
 #> * Start importing: 2_1_core_1_0 into project: gecko
 #> Compressing...
-#> 
-  |                                                                                          
-  |                                                                                    |   0%
-  |                                                                                          
-  |====================================================================================| 100%
+#>   |                                                                                |                                                                        |   0%  |                                                                                |========================================================================| 100%
 #> Uploaded 2_1_core_1_0/trimester
 #> * Import finished successfully
 #> * Start importing: 2_1_core_1_0 into project: gecko
 #> Compressing...
-#> 
-  |                                                                                          
-  |                                                                                    |   0%
-  |                                                                                          
-  |============                                                                        |  15%
-  |                                                                                          
-  |========================                                                            |  29%
-  |                                                                                          
-  |=====================================                                               |  44%
-  |                                                                                          
-  |=================================================                                   |  58%
-  |                                                                                          
-  |=============================================================                       |  73%
-  |                                                                                          
-  |=========================================================================           |  87%
-  |                                                                                          
-  |====================================================================================| 100%
+#>   |                                                                                |                                                                        |   0%  |                                                                                |==========                                                              |  15%  |                                                                                |=====================                                                   |  29%  |                                                                                |===============================                                         |  44%  |                                                                                |==========================================                              |  58%  |                                                                                |====================================================                    |  73%  |                                                                                |===============================================================         |  87%  |                                                                                |========================================================================| 100%
 #> Uploaded 2_1_core_1_0/non_rep
 #> * Import finished successfully
 #> * Start importing: 2_1_core_1_0 into project: gecko
 #> Compressing...
-#> 
-  |                                                                                          
-  |                                                                                    |   0%
-  |                                                                                          
-  |====================================================================================| 100%
+#>   |                                                                                |                                                                        |   0%  |                                                                                |========================================================================| 100%
 #> Uploaded 2_1_core_1_0/yearly_rep
 #> * Import finished successfully
 #> * Start importing: 2_1_core_1_0 into project: gecko
 #> Compressing...
-#> 
-  |                                                                                          
-  |                                                                                    |   0%
-  |                                                                                          
-  |====================================================================================| 100%
+#>   |                                                                                |                                                                        |   0%  |                                                                                |========================================================================| 100%
 #> Uploaded 2_1_core_1_0/monthly_rep
 #> * Import finished successfully
 #> ######################################################
 #>   Converting and import successfully finished
 #> ######################################################
-#>   Starting quality control
-#> ------------------------------------------------------
-#> Error in tables$name: $ operator is invalid for atomic vectors
 #>  * Reinstate default working directory
 #>  * Cleanup temporary directory
 ```
+
 
 ```r
 # upload the outcome variables
@@ -190,6 +176,12 @@ du.upload(
   data_input_path = 'https://github.com/lifecycle-project/ds-upload/blob/master/inst/examples/data/WP6/nd_data_wp6.csv?raw=true',
   run_mode = "non_interactive"
 )
+#> ***********************************************************************************
+#>   [WARNING] You are not running the latest version of the dsUpload-package.
+#>   [WARNING] If you want to upgrade to newest version : [ 4.0.6 ],
+#>   [WARNING] Please run 'install.packages("dsUpload", repos = "https://registry.molgenis.org/repository/R/")'
+#>   [WARNING] Check the release notes here: https://github.com/lifecycle-project/analysis-protocols/releases/tag/4.0.6
+#> ***********************************************************************************
 #> ######################################################
 #>   Start upload data into DataSHIELD backend
 #> ------------------------------------------------------
@@ -218,67 +210,29 @@ du.upload(
 #> * Generating: weekly-repeated measures
 #> * Start importing: 1_1_outcome_1_0 into project: gecko
 #> Compressing...
-#> 
-  |                                                                                          
-  |                                                                                    |   0%
-  |                                                                                          
-  |====================================================================================| 100%
+#>   |                                                                                |                                                                        |   0%  |                                                                                |========================================================================| 100%
 #> Uploaded 1_1_outcome_1_0/weekly_rep
 #> * Import finished successfully
 #> * Start importing: 1_1_outcome_1_0 into project: gecko
 #> Compressing...
-#> 
-  |                                                                                          
-  |                                                                                    |   0%
-  |                                                                                          
-  |====================================================================================| 100%
+#>   |                                                                                |                                                                        |   0%  |                                                                                |========================================================================| 100%
 #> Uploaded 1_1_outcome_1_0/non_rep
 #> * Import finished successfully
 #> * Start importing: 1_1_outcome_1_0 into project: gecko
 #> Compressing...
-#> 
-  |                                                                                          
-  |                                                                                    |   0%
-  |                                                                                          
-  |=======                                                                             |   8%
-  |                                                                                          
-  |=============                                                                       |  16%
-  |                                                                                          
-  |====================                                                                |  24%
-  |                                                                                          
-  |==========================                                                          |  31%
-  |                                                                                          
-  |=================================                                                   |  39%
-  |                                                                                          
-  |========================================                                            |  47%
-  |                                                                                          
-  |==============================================                                      |  55%
-  |                                                                                          
-  |=====================================================                               |  63%
-  |                                                                                          
-  |===========================================================                         |  71%
-  |                                                                                          
-  |==================================================================                  |  79%
-  |                                                                                          
-  |=========================================================================           |  86%
-  |                                                                                          
-  |===============================================================================     |  94%
-  |                                                                                          
-  |====================================================================================| 100%
+#>   |                                                                                |                                                                        |   0%  |                                                                                |======                                                                  |   8%  |                                                                                |===========                                                             |  16%  |                                                                                |=================                                                       |  24%  |                                                                                |=======================                                                 |  31%  |                                                                                |============================                                            |  39%  |                                                                                |==================================                                      |  47%  |                                                                                |========================================                                |  55%  |                                                                                |=============================================                           |  63%  |                                                                                |===================================================                     |  71%  |                                                                                |=========================================================               |  79%  |                                                                                |==============================================================          |  86%  |                                                                                |====================================================================    |  94%  |                                                                                |========================================================================| 100%
 #> Uploaded 1_1_outcome_1_0/yearly_rep
 #> * Import finished successfully
 #> * Start importing: 1_1_outcome_1_0 into project: gecko
 #> Compressing...
-#> 
-  |                                                                                          
-  |                                                                                    |   0%
-  |                                                                                          
-  |====================================================================================| 100%
+#>   |                                                                                |                                                                        |   0%  |                                                                                |========================================================================| 100%
 #> Uploaded 1_1_outcome_1_0/monthly_rep
 #> * Import finished successfully
 #> ######################################################
 #>   Converting and import successfully finished
 #> ######################################################
+#>  * Reinstate default working directory
+#>  * Cleanup temporary directory
 ```
 
 ### Using Opal
@@ -301,6 +255,12 @@ login_data <- data.frame(
 ```r
 # login to the DataSHIELD backend
 du.login(login_data = login_data)
+#> ***********************************************************************************
+#>   [WARNING] You are not running the latest version of the dsUpload-package.
+#>   [WARNING] If you want to upgrade to newest version : [ 4.0.6 ],
+#>   [WARNING] Please run 'install.packages("dsUpload", repos = "https://registry.molgenis.org/repository/R/")'
+#>   [WARNING] Check the release notes here: https://github.com/lifecycle-project/analysis-protocols/releases/tag/4.0.6
+#> ***********************************************************************************
 #>   Login to: "https://opal.edge.molgenis.org"
 #>   Logged on to: "https://opal.edge.molgenis.org"
 ```
@@ -320,6 +280,12 @@ du.upload(
   data_input_path = 'https://github.com/lifecycle-project/ds-upload/blob/master/inst/examples/data/WP1/data/all_measurements_v1_2.csv?raw=true',
   run_mode = "non_interactive"
 )
+#> ***********************************************************************************
+#>   [WARNING] You are not running the latest version of the dsUpload-package.
+#>   [WARNING] If you want to upgrade to newest version : [ 4.0.6 ],
+#>   [WARNING] Please run 'install.packages("dsUpload", repos = "https://registry.molgenis.org/repository/R/")'
+#>   [WARNING] Check the release notes here: https://github.com/lifecycle-project/analysis-protocols/releases/tag/4.0.6
+#> ***********************************************************************************
 #> ######################################################
 #>   Start upload data into DataSHIELD backend
 #> ------------------------------------------------------
@@ -338,17 +304,18 @@ du.upload(
 #>  * Check released dictionaries
 #> ------------------------------------------------------
 #>   Start creating project: [ lc_gecko_core_2_1 ]
+#> * Project: [ lc_gecko_core_2_1 ] already exists
 #> ------------------------------------------------------
 #>   Start importing dictionaries
-#> * Create table: [ 1_0_monthly_rep ]
+#> * Table: [ 1_0_monthly_rep ] already exists
 #> * Import variables into: [ 1_0_monthly_rep ]
-#> * Create table: [ 1_0_non_rep ]
+#> * Table: [ 1_0_non_rep ] already exists
 #> * Matched categories for table: [ 1_0_non_rep ]
 #> * Import variables into: [ 1_0_non_rep ]
-#> * Create table: [ 1_0_trimester_rep ]
+#> * Table: [ 1_0_trimester_rep ] already exists
 #> * Matched categories for table: [ 1_0_trimester_rep ]
 #> * Import variables into: [ 1_0_trimester_rep ]
-#> * Create table: [ 1_0_yearly_rep ]
+#> * Table: [ 1_0_yearly_rep ] already exists
 #> * Matched categories for table: [ 1_0_yearly_rep ]
 #> * Import variables into: [ 1_0_yearly_rep ]
 #>   All dictionaries are populated correctly
@@ -365,13 +332,15 @@ du.upload(
 #> Aggregate function missing, defaulting to 'length'
 #> * Generating: trimesterly-repeated measures
 #> Aggregate function missing, defaulting to 'length'
-#> * Upload: [ 2020-12-02_15-29-42_1_0_trimester_repeated_measures.csv ] to directory [ core ]
-#> * Upload: [ 2020-12-02_15-29-42_1_0_non_repeated_measures.csv ] to directory [ core ]
-#> * Upload: [ 2020-12-02_15-29-42_1_0_yearly_repeated_measures.csv ] to directory [ core ]
-#> * Upload: [ 2020-12-02_15-29-42_1_0_monthly_repeated_measures.csv ] to directory [ core ]
+#> * Upload: [ 2021-01-29_11-40-58_1_0_trimester_repeated_measures.csv ] to directory [ core ]
+#> * Upload: [ 2021-01-29_11-40-58_1_0_non_repeated_measures.csv ] to directory [ core ]
+#> * Upload: [ 2021-01-29_11-40-58_1_0_yearly_repeated_measures.csv ] to directory [ core ]
+#> * Upload: [ 2021-01-29_11-40-58_1_0_monthly_repeated_measures.csv ] to directory [ core ]
 #> ######################################################
 #>   Converting and import successfully finished
 #> ######################################################
+#>  * Reinstate default working directory
+#>  * Cleanup temporary directory
 ```
 
 ```r
@@ -385,6 +354,12 @@ du.upload(
   data_input_path = 'https://github.com/lifecycle-project/ds-upload/blob/master/inst/examples/data/WP6/nd_data_wp6.csv?raw=true',
   run_mode = "non_interactive"
 )
+#> ***********************************************************************************
+#>   [WARNING] You are not running the latest version of the dsUpload-package.
+#>   [WARNING] If you want to upgrade to newest version : [ 4.0.6 ],
+#>   [WARNING] Please run 'install.packages("dsUpload", repos = "https://registry.molgenis.org/repository/R/")'
+#>   [WARNING] Check the release notes here: https://github.com/lifecycle-project/analysis-protocols/releases/tag/4.0.6
+#> ***********************************************************************************
 #> ######################################################
 #>   Start upload data into DataSHIELD backend
 #> ------------------------------------------------------
@@ -427,32 +402,29 @@ du.upload(
 #> * Generating: yearly-repeated measures
 #> * Generating: monthly-repeated measures
 #> * Generating: weekly-repeated measures
-#> * Upload: [ 2020-12-02_15-31-57_1_0_weekly_repeated_measures.csv ] to directory [ outcome ]
-#> * Upload: [ 2020-12-02_15-31-57_1_0_non_repeated_measures.csv ] to directory [ outcome ]
-#> * Upload: [ 2020-12-02_15-31-57_1_0_yearly_repeated_measures.csv ] to directory [ outcome ]
-#> * Upload: [ 2020-12-02_15-31-57_1_0_monthly_repeated_measures.csv ] to directory [ outcome ]
+#> * Upload: [ 2021-01-29_11-41-21_1_0_weekly_repeated_measures.csv ] to directory [ outcome ]
+#> * Upload: [ 2021-01-29_11-41-21_1_0_non_repeated_measures.csv ] to directory [ outcome ]
+#> * Upload: [ 2021-01-29_11-41-21_1_0_yearly_repeated_measures.csv ] to directory [ outcome ]
+#> * Upload: [ 2021-01-29_11-41-21_1_0_monthly_repeated_measures.csv ] to directory [ outcome ]
 #> ######################################################
 #>   Converting and import successfully finished
 #> ######################################################
+#>  * Reinstate default working directory
+#>  * Cleanup temporary directory
 ```
-
->**IMPORTANT**: Check if the data is correctly imported in the tables in Opal. Randomly select some values and check if they are correct with your actual data. That should be sufficient to know if the data is imported correctly, 
 
 >**IMPORTANT**: You can run this package for the core variables and for the outcome variables. Each of them requires changing some parameters in the function call. So dict_kind specific 'core' or 'outcome' variables and dict_version specifies the data dictionary version (check the changelogs here: https://github.com/lifecycle-project/ds-dictionaries/tree/master/changelogs). 
 
 >**IMPORTANT** You can specify your upload format! So you do not have to export to CSV first. Supported upload formats are: 'SPSS', 'SAS', 'STATA' and 'CSV'.
 
-If you run these commands, your data will be uploaded to the DataSHIELD backend. 
+#### Import the data
+If you run these commands, your data will be uploaded to the DataSHIELD backend. If you use Opal, you can now import these data into the tables manually.
 
-If you use Opal, you can now import these data into the tables manually.
-
-A video guiding you through the process can be found here:
-
-Check youtube channel: [import data into Opal](https://youtu.be/BKDnIAQzpdY)
+A video guiding you through the process can be found here: [import data into Opal](https://youtu.be/BKDnIAQzpdY)
 
 Alternatively, execute these actions for Opal:
 
-1. Navigate to the Opal web interface
+1. Navigate to the Opal webinterface
 2. Login with you credentials
 3. Select "Projects" 
 4. Select "lc_#cohort#_#dict_kind#_x_x" 

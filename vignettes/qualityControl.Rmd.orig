@@ -14,33 +14,32 @@ knitr::opts_chunk$set(
 )
 ```
 
-The quality control measures are based upon the different variable types we have.
+Quality control is carried out both locally and centrally. 
 
-- non repeated
-- yearly repeated
-- monthly repeated
-- trimester repeated
+## Local quality control
+Local quality control is conducted by each cohort after harmonisation, following the quality control instructions and scripts provided by each work package lead. These check: 
+
+- that variables match the descriptions provided in the core variable list (name, datatype, values)
+- for outliers or improbable values
+- for inconsistencies between non-repeated measures (e.g. all mothers coded as not smoking during pregnancy are also coded as smoking zero cigarettes during pregnancy); 
+- for inconsistencies between repeated measures (e.g. children reducing height over time). 
+
+Any inconsistencies identified are investigated on a cases-by-case basis to establish which values are legitimate and which are errors, also in light of the other data available.
+
+## Central quality control
+Quality of harmonised data is also assessed at the central level (central quality control), by creating summary statistics for each variable in R/DataSHIELD, and comparing these across cohorts. As in the local quality control, this is to identify outliers and improbable values and inconsistencies in data, but also to identify large inconsistencies between cohorts. Where large inconsistencies are found, these are investigated further in order to establish to what extent these differences are real vs. an artefact of differing methodology. They could, for example, be due to different sampling and recruitment methods or differences in the instruments used to collect data; they could also be due to differences in the harmonisation process itself. 
 
 ## Checks
-For each of the types there is a different analysis that needs to be done. We support at the moment 4 table types.
+The central quality control checks are carried out when data are uploaded and imported into a DataSHIELD backend (for example an institute’s DataSHIELD server). These four tables are now supported.
 
 - non-repeated
-- monthly-repeated
 - yearly-repeated
-- trimester
+- monthly-repeated
+- trimester-repeated
 
-### Non-repeated measures
-So in non-repeated we distinguish conituous and categorical values and for repeated measures we will investigate for each of the types which is the most valueble approach to get the ouput as useful as possible.
+For each of the four tables in the network, means and standard deviations are computed for continuous variables, and frequencies and percentages for categorical variables; these are tabulated over year for yearly- and monthly-repeated variables, and over trimester for trimester repeated variables. 
 
-### Monthly repeated measures
-
-### Yearly repeated measures
-
-### Trimester measures
-
-
-## Results
-The results are pushed to a central server which generates a PDF based upon the uploaded results. You can obtain the PDF by emailing molgenis-support@umcg.nl. You can display the output of the function by specifying `verbose = TRUE` in the method signature.
+Once computed, the summary statistics are pushed to a central server which creates a PDF of the combined results. It is possible to view the output from the function by specifying `verbose = TRUE` in the method signature. 
 
 ## Usage
 The quality control will be executed in the pipeline after uploading and importing the data into a DataSHIELD backend. However you can execute the flow seperatly as well.
