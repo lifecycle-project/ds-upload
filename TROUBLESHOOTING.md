@@ -52,9 +52,9 @@ updateR(admin_password = 'Admin user password')
 
 >**reference**: for more information check: http://www.andreacirillo.com/2018/03/10/updater-package-update-r-version-with-a-function-on-mac-osx/
 
-# Package won't install
+## Package won't install
 
-## Prerequisites
+### Prerequisites
 You need these packages to can make use of the dsUpload R-package.
 
 * opalr (>= 1.2.0),
@@ -73,7 +73,7 @@ You need these packages to can make use of the dsUpload R-package.
 
 > For Opal reference documentation check: http://opaldoc.obiba.org/en/latest/r-user-guide/datashield.html
 
-### For Windows
+#### For Windows
 Install the Opal package by installing ```RCurl, rjson``` first.
 ```{r, eval = FALSE}
 install.packages(c('httr', 'rjson'), repos=c('https://cloud.r-project.org/', 'https://www.stats.ox.ac.uk/pub/RWin/'))
@@ -91,7 +91,7 @@ install.packages(c('metafor', 'tidyr', 'dplyr', 'readr', 'stringr', 'readxl', 'd
 
 This may take a while
 
-### For Mac
+#### For Mac
 Install Opal by executing:
 ```{r, eval = FALSE}
 install.packages('opalr', repos=c('https://cloud.r-project.org/', 'https://cran.obiba.org'), dependencies=TRUE)
@@ -105,7 +105,7 @@ install.packages(c('metafor', 'tidyr', 'dplyr', 'readr', 'stringr', 'readxl', 'd
 ## Error's when running the program
 Error's can occur during the method calls in the lifecycleProject package.
 
-#### attributes are not identical across measure variables; they will be dropped
+#### Attributes are not identical across measure variables; they will be dropped
 When this message occurs it means the the types of the vectors concerning the yearly or monthly repeated measures are different. The reshape function will resolve this, but it is wise to check your dataset for these differences.
 
 For instance:
@@ -116,14 +116,22 @@ weight_01 == integer
 wieght_04 == decimal
 ```
 
-#### Packages won't register within the R-environment
+##### Packages won't register within the R-environment
 
-##### For Windows
+###### For Windows
 Sometimes the installed packages can not be registered in the R-environment because of the missing package ``pkgconfig``
 
 ```{r, eval = FALSE}
 install.packages("pkgconfig")
 ```
+
+### Cannot allocate vector of (xxx.xx)
+You can increase the memory that can be used by R by executing the following command.
+
+```{r, eval = FALSE}
+memory.size(max = TRUE)
+```
+
 
 ## Error's importing the tables
 

@@ -115,6 +115,8 @@ du.populate.dict.versions <- local(function(dict_kind, dict_version) {
 #'
 #' @noRd
 du.retrieve.dictionaries <- function(dict_table, dict_kind) {
+  name <- variable <- label <- NULL
+  
   dict_file_list <- list.files(paste0(getwd(), "/", dict_kind))
 
   if (!missing(dict_table)) {
@@ -132,7 +134,7 @@ du.retrieve.dictionaries <- function(dict_table, dict_kind) {
           rename(value = name, name = variable) %>%
           mutate(name = as.character(name), label = as.character(label))
         vars %>%
-          as_tibble(vars) %>%
+          as_tibble() %>%
           nest_join(cats, by = "name")
       }
     })
