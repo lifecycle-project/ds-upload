@@ -141,7 +141,7 @@ qc.non.repeated <- function(conns, table, verbose) {
 #' @noRd
 qc.yearly.repeated <- function(conns, table, verbose) {
   requireNamespace("dsBaseClient")
-  type <- pivot_longer <- NULL
+  type <- NULL
   # Define variables to be read in
   myvar <- list("child_id", "age_years", "edu_m_", "famsize_child", "famsize_adult") # This is just for test purposes, actual script will link to dds on Github
 
