@@ -142,9 +142,7 @@ qc.non.repeated <- function(conns, table, verbose) {
 qc.yearly.repeated <- function(conns, table, verbose) {
   requireNamespace("dsBaseClient")
   type <- NULL
-  # Define variables to be read in
-  myvar <- list("child_id", "age_years", "edu_m_", "famsize_child", "famsize_adult") # This is just for test purposes, actual script will link to dds on Github
-
+  
   # Define dataframe and variables:
   vars <- dsBaseClient::ds.colnames(table, datasources = conns)
 
@@ -159,6 +157,18 @@ qc.yearly.repeated <- function(conns, table, verbose) {
   class_list <- full_var_names %>% map(function(x) {
     dsBaseClient::ds.class(x, datasources = conns)
   })
+  
+  
+  f <- class_list %>% map(function(x) {
+    any(str_detect(x, "factor") == TRUE)
+  })
+  i <- class_list %>% map(function(x) {
+    any(str_detect(x, "numeric|integer") == TRUE)
+  })
+  
+  ## Create separate vectors for factors and integers
+  factors <- vars[(which(f == TRUE))]
+  integers <- vars[(which(i == TRUE))]
 
   # Convert age_years to a factor variable (required for the table):
   dsBaseClient::ds.asFactor(
