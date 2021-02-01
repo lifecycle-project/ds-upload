@@ -46,10 +46,10 @@ du.populate <- local(function(dict_version, cohort_id, data_version, database_na
 #' @return project id to use in central quality control
 #'
 #' @noRd
-du.populate.beta <- function(dict_name, database_name) {
+du.populate.beta <- function(dict_name, database_name, data_version) {
   project <- paste0("lc_", du.enum.dict.kind()$BETA, "_", dict_name)
 
-  dictionaries <- du.dict.retrieve.tables(ds_upload.globals$api_dict_beta_url, dict_name)
+  dictionaries <- du.dict.retrieve.tables(api_url = ds_upload.globals$api_dict_beta_url, dict_name = dict_name, data_version = data_version)
 
   if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
     project <- str_replace_all(dict_name, "-", "")

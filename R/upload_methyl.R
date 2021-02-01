@@ -41,7 +41,7 @@ du.upload.methyl.clocks <- function(upload = TRUE, dict_name = "", action = du.e
       du.dict.download(dict_name = dict_name, dict_kind = du.enum.dict.kind()$BETA)
 
       if (action == du.enum.action()$ALL | action == du.enum.action()$POPULATE) {
-        project <- du.populate.beta(dict_name, database_name)
+        project <- du.populate.beta(dict_name, database_name, data_version)
       }
       
       if (action == du.enum.action()$ALL) {
@@ -66,8 +66,7 @@ du.upload.methyl.clocks <- function(upload = TRUE, dict_name = "", action = du.e
           if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
             du.login(ds_upload.globals$login_data)
             du.opal.upload(du.enum.dict.kind()$BETA, file_name)
-          }
-          if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
+          } else if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
             du.armadillo.import(project = project, data = data, dict_kind = du.enum.dict.kind()$BETA, table_type = data_version)
           }
         }
