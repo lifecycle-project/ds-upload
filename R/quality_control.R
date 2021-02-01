@@ -264,7 +264,6 @@ qc.monthly.repeated <- function(conns, table, verbose) {
 #' @param table table to perform quality control on
 #' @param verbose print output to screen
 #'
-#' @importFrom dsBaseClient ds.colnames ds.class ds.meanSdGp ds.table ds.asFactor ds.cbind ds.levels ds.dataFrame ds.completeCases ds.rm
 #' @importFrom dplyr all_of %>%
 #' @importFrom purrr map
 #'
