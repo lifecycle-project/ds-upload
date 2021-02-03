@@ -69,7 +69,7 @@ du.data.frame.remove.all.na.rows <- function(dataframe) {
 du.match.columns <- function(data_columns, dict_columns) {
   matched_data_columns <- sapply(data_columns, grep, dict_columns$name) %>% names() %>% as_tibble()
   matched_columns <- dict_columns[grep(paste0('^(', paste(dict_columns$name, collapse = '|'), ').*'), matched_data_columns$value),]
-  matched_columns <-  matched_columns$row_id 
+  matched_columns <-  matched_columns$row_id
   return(matched_columns)
 }
 
@@ -132,7 +132,10 @@ du.match.column.types <- function(data, table_type, dict_kind) {
   
   matched_dictionary <- du.retrieve.dictionaries(dict_kind = dict_kind, dict_table = table_type)
   matched_columns <- du.match.columns(colnames(data), matched_dictionary)
+  print(matched_columns)
   data <- data[, matched_columns$name]
+  
+  print(data)
   
   if (nrow(du.data.frame.remove.all.na.rows(data)) <= 0) {
     message(paste0("* WARNING: No ", table_type, "-repeated measures found in this set"))
@@ -184,6 +187,7 @@ du.reshape.generate.non.repeated <- function(data, dict_kind) {
   message("* Generating: non-repeated measures")
   matched_data <- du.match.column.types(data, du.enum.table.types()$NONREP, dict_kind)
 
+  print("hier ben ik")
   # strip the rows with na values
   matched_data <- matched_data[, colSums(is.na(matched_data)) <
     nrow(matched_data)]
