@@ -1,6 +1,6 @@
 Package: dsUpload
 Title: Upload Functions for DataSHIELD Backends
-Version: 4.0.7
+Version: 4.1.0
 Authors@R: 
   c(person(given = "Sido",
       family = "Haakma",
@@ -66,6 +66,9 @@ Suggests:
   knitr, 
   rmarkdown,
   testthat
+Additional_repositories: 
+  https://cran.datashield.org,
+  https://registry.molgenis.org/repository/R
 VignetteBuilder: knitr
 License: GPL-3
 Encoding: UTF-8

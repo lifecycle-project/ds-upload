@@ -14,8 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Beta dictionaries
-The beta dictionaries are used to be able to initiate creation of dictonaries in the harmonisation process of new variables in a very early stage. As a PI you can manage and create new dictionaries which can be uploaded and tested by involved cohorts in a pilot phase of the project. Dictionaries can be changed and updated at any time and the network will be unaffected. After testing and approving the final beta dictionary the variables will be included in the main dictionaries and released when in the 3 months cycle.
+The beta dictionaries are used to be able to initiate creation of dictonaries in the harmonisation process of new variables in a very early stage. As a PI you can manage and create new dictionaries which can be uploaded and tested by involved cohorts in a pilot phase of the project. Dictionaries can be changed and updated at any time and the network will be unaffected. After testing and approving the final beta dictionary the variables will be included in the main dictionaries and released when in the 6 months cycle.
 
 ## How it works
 You need to have a few prerequisites
@@ -65,13 +64,18 @@ We now support multiple backend with the beta-dictionaries.
 When a first version of a beta dictionary is available, you can upload it to the Armadillo with the following code:
 
 ```{r, uploading beta dictionaries to Armadillo}
-login_data <- data.frame(server = "https://armadillo.test.molgenis.org", storage = "https://armadillo-minio.test.molgenis.org", driver = "ArmadilloDriver")
+login_data <- data.frame(
+  server = "https://armadillo.test.molgenis.org", 
+  storage = "https://armadillo-minio.test.molgenis.org", 
+  driver = "ArmadilloDriver"
+)
 
 du.login(login_data)
   
 du.upload.beta(
   dict_name = "example-dictionary", 
-  data_input_path = "/Users/sido/VisualStudioCodeProjects/ds-beta-dictionaries/data/example-dictionary/beta_dict_generated_data.csv")
+  data_input_path = "/Users/sido/VisualStudioCodeProjects/ds-beta-dictionaries/data/example-dictionary/beta_dict_generated_data.csv",
+  data_version = "1_0")
 ```
 
 You will be able to check the data in the Armadillo immediately.
@@ -80,13 +84,18 @@ You will be able to check the data in the Armadillo immediately.
 When a first version of a beta dictionary is available, you can upload it to Opal with the following code:
 
 ```{r, uploading beta dictionaries to Opal}
-login_data <- data.frame(server = "https://opal.edge.molgenis.org", password = "Ui3thahr", driver = "OpalDriver")
+login_data <- data.frame(
+  server = "https://opal.edge.molgenis.org", 
+  password = "ouf0uPh6", 
+  driver = "OpalDriver"
+)
 
 du.login(login_data)
   
 du.upload.beta(
   dict_name = "example-dictionary", 
-  data_input_path = "/Users/sido/VisualStudioCodeProjects/ds-beta-dictionaries/data/example-dictionary/beta_dict_generated_data.csv")
+  data_input_path = "/Users/sido/VisualStudioCodeProjects/ds-beta-dictionaries/data/example-dictionary/beta_dict_generated_data.csv",
+  data_version = "1_0")
 ```
 
 After this you need to manually upload the data just like you would in a released data upload. 
