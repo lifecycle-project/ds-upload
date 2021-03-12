@@ -28,7 +28,7 @@ You can install the package by executing the following command:
 
 
 ```r
-install.packages("dsUpload", repos='https://registry.molgenis.org/repository/R/', dependencies = TRUE)
+install.packages("dsUpload", repos=c('https://registry.molgenis.org/repository/R/', 'https://cran.datashield.org'), dependencies = TRUE)
 ```
 
 When you want to use it you need to load it.
