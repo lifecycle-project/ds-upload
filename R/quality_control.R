@@ -4,7 +4,7 @@
 #' @param verbose output the functions output when set to TRUE
 #' @param limit limit the tables to run (can be non_rep, yearly_rep, monthly_rep, weekly_rep or trimester)
 #'
-#' @importFrom DSI datashield.login newDSLoginBuilder datashield.assign.table
+#' @importFrom DSI datashield.login newDSLoginBuilder datashield.assign.table datashield.logout
 #' @importFrom opalr opal.projects opal.tables
 #' @importFrom MolgenisArmadillo armadillo.list_projects armadillo.list_tables
 #' @importFrom dplyr %>%
