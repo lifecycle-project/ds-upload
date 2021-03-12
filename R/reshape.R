@@ -62,13 +62,17 @@ du.reshape <- function(upload = TRUE, project, data_version, input_format, dict_
     trimester_data <- du.reshape.generate.trimesterly.repeated(
       data, dict_kind
     )
-    if (!is.null(trimester_data)) write_csv(trimester_data, paste0(getwd(), "/", file_name_trimester, ".csv"), na = "")
-    if (upload) {
-      if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
-        du.armadillo.import(project, trimester_data, dict_version, dict_kind, data_version, du.enum.table.types()$TRIMESTER)
-      }
-      if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL & !is.null(trimester_data)) {
-        du.opal.upload(dict_kind, file_name_trimester)
+    if (!is.null(trimester_data)) {
+      trimester_metadata <- du.retrieve.full.dict(....,dict_kind)
+      write_csv(trimester_data, paste0(getwd(), "/", file_name_trimester, ".csv"), na = "")
+      du.add.metadata(trimester_data, metadata)
+      if (upload) {
+        if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
+          du.armadillo.import(project, trimester_data, dict_version, dict_kind, data_version, du.enum.table.types()$TRIMESTER)
+        }
+        if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL & !is.null(trimester_data)) {
+          du.opal.upload(dict_kind, file_name_trimester)
+        }
       }
     }
   }
