@@ -139,11 +139,17 @@ du.retrieve.dictionaries <- local(function(dict_table, dict_kind) {
 #' @importFrom dplyr %>% nest_join mutate rename bind_rows
 #' @importFrom tibble as_tibble
 #'
+#' @noRd
 du.retrieve.full.dict <- function(dict_table, dict_kind) {
-  filename <- paste(getwd(), dict_kind, dict_table, sep="/")
-  vars <- read_xlsx(path = filename, sheet = 1) %>% as_tibble()
-  if (length(excel_sheets(filename)) == 2) {
-    cats <- read_xlsx(path = filename, sheet = 2) %>% as_tibble()
+  name <- variable <- label <- NULL
+  
+  dict_file_list <- list.files(paste0(getwd(), "/", dict_kind))
+  filename <- dict_file_list[grep(dict_table, dict_file_list)]
+  
+  filepath <- paste0(getwd(), "/", dict_kind, "/", filename)
+  vars <- read_xlsx(path = filepath, sheet = 1) %>% as_tibble()
+  if (length(excel_sheets(filepath)) == 2) {
+    cats <- read_xlsx(path = filepath, sheet = 2) %>% as_tibble()
     cats <- cats %>%
       rename(value = name, name = variable) %>%
       mutate(name = as.character(name), label = as.character(label))

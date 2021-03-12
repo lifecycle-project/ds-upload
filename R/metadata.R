@@ -5,12 +5,15 @@
 #' @param valueType the value type to convert to, can be decimal, integer, text
 #' @param label the column label to add as attribute
 #' @param cats category data frame with columns
-#'
+#' 
+#' @importFrom stats setNames
+#' 
+#' @noRd
 du.set.datatype <- function(column, valueType, label, cats) {
   if (nrow(cats) > 0) {
     # TODO: what to do with cats$missing?
     column <- factor(column, levels = cats$value)
-    attr(column, "labels") <- setNames(as.character(cats$value), cats$label)
+    attr(column, "labels") <- stats::setNames(as.character(cats$value), cats$label)
   }
   else if (valueType == "decimal") {
     column <- as.numeric(column)
@@ -32,6 +35,7 @@ du.set.datatype <- function(column, valueType, label, cats) {
 #' 
 #' @importFrom dplyr mutate_at
 #'
+#' @noRd
 du.add.metadata <- function(x, metadata) {
   # TODO: how to do this columnwise across the whole table?
   for (i in 1:nrow(metadata)) {
