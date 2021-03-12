@@ -113,10 +113,10 @@ du.upload <- function(dict_version = "2_1", data_version = "1_0", dict_kind = du
       }
       if (run_cqc == "y") {
         if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
-          du.quality.control(project)
+          du.quality.control(project = project, data_version = data_version)
         }
         if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
-          du.quality.control(cohort_id)
+          du.quality.control(project = cohort_id, data_version = data_version)
         }
       }
     },

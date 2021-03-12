@@ -1,15 +1,16 @@
 #' Validates the variables for a certain table
 #'
 #' @param project specify project you want to perform quality control on
+#' @param tableType limit the tables to run (can be non_rep, yearly_rep, monthly_rep, weekly_rep or trimester)
+#' @param data_version data version of the table
 #' @param verbose output the functions output when set to TRUE
-#' @param limit limit the tables to run (can be non_rep, yearly_rep, monthly_rep, weekly_rep or trimester)
 #'
 #' @importFrom opalr opal.projects opal.tables
 #' @importFrom MolgenisArmadillo armadillo.list_projects armadillo.list_tables
 #' @importFrom dplyr %>%
 #'
 #' @export
-du.quality.control <- function(project, verbose = FALSE, limit = du.enum.table.types()$ALL) {
+du.quality.control <- function(project, tableType = du.enum.table.types()$ALL, data_version = NULL, verbose = FALSE) {
   requireNamespace("dsBaseClient")
   message("  Starting quality control")
   message("------------------------------------------------------")
@@ -26,6 +27,7 @@ du.quality.control <- function(project, verbose = FALSE, limit = du.enum.table.t
       password = as.character(ds_upload.globals$login_data$password)
     )
   } else {
+    requireNamespace("DSMolgenisArmadillo")
     projects <- du.armadillo.list.projects()
     builder$append(
       server = "validate",
@@ -61,25 +63,25 @@ du.quality.control <- function(project, verbose = FALSE, limit = du.enum.table.t
             tables_to_assign <- paste0(project, "/", table)
           }
 
-          if (grepl(du.enum.table.types()$NONREP, table) && (limit == du.enum.table.types()$NONREP | limit == du.enum.table.types()$ALL)) {
+          if (grepl(du.enum.table.types()$NONREP, table) && (!is.null(data_version) & grepl(data_version, table)) & (tableType == du.enum.table.types()$NONREP | tableType == du.enum.table.types()$ALL)) {
             message(paste0(" * Starting with: ", project, " - ", table))
             conns <- DSI::datashield.login(logins = builder$build(), assign = FALSE)
             DSI::datashield.assign.table(conns = conns, table = tables_to_assign, symbol = qc_dataframe_symbol)
             qc.non.repeated(conns, qc_dataframe_symbol, verbose)
             DSI::datashield.logout(conns)
-          } else if(grepl(du.enum.table.types()$YEARLY, table) && (limit == du.enum.table.types()$YEARLY | limit == du.enum.table.types()$ALL)) {
+          } else if(grepl(du.enum.table.types()$YEARLY, table) && (!is.null(data_version) & grepl(data_version, table)) & (tableType == du.enum.table.types()$YEARLY | tableType == du.enum.table.types()$ALL)) {
             message(paste0(" * Starting with: ", project, " - ", table))
             conns <- DSI::datashield.login(logins = builder$build(), assign = FALSE)
             DSI::datashield.assign.table(conns = conns, table = tables_to_assign, symbol = qc_dataframe_symbol)
             qc.yearly.repeated(conns, qc_dataframe_symbol, verbose)
             DSI::datashield.logout(conns)
-          } else if (grepl(du.enum.table.types()$MONTHLY, table) && (limit == du.enum.table.types()$MONTHLY | limit == du.enum.table.types()$ALL)) {
+          } else if (grepl(du.enum.table.types()$MONTHLY, table) && (!is.null(data_version) & grepl(data_version, table)) & (tableType == du.enum.table.types()$MONTHLY | tableType == du.enum.table.types()$ALL)) {
             message(paste0(" * Starting with: ", project, " - ", table))
             conns <- DSI::datashield.login(logins = builder$build(), assign = FALSE)
             DSI::datashield.assign.table(conns = conns, table = tables_to_assign, symbol = qc_dataframe_symbol)
             qc.monthly.repeated(conns, qc_dataframe_symbol, verbose)
             DSI::datashield.logout(conns)
-          } else if (grepl(du.enum.table.types()$TRIMESTER, table) && (limit == du.enum.table.types()$TRIMESTER | limit == du.enum.table.types()$ALL)) {
+          } else if (grepl(du.enum.table.types()$TRIMESTER, table) && (!is.null(data_version) & grepl(data_version, table)) & (tableType == du.enum.table.types()$TRIMESTER | tableType == du.enum.table.types()$ALL)) {
             message(paste0(" * Starting with: ", project, " - ", table))
             conns <- DSI::datashield.login(logins = builder$build(), assign = FALSE)
             DSI::datashield.assign.table(conns = conns, table = tables_to_assign, symbol = qc_dataframe_symbol)
