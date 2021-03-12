@@ -129,3 +129,25 @@ du.retrieve.dictionaries <- local(function(dict_table, dict_kind) {
   }
   return(as.data.frame(raw_dict))
 })
+
+#' Get the full dictionary with mapped categories
+#' 
+#' @param dict_table a specific table that you want to check
+#' @param dict_kind can be 'core' or 'outcome'
+#'
+#' @importFrom readxl read_xlsx excel_sheets
+#' @importFrom dplyr %>% nest_join mutate rename bind_rows
+#' @importFrom tibble as_tibble
+#'
+du.retrieve.full.dict <- function(dict_table, dict_kind) {
+  filename <- paste(getwd(), dict_kind, dict_table, sep="/")
+  vars <- read_xlsx(path = filename, sheet = 1) %>% as_tibble()
+  if (length(excel_sheets(filename)) == 2) {
+    cats <- read_xlsx(path = filename, sheet = 2) %>% as_tibble()
+    cats <- cats %>%
+      rename(value = name, name = variable) %>%
+      mutate(name = as.character(name), label = as.character(label))
+    vars <- nest_join(vars, cats, by = "name")
+  } 
+  vars %>% bind_rows()
+}
