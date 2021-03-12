@@ -45,10 +45,10 @@ result in a structure like:
 The flavors can be:
 
 - non_rep
-- weekly_rep (0-)
-- monthly_rep (0-219)
-- trimester (1-3)
-- yearly_rep (0-17)
+- weekly_rep
+- monthly_rep
+- trimester
+- yearly_rep
 
 Then you need to create a dictionary based upon the variables you want to harmonise. To illustrate how you do this you can use the [example](https://github.com/lifecycle-project/ds-beta-dictionaries/blob/master/dictionaries/example-dictionary/example-dictionary-non_rep.xlsx?raw=true) as a reference.
 

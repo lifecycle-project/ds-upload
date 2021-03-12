@@ -6,7 +6,7 @@
 ^\.travis\.yml$
 ^_pkgdown\.yml$
 ^\.Rbuildignore$
-^inst$
+^inst/examples$
 ^docs$
 ^pkgdown$
 ^\.gitignore$
