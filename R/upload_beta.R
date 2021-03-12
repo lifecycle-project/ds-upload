@@ -9,9 +9,10 @@ ds_upload.globals <- new.env()
 #' @param data_input_path path to the to-be-reshaped data
 #' @param data_input_format format of the database to be reshaped. Can be 'CSV', 'STATA', or 'SAS'
 #' @param database_name is the name of the data backend of DataSHIELD, default = opal_data
+#' @param run_mode default = NORMAL, can be TEST and NON_INTERACTIIVE
 #'
 #' @export
-du.upload.beta <- function(upload = TRUE, dict_name = "", action = du.enum.action()$ALL, data_input_path = "", data_input_format = du.enum.input.format()$CSV, database_name = "opal_data") {
+du.upload.beta <- function(upload = TRUE, dict_name = "", action = du.enum.action()$ALL, data_input_path = "", data_input_format = du.enum.input.format()$CSV, database_name = "opal_data", run_mode = du.enum.run.mode()$NORMAL) {
   du.check.package.version()
   du.check.session(upload)
 
@@ -43,7 +44,11 @@ du.upload.beta <- function(upload = TRUE, dict_name = "", action = du.enum.actio
         )
       }
 
-      run_cqc <- readline("- Do you want to run quality control (make sure you imported the data!)? (y/n): ")
+      if (run_mode != du.enum.run.mode()$NON_INTERACTIVE) {
+        run_cqc <- readline("- Do you want to run quality control? (y/n): ")
+      } else {
+        run_cqc <- "n"
+      }
       if (run_cqc == "y") {
         if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
           du.quality.control(project)
