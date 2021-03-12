@@ -4,7 +4,6 @@
 #' @param verbose output the functions output when set to TRUE
 #' @param limit limit the tables to run (can be non_rep, yearly_rep, monthly_rep, weekly_rep or trimester)
 #'
-#' @importFrom DSI datashield.login newDSLoginBuilder datashield.assign.table datashield.logout
 #' @importFrom opalr opal.projects opal.tables
 #' @importFrom MolgenisArmadillo armadillo.list_projects armadillo.list_tables
 #' @importFrom dplyr %>%
@@ -15,7 +14,7 @@ du.quality.control <- function(project, verbose = FALSE, limit = du.enum.table.t
   message("  Starting quality control")
   message("------------------------------------------------------")
   du.check.session(TRUE)
-  builder <- newDSLoginBuilder()
+  builder <- DSI::newDSLoginBuilder()
   if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
     requireNamespace("DSOpal")
     projects <- opal.projects(ds_upload.globals$conn)
@@ -27,7 +26,6 @@ du.quality.control <- function(project, verbose = FALSE, limit = du.enum.table.t
       password = as.character(ds_upload.globals$login_data$password)
     )
   } else {
-    requireNamespace("DSMolgenisArmadillo")
     projects <- du.armadillo.list.projects()
     builder$append(
       server = "validate",
@@ -58,34 +56,35 @@ du.quality.control <- function(project, verbose = FALSE, limit = du.enum.table.t
           qc_dataframe_symbol <- "QC"
 
           tables_to_assign <- paste0(project, ".", table)
+
           if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
             tables_to_assign <- paste0(project, "/", table)
           }
 
           if (grepl(du.enum.table.types()$NONREP, table) && (limit == du.enum.table.types()$NONREP | limit == du.enum.table.types()$ALL)) {
             message(paste0(" * Starting with: ", project, " - ", table))
-            conns <- datashield.login(logins = builder$build(), assign = FALSE)
-            datashield.assign.table(conns = conns, table = tables_to_assign, symbol = qc_dataframe_symbol)
+            conns <- DSI::datashield.login(logins = builder$build(), assign = FALSE)
+            DSI::datashield.assign.table(conns = conns, table = tables_to_assign, symbol = qc_dataframe_symbol)
             qc.non.repeated(conns, qc_dataframe_symbol, verbose)
-            datashield.logout(conns)
+            DSI::datashield.logout(conns)
           } else if(grepl(du.enum.table.types()$YEARLY, table) && (limit == du.enum.table.types()$YEARLY | limit == du.enum.table.types()$ALL)) {
             message(paste0(" * Starting with: ", project, " - ", table))
-            conns <- datashield.login(logins = builder$build(), assign = FALSE)
-            datashield.assign.table(conns = conns, table = tables_to_assign, symbol = qc_dataframe_symbol)
+            conns <- DSI::datashield.login(logins = builder$build(), assign = FALSE)
+            DSI::datashield.assign.table(conns = conns, table = tables_to_assign, symbol = qc_dataframe_symbol)
             qc.yearly.repeated(conns, qc_dataframe_symbol, verbose)
-            datashield.logout(conns)
+            DSI::datashield.logout(conns)
           } else if (grepl(du.enum.table.types()$MONTHLY, table) && (limit == du.enum.table.types()$MONTHLY | limit == du.enum.table.types()$ALL)) {
             message(paste0(" * Starting with: ", project, " - ", table))
-            conns <- datashield.login(logins = builder$build(), assign = FALSE)
-            datashield.assign.table(conns = conns, table = tables_to_assign, symbol = qc_dataframe_symbol)
+            conns <- DSI::datashield.login(logins = builder$build(), assign = FALSE)
+            DSI::datashield.assign.table(conns = conns, table = tables_to_assign, symbol = qc_dataframe_symbol)
             qc.monthly.repeated(conns, qc_dataframe_symbol, verbose)
-            datashield.logout(conns)
+            DSI::datashield.logout(conns)
           } else if (grepl(du.enum.table.types()$TRIMESTER, table) && (limit == du.enum.table.types()$TRIMESTER | limit == du.enum.table.types()$ALL)) {
             message(paste0(" * Starting with: ", project, " - ", table))
-            conns <- datashield.login(logins = builder$build(), assign = FALSE)
-            datashield.assign.table(conns = conns, table = tables_to_assign, symbol = qc_dataframe_symbol)
+            conns <- DSI::datashield.login(logins = builder$build(), assign = FALSE)
+            DSI::datashield.assign.table(conns = conns, table = tables_to_assign, symbol = qc_dataframe_symbol)
             qc.trimester(conns, qc_dataframe_symbol, verbose)
-            datashield.logout(conns)
+            DSI::datashield.logout(conns)
           } else {
             message(paste0(" * Skipping: ", project, " - ", table))
             return()
@@ -104,13 +103,12 @@ du.quality.control <- function(project, verbose = FALSE, limit = du.enum.table.t
 #' @param table to quality check
 #' @param verbose print verbose output
 #'
-#' @importFrom dsBaseClient ds.ls ds.colnames
-#' @importFrom dsHelper dh.getStats
 #' @importFrom jsonlite toJSON
 #'
 #' @noRd
 qc.non.repeated <- function(conns, table, verbose) {
-  vars <- ds.colnames(datasources = conns, x = table)
+  requireNamespace("dsHelper")
+  vars <- dsBaseClient::ds.colnames(datasources = conns, x = table)
 
   # make it a plain old vector
   plain_vars <- as.vector(unlist(vars, use.names = FALSE))
@@ -118,7 +116,7 @@ qc.non.repeated <- function(conns, table, verbose) {
   # strip unnecessary fields
   plain_vars <- plain_vars[!plain_vars %in% c("row_id", "child_id")]
   
-  outputNonRep <- dh.getStats(
+  outputNonRep <- dsHelper::dh.getStats(
     conns = conns,
     df = table,
     vars = plain_vars
@@ -137,17 +135,17 @@ qc.non.repeated <- function(conns, table, verbose) {
 #' @param table table to perform quality control on
 #' @param verbose print output to screen
 #'
-#' @importFrom dsBaseClient ds.colnames ds.class ds.meanSdGp ds.table ds.asFactor ds.cbind ds.levels ds.dataFrame ds.completeCases ds.rm ds.summary
 #' @importFrom dplyr all_of %>%
 #' @importFrom purrr map
 #'
 #' @noRd
 qc.yearly.repeated <- function(conns, table, verbose) {
-  # Define variables to be read in
-  myvar <- list("child_id", "age_years", "edu_m_", "famsize_child", "famsize_adult") # This is just for test purposes, actual script will link to dds on Github
-
+  requireNamespace("dsBaseClient")
+  type <- NULL
+  
   # Define dataframe and variables:
-  vars <- ds.colnames(table, datasources = conns)
+  vars <- dsBaseClient::ds.colnames(table, datasources = conns)
+
   # make it a flat list
   vars <- as.vector(unlist(vars, use.names = FALSE))
   # exclude variables not required:
@@ -157,37 +155,35 @@ qc.yearly.repeated <- function(conns, table, verbose) {
   full_var_names <- paste0(table, "$", vars)
 
   class_list <- full_var_names %>% map(function(x) {
-    ds.class(x, datasources = conns)
+    dsBaseClient::ds.class(x, datasources = conns)
   })
-
+  
+  
   f <- class_list %>% map(function(x) {
     any(str_detect(x, "factor") == TRUE)
   })
   i <- class_list %>% map(function(x) {
     any(str_detect(x, "numeric|integer") == TRUE)
   })
-
+  
   ## Create separate vectors for factors and integers
   factors <- vars[(which(f == TRUE))]
   integers <- vars[(which(i == TRUE))]
 
-  ################################################################################
-  # Create separate data frames for each variable in "factors" with summary information (N and proportions)
-
   # Convert age_years to a factor variable (required for the table):
-  ds.asFactor(
+  dsBaseClient::ds.asFactor(
     input.var.name = paste0(table, "$age_years"),
     newobj.name = "age_years2",
     datasources = conns
   )
-  ds.cbind(x = c(table, "age_years2"), newobj = table, datasources = conns)
+  dsBaseClient::ds.cbind(x = c(table, "age_years2"), newobj = table, datasources = conns)
   # Store some summary information:
-  summary <- ds.levels(paste0(table, "$age_years2"), datasources = conns)
+  summary <- dsBaseClient::ds.levels(paste0(table, "$age_years2"), datasources = conns)
   levels <- summary$validate$Levels
 
   outputFactVars <- factors %>%
     map(function(factVar) { 
-      summaryVar <- ds.summary(paste0(table, "$", factVar), datasources = conns)
+      summaryVar <- dsBaseClient::ds.summary(paste0(table, "$", factVar), datasources = conns)
       qc.process.factor.vars(factVar, table, levels, summaryVar$validate$categories, "age_years2", conns) }) %>%
     rbind() %>%
     toJSON()
@@ -208,13 +204,13 @@ qc.yearly.repeated <- function(conns, table, verbose) {
 #' @param table table to perform quality control on
 #' @param verbose print output to screen
 #'
-#' @importFrom dsBaseClient ds.colnames ds.class ds.meanSdGp ds.table ds.asFactor ds.cbind ds.levels ds.dataFrame ds.completeCases ds.rm
 #' @importFrom dplyr all_of %>%
 #' @importFrom purrr map
 #'
 #' @noRd
 qc.monthly.repeated <- function(conns, table, verbose) {
-  vars <- ds.colnames(table, datasources = conns)
+  requireNamespace("dsBaseClient")
+  vars <- dsBaseClient::ds.colnames(table, datasources = conns)
   # make it a flat list
   vars <- as.vector(unlist(vars, use.names = FALSE))
   # exclude variables not required:
@@ -224,7 +220,7 @@ qc.monthly.repeated <- function(conns, table, verbose) {
   full_var_names <- paste0(table, "$", vars)
 
   class_list <- full_var_names %>% map(function(x) {
-    ds.class(x, datasources = conns)
+    dsBaseClient::ds.class(x, datasources = conns)
   })
 
   f <- class_list %>% map(function(x) {
@@ -240,27 +236,27 @@ qc.monthly.repeated <- function(conns, table, verbose) {
 
   ################################################################################
   # Convert age_months to a factor variable:
-  ds.asFactor(
+  dsBaseClient::ds.asFactor(
     input.var.name = paste0(table, "$age_months"),
     newobj.name = "age_months2",
     datasources = conns
   )
-  ds.cbind(x = c(table, "age_months2"), newobj = table, datasources = conns)
+  dsBaseClient::ds.cbind(x = c(table, "age_months2"), newobj = table, datasources = conns)
 
-  summary1 <- ds.levels(paste0(table, "$age_months2"), datasources = conns)
+  summary1 <- dsBaseClient::ds.levels(paste0(table, "$age_months2"), datasources = conns)
   n1 <- length(summary1$validate$Levels) 
 
   # Convert age_years to a factor variable (required for the tables):
-  ds.asFactor(
+  dsBaseClient::ds.asFactor(
     input.var.name = paste0(table, "$age_years"),
     newobj.name = "age_years2",
     datasources = conns
   )
-  ds.cbind(x = c(table, "age_years2"), newobj = table, datasources = conns)
+  dsBaseClient::ds.cbind(x = c(table, "age_years2"), newobj = table, datasources = conns)
 
   # summarise some information from age_years2
   
-  summary <- ds.levels(paste0(table, "$age_years2"), datasources = conns)
+  summary <- dsBaseClient::ds.levels(paste0(table, "$age_years2"), datasources = conns)
   levels <- summary$validate$Levels
   
   outputIntVars <- integers %>% 
@@ -278,13 +274,13 @@ qc.monthly.repeated <- function(conns, table, verbose) {
 #' @param table table to perform quality control on
 #' @param verbose print output to screen
 #'
-#' @importFrom dsBaseClient ds.colnames ds.class ds.meanSdGp ds.table ds.asFactor ds.cbind ds.levels ds.dataFrame ds.completeCases ds.rm
 #' @importFrom dplyr all_of %>%
 #' @importFrom purrr map
 #'
 #' @noRd
 qc.trimester <- function(conns, table, verbose) {
-  vars <- ds.colnames(table, datasources = conns)
+  requireNamespace("dsBaseClient")
+  vars <- dsBaseClient::ds.colnames(table, datasources = conns)
   # make it a flat list
   vars <- as.vector(unlist(vars, use.names = FALSE))
   # exclude variables not required:
@@ -294,7 +290,7 @@ qc.trimester <- function(conns, table, verbose) {
   full_var_names <- paste0(table, "$", vars)
 
   class_list <- full_var_names %>% map(function(x) {
-    ds.class(x, datasources = conns)
+    dsBaseClient::ds.class(x, datasources = conns)
   })
 
   f <- class_list %>% map(function(x) {
@@ -312,19 +308,19 @@ qc.trimester <- function(conns, table, verbose) {
   # Create separate data frames for each variable in "factors" with summary information (N and proportions)
 
   # Convert age_trimester to a factor variable (required for the table):
-  ds.asFactor(
+  dsBaseClient::ds.asFactor(
     input.var.name = paste0(table, "$age_trimester"),
     newobj.name = "age_trimester2",
     datasources = conns
   )
-  ds.cbind(x = c(table, "age_trimester2"), newobj = table, datasources = conns)
+  dsBaseClient::ds.cbind(x = c(table, "age_trimester2"), newobj = table, datasources = conns)
   # Store some summary information:
-  summary <- ds.levels(paste0(table, "$age_trimester2"))
+  summary <- dsBaseClient::ds.levels(paste0(table, "$age_trimester2"))
   levels <- summary$validate$Levels
 
   outputFactVars <- factors %>%
     map(function(factVar) { 
-      summaryVar <- ds.levels(paste0(table, "$", factVar), datasources = conns)
+      summaryVar <- dsBaseClient::ds.levels(paste0(table, "$", factVar), datasources = conns)
       qc.process.factor.vars(factVar, table, levels, summaryVar$validate$Levels, "age_trimester2", conns) 
       }) %>%
     cbind()
@@ -345,18 +341,17 @@ qc.trimester <- function(conns, table, verbose) {
 #' @param levels these are possible variable levels
 #' @param conns connections to the DataSHIELD backends
 #' 
-#' @importFrom dsBaseClient ds.meanByClass ds.dataFrame ds.completeCases
-#' 
 #' @return a table of mean by class information
 #' 
 #' @noRd
 qc.process.integer.vars <- function(intVar, table, levels, conns) {
+  requireNamespace("dsBaseClient")
   message(paste0(" * Start evaluating integer: [ ", intVar, " ]"))
     
-  ds.dataFrame(x = c(paste0(table, "$", intVar), paste0(table, "$age_years2")), newobj = "complete", datasources = conns)
-  ds.completeCases(x1 = "complete", newobj = "complete", datasources = conns)
+  dsBaseClient::ds.dataFrame(x = c(paste0(table, "$", intVar), paste0(table, "$age_years2")), newobj = "complete", datasources = conns)
+  dsBaseClient::ds.completeCases(x1 = "complete", newobj = "complete", datasources = conns)
     
-  output <- ds.meanByClass(x = 'complete',
+  output <- dsBaseClient::ds.meanByClass(x = 'complete',
               outvar = intVar,
               covar = 'age_years2',
               type = 'combine',
@@ -371,7 +366,7 @@ qc.process.integer.vars <- function(intVar, table, levels, conns) {
   colnames(output) <- c(colnames)
    
   rm(colnames)
-  ds.rm("complete", datasources = conns)
+  dsBaseClient::ds.rm("complete", datasources = conns)
   
   message(paste0(" * Succesfully evaluated: [ ", intVar, " ]"))
   
@@ -387,14 +382,13 @@ qc.process.integer.vars <- function(intVar, table, levels, conns) {
 #' @param ageVariable the type of age variable
 #' @param conns connections to the backend
 #' 
-#' @importFrom dsBaseClient ds.table
-#' 
 #' @noRd
 qc.process.factor.vars <- function(factVar, table, levels, options, ageVariable, conns) {
+  requireNamespace("dsBaseClient")
   message(paste0(" * Start evaluating factor: [ ", factVar, " ]"))
   n <- length(options)
   n2 <- length(levels)
-  output <- ds.table(paste0(table, "$", factVar), paste0(table, "$", ageVariable), datasources = conns)
+  output <- dsBaseClient::ds.table(paste0(table, "$", factVar), paste0(table, "$", ageVariable), datasources = conns)
   counts <- data.frame(matrix(unlist(output$output.list$TABLE_STUDY.1_counts), nrow = n + 1, ncol = n2, byrow = F))
   prop <- data.frame(matrix(unlist(output$output.list$TABLES.COMBINED_all.sources_col.props), nrow = n + 1, ncol = n2, byrow = F))
   out <- data.frame(cbind(counts[,c(1)],prop[,c(1)]))
