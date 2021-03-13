@@ -1,30 +1,38 @@
-#' 
+#'
 #' Sets the data type of a single column
-#' 
+#'
 #' @param column the column to convert
-#' @param valueType the value type to convert to, can be decimal, integer, text
-#' @param label the column label to add as attribute
-#' @param cats category data frame with columns
-#' 
+#' @param metadata the metadata as produced by [du.retrieve.full.dict]
+#' @param column_name the name of the column to convert
+#'
 #' @importFrom stats setNames
-#' 
+#' @importFrom dplyr filter
+#'
 #' @noRd
-du.set.datatype <- function(column, valueType, label, cats) {
+du.set.datatype <- function(column, metadata, column_name) {
+  name <- NULL
+  colmeta <- dplyr::filter(metadata, name == column_name)
+  if (nrow(colmeta) == 0) {
+    # TODO: what to do when no metadata is found?
+    return(column)
+  }
+  cats <- colmeta$cats[[1]]
   if (nrow(cats) > 0) {
     # TODO: what to do with cats$missing?
     column <- factor(column, levels = cats$value)
-    attr(column, "labels") <- stats::setNames(as.character(cats$value), cats$label)
+    attr(column, "labels") <-
+      stats::setNames(as.character(cats$value), cats$label)
   }
-  else if (valueType == "decimal") {
+  else if (colmeta$valueType == "decimal") {
     column <- as.numeric(column)
   }
-  else if (valueType == "integer") {
+  else if (colmeta$valueType == "integer") {
     column <- as.integer(column)
   }
-  else if (valueType == "text") {
+  else if (colmeta$valueType == "text") {
     column <- as.character(column)
   }
-  attr(column, "label") <- label
+  attr(column, "label") <- colmeta$label
   return(column)
 }
 
@@ -32,25 +40,17 @@ du.set.datatype <- function(column, valueType, label, cats) {
 #'
 #' @param x the data frame to add metadata to
 #' @param metadata the metadata to add to the data frame
-#' 
-#' @importFrom dplyr mutate_at
+#'
+#' @importFrom dplyr mutate across cur_column
 #'
 #' @noRd
 du.add.metadata <- function(x, metadata) {
-  # TODO: how to do this columnwise across the whole table?
-  for (i in 1:nrow(metadata)) {
-    try(
-      x <- dplyr::mutate_at(
-        x, c(metadata$name[[i]]),
-        ~ du.set.datatype(
-          .,
-          metadata$valueType[[i]],
-          metadata$label[[i]],
-          metadata$cats[[i]]
-        )
-      ),
-      silent = TRUE
+  dplyr::mutate(x, dplyr::across(
+    names(x),
+    ~ du.set.datatype(
+      .x,
+      metadata,
+      dplyr::cur_column()
     )
-  }
-  x
+  ))
 }
