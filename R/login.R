@@ -68,7 +68,7 @@ du.login <- function(login_data) {
 #' @importFrom jsonlite fromJSON
 #' @importFrom utils packageVersion packageName
 #'
-#' @keywords internal
+#' @noRd
 du.check.package.version <- function() {
   url <- paste0("https://registry.molgenis.org/service/rest/v1/search?repository=r-hosted&name=", packageName())
   result <- fromJSON(txt = url)
@@ -93,7 +93,7 @@ du.check.package.version <- function() {
 #'
 #' @param upload is a session needed or not
 #'
-#' @keywords internal
+#' @noRd
 du.check.session <- function(upload = FALSE) {
   if (upload == TRUE) {
     if (!exists("login_data", envir = ds_upload.globals)) {

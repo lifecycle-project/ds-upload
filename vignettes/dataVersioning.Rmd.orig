@@ -12,7 +12,6 @@ vignette: >
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Data versioning
 We suggest to version the data that you upload. This is needed because of the reproducibility of the research that is going to be performed on the datasets. We are suggesting to do this based upon ([semantic versioning](https://semver.org)). A better explanation on using semantic versioning in data can be found here: [semantic versioning for data products](https://medium.com/data-architect/semantic-versioning-for-data-products-2b060962093).
 
 ### Semantic versioning
