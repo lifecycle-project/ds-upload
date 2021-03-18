@@ -74,7 +74,7 @@ du.reshape <- function(upload = TRUE, project, data_version, input_format, dict_
         if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
           du.armadillo.import(project, trimester_data, dict_version, dict_kind, data_version, du.enum.table.types()$TRIMESTER)
         }
-        if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL & !is.null(trimester_data)) {
+        if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
           du.opal.upload(dict_kind, file_name_trimester)
         }
       }
@@ -95,7 +95,7 @@ du.reshape <- function(upload = TRUE, project, data_version, input_format, dict_
       }
       if (!is.null(yearlyrep_data)) {
         yearlyrep_metadata <- du.retrieve.full.dict(du.enum.table.types()$YEARLY, dict_kind)
-        yearlyrep_data <- du.add.metadata(trimester_data, yearlyrep_metadata)
+        yearlyrep_data <- du.add.metadata(yearlyrep_data, yearlyrep_metadata)
         du.armadillo.import(project = project, data = yearlyrep_data, dict_version, dict_kind, data_version, du.enum.table.types()$YEARLY)
       }
       if (!is.null(monthlyrep_data)) {
