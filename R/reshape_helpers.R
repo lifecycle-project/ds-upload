@@ -137,16 +137,18 @@ du.reshape.generate.non.repeated <- function(data, dict_kind) {
   non_repeated_measures <- data[, which(colnames(data) %in% non_repeated)]
 
   # strip the rows with na values
-  # non_repeated_measures <- non_repeated_measures[, colSums(is.na(non_repeated_measures)) <
-  #  nrow(non_repeated_measures)]
+  stripped_non_repeated_measures <- non_repeated_measures[, colSums(is.na(non_repeated_measures)) <
+    nrow(non_repeated_measures)]
+  
+  message(paste0("[WARNING] These columns will be dropped because they are completely missing: [ ", setdiff(colnames(non_repeated_measures), colnames(stripped_non_repeated_measures)), " ]"))
 
   # add row_id again to preserve child_id
-  non_repeated_measures <- data.frame(
+  stripped_non_repeated_measures <- data.frame(
     row_id = c(1:length(non_repeated_measures$child_id)),
     non_repeated_measures
   )
 
-  return(as.data.frame(non_repeated_measures))
+  return(as.data.frame(stripped_non_repeated_measures))
 }
 
 #' Generate the yearly repeated measures file and write it to your local workspace
