@@ -91,7 +91,7 @@ du.match.columns <- local(function(data_columns, dict_columns) {
 #' @return stops the program if someone terminates
 #'
 #' @noRd
-du.check.variables <- local(function(dict_kind, data_columns, run_mode) {
+du.check.variables <- function(dict_kind, data_columns, run_mode) {
   variables <- du.retrieve.dictionaries(dict_kind = dict_kind)
 
   matched_columns <- du.match.columns(data_columns, variables$name)
@@ -99,10 +99,7 @@ du.check.variables <- local(function(dict_kind, data_columns, run_mode) {
   columns_not_matched <- data_columns[!(data_columns %in% matched_columns)]
 
   if (length(columns_not_matched) > 0) {
-    message(paste0(
-      "[WARNING] This is an unmatched column, it will be dropped : [ ",
-      columns_not_matched, " ].\n"
-    ))
+    message(paste0("[WARNING] This is an unmatched column, it will be dropped : [ ", columns_not_matched, " ].", sep = '\n'))
     if (run_mode != du.enum.run.mode()$NON_INTERACTIVE) {
       proceed <- readline("Do you want to proceed (y/n)")
     } else {
@@ -112,9 +109,29 @@ du.check.variables <- local(function(dict_kind, data_columns, run_mode) {
     proceed <- "y"
   }
   if (proceed == "n") {
+    message(columns_not_matched, sep = '\n')
     stop("Program is terminated. There are unmatched columns in your source data.")
   }
-})
+}
+
+du.check.nas <- function(stripped, raw) {
+  variables_na <- setdiff(stripped, raw)
+  if (length(variables_na) > 0) {
+    message(paste0("[WARNING] Variable dropped because completely missing: [ ", variables_na, " ]", sep = '\n'))
+    if (run_mode != du.enum.run.mode()$NON_INTERACTIVE) {
+      proceed <- readline("Do you want to proceed (y/n)")
+    } else {
+      proceed <- "y"
+    }
+  } else {
+    proceed <- "y"
+  }
+  if (proceed == "n") {
+    message(variables_na, sep = 'na')
+    stop("Program is terminated. There are columns in your source data that are completely missing.")
+  }
+  
+}
 
 #' Generate the yearly repeated measures file and write it to your local workspace
 #'
@@ -140,7 +157,7 @@ du.reshape.generate.non.repeated <- function(data, dict_kind) {
   stripped_non_repeated_measures <- non_repeated_measures[, colSums(is.na(non_repeated_measures)) <
     nrow(non_repeated_measures)]
   
-  message(paste0("[WARNING] Variable dropped because completely missing: [ ", setdiff(colnames(non_repeated_measures), colnames(stripped_non_repeated_measures)), " ]", sep = '\n'))
+  du.check.nas(colnames(stripped_non_repeated_measures), colnames(non_repeated_measures))
   
   # add row_id again to preserve child_id
   stripped_non_repeated_measures <- data.frame(
@@ -178,20 +195,20 @@ du.reshape.generate.yearly.repeated <- function(data, dict_kind) {
     return()
   }
 
-  long_1_stripped <- yearly_repeated_measures %>% gather(orig_var, value, matched_columns[matched_columns !=
+  long_1 <- yearly_repeated_measures %>% gather(orig_var, value, matched_columns[matched_columns !=
     "child_id"], na.rm = TRUE)
   
-  message(paste0("[WARNING] Variable dropped because completely missing: [ ", setdiff(colnames(long_1_stripped), colnames(yearly_repeated_measures)), " ]", sep = '\n'))
+  du.check.nas(colnames(colnames(long_1)), colnames(yearly_repeated_measures))
 
   # Create the age_years variable with the regular expression extraction of the year
-  long_1_stripped$age_years <- as.numeric(du.num.extract(long_1_stripped$orig_var))
+  long_1$age_years <- as.numeric(du.num.extract(long_1$orig_var))
 
   # Here we remove the year indicator from the original variable name
-  long_1_stripped$variable_trunc <- gsub("[[:digit:]]+$", "", long_1_stripped$orig_var)
+  long_1$variable_trunc <- gsub("[[:digit:]]+$", "", long_1$orig_var)
 
   # Use the maditr package for spreading the data again, as tidyverse runs into memory
   # issues
-  long_2 <- dcast(long_1_stripped, child_id + age_years ~ variable_trunc, value.var = "value")
+  long_2 <- dcast(long_1, child_id + age_years ~ variable_trunc, value.var = "value")
 
   # As the data table is still too big for opal, remove those rows, that have only
   # missing values, but keep all rows at age_years=0, so no child_id get's lost:
@@ -217,7 +234,7 @@ du.reshape.generate.yearly.repeated <- function(data, dict_kind) {
   long_2$row_id <- c(1:length(long_2$child_id))
 
   # Arrange the variable names based on the original order
-  long_yearly <- long_2[, c("row_id", "child_id", "age_years", unique(long_1_stripped$variable_trunc))]
+  long_yearly <- long_2[, c("row_id", "child_id", "age_years", unique(long_1$variable_trunc))]
 
   return(as.data.frame(long_yearly))
 }
@@ -249,22 +266,22 @@ du.reshape.generate.monthly.repeated <- function(data, dict_kind) {
     return()
   }
 
-  long_1_stripped <- monthly_repeated_measures %>% gather(orig_var, value, matched_columns[matched_columns !=
+  long_1 <- monthly_repeated_measures %>% gather(orig_var, value, matched_columns[matched_columns !=
     "child_id"], na.rm = TRUE)
   
-  message(paste0("[WARNING] Variable dropped because completely missing: [ ", setdiff(colnames(long_1_stripped), colnames(monthly_repeated_measures)), " ]", sep = '\n'))
+  du.check.nas(colnames(colnames(long_1)), colnames(monthly_repeated_measures))
 
   # Create the age_years and age_months variables with the regular expression
   # extraction of the year
-  long_1_stripped$age_years <- as.integer(as.numeric(du.num.extract(long_1_stripped$orig_var)) / 12)
-  long_1_stripped$age_months <- as.numeric(du.num.extract(long_1_stripped$orig_var))
+  long_1$age_years <- as.integer(as.numeric(du.num.extract(long_1$orig_var)) / 12)
+  long_1$age_months <- as.numeric(du.num.extract(long_1$orig_var))
 
   # Here we remove the year indicator from the original variable name
-  long_1_stripped$variable_trunc <- gsub("[[:digit:]]+$", "", long_1_stripped$orig_var)
+  long_1$variable_trunc <- gsub("[[:digit:]]+$", "", long_1$orig_var)
 
   # Use the maditr package for spreading the data again, as tidyverse ruins into memory
   # issues
-  long_2 <- dcast(long_1_stripped, child_id + age_years + age_months ~ variable_trunc, value.var = "value")
+  long_2 <- dcast(long_1, child_id + age_years + age_months ~ variable_trunc, value.var = "value")
 
   # As the data table is still too big for opal, remove those rows, that have only
   # missing values, but keep all rows at age_years=0, so no child_id get's lost:
@@ -290,7 +307,7 @@ du.reshape.generate.monthly.repeated <- function(data, dict_kind) {
   long_2$row_id <- c(1:length(long_2$child_id))
 
   # Arrange the variable names based on the original order
-  long_monthly <- long_2[, c("row_id", "child_id", "age_years", "age_months", unique(long_1_stripped$variable_trunc))]
+  long_monthly <- long_2[, c("row_id", "child_id", "age_years", "age_months", unique(long_1$variable_trunc))]
 
   return(as.data.frame(long_monthly))
 }
@@ -322,23 +339,23 @@ du.reshape.generate.weekly.repeated <- function(data, dict_kind) {
     return()
   }
 
-  long_1_stripped <- weekly_repeated_measures %>% gather(orig_var, value, matched_columns[matched_columns !=
+  long_1 <- weekly_repeated_measures %>% gather(orig_var, value, matched_columns[matched_columns !=
     "child_id"], na.rm = TRUE)
 
-  message(paste0("[WARNING] Variable dropped because completely missing: [ ", setdiff(colnames(long_1_stripped), colnames(weekly_repeated_measures)), " ]", sep = '\n'))
+  du.check.nas(colnames(colnames(long_1)), colnames(weekly_repeated_measures))
   
   # Create the age_years and age_months variables with the regular expression
   # extraction of the year NB - these weekly dta are pregnancy related so child is NOT
   # BORN YET ---
-  long_1_stripped$age_years <- as.integer(as.numeric(du.num.extract(long_1_stripped$orig_var)) / 52)
-  long_1_stripped$age_weeks <- as.integer(du.num.extract(long_1_stripped$orig_var))
+  long_1$age_years <- as.integer(as.numeric(du.num.extract(long_1$orig_var)) / 52)
+  long_1$age_weeks <- as.integer(du.num.extract(long_1$orig_var))
 
   # Here we remove the year indicator from the original variable name
-  long_1_stripped$variable_trunc <- gsub("[[:digit:]]+$", "", long_1_stripped$orig_var)
+  long_1$variable_trunc <- gsub("[[:digit:]]+$", "", long_1$orig_var)
 
   # Use the maditr package for spreading the data again, as tidyverse ruins into memory
   # issues
-  long_2 <- dcast(long_1_stripped, child_id + age_years + age_weeks ~ variable_trunc, value.var = "value")
+  long_2 <- dcast(long_1, child_id + age_years + age_weeks ~ variable_trunc, value.var = "value")
 
   # As the data table is still too big for opal, remove those rows, that have only
   # missing values, but keep all rows at age_years=0, so no child_id get's lost:
@@ -364,7 +381,7 @@ du.reshape.generate.weekly.repeated <- function(data, dict_kind) {
   long_2$row_id <- c(1:length(long_2$child_id))
 
   # Arrange the variable names based on the original order
-  long_weekly <- long_2[, c("row_id", "child_id", "age_years", "age_weeks", unique(long_1_stripped$variable_trunc))]
+  long_weekly <- long_2[, c("row_id", "child_id", "age_years", "age_weeks", unique(long_1$variable_trunc))]
 
   return(as.data.frame(long_weekly))
 }
@@ -400,21 +417,21 @@ du.reshape.generate.trimesterly.repeated <- function(data, dict_kind) {
     return()
   }
 
-  long_1_stripped <- trimesterly_repeated_measures %>% gather(orig_var, value, matched_columns[matched_columns !=
+  long_1 <- trimesterly_repeated_measures %>% gather(orig_var, value, matched_columns[matched_columns !=
     "child_id"], na.rm = TRUE)
   
-  message(paste0("[WARNING] Variable dropped because completely missing: [ ", setdiff(colnames(long_1_stripped), colnames(weekly_repeated_measures)), " ]", sep = '\n'))
+  du.check.nas(colnames(colnames(long_1)), colnames(trimesterly_repeated_measures))
 
   # Create the age_years and age_months variables with the regular expression
   # extraction of the year
-  long_1_stripped$age_trimester <- as.numeric(du.num.extract(long_1_stripped$orig_var))
+  long_1$age_trimester <- as.numeric(du.num.extract(long_1$orig_var))
 
   # Here we remove the year indicator from the original variable name
-  long_1_stripped$variable_trunc <- gsub("[[:digit:]]+$", "", long_1_stripped$orig_var)
+  long_1$variable_trunc <- gsub("[[:digit:]]+$", "", long_1$orig_var)
 
   # Use the maditr package for spreading the data again, as tidyverse ruins into memory
   # issues
-  long_2 <- dcast(long_1_stripped, child_id + age_trimester ~ variable_trunc, value.var = "value")
+  long_2 <- dcast(long_1, child_id + age_trimester ~ variable_trunc, value.var = "value")
 
   # As the data table is still too big for opal, remove those rows, that have only
   # missing values, but keep all rows at age_years=0, so no child_id get's lost:
@@ -440,7 +457,7 @@ du.reshape.generate.trimesterly.repeated <- function(data, dict_kind) {
   long_2$row_id <- c(1:length(long_2$child_id))
 
   # Arrange the variable names based on the original order
-  long_trimesterly <- long_2[, c("row_id", "child_id", "age_trimester", unique(long_1_stripped$variable_trunc))]
+  long_trimesterly <- long_2[, c("row_id", "child_id", "age_trimester", unique(long_1$variable_trunc))]
 
   return(as.data.frame(long_trimesterly))
 }
