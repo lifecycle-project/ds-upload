@@ -137,8 +137,8 @@ du.reshape.generate.non.repeated <- function(data, dict_kind) {
   non_repeated_measures <- data[, which(colnames(data) %in% non_repeated)]
 
   # strip the rows with na values
-  non_repeated_measures <- non_repeated_measures[, colSums(is.na(non_repeated_measures)) <
-    nrow(non_repeated_measures)]
+  # non_repeated_measures <- non_repeated_measures[, colSums(is.na(non_repeated_measures)) <
+  #  nrow(non_repeated_measures)]
 
   # add row_id again to preserve child_id
   non_repeated_measures <- data.frame(
@@ -177,7 +177,7 @@ du.reshape.generate.yearly.repeated <- function(data, dict_kind) {
   }
 
   long_1 <- yearly_repeated_measures %>% gather(orig_var, value, matched_columns[matched_columns !=
-    "child_id"], na.rm = TRUE)
+    "child_id"], na.rm = FALSE)
 
   # Create the age_years variable with the regular expression extraction of the year
   long_1$age_years <- as.numeric(du.num.extract(long_1$orig_var))
@@ -246,7 +246,7 @@ du.reshape.generate.monthly.repeated <- function(data, dict_kind) {
   }
 
   long_1 <- monthly_repeated_measures %>% gather(orig_var, value, matched_columns[matched_columns !=
-    "child_id"], na.rm = TRUE)
+    "child_id"], na.rm = FALSE)
 
   # Create the age_years and age_months variables with the regular expression
   # extraction of the year
@@ -317,7 +317,7 @@ du.reshape.generate.weekly.repeated <- function(data, dict_kind) {
   }
 
   long_1 <- weekly_repeated_measures %>% gather(orig_var, value, matched_columns[matched_columns !=
-    "child_id"], na.rm = TRUE)
+    "child_id"], na.rm = FALSE)
 
   # Create the age_years and age_months variables with the regular expression
   # extraction of the year NB - these weekly dta are pregnancy related so child is NOT
@@ -393,7 +393,7 @@ du.reshape.generate.trimesterly.repeated <- function(data, dict_kind) {
   }
 
   long_1 <- trimesterly_repeated_measures %>% gather(orig_var, value, matched_columns[matched_columns !=
-    "child_id"], na.rm = TRUE)
+    "child_id"], na.rm = FALSE)
 
   # Create the age_years and age_months variables with the regular expression
   # extraction of the year
