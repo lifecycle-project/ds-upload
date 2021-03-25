@@ -146,7 +146,7 @@ du.reshape.generate.non.repeated <- function(data, dict_kind) {
     non_repeated_measures
   )
 
-  return(non_repeated_measures)
+  return(as.data.frame(non_repeated_measures))
 }
 
 #' Generate the yearly repeated measures file and write it to your local workspace
@@ -215,7 +215,7 @@ du.reshape.generate.yearly.repeated <- function(data, dict_kind) {
   # Arrange the variable names based on the original order
   long_yearly <- long_2[, c("row_id", "child_id", "age_years", unique(long_1$variable_trunc))]
 
-  return(long_yearly)
+  return(as.data.frame(long_yearly))
 }
 
 #' Generate the monthly repeated measures file and write it to your local workspace
@@ -286,7 +286,7 @@ du.reshape.generate.monthly.repeated <- function(data, dict_kind) {
   # Arrange the variable names based on the original order
   long_monthly <- long_2[, c("row_id", "child_id", "age_years", "age_months", unique(long_1$variable_trunc))]
 
-  return(long_monthly)
+  return(as.data.frame(long_monthly))
 }
 
 #' Generate the weekly repeated measures file and write it to your local workspace
@@ -358,7 +358,7 @@ du.reshape.generate.weekly.repeated <- function(data, dict_kind) {
   # Arrange the variable names based on the original order
   long_weekly <- long_2[, c("row_id", "child_id", "age_years", "age_weeks", unique(long_1$variable_trunc))]
 
-  return(long_weekly)
+  return(as.data.frame(long_weekly))
 }
 
 
@@ -432,5 +432,5 @@ du.reshape.generate.trimesterly.repeated <- function(data, dict_kind) {
   # Arrange the variable names based on the original order
   long_trimesterly <- long_2[, c("row_id", "child_id", "age_trimester", unique(long_1$variable_trunc))]
 
-  return(long_trimesterly)
+  return(as.data.frame(long_trimesterly))
 }
