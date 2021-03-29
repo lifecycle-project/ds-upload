@@ -114,7 +114,14 @@ du.check.variables <- function(dict_kind, data_columns, run_mode) {
   }
 }
 
+#' Check for NA columns
+#'
+#' @param stripped variables without NA values
+#' @param raw original variables
+#'
+#'@noRd
 du.check.nas <- function(stripped, raw) {
+  
   variables_na <- setdiff(stripped, raw)
   if (length(variables_na) > 0) {
     message(paste0("[WARNING] Variable dropped because completely missing: [ ", variables_na, " ]", sep = '\n'))
