@@ -119,10 +119,13 @@ du.check.variables <- function(dict_kind, data_columns, run_mode) {
 #' @param stripped variables without NA values
 #' @param raw original variables
 #'
-#'@noRd
+#' @return stops the program if someone terminates
+#' 
+#' @noRd
 du.check.nas <- function(stripped, raw) {
   
-  variables_na <- setdiff(stripped, raw)
+  print(setdiff(stripped, raw))
+  print(variables_na)
   if (length(variables_na) > 0) {
     message(paste0("[WARNING] Variable dropped because completely missing: [ ", variables_na, " ]", sep = '\n'))
     if (run_mode != du.enum.run.mode()$NON_INTERACTIVE) {
@@ -134,7 +137,7 @@ du.check.nas <- function(stripped, raw) {
     proceed <- "y"
   }
   if (proceed == "n") {
-    message(variables_na, sep = 'na')
+    message(variables_na, sep = '\n')
     stop("Program is terminated. There are columns in your source data that are completely missing.")
   }
   
