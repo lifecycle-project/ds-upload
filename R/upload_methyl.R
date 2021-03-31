@@ -31,17 +31,17 @@ du.upload.methyl.clocks <- function(upload = TRUE, dict_name = "", action = du.e
   du.check.session(upload)
 
   message("######################################################")
-  message("  Start upload BETA data into DataSHIELD backend")
+  message("  Start upload methylation data into DataSHIELD backend")
   message("------------------------------------------------------")
 
   tryCatch(
     {
       workdirs <- du.create.temp.workdir()
       du.check.action(action)
-      du.dict.download(dict_name = dict_name, dict_kind = du.enum.dict.kind()$BETA)
+      du.dict.download(dict_name = dict_name, dict_kind = du.enum.dict.kind()$OUTCOME)
 
       if (action == du.enum.action()$ALL | action == du.enum.action()$POPULATE) {
-        project <- du.populate.beta(dict_name, database_name, data_version)
+        project <- du.populate(dict_name, database_name, data_version)
       }
       
       if (action == du.enum.action()$ALL) {
@@ -65,9 +65,9 @@ du.upload.methyl.clocks <- function(upload = TRUE, dict_name = "", action = du.e
         if (upload) {
           if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
             du.login(ds_upload.globals$login_data)
-            du.opal.upload(du.enum.dict.kind()$BETA, file_name)
+            du.opal.upload(du.enum.dict.kind()$OUTCOME, file_name)
           } else if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
-            du.armadillo.import(project = project, data = data, dict_kind = du.enum.dict.kind()$BETA, table_type = data_version)
+            du.armadillo.import(project = project, data = data, dict_kind = du.enum.dict.kind()$OUTCOME, table_type = data_version)
           }
         }
       }
@@ -108,8 +108,14 @@ du.generate.methyl.data <- function(data_format, methyl_data_input_path, covaria
     methyl_data <- load(methyl_data_input_path)
     covariate_data <- load(covariate_data_input_path) 
   }
+  
+  age <- covariate_data$Age
 
-  data <- methylclock::DNAmAge(methyl_data, age = covariate_data$Age, cell.count = FALSE)
+  # yearly
+  data <- methylclock::DNAmAge(methyl_data, age = age, cell.count = TRUE)
+  
+  # nonrep
+  data <- methylclock::DNAmGA(methyl_data, age = age, cell.count = TRUE)
 
   colnames(data)[colnames(data) == "id"] <- "child_id"
 
