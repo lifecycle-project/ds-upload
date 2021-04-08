@@ -45,7 +45,7 @@ du.read.source.file <- function(input_path, input_format) {
 #' @return dataframe without the na values
 #'
 #' @noRd
-du.data.frame.remove.all.na.rows <- local(function(dataframe) {
+du.data.frame.remove.all.na.rows <- function(dataframe) {
   df <- dataframe[-c(1)]
 
   naLines <- df %>%
@@ -53,7 +53,7 @@ du.data.frame.remove.all.na.rows <- local(function(dataframe) {
     apply(MARGIN = 1, FUN = all)
 
   return(df[!naLines, ])
-})
+}
 #'
 #' Matched the columns in the source data.
 #' You can then match the found column against the dictionary.
@@ -66,7 +66,7 @@ du.data.frame.remove.all.na.rows <- local(function(dataframe) {
 #' @return matched_columns in source data
 #'
 #' @noRd
-du.match.columns <- local(function(data_columns, dict_columns) {
+du.match.columns <- function(data_columns, dict_columns) {
   matched_columns <- character()
 
   matched_columns <- data_columns[data_columns %in% dict_columns]
@@ -79,7 +79,7 @@ du.match.columns <- local(function(data_columns, dict_columns) {
   }
   # Select the non-repeated measures from the full data set
   return(matched_columns)
-})
+}
 
 #'
 #' Check if there are columns not matching the dictionary.
@@ -91,7 +91,7 @@ du.match.columns <- local(function(data_columns, dict_columns) {
 #' @return stops the program if someone terminates
 #'
 #' @noRd
-du.check.variables <- local(function(dict_kind, data_columns, run_mode) {
+du.check.variables <- function(dict_kind, data_columns, run_mode) {
   variables <- du.retrieve.dictionaries(dict_kind = dict_kind)
 
   matched_columns <- du.match.columns(data_columns, variables$name)
@@ -114,7 +114,36 @@ du.check.variables <- local(function(dict_kind, data_columns, run_mode) {
   if (proceed == "n") {
     stop("Program is terminated. There are unmatched columns in your source data.")
   }
-})
+}
+
+#' Check for NA columns
+#'
+#' @param stripped variables without NA values
+#' @param raw original variables
+#' @param run_mode the run mode of the package
+#'
+#' @return stops the program if someone terminates
+#' 
+#' @noRd
+du.check.nas <- function(stripped, raw, run_mode = du.enum.run.mode()$NORMAL) {
+  
+  variables_na <- setdiff(stripped, raw)
+  
+  if (length(variables_na) > 0) {
+    message(paste0("[WARNING] Variable dropped because completely missing: [ ", variables_na, " ]", sep = '\n'))
+    if (run_mode != du.enum.run.mode()$NON_INTERACTIVE) {
+      proceed <- readline("Do you want to proceed (y/n)")
+    } else {
+      proceed <- "y"
+    }
+  } else {
+    proceed <- "y"
+  }
+  if (proceed == "n") {
+    message(variables_na, sep = '\n')
+    stop("Program is terminated. There are columns in your source data that are completely missing.")
+  }
+}
 
 #' Generate the yearly repeated measures file and write it to your local workspace
 #'
@@ -178,6 +207,11 @@ du.reshape.generate.yearly.repeated <- function(data, dict_kind) {
 
   long_1 <- yearly_repeated_measures %>% gather(orig_var, value, matched_columns[matched_columns !=
     "child_id"], na.rm = TRUE)
+<<<<<<< Updated upstream
+=======
+  
+  du.check.nas(colnames(long_1), colnames(yearly_repeated_measures))
+>>>>>>> Stashed changes
 
   # Create the age_years variable with the regular expression extraction of the year
   long_1$age_years <- as.numeric(du.num.extract(long_1$orig_var))
@@ -247,6 +281,8 @@ du.reshape.generate.monthly.repeated <- function(data, dict_kind) {
 
   long_1 <- monthly_repeated_measures %>% gather(orig_var, value, matched_columns[matched_columns !=
     "child_id"], na.rm = TRUE)
+  
+  du.check.nas(colnames(long_1), colnames(monthly_repeated_measures))
 
   # Create the age_years and age_months variables with the regular expression
   # extraction of the year
@@ -319,6 +355,8 @@ du.reshape.generate.weekly.repeated <- function(data, dict_kind) {
   long_1 <- weekly_repeated_measures %>% gather(orig_var, value, matched_columns[matched_columns !=
     "child_id"], na.rm = TRUE)
 
+  du.check.nas(colnames(long_1), colnames(weekly_repeated_measures))
+  
   # Create the age_years and age_months variables with the regular expression
   # extraction of the year NB - these weekly dta are pregnancy related so child is NOT
   # BORN YET ---
@@ -394,6 +432,8 @@ du.reshape.generate.trimesterly.repeated <- function(data, dict_kind) {
 
   long_1 <- trimesterly_repeated_measures %>% gather(orig_var, value, matched_columns[matched_columns !=
     "child_id"], na.rm = TRUE)
+  
+  du.check.nas(colnames(long_1), colnames(trimesterly_repeated_measures))
 
   # Create the age_years and age_months variables with the regular expression
   # extraction of the year
