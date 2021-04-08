@@ -9,7 +9,7 @@
 #' @importFrom utils download.file packageVersion
 #'
 #' @noRd
-du.dict.download <- local(function(dict_name, dict_version, dict_kind) {
+du.dict.download <- function(dict_name, dict_version, dict_kind) {
   message("######################################################")
   message("  Start download dictionaries")
   message("------------------------------------------------------")
@@ -35,7 +35,7 @@ du.dict.download <- local(function(dict_name, dict_version, dict_kind) {
     })
 
   message("  Successfully downloaded dictionaries")
-})
+}
 
 
 

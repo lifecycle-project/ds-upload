@@ -109,7 +109,7 @@ du.check.variables <- function(dict_kind, data_columns, run_mode) {
     proceed <- "y"
   }
   if (proceed == "n") {
-    message(columns_not_matched, sep = '\n')
+    message(paste0(columns_not_matched, sep = '\n'))
     stop("Program is terminated. There are unmatched columns in your source data.")
   }
 }
@@ -123,13 +123,13 @@ du.check.variables <- function(dict_kind, data_columns, run_mode) {
 #' @return stops the program if someone terminates
 #' 
 #' @noRd
-du.check.nas <- function(stripped, raw, run_mode = du.enum.run.mode()$NORMAL) {
+du.check.nas <- function(stripped, raw) {
   
-  variables_na <- setdiff(stripped, raw)
+  variables_na <- raw[!(raw %in% stripped)]
 
   if (length(variables_na) > 0) {
     message(paste0("[WARNING] Variable dropped because completely missing: [ ", variables_na, " ]", sep = '\n'))
-    if (run_mode != du.enum.run.mode()$NON_INTERACTIVE) {
+    if (ds_upload.globals$run_mode != du.enum.run.mode()$NON_INTERACTIVE) {
       proceed <- readline("Do you want to proceed (y/n)")
     } else {
       proceed <- "y"
@@ -138,7 +138,7 @@ du.check.nas <- function(stripped, raw, run_mode = du.enum.run.mode()$NORMAL) {
     proceed <- "y"
   }
   if (proceed == "n") {
-    message(variables_na, sep = '\n')
+    message(paste0(variables_na, sep = '\n'))
     stop("Program is terminated. There are columns in your source data that are completely missing.")
   }
 }

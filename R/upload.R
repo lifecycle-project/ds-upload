@@ -29,15 +29,15 @@ ds_upload.globals <- new.env()
 du.upload <- function(dict_version = "2_1", data_version = "1_0", dict_kind = du.enum.dict.kind()$CORE,
                       cohort_id, database_name = "opal_data", data_input_format = du.enum.input.format()$CSV, data_input_path,
                       action = du.enum.action()$ALL, upload = TRUE, run_mode = du.enum.run.mode()$NORMAL) {
-  du.check.package.version()
-
   message("######################################################")
   message("  Start upload data into DataSHIELD backend")
   message("------------------------------------------------------")
-
-  du.populate.dict.versions(dict_kind, dict_version)
-
+  
+  du.check.package.version()
   du.check.session(upload)
+  du.populate.dict.versions(dict_kind, dict_version)
+  
+  ds_upload.globals$run_mode <- run_mode
 
   if (missing(cohort_id) & run_mode != du.enum.run.mode()$NON_INTERACTIVE) {
     cohort_id <- readline("- Specify cohort identifier (e.g. dnbc): ")

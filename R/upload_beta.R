@@ -15,6 +15,7 @@ ds_upload.globals <- new.env()
 du.upload.beta <- function(upload = TRUE, dict_name = "", action = du.enum.action()$ALL, data_input_path = "", data_input_format = du.enum.input.format()$CSV, database_name = "opal_data", run_mode = du.enum.run.mode()$NORMAL) {
   du.check.package.version()
   du.check.session(upload)
+  ds_upload.globals$run_mode <- run_mode
 
   message("######################################################")
   message("  Start upload BETA data into DataSHIELD backend")
