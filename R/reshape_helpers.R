@@ -125,6 +125,9 @@ du.check.variables <- function(dict_kind, data_columns, run_mode) {
 #' @noRd
 du.check.nas <- function(stripped, raw) {
   
+  # remove child_id
+  raw <- raw[-1]
+  
   variables_na <- raw[!(raw %in% stripped)]
 
   if (length(variables_na) > 0) {
@@ -208,14 +211,15 @@ du.reshape.generate.yearly.repeated <- function(data, dict_kind) {
   long_1 <- yearly_repeated_measures %>% gather(orig_var, value, matched_columns[matched_columns !=
     "child_id"], na.rm = TRUE)
 
-  du.check.nas(colnames(long_1), colnames(yearly_repeated_measures))
-
   # Create the age_years variable with the regular expression extraction of the year
   long_1$age_years <- as.numeric(du.num.extract(long_1$orig_var))
 
   # Here we remove the year indicator from the original variable name
   long_1$variable_trunc <- gsub("[[:digit:]]+$", "", long_1$orig_var)
 
+  raw <- unique(gsub("[[:digit:]]+$", "", colnames(yearly_repeated_measures)))
+  du.check.nas(unique(long_1$variable_trunc), raw)
+  
   # Use the maditr package for spreading the data again, as tidyverse runs into memory
   # issues
   long_2 <- dcast(long_1, child_id + age_years ~ variable_trunc, value.var = "value")
@@ -278,8 +282,6 @@ du.reshape.generate.monthly.repeated <- function(data, dict_kind) {
 
   long_1 <- monthly_repeated_measures %>% gather(orig_var, value, matched_columns[matched_columns !=
     "child_id"], na.rm = TRUE)
-  
-  du.check.nas(colnames(long_1), colnames(monthly_repeated_measures))
 
   # Create the age_years and age_months variables with the regular expression
   # extraction of the year
@@ -289,6 +291,9 @@ du.reshape.generate.monthly.repeated <- function(data, dict_kind) {
   # Here we remove the year indicator from the original variable name
   long_1$variable_trunc <- gsub("[[:digit:]]+$", "", long_1$orig_var)
 
+  raw <- unique(gsub("[[:digit:]]+$", "", colnames(monthly_repeated_measures)))
+  du.check.nas(unique(long_1$variable_trunc), raw)
+  
   # Use the maditr package for spreading the data again, as tidyverse ruins into memory
   # issues
   long_2 <- dcast(long_1, child_id + age_years + age_months ~ variable_trunc, value.var = "value")
@@ -352,8 +357,6 @@ du.reshape.generate.weekly.repeated <- function(data, dict_kind) {
   long_1 <- weekly_repeated_measures %>% gather(orig_var, value, matched_columns[matched_columns !=
     "child_id"], na.rm = TRUE)
 
-  du.check.nas(colnames(long_1), colnames(weekly_repeated_measures))
-
   # Create the age_years and age_months variables with the regular expression
   # extraction of the year NB - these weekly dta are pregnancy related so child is NOT
   # BORN YET ---
@@ -362,6 +365,9 @@ du.reshape.generate.weekly.repeated <- function(data, dict_kind) {
 
   # Here we remove the year indicator from the original variable name
   long_1$variable_trunc <- gsub("[[:digit:]]+$", "", long_1$orig_var)
+  
+  raw <- unique(gsub("[[:digit:]]+$", "", colnames(weekly_repeated_measures)))
+  du.check.nas(unique(long_1$variable_trunc), raw)
 
   # Use the maditr package for spreading the data again, as tidyverse ruins into memory
   # issues
@@ -429,8 +435,6 @@ du.reshape.generate.trimesterly.repeated <- function(data, dict_kind) {
 
   long_1 <- trimesterly_repeated_measures %>% gather(orig_var, value, matched_columns[matched_columns !=
     "child_id"], na.rm = TRUE)
-  
-  du.check.nas(colnames(long_1), colnames(trimesterly_repeated_measures))
 
   # Create the age_years and age_months variables with the regular expression
   # extraction of the year
@@ -438,6 +442,9 @@ du.reshape.generate.trimesterly.repeated <- function(data, dict_kind) {
 
   # Here we remove the year indicator from the original variable name
   long_1$variable_trunc <- gsub("[[:digit:]]+$", "", long_1$orig_var)
+  
+  raw <- unique(gsub("[[:digit:]]+$", "", colnames(trimesterly_repeated_measures)))
+  du.check.nas(unique(long_1$variable_trunc), raw)
 
   # Use the maditr package for spreading the data again, as tidyverse ruins into memory
   # issues
