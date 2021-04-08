@@ -99,10 +99,7 @@ du.check.variables <- function(dict_kind, data_columns, run_mode) {
   columns_not_matched <- data_columns[!(data_columns %in% matched_columns)]
 
   if (length(columns_not_matched) > 0) {
-    message(paste0(
-      "[WARNING] This is an unmatched column, it will be dropped : [ ",
-      columns_not_matched, " ].\n"
-    ))
+    message(paste0("[WARNING] This is an unmatched column, it will be dropped : [ ", columns_not_matched, " ].", sep = '\n'))
     if (run_mode != du.enum.run.mode()$NON_INTERACTIVE) {
       proceed <- readline("Do you want to proceed (y/n)")
     } else {
@@ -112,6 +109,7 @@ du.check.variables <- function(dict_kind, data_columns, run_mode) {
     proceed <- "y"
   }
   if (proceed == "n") {
+    message(columns_not_matched, sep = '\n')
     stop("Program is terminated. There are unmatched columns in your source data.")
   }
 }
@@ -128,7 +126,7 @@ du.check.variables <- function(dict_kind, data_columns, run_mode) {
 du.check.nas <- function(stripped, raw, run_mode = du.enum.run.mode()$NORMAL) {
   
   variables_na <- setdiff(stripped, raw)
-  
+
   if (length(variables_na) > 0) {
     message(paste0("[WARNING] Variable dropped because completely missing: [ ", variables_na, " ]", sep = '\n'))
     if (run_mode != du.enum.run.mode()$NON_INTERACTIVE) {
@@ -166,16 +164,18 @@ du.reshape.generate.non.repeated <- function(data, dict_kind) {
   non_repeated_measures <- data[, which(colnames(data) %in% non_repeated)]
 
   # strip the rows with na values
-  non_repeated_measures <- non_repeated_measures[, colSums(is.na(non_repeated_measures)) <
+  stripped_non_repeated_measures <- non_repeated_measures[, colSums(is.na(non_repeated_measures)) <
     nrow(non_repeated_measures)]
-
+  
+  du.check.nas(colnames(stripped_non_repeated_measures), colnames(non_repeated_measures))
+  
   # add row_id again to preserve child_id
-  non_repeated_measures <- data.frame(
+  stripped_non_repeated_measures <- data.frame(
     row_id = c(1:length(non_repeated_measures$child_id)),
     non_repeated_measures
   )
 
-  return(non_repeated_measures)
+  return(as.data.frame(stripped_non_repeated_measures))
 }
 
 #' Generate the yearly repeated measures file and write it to your local workspace
@@ -207,11 +207,8 @@ du.reshape.generate.yearly.repeated <- function(data, dict_kind) {
 
   long_1 <- yearly_repeated_measures %>% gather(orig_var, value, matched_columns[matched_columns !=
     "child_id"], na.rm = TRUE)
-<<<<<<< Updated upstream
-=======
-  
+
   du.check.nas(colnames(long_1), colnames(yearly_repeated_measures))
->>>>>>> Stashed changes
 
   # Create the age_years variable with the regular expression extraction of the year
   long_1$age_years <- as.numeric(du.num.extract(long_1$orig_var))
@@ -249,7 +246,7 @@ du.reshape.generate.yearly.repeated <- function(data, dict_kind) {
   # Arrange the variable names based on the original order
   long_yearly <- long_2[, c("row_id", "child_id", "age_years", unique(long_1$variable_trunc))]
 
-  return(long_yearly)
+  return(as.data.frame(long_yearly))
 }
 
 #' Generate the monthly repeated measures file and write it to your local workspace
@@ -322,7 +319,7 @@ du.reshape.generate.monthly.repeated <- function(data, dict_kind) {
   # Arrange the variable names based on the original order
   long_monthly <- long_2[, c("row_id", "child_id", "age_years", "age_months", unique(long_1$variable_trunc))]
 
-  return(long_monthly)
+  return(as.data.frame(long_monthly))
 }
 
 #' Generate the weekly repeated measures file and write it to your local workspace
@@ -356,7 +353,7 @@ du.reshape.generate.weekly.repeated <- function(data, dict_kind) {
     "child_id"], na.rm = TRUE)
 
   du.check.nas(colnames(long_1), colnames(weekly_repeated_measures))
-  
+
   # Create the age_years and age_months variables with the regular expression
   # extraction of the year NB - these weekly dta are pregnancy related so child is NOT
   # BORN YET ---
@@ -396,7 +393,7 @@ du.reshape.generate.weekly.repeated <- function(data, dict_kind) {
   # Arrange the variable names based on the original order
   long_weekly <- long_2[, c("row_id", "child_id", "age_years", "age_weeks", unique(long_1$variable_trunc))]
 
-  return(long_weekly)
+  return(as.data.frame(long_weekly))
 }
 
 
@@ -472,5 +469,5 @@ du.reshape.generate.trimesterly.repeated <- function(data, dict_kind) {
   # Arrange the variable names based on the original order
   long_trimesterly <- long_2[, c("row_id", "child_id", "age_trimester", unique(long_1$variable_trunc))]
 
-  return(long_trimesterly)
+  return(as.data.frame(long_trimesterly))
 }
