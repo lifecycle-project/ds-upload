@@ -4,6 +4,7 @@ ds_upload.globals <- new.env()
 #' Uploading methylation data to the DataSHIELD backends
 #'
 #' @param upload do we need to upload the DataSHIELD backend
+#' @param cohort_id cohort name from the dictonary
 #' @param action action to be performed, can be 'populate' or 'all'
 #' @param methyl_data_input_path path to the methylation data
 #' @param covariate_data_input_path path to the covariate data to measure the age
@@ -18,6 +19,7 @@ ds_upload.globals <- new.env()
 #'
 #' \dontrun{
 #' du.upload.methyl.clocks(
+#'   cohort_id = 'gecko',
 #'   methyl_data_input_path = "~/path-to-file",
 #'   covariate_data_input_path = "~/path-to-file",
 #'   dict_version = "2_2",
@@ -26,7 +28,7 @@ ds_upload.globals <- new.env()
 #' }
 #'
 #' @export
-du.upload.methyl.clocks <- function(upload = TRUE, action = du.enum.action()$ALL, methyl_data_input_path = "", covariate_data_input_path = "", dict_version = '2_2', data_version = "1_0", data_format = du.enum.input.format()$CSV, database_name = "opal_data") {
+du.upload.methyl.clocks <- function(upload = TRUE, cohort_id, action = du.enum.action()$ALL, methyl_data_input_path = "", covariate_data_input_path = "", dict_version = '2_2', data_version = "1_0", data_format = du.enum.input.format()$CSV, database_name = "opal_data") {
   du.check.package.version()
   du.check.session(upload)
 
@@ -38,10 +40,10 @@ du.upload.methyl.clocks <- function(upload = TRUE, action = du.enum.action()$ALL
     {
       workdirs <- du.create.temp.workdir()
       du.check.action(action)
-      du.dict.download(dict_version, dict_kind = du.enum.dict.kind()$OUTCOME)
+      du.dict.download(dict_version = dict_version, dict_kind = du.enum.dict.kind()$OUTCOME)
 
       if (action == du.enum.action()$ALL | action == du.enum.action()$POPULATE) {
-        project <- du.populate(dict_name, database_name, data_version)
+        project <- du.populate(dict_version = dict_version, cohort_id = cohort_id, data_version = data_version, database_name, dict_kind = du.enum.dict.kind()$OUTCOME)
       }
       
       if (action == du.enum.action()$ALL) {

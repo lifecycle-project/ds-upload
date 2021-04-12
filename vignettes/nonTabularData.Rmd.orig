@@ -49,9 +49,9 @@ library(dsUpload)
 du.login(login_data)
   
 du.upload.methyl.clocks(
-  dict_name = "methylclocks", 
-  methyl_data_input_path = "https://github.com/isglobal-brge/methylclock/raw/master/inst/extdata/MethylationDataExample55.csv?raw=true",
-  covariate_data_input_path = "https://github.com/isglobal-brge/methylclock/raw/master/inst/extdata/SampleAnnotationExample55.csv?raw=true",
+  methyl_data_input_path = "https://github.com/lifecycle-project/ds-upload/raw/methyl/inst/examples/data/METHYL/MethylationDataExample55.csv?raw=true",
+  covariate_data_input_path = "https://github.com/lifecycle-project/ds-upload/raw/methyl/inst/examples/data/METHYL/SampleAnnotationExample55.csv?raw=true",
+  dict_version = "2_2",
   data_version = "1_0")
 ```
 
@@ -71,9 +71,9 @@ library(dsUpload)
 du.login(login_data)
   
 du.upload.methyl.clocks(
-  dict_name = "methylclocks", 
-  methyl_data_input_path = "https://github.com/isglobal-brge/methylclock/raw/master/inst/extdata/MethylationDataExample55.csv?raw=true",
-  covariate_data_input_path = "https://github.com/isglobal-brge/methylclock/raw/master/inst/extdata/SampleAnnotationExample55.csv?raw=true",
+  methyl_data_input_path = "https://github.com/lifecycle-project/ds-upload/raw/methyl/inst/examples/data/METHYL/MethylationDataExample55.csv?raw=true",
+  covariate_data_input_path = "https://github.com/lifecycle-project/ds-upload/raw/methyl/inst/examples/data/METHYL/SampleAnnotationExample55.csv?raw=true",
+  dict_version = "2_2",
   data_version = "1_0")
 ```
 
@@ -86,9 +86,9 @@ If the input files are not picked up directly please make sure the whole input p
 Example: 
 ```r{specify whole input paths, eval = FALSE}
 du.upload.methyl.clocks(
-  dict_name = "methylation_clocks", 
-  methyl_data_input_path = "C:\Users\yourself\raw_clock_data.csv",
-  covariate_data_input_path = "C:\Users\yourself\raw_covariate_data.csv",
+  methyl_data_input_path = "https://github.com/lifecycle-project/ds-upload/raw/methyl/inst/examples/data/METHYL/MethylationDataExample55.csv?raw=true",
+  covariate_data_input_path = "https://github.com/lifecycle-project/ds-upload/raw/methyl/inst/examples/data/METHYL/SampleAnnotationExample55.csv?raw=true",
+  dict_version = "2_2",
   data_version = "1_0")
 ```
 

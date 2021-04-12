@@ -6,6 +6,7 @@
 \usage{
 du.upload.methyl.clocks(
   upload = TRUE,
+  cohort_id,
   action = du.enum.action()$ALL,
   methyl_data_input_path = "",
   covariate_data_input_path = "",
@@ -17,6 +18,8 @@ du.upload.methyl.clocks(
 }
 \arguments{
 \item{upload}{do we need to upload the DataSHIELD backend}
+
+\item{cohort_id}{cohort name from the dictonary}
 
 \item{action}{action to be performed, can be 'populate' or 'all'}
 
@@ -39,6 +42,7 @@ Uploading methylation data to the DataSHIELD backends
 
 \dontrun{
 du.upload.methyl.clocks(
+  cohort_id,
   methyl_data_input_path = "~/path-to-file",
   covariate_data_input_path = "~/path-to-file",
   dict_version = "2_2",
