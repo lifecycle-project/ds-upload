@@ -10,7 +10,8 @@ du.upload.beta(
   action = du.enum.action()$ALL,
   data_input_path = "",
   data_input_format = du.enum.input.format()$CSV,
-  database_name = "opal_data"
+  database_name = "opal_data",
+  run_mode = du.enum.run.mode()$NORMAL
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ du.upload.beta(
 \item{data_input_format}{format of the database to be reshaped. Can be 'CSV', 'STATA', or 'SAS'}
 
 \item{database_name}{is the name of the data backend of DataSHIELD, default = opal_data}
+
+\item{run_mode}{default = NORMAL, can be TEST and NON_INTERACTIIVE}
 }
 \description{
 Upload beta dictionaries to your Opal instance

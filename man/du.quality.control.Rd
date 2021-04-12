@@ -4,14 +4,21 @@
 \alias{du.quality.control}
 \title{Validates the variables for a certain table}
 \usage{
-du.quality.control(project, folder, verbose = FALSE)
+du.quality.control(
+  project,
+  tableType = du.enum.table.types()$ALL,
+  data_version = NULL,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{project}{specify project you want to perform quality control on}
 
-\item{folder}{specify folder you want to perform quality control on}
+\item{tableType}{limit the tables to run (can be non_rep, yearly_rep, monthly_rep, weekly_rep or trimester)}
 
-\item{verbose}{ouput the functions output when set to TRUE}
+\item{data_version}{data version of the table}
+
+\item{verbose}{output the functions output when set to TRUE}
 }
 \description{
 Validates the variables for a certain table

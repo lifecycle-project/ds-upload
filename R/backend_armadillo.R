@@ -24,7 +24,7 @@ du.armadillo.login <- function(login_data) {
 #' @noRd
 du.armadillo.list.projects <- function() {
   requireNamespace("MolgenisArmadillo")
-  armadillo.assume_role_with_web_identity(
+  MolgenisArmadillo::armadillo.assume_role_with_web_identity(
     token = as.character(ds_upload.globals$login_data$token),
     server = as.character(ds_upload.globals$login_data$storage)
   )

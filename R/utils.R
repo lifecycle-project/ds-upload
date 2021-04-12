@@ -90,11 +90,10 @@ du.create.temp.workdir <- function() {
 
   timestamp <- format(Sys.time(), "%Y-%m-%d_%H-%M-%S")
 
-  temp_workdir <- paste0(timestamp)
-  temp_workdir <- temp_workdir[which(!(temp_workdir %in% list.files()))]
+  temp_workdir <- timestamp[which(!(timestamp %in% list.files()))]
 
-  dir.create(paste0(getwd(), "/", temp_workdir, sep = ""))
-  setwd(paste0(getwd(), "/", temp_workdir, sep = ""))
+  dir.create(paste0(getwd(), "/", temp_workdir))
+  setwd(paste0(getwd(), "/", temp_workdir))
 
   return(c(original_workdir, temp_workdir))
 }

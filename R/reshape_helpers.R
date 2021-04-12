@@ -45,7 +45,7 @@ du.read.source.file <- function(input_path, input_format) {
 #' @return dataframe without the na values
 #'
 #' @noRd
-du.data.frame.remove.all.na.rows <- local(function(dataframe) {
+du.data.frame.remove.all.na.rows <- function(dataframe) {
   df <- dataframe[-c(1)]
 
   naLines <- df %>%
@@ -53,7 +53,7 @@ du.data.frame.remove.all.na.rows <- local(function(dataframe) {
     apply(MARGIN = 1, FUN = all)
 
   return(df[!naLines, ])
-})
+}
 #'
 #' Matched the columns in the source data.
 #' You can then match the found column against the dictionary.
@@ -66,7 +66,7 @@ du.data.frame.remove.all.na.rows <- local(function(dataframe) {
 #' @return matched_columns in source data
 #'
 #' @noRd
-du.match.columns <- local(function(data_columns, dict_columns) {
+du.match.columns <- function(data_columns, dict_columns) {
   matched_columns <- character()
 
   matched_columns <- data_columns[data_columns %in% dict_columns]
@@ -79,7 +79,7 @@ du.match.columns <- local(function(data_columns, dict_columns) {
   }
   # Select the non-repeated measures from the full data set
   return(matched_columns)
-})
+}
 
 #'
 #' Check if there are columns not matching the dictionary.
@@ -91,7 +91,7 @@ du.match.columns <- local(function(data_columns, dict_columns) {
 #' @return stops the program if someone terminates
 #'
 #' @noRd
-du.check.variables <- local(function(dict_kind, data_columns, run_mode) {
+du.check.variables <- function(dict_kind, data_columns, run_mode) {
   variables <- du.retrieve.dictionaries(dict_kind = dict_kind)
 
   matched_columns <- du.match.columns(data_columns, variables$name)
@@ -99,10 +99,7 @@ du.check.variables <- local(function(dict_kind, data_columns, run_mode) {
   columns_not_matched <- data_columns[!(data_columns %in% matched_columns)]
 
   if (length(columns_not_matched) > 0) {
-    message(paste0(
-      "[WARNING] This is an unmatched column, it will be dropped : [ ",
-      columns_not_matched, " ].\n"
-    ))
+    message(paste0("[WARNING] This is an unmatched column, it will be dropped : [ ", columns_not_matched, " ].", sep = '\n'))
     if (run_mode != du.enum.run.mode()$NON_INTERACTIVE) {
       proceed <- readline("Do you want to proceed (y/n)")
     } else {
@@ -112,9 +109,42 @@ du.check.variables <- local(function(dict_kind, data_columns, run_mode) {
     proceed <- "y"
   }
   if (proceed == "n") {
+    message(paste0(columns_not_matched, sep = '\n'))
     stop("Program is terminated. There are unmatched columns in your source data.")
   }
-})
+}
+
+#' Check for NA columns
+#'
+#' @param stripped variables without NA values
+#' @param raw original variables
+#' @param run_mode the run mode of the package
+#'
+#' @return stops the program if someone terminates
+#' 
+#' @noRd
+du.check.nas <- function(stripped, raw) {
+  
+  # remove child_id
+  raw <- raw[-1]
+  
+  variables_na <- raw[!(raw %in% stripped)]
+
+  if (length(variables_na) > 0) {
+    message(paste0("[WARNING] Variable dropped because completely missing: [ ", variables_na, " ]", sep = '\n'))
+    if (ds_upload.globals$run_mode != du.enum.run.mode()$NON_INTERACTIVE) {
+      proceed <- readline("Do you want to proceed (y/n)")
+    } else {
+      proceed <- "y"
+    }
+  } else {
+    proceed <- "y"
+  }
+  if (proceed == "n") {
+    message(paste0(variables_na, sep = '\n'))
+    stop("Program is terminated. There are columns in your source data that are completely missing.")
+  }
+}
 
 #' Generate the yearly repeated measures file and write it to your local workspace
 #'
@@ -137,16 +167,18 @@ du.reshape.generate.non.repeated <- function(data, dict_kind) {
   non_repeated_measures <- data[, which(colnames(data) %in% non_repeated)]
 
   # strip the rows with na values
-  non_repeated_measures <- non_repeated_measures[, colSums(is.na(non_repeated_measures)) <
+  stripped_non_repeated_measures <- non_repeated_measures[, colSums(is.na(non_repeated_measures)) <
     nrow(non_repeated_measures)]
-
+  
+  du.check.nas(colnames(stripped_non_repeated_measures), colnames(non_repeated_measures))
+  
   # add row_id again to preserve child_id
-  non_repeated_measures <- data.frame(
+  stripped_non_repeated_measures <- data.frame(
     row_id = c(1:length(non_repeated_measures$child_id)),
     non_repeated_measures
   )
 
-  return(non_repeated_measures)
+  return(as.data.frame(stripped_non_repeated_measures))
 }
 
 #' Generate the yearly repeated measures file and write it to your local workspace
@@ -172,7 +204,7 @@ du.reshape.generate.yearly.repeated <- function(data, dict_kind) {
   yearly_repeated_measures <- data[matched_columns]
 
   if (nrow(du.data.frame.remove.all.na.rows(yearly_repeated_measures)) <= 0) {
-    message("* WARNING: No yearly-repeated measures found in this set")
+    message("[WARNING] No yearly-repeated measures found in this set")
     return()
   }
 
@@ -185,6 +217,9 @@ du.reshape.generate.yearly.repeated <- function(data, dict_kind) {
   # Here we remove the year indicator from the original variable name
   long_1$variable_trunc <- gsub("[[:digit:]]+$", "", long_1$orig_var)
 
+  raw <- unique(gsub("[[:digit:]]+$", "", colnames(yearly_repeated_measures)))
+  du.check.nas(unique(long_1$variable_trunc), raw)
+  
   # Use the maditr package for spreading the data again, as tidyverse runs into memory
   # issues
   long_2 <- dcast(long_1, child_id + age_years ~ variable_trunc, value.var = "value")
@@ -215,7 +250,7 @@ du.reshape.generate.yearly.repeated <- function(data, dict_kind) {
   # Arrange the variable names based on the original order
   long_yearly <- long_2[, c("row_id", "child_id", "age_years", unique(long_1$variable_trunc))]
 
-  return(long_yearly)
+  return(as.data.frame(long_yearly))
 }
 
 #' Generate the monthly repeated measures file and write it to your local workspace
@@ -241,7 +276,7 @@ du.reshape.generate.monthly.repeated <- function(data, dict_kind) {
   monthly_repeated_measures <- data[, matched_columns]
 
   if (nrow(du.data.frame.remove.all.na.rows(monthly_repeated_measures)) <= 0) {
-    message("* WARNING: No monthly-repeated measures found in this set")
+    message("[WARNING] No monthly-repeated measures found in this set")
     return()
   }
 
@@ -256,6 +291,9 @@ du.reshape.generate.monthly.repeated <- function(data, dict_kind) {
   # Here we remove the year indicator from the original variable name
   long_1$variable_trunc <- gsub("[[:digit:]]+$", "", long_1$orig_var)
 
+  raw <- unique(gsub("[[:digit:]]+$", "", colnames(monthly_repeated_measures)))
+  du.check.nas(unique(long_1$variable_trunc), raw)
+  
   # Use the maditr package for spreading the data again, as tidyverse ruins into memory
   # issues
   long_2 <- dcast(long_1, child_id + age_years + age_months ~ variable_trunc, value.var = "value")
@@ -286,7 +324,7 @@ du.reshape.generate.monthly.repeated <- function(data, dict_kind) {
   # Arrange the variable names based on the original order
   long_monthly <- long_2[, c("row_id", "child_id", "age_years", "age_months", unique(long_1$variable_trunc))]
 
-  return(long_monthly)
+  return(as.data.frame(long_monthly))
 }
 
 #' Generate the weekly repeated measures file and write it to your local workspace
@@ -312,7 +350,7 @@ du.reshape.generate.weekly.repeated <- function(data, dict_kind) {
   weekly_repeated_measures <- data[, matched_columns]
 
   if (nrow(du.data.frame.remove.all.na.rows(weekly_repeated_measures)) <= 0) {
-    message("* WARNING: No weekly-repeated measures found in this set")
+    message("[WARNING] No weekly-repeated measures found in this set")
     return()
   }
 
@@ -327,6 +365,9 @@ du.reshape.generate.weekly.repeated <- function(data, dict_kind) {
 
   # Here we remove the year indicator from the original variable name
   long_1$variable_trunc <- gsub("[[:digit:]]+$", "", long_1$orig_var)
+  
+  raw <- unique(gsub("[[:digit:]]+$", "", colnames(weekly_repeated_measures)))
+  du.check.nas(unique(long_1$variable_trunc), raw)
 
   # Use the maditr package for spreading the data again, as tidyverse ruins into memory
   # issues
@@ -358,7 +399,7 @@ du.reshape.generate.weekly.repeated <- function(data, dict_kind) {
   # Arrange the variable names based on the original order
   long_weekly <- long_2[, c("row_id", "child_id", "age_years", "age_weeks", unique(long_1$variable_trunc))]
 
-  return(long_weekly)
+  return(as.data.frame(long_weekly))
 }
 
 
@@ -388,7 +429,7 @@ du.reshape.generate.trimesterly.repeated <- function(data, dict_kind) {
   trimesterly_repeated_measures <- data[, matched_columns]
 
   if (nrow(du.data.frame.remove.all.na.rows(trimesterly_repeated_measures)) <= 0) {
-    message("* WARNING: No trimesterly-repeated measures found in this set")
+    message("[WARNING] No trimesterly-repeated measures found in this set")
     return()
   }
 
@@ -401,6 +442,9 @@ du.reshape.generate.trimesterly.repeated <- function(data, dict_kind) {
 
   # Here we remove the year indicator from the original variable name
   long_1$variable_trunc <- gsub("[[:digit:]]+$", "", long_1$orig_var)
+  
+  raw <- unique(gsub("[[:digit:]]+$", "", colnames(trimesterly_repeated_measures)))
+  du.check.nas(unique(long_1$variable_trunc), raw)
 
   # Use the maditr package for spreading the data again, as tidyverse ruins into memory
   # issues
@@ -432,5 +476,5 @@ du.reshape.generate.trimesterly.repeated <- function(data, dict_kind) {
   # Arrange the variable names based on the original order
   long_trimesterly <- long_2[, c("row_id", "child_id", "age_trimester", unique(long_1$variable_trunc))]
 
-  return(long_trimesterly)
+  return(as.data.frame(long_trimesterly))
 }

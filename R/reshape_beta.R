@@ -1,4 +1,4 @@
-#' Reshape Script for R: LifeCycle Harmonized Data
+#' Reshape for beta harmonized data
 #'
 #' @param upload do you want automatically upload the files to your opal (default = true)
 #' @param data_version version of the data you are going to upload into Opal
@@ -8,6 +8,7 @@
 #' @param run_mode default = NORMAL, can be TEST and NON_INTERACTIIVE
 #'
 #' @importFrom readxl read_xlsx
+#' @importFrom readr write_csv
 #'
 #' @noRd
 du.reshape.beta <- function(upload, project, data_version, input_format, dict_name, input_path, run_mode) {

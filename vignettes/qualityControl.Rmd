@@ -9,30 +9,57 @@ vignette: >
 
 
 
-# Quality control
-The quality control measures are based upon the different variable types we have.
+Quality control is carried out both locally and centrally. 
 
-- non repeated
-- yearly repeated
-- monthly repeated
-- trimester repeated
-- weekly repeated
+## Local quality control
+Local quality control is conducted by each cohort after harmonisation, following the quality control instructions and scripts provided by each work package lead. These check: 
 
-All of the measures are quakity control based upon generic algorithems and with the help of the [dsHelper](https://github.com/lifecycle-project/ds-helper) package.
+- that variables match the descriptions provided in the core variable list (name, datatype, values)
+- for outliers or improbable values
+- for inconsistencies between non-repeated measures (e.g. all mothers coded as not smoking during pregnancy are also coded as smoking zero cigarettes during pregnancy); 
+- for inconsistencies between repeated measures (e.g. children reducing height over time). 
+
+Any inconsistencies identified are investigated on a cases-by-case basis to establish which values are legitimate and which are errors, also in light of the other data available.
+
+## Central quality control
+Quality of harmonised data is also assessed at the central level (central quality control), by creating summary statistics for each variable in R/DataSHIELD, and comparing these across cohorts. As in the local quality control, this is to identify outliers and improbable values and inconsistencies in data, but also to identify large inconsistencies between cohorts. Where large inconsistencies are found, these are investigated further in order to establish to what extent these differences are real vs. an artefact of differing methodology. They could, for example, be due to different sampling and recruitment methods or differences in the instruments used to collect data; they could also be due to differences in the harmonisation process itself. 
+
+## Checks
+The central quality control checks are carried out when data are uploaded and imported into a DataSHIELD backend (for example an institute’s DataSHIELD server). These four tables are now supported.
+
+- non-repeated
+- yearly-repeated
+- monthly-repeated
+- trimester-repeated
+
+For each of the four tables in the network, means and standard deviations are computed for continuous variables, and frequencies and percentages for categorical variables; these are tabulated over year for yearly- and monthly-repeated variables, and over trimester for trimester repeated variables. 
+
+Once computed, the summary statistics are pushed to a central server which creates a PDF of the combined results. It is possible to view the output from the function by specifying `verbose = TRUE` in the method signature. 
 
 ## Usage
 The quality control will be executed in the pipeline after uploading and importing the data into a DataSHIELD backend. However you can execute the flow seperatly as well.
 
+### For Armadillo
 
 ```r
-login_data <- data.frame(server = "https://armadillo.test.molgenis.org", storage = "https://armadillo-minio.test.molgenis.org", driver = "ArmadilloDriver")
+library(dsUpload)
+login_data <- data.frame(
+  server = "https://armadillo.test.molgenis.org", 
+  storage = "https://armadillo-minio.test.molgenis.org", 
+  driver = "ArmadilloDriver"
+)
 
 du.login(login_data)
+#> ***********************************************************************************
+#>   [WARNING] You are not running the latest version of the dsUpload-package.
+#>   [WARNING] If you want to upgrade to newest version : [ 4.0.6 ],
+#>   [WARNING] Please run 'install.packages("dsUpload", repos = "https://registry.molgenis.org/repository/R/")'
+#>   [WARNING] Check the release notes here: https://github.com/lifecycle-project/analysis-protocols/releases/tag/4.0.6
+#> ***********************************************************************************
 #>   Login to: "https://armadillo.test.molgenis.org"
-#> [1] "We're opening a browser so you can log in with code MJKLKK"
+#> [1] "We're opening a browser so you can log in with code CQGWW6"
 #>   Logged on to: "https://armadillo.test.molgenis.org"
 
-library(dsUpload)
 du.quality.control(project = "gecko", verbose = TRUE)
 #>   Starting quality control
 #> ------------------------------------------------------
@@ -40,24 +67,46 @@ du.quality.control(project = "gecko", verbose = TRUE)
 #>  * Starting with: gecko - 1_1_outcome_1_0/monthly_rep
 #> 
 #> Logging into the collaborating servers
+#>   Logged in all servers [================================================================] 100% / 1s
 #>   Assigned all table (QC <- ...) [=======================================================] 100% / 0s
-#>  * Starting with: gecko - 1_1_outcome_1_0/non_rep
-#> 
-#> Logging into the collaborating servers
-#>   Assigned all table (QC <- ...) [=======================================================] 100% / 0s
-#>  * Starting with: non repeated measures
-#>  Quantiles of the pooled data
-#>  Quantiles of the pooled data
-#> Error: argument of length 0
+#> Error: There are some DataSHIELD errors, list them with datashield.errors()
 ```
 
-### Table types
-For each of the types there is a different analysis that needs to be done. So in non-repeated we distinguish conituous and categorical values and for repeated measures we will investigate for each of the types which is the most valueble approach to get the ouput as useful as possible.
+### For Opal
 
-### Exposing results
-When you run the upload it will not show the summary statistics and it will push them directly into the catalogue. 
+```r
+library(dsUpload)
+login_data <- data.frame(
+  server = "https://opal.edge.molgenis.org", 
+  username = "administrator", 
+  password = "ouf0uPh6", 
+  driver = "OpalDriver"
+)
 
-## Output
-When the results are pushed to the catalogue we first create a PDF to distribute the output to the cohorts. You can display the through specifying `verbose = TRUE`.
+du.login(login_data)
+#> ***********************************************************************************
+#>   [WARNING] You are not running the latest version of the dsUpload-package.
+#>   [WARNING] If you want to upgrade to newest version : [ 4.0.6 ],
+#>   [WARNING] Please run 'install.packages("dsUpload", repos = "https://registry.molgenis.org/repository/R/")'
+#>   [WARNING] Check the release notes here: https://github.com/lifecycle-project/analysis-protocols/releases/tag/4.0.6
+#> ***********************************************************************************
+#>   Login to: "https://opal.edge.molgenis.org"
+#>   Logged on to: "https://opal.edge.molgenis.org"
+
+du.quality.control(project = "lc_gecko_core_2_1", verbose = TRUE)
+#>   Starting quality control
+#> ------------------------------------------------------
+#> Loading required namespace: DSOpal
+#>  * Starting with: lc_gecko_core_2_1 - 1_0_monthly_rep
+#> 
+#> Logging into the collaborating servers
+#>   Logged in all servers [================================================================] 100% / 0s
+#>   Assigned all table (QC <- ...) [=======================================================] 100% / 1s
+#> Error: There are some DataSHIELD errors, list them with datashield.errors()
+```
+
+> All of the measures are quality control based upon generic algorithems and with the help of the [dsHelper](https://github.com/lifecycle-project/ds-helper) package.
+
+
 
 

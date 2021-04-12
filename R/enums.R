@@ -5,7 +5,8 @@ du.enum.cohorts <- function() {
   list(
     DNBC = "dnbc", GECKO = "gecko", ALSPAC = "alspac", GENR = "genr", MOBA = "moba", SWS = "sws", BIB = "bib", CHOP = "chop", ELFE = "elfe",
     EDEN = "eden", NINFEA = "ninfea", HBCS = "hbcs", INMA = "inma", ISGLOBAL = "isglobal", NBFC66 = "nfbc66", NBFC86 = "nfbc86", RAINE = "raine", RHEA = "rhea",
-    ABCD = "abcd"
+    ABCD = "abcd", BISC = "bisc", ENVIRONAGE = "environage", KANC = "kanc", PELAGIE = "pelagie", SEPAGES = "sepages", TNG = "tng", HGS = "hgs", RECETOX = "recetox", 
+    GENXXI = "genxxi"
   )
 }
 
@@ -13,7 +14,7 @@ du.enum.cohorts <- function() {
 #'
 #' @noRd
 du.enum.table.types <- function() {
-  list(NONREP = "non_rep", MONTHLY = "monthly_rep", YEARLY = "yearly_rep", WEEKLY = "weekly_rep", TRIMESTER = "trimester", METHYL = "methyl")
+  list(NONREP = "non_rep", MONTHLY = "monthly_rep", YEARLY = "yearly_rep", WEEKLY = "weekly_rep", TRIMESTER = "trimester", METHYL = "methyl", ALL = "all")
 }
 
 #' Supported input formats
