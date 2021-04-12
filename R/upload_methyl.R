@@ -120,9 +120,11 @@ du.generate.methyl.data <- function(data_format, methyl_data_input_path, covaria
   age <- covariate_data$Age
 
   if(type == 'yearly') {
-    data <- methylclock::DNAmAge(methyl_data, age = age, cell.count = TRUE)
+    message("* Generate: DNA methylation age")
+    data <- methylclock::DNAmAge(x = methyl_data, age = age)
   } else {
-    data <- methylclock::DNAmGA(methyl_data, age = age, cell.count = TRUE)
+    message("* Generate: DNA methylation gestational age")
+    data <- methylclock::DNAmGA(x = methyl_data, age = age)
   }
 
   colnames(data)[colnames(data) == "id"] <- "child_id"
