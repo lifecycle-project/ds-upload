@@ -55,13 +55,13 @@ du.upload.methyl.clocks <- function(upload = TRUE, action = du.enum.action()$ALL
         } else if (missing(covariate_data_input_path)) {
           stop("No source file for covariate data specified, please specify your source for covariate data file")
         }
-        data_input_format <- du.enum.input.format()$CSV
+        data_input_format <- data_format
 
         methyl_yearly_rep <- du.generate.methyl.data(data_format, methyl_data_input_path, covariate_data_input_path)
         methyl_non_rep <- du.generate.methyl.data(data_format, methyl_data_input_path, covariate_data_input_path, type = 'nonrep')
 
-        file_name_yearly <- paste0(format(Sys.time(), "%Y-%m-%d_%H-%M-%S"), "_", dict_name, "_", "yearly_", data_version)
-        file_name_nonrep <- paste0(format(Sys.time(), "%Y-%m-%d_%H-%M-%S"), "_", dict_name, "_", "non_", data_version)
+        file_name_yearly <- paste0(format(Sys.time(), "%Y-%m-%d_%H-%M-%S"), "_", "methyl_yearly_rep_", data_version)
+        file_name_nonrep <- paste0(format(Sys.time(), "%Y-%m-%d_%H-%M-%S"), "_", "methyl_non_rep_", data_version)
         write_csv(file_name_yearly, paste0(getwd(), "/", file_name_yearly, ".csv"), na = "")
         write_csv(file_name_nonrep, paste0(getwd(), "/", file_name_nonrep, ".csv"), na = "")
 

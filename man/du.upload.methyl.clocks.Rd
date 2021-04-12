@@ -6,10 +6,10 @@
 \usage{
 du.upload.methyl.clocks(
   upload = TRUE,
-  dict_name = "",
   action = du.enum.action()$ALL,
   methyl_data_input_path = "",
   covariate_data_input_path = "",
+  dict_version = "2_2",
   data_version = "1_0",
   data_format = du.enum.input.format()$CSV,
   database_name = "opal_data"
@@ -18,13 +18,13 @@ du.upload.methyl.clocks(
 \arguments{
 \item{upload}{do we need to upload the DataSHIELD backend}
 
-\item{dict_name}{name of the dictionary located on Github usually something like this: diabetes/test_vars_01}
-
 \item{action}{action to be performed, can be 'populate' or 'all'}
 
 \item{methyl_data_input_path}{path to the methylation data}
 
 \item{covariate_data_input_path}{path to the covariate data to measure the age}
+
+\item{dict_version}{version of the dictionary}
 
 \item{data_version}{version of the raw data}
 
@@ -39,9 +39,9 @@ Uploading methylation data to the DataSHIELD backends
 
 \dontrun{
 du.upload.methyl.clocks(
-  dict_name = "methylation_clocks",
   methyl_data_input_path = "~/path-to-file",
   covariate_data_input_path = "~/path-to-file",
+  dict_version = "2_2",
   data_version = "1_0"
 )
 }
