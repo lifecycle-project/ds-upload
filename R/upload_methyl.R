@@ -4,10 +4,10 @@ ds_upload.globals <- new.env()
 #' Uploading methylation data to the DataSHIELD backends
 #'
 #' @param upload do we need to upload the DataSHIELD backend
-#' @param dict_name name of the dictionary located on Github usually something like this: diabetes/test_vars_01
 #' @param action action to be performed, can be 'populate' or 'all'
 #' @param methyl_data_input_path path to the methylation data
 #' @param covariate_data_input_path path to the covariate data to measure the age
+#' @param dict_version version of the dictionary
 #' @param data_version version of the raw data
 #' @param data_format can be CSV or RData
 #' @param database_name is the name of the data backend of DataSHIELD, default = opal_data
@@ -18,15 +18,15 @@ ds_upload.globals <- new.env()
 #'
 #' \dontrun{
 #' du.upload.methyl.clocks(
-#'   dict_name = "methylation_clocks",
 #'   methyl_data_input_path = "~/path-to-file",
 #'   covariate_data_input_path = "~/path-to-file",
+#'   dict_version = "2_2",
 #'   data_version = "1_0"
 #' )
 #' }
 #'
 #' @export
-du.upload.methyl.clocks <- function(upload = TRUE, dict_name = "", action = du.enum.action()$ALL, methyl_data_input_path = "", covariate_data_input_path = "", data_version = "1_0", data_format = du.enum.input.format()$CSV, database_name = "opal_data") {
+du.upload.methyl.clocks <- function(upload = TRUE, action = du.enum.action()$ALL, methyl_data_input_path = "", covariate_data_input_path = "", dict_version = '2_2', data_version = "1_0", data_format = du.enum.input.format()$CSV, database_name = "opal_data") {
   du.check.package.version()
   du.check.session(upload)
 
@@ -38,7 +38,7 @@ du.upload.methyl.clocks <- function(upload = TRUE, dict_name = "", action = du.e
     {
       workdirs <- du.create.temp.workdir()
       du.check.action(action)
-      du.dict.download(dict_name = dict_name, dict_kind = du.enum.dict.kind()$OUTCOME)
+      du.dict.download(dict_version, dict_kind = du.enum.dict.kind()$OUTCOME)
 
       if (action == du.enum.action()$ALL | action == du.enum.action()$POPULATE) {
         project <- du.populate(dict_name, database_name, data_version)
@@ -57,17 +57,22 @@ du.upload.methyl.clocks <- function(upload = TRUE, dict_name = "", action = du.e
         }
         data_input_format <- du.enum.input.format()$CSV
 
-        data <- du.generate.methyl.data(data_format, methyl_data_input_path, covariate_data_input_path)
+        methyl_yearly_rep <- du.generate.methyl.data(data_format, methyl_data_input_path, covariate_data_input_path)
+        methyl_non_rep <- du.generate.methyl.data(data_format, methyl_data_input_path, covariate_data_input_path, type = 'nonrep')
 
-        file_name <- paste0(format(Sys.time(), "%Y-%m-%d_%H-%M-%S"), "_", dict_name, "_", data_version)
-        write_csv(data, paste0(getwd(), "/", file_name, ".csv"), na = "")
+        file_name_yearly <- paste0(format(Sys.time(), "%Y-%m-%d_%H-%M-%S"), "_", dict_name, "_", "yearly_", data_version)
+        file_name_nonrep <- paste0(format(Sys.time(), "%Y-%m-%d_%H-%M-%S"), "_", dict_name, "_", "non_", data_version)
+        write_csv(file_name_yearly, paste0(getwd(), "/", file_name_yearly, ".csv"), na = "")
+        write_csv(file_name_nonrep, paste0(getwd(), "/", file_name_nonrep, ".csv"), na = "")
 
         if (upload) {
           if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
             du.login(ds_upload.globals$login_data)
-            du.opal.upload(du.enum.dict.kind()$OUTCOME, file_name)
+            du.opal.upload(du.enum.dict.kind()$OUTCOME, file_name_yearly)
+            du.opal.upload(du.enum.dict.kind()$OUTCOME, file_name_nonrep)
           } else if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
-            du.armadillo.import(project = project, data = data, dict_kind = du.enum.dict.kind()$OUTCOME, table_type = data_version)
+            du.armadillo.import(project = project, data = methyl_yearly_rep, dict_kind = du.enum.dict.kind()$OUTCOME, table_type = data_version)
+            du.armadillo.import(project = project, data = methyl_non_rep, dict_kind = du.enum.dict.kind()$OUTCOME, table_type = data_version)
           }
         }
       }
@@ -85,6 +90,7 @@ du.upload.methyl.clocks <- function(upload = TRUE, dict_name = "", action = du.e
 #' @param data_format can be CSV or Rdata
 #' @param methyl_data_input_path input path of the raw methylation data
 #' @param covariate_data_input_path input path of the covariate data (this can be used to determine the ages of the methylation clocks)
+#' @param type can be yearly repeated or non-repeated
 #'
 #' @importFrom readr read_csv
 #' @importFrom tibble add_column
@@ -93,7 +99,7 @@ du.upload.methyl.clocks <- function(upload = TRUE, dict_name = "", action = du.e
 #' @return the generated clocks with converted columns for child_id and the age_measured attached
 #'
 #' @noRd
-du.generate.methyl.data <- function(data_format, methyl_data_input_path, covariate_data_input_path) {
+du.generate.methyl.data <- function(data_format, methyl_data_input_path, covariate_data_input_path, type = 'yearly') {
   requireNamespace("methylclock")
   
   if(data_format == du.enum.input.format()$CSV) {
@@ -111,11 +117,11 @@ du.generate.methyl.data <- function(data_format, methyl_data_input_path, covaria
   
   age <- covariate_data$Age
 
-  # yearly
-  data <- methylclock::DNAmAge(methyl_data, age = age, cell.count = TRUE)
-  
-  # nonrep
-  data <- methylclock::DNAmGA(methyl_data, age = age, cell.count = TRUE)
+  if(type == 'yearly') {
+    data <- methylclock::DNAmAge(methyl_data, age = age, cell.count = TRUE)
+  } else {
+    data <- methylclock::DNAmGA(methyl_data, age = age, cell.count = TRUE)
+  }
 
   colnames(data)[colnames(data) == "id"] <- "child_id"
 

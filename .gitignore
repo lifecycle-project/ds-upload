@@ -3,5 +3,5 @@
 .RData
 .Ruserdata
 inst/doc
-docs
 docs/
+**/.DS_Store
