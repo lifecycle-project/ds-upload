@@ -6,7 +6,7 @@ du.enum.cohorts <- function() {
     DNBC = "dnbc", GECKO = "gecko", ALSPAC = "alspac", GENR = "genr", MOBA = "moba", SWS = "sws", BIB = "bib", CHOP = "chop", ELFE = "elfe",
     EDEN = "eden", NINFEA = "ninfea", HBCS = "hbcs", INMA = "inma", ISGLOBAL = "isglobal", NBFC66 = "nfbc66", NBFC86 = "nfbc86", RAINE = "raine", RHEA = "rhea",
     ABCD = "abcd", BISC = "bisc", ENVIRONAGE = "environage", KANC = "kanc", PELAGIE = "pelagie", SEPAGES = "sepages", TNG = "tng", HGS = "hgs", RECETOX = "recetox", 
-    GENXXI = "genxxi"
+    GENXXI = "genxxi", TEST = "test"
   )
 }
 
