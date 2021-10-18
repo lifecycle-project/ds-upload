@@ -8,11 +8,12 @@ ds_upload.globals <- new.env()
 #' @param dict_kind can be 'core' or 'outcome'
 #' @param cohort_id cohort name
 #' @param database_name is the name of the data backend of DataSHIELD, default = opal_data
-#' @param data_input_format format of the database to be reshaped. Can be 'CSV', 'STATA', or 'SAS'
+#' @param data_input_format format of the database to be reshaped. Can be 'CSV', 'STATA', 'SAS' or RDS (R)
 #' @param upload directly upload the reshaped database to the logged in DataSHIELD server
-#' @param data_input_path path to the to-be-reshaped data
+#' @param data_input_path path to the to-be-uploaded data
 #' @param action action to be performed, can be 'reshape', 'populate' or 'all'
 #' @param run_mode default = NORMAL, can be TEST and NON_INTERACTIIVE
+#' @param upload do you want to upload the data (true or false) 
 #'
 #' @examples
 #' \dontrun{
