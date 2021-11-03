@@ -189,4 +189,15 @@ du.upload(database_name = "example_database_name", .....)
 
 You can check the database name in the "Administration"-tab and then "Databases". The second database has a name that you need to specify.
 
+#### Rcpp package is not installed correctly
+If you receive the error below you need to reinstall the Rcpp package.
+```
+Error in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet,  :
+  function 'Rcpp_precious_remove' not provided by package 'Rcpp'
+```  
 
+Reinstalling can be done using the following code:
+```
+install.packages("Rcpp")
+library(Rcpp)
+```

@@ -1,0 +1,11 @@
+pandoc: 2.14.2
+pkgdown: 1.6.1
+pkgdown_sha: ~
+articles:
+  betaDictionaries: betaDictionaries.html
+  dataVersioning: dataVersioning.html
+  dictionaryVersioning: dictionaryVersioning.html
+  dsUpload: dsUpload.html
+  qualityControl: qualityControl.html
+last_built: 2021-10-18T21:13Z
+

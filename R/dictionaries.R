@@ -21,7 +21,7 @@ du.dict.download <- function(dict_name, dict_version, dict_kind) {
   } else {
     api_url <- paste0(
       ds_upload.globals$api_dict_released_url, "dictionaries/",
-      dict_kind, "/", dict_version, "?ref=", dict_version
+      dict_kind, "/", dict_version, "?ref=", dict_kind, "-", dict_version
     )
   }
 
@@ -43,7 +43,7 @@ du.dict.download <- function(dict_name, dict_version, dict_kind) {
 #'
 #' @param api_url url to retrieve the tables from
 #' @param dict_version model version of the data
-#' @param dict_kind dictionary kind can be outcome, core, exposure
+#' @param dict_name dictionary name can be 'kind' or a random name
 #' @param data_version data version if used to create the tables
 #'
 #' @importFrom dplyr select
@@ -59,7 +59,7 @@ du.dict.retrieve.tables <- function(api_url, dict_name, dict_version, data_versi
 
   if (!missing(dict_version) && !missing(data_version)) {
     message(" * Check released dictionaries")
-    api_url_path <- paste0(api_url, "dictionaries/", dict_name, "/", dict_version, "?ref=", dict_version)
+    api_url_path <- paste0(api_url, "dictionaries/", dict_name, "/", dict_version, "?ref=", dict_name, "-", dict_version)
     beta <- FALSE
   }
 
@@ -68,7 +68,7 @@ du.dict.retrieve.tables <- function(api_url, dict_name, dict_version, data_versi
   if (any(names(dictionaries) == "message")) {
     stop(paste0("There are no dictionaries avialable in the folder: [ ", dict_name, " ]"))
   }
-
+  
   tables <- dictionaries %>%
     select("name") %>%
     pmap(function(name) {
@@ -90,18 +90,18 @@ du.dict.retrieve.tables <- function(api_url, dict_name, dict_version, data_versi
 #' @param dict_version dictionary version (can be 'x_x')
 #'
 #' @noRd
-du.populate.dict.versions <- local(function(dict_kind, dict_version) {
+du.populate.dict.versions <- function(dict_kind, dict_version) {
   versions <- du.get.response.as.dataframe(paste0(
     ds_upload.globals$api_dict_released_url, "dictionaries/",
-    dict_kind, "?ref=", dict_version
+    dict_kind, "?ref=", dict_kind, "-", dict_version
   ))
-
+  
   if (dict_kind == du.enum.dict.kind()$CORE) {
     ds_upload.globals$dictionaries_core <- versions$name
   } else {
     ds_upload.globals$dictionaries_outcome <- versions$name
   }
-})
+}
 
 #'
 #' Retrieve the right file from download directory
@@ -114,7 +114,7 @@ du.populate.dict.versions <- local(function(dict_kind, dict_version) {
 #' @return a raw version of the dictionary
 #'
 #' @noRd
-du.retrieve.dictionaries <- local(function(dict_table, dict_kind) {
+du.retrieve.dictionaries <- function(dict_table, dict_kind) {
   dict_file_list <- list.files(paste(getwd(), "/", dict_kind, sep = ""))
 
   if (!missing(dict_table)) {
@@ -128,7 +128,7 @@ du.retrieve.dictionaries <- local(function(dict_table, dict_kind) {
     ), sheet = 1))
   }
   return(as.data.frame(raw_dict))
-})
+}
 
 #' Get the full dictionary with mapped categories
 #' 
