@@ -125,7 +125,8 @@ du.check.variables <- function(dict_kind, data_columns, run_mode) {
 #' @noRd
 du.check.nas <- function(stripped, raw) {
   
-  # remove child_id
+  # remove id column 
+  # be advised the source data should not contain any column that is some sort of row_id
   raw <- raw[-1]
   
   variables_na <- raw[!(raw %in% stripped)]

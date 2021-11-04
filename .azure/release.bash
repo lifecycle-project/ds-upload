@@ -15,7 +15,7 @@
 # - R_LIBS_USER: home directory user libraries
 # - CODECOV_TOKEN: token to authenticate to codecov
 
-git remote set-url origin "https://${GITHUB_TOKEN}@github.com/lifecycle-project/ds-upload.git"
+git remote set-url origin "https://${GITHUB_TOKEN}@github.com/${BUILD_REPOSITORY_NAME}.git"
 git checkout -f master
 git fetch --tags
 Rscript -e "withr::with_libpaths(new = '${R_LIBS_USER}', git2r::config(user.email = 'sido@haakma.org', user.name = 'Azure Pipeline'))"
