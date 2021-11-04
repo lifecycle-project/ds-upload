@@ -14,6 +14,7 @@ ds_upload.globals <- new.env()
 #' @param action action to be performed, can be 'reshape', 'populate' or 'all'
 #' @param run_mode default = NORMAL, can be TEST and NON_INTERACTIIVE
 #' @param upload do you want to upload the data (true or false) 
+#' @param data_type default = wide, can be long as well
 #'
 #' @examples
 #' \dontrun{
@@ -29,7 +30,7 @@ ds_upload.globals <- new.env()
 #' @export
 du.upload <- function(dict_version = "2_1", data_version = "1_0", dict_kind = du.enum.dict.kind()$CORE,
                       cohort_id, database_name = "opal_data", data_input_format = du.enum.input.format()$CSV, data_input_path,
-                      action = du.enum.action()$ALL, upload = TRUE, run_mode = du.enum.run.mode()$NORMAL) {
+                      action = du.enum.action()$ALL, upload = TRUE, run_mode = du.enum.run.mode()$NORMAL, data_type = du.enum.data.type()$WIDE) {
   message("######################################################")
   message("  Start upload data into DataSHIELD backend")
   message("------------------------------------------------------")
@@ -101,8 +102,10 @@ du.upload <- function(dict_version = "2_1", data_version = "1_0", dict_kind = du
         if (missing(data_input_format)) {
           data_input_format <- du.enum.input.format()$CSV
         }
+        
+        
         du.reshape(
-          upload, project, data_version, data_input_format, dict_version,
+          upload, project, data_version, data_type, data_input_format, dict_version,
           dict_kind, data_input_path, run_mode
         )
       }

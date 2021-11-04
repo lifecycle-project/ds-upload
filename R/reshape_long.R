@@ -157,7 +157,7 @@ du.check.nas <- function(stripped, raw) {
 #' @importFrom readxl read_xlsx
 #'
 #' @noRd
-du.reshape.generate.non.repeated <- function(data, dict_kind) {
+du.reshape.long.generate.non.repeated <- function(data, dict_kind) {
   message("* Generating: non-repeated measures")
 
   # Retrieve dictionary
@@ -193,7 +193,7 @@ du.reshape.generate.non.repeated <- function(data, dict_kind) {
 #' @importFrom tidyr gather
 #'
 #' @noRd
-du.reshape.generate.yearly.repeated <- function(data, dict_kind) {
+du.reshape.long.generate.yearly.repeated <- function(data, dict_kind) {
   # workaround to avoid glpobal variable warnings, check:
   # https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
   orig_var <- value <- age_years <- . <- NULL
@@ -265,7 +265,7 @@ du.reshape.generate.yearly.repeated <- function(data, dict_kind) {
 #' @importFrom tidyr gather
 #'
 #' @noRd
-du.reshape.generate.monthly.repeated <- function(data, dict_kind) {
+du.reshape.long.generate.monthly.repeated <- function(data, dict_kind) {
   # workaround to avoid glpobal variable warnings, check:
   # https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
   orig_var <- value <- age_months <- . <- NULL
@@ -339,7 +339,7 @@ du.reshape.generate.monthly.repeated <- function(data, dict_kind) {
 #' @importFrom tidyr gather
 #'
 #' @noRd
-du.reshape.generate.weekly.repeated <- function(data, dict_kind) {
+du.reshape.long.generate.weekly.repeated <- function(data, dict_kind) {
   # workaround to avoid glpobal variable warnings, check:
   # https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
   orig_var <- value <- age_weeks <- . <- NULL # Gestational age in weeks
@@ -415,7 +415,7 @@ du.reshape.generate.weekly.repeated <- function(data, dict_kind) {
 #' @importFrom tidyr gather
 #'
 #' @noRd
-du.reshape.generate.trimesterly.repeated <- function(data, dict_kind) {
+du.reshape.long.generate.trimesterly.repeated <- function(data, dict_kind) {
   # workaround to avoid glpobal variable warnings, check:
   # https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
   orig_var <- value <- age_trimester <- . <- NULL

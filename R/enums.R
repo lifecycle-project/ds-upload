@@ -38,6 +38,13 @@ du.enum.dict.kind <- function() {
   list(CORE = "core", OUTCOME = "outcome", BETA = "beta")
 }
 
+#' Source data types
+#'
+#' @noRd
+du.enum.data.type <- function() {
+  list(LONG = "long", WIDE = "wide")
+}
+
 #' Projects that are containing dictionaries. Repositories containing these dictionaries should be:
 #'
 #' - ds-dictionaries
