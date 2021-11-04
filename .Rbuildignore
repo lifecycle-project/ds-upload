@@ -1,9 +1,9 @@
-^\.ci$
+^\.azure$
 ^\.git$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^TROUBLESHOOTING\.md$
-^\.travis\.yml$
+^azure-pipelines\.yml$
 ^_pkgdown\.yml$
 ^\.Rbuildignore$
 ^inst/examples$
