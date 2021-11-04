@@ -1,4 +1,4 @@
-pandoc: 2.14.2
+pandoc: 2.14.0.3
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
@@ -7,5 +7,5 @@ articles:
   dictionaryVersioning: dictionaryVersioning.html
   dsUpload: dsUpload.html
   qualityControl: qualityControl.html
-last_built: 2021-10-18T21:13Z
+last_built: 2021-11-04T09:10Z
 
