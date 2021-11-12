@@ -91,15 +91,23 @@ du.dict.retrieve.tables <- function(api_url, dict_name, dict_version, data_versi
 #'
 #' @noRd
 du.populate.dict.versions <- function(dict_kind, dict_version) {
-  versions <- du.get.response.as.dataframe(paste0(
-    ds_upload.globals$api_dict_released_url, "dictionaries/",
-    dict_kind, "?ref=", dict_kind, "-", dict_version
-  ))
+  versions <- du.get.response.as.dataframe(ds_upload.globals$api_dict_released_tags_url)
+  
+  versions <- versions %>% 
+    select("ref") %>%
+    pmap(function(ref) {
+      if(grepl(dict_kind, ref, fixed = TRUE)) {
+        without_prefix <- substr(ref, 11, nchar(ref))
+        return(substr(without_prefix, nchar(dict_kind)+2, nchar(without_prefix)))
+      }
+    })
+  
+  versions = versions[-which(sapply(versions, is.null))]
   
   if (dict_kind == du.enum.dict.kind()$CORE) {
-    ds_upload.globals$dictionaries_core <- versions$name
+    ds_upload.globals$dictionaries_core <- versions
   } else {
-    ds_upload.globals$dictionaries_outcome <- versions$name
+    ds_upload.globals$dictionaries_outcome <- versions
   }
 }
 
@@ -115,7 +123,7 @@ du.populate.dict.versions <- function(dict_kind, dict_version) {
 #'
 #' @noRd
 du.retrieve.dictionaries <- function(dict_table, dict_kind) {
-  dict_file_list <- list.files(paste(getwd(), "/", dict_kind, sep = ""))
+  dict_file_list <- list.files(paste0(getwd(), "/", dict_kind))
 
   if (!missing(dict_table)) {
     dict_file_list <- dict_file_list[grep(dict_table, dict_file_list)]
@@ -123,9 +131,7 @@ du.retrieve.dictionaries <- function(dict_table, dict_kind) {
 
   raw_dict <- list()
   for (file_name in dict_file_list) {
-    raw_dict <- rbind(raw_dict, read_xlsx(path = paste(dict_kind, "/", file_name,
-      sep = ""
-    ), sheet = 1))
+    raw_dict <- rbind(raw_dict, read_xlsx(path = paste0(dict_kind, "/", file_name), sheet = 1))
   }
   return(as.data.frame(raw_dict))
 }

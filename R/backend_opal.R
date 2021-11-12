@@ -96,19 +96,18 @@ du.opal.project.create <- function(project, database_name) {
   requireNamespace("opalr")
   canonical_project_name <- strsplit(project, "_")
   dict_kind <- canonical_project_name[[1]][3]
-  dict_version <- paste0(canonical_project_name[[1]][3], "_rep")
+  dict_version <- paste0(canonical_project_name[[1]][4], "_", canonical_project_name[[1]][5])
 
   message("------------------------------------------------------")
-  message(paste("  Start creating project: [ ", project, " ]", sep = ""))
+  message(paste0("  Start creating project: [ ", project, " ]"))
 
   projects <- opal.projects(ds_upload.globals$conn)
 
   if (!(project %in% projects$name)) {
     json <- sprintf(
       "{\"database\":\"%s\",\"description\":\"%s\",\"name\":\"%s\",\"title\":\"%s\"}",
-      database_name, paste("Project for [ ", dict_kind, " ] variables and data dictionary version: [ ",
-        dict_version, " ]",
-        sep = ""
+      database_name, paste0("Project for [ ", dict_kind, " ] variables and data dictionary version: [ ",
+        dict_version, " ]"
       ), project, project
     )
     opal.post(ds_upload.globals$conn, "projects", body = json, contentType = "application/x-protobuf+json")
