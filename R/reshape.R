@@ -58,6 +58,8 @@ du.reshape <- function(upload = TRUE, project, data_version, input_format, dict_
           du.opal.upload(dict_kind, file_name_weekly)
         }
       }
+    } else {
+      save(weeklyrep_data, file = paste0(getwd(), "/", file_name_weekly, ".RData"))
     }
   }
 
@@ -77,6 +79,8 @@ du.reshape <- function(upload = TRUE, project, data_version, input_format, dict_
         if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
           du.opal.upload(dict_kind, file_name_trimester)
         }
+      } else {
+        save(trimester_data, file = paste0(getwd(), "/", file_name_trimester, ".RData"))
       }
     }
   }
@@ -104,6 +108,10 @@ du.reshape <- function(upload = TRUE, project, data_version, input_format, dict_
         du.armadillo.import(project = project, data = monthlyrep_data, dict_version, dict_kind, data_version, du.enum.table.types()$MONTHLY)
       }
     }
+  } else {
+    if (!is.null(nonrep_data)) save(nonrep_data, file = paste0(getwd(), "/", file_name_nonrep, ".RData"))
+    if (!is.null(yearlyrep_data)) save(yearlyrep_data, file = paste0(getwd(), "/", file_name_yearly, ".RData"))
+    if (!is.null(monthlyrep_data)) save(monthlyrep_data, file = paste0(getwd(), "/", file_name_monthly, ".RData"))
   }
 
   message("######################################################")
