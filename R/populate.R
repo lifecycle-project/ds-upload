@@ -6,22 +6,25 @@
 #' @param data_version version of the data (specific to the cohort)
 #' @param database_name the database name specified in your Opal instance (defaults to 'opal_data')
 #' @param dict_kind dictionnary kind, can be 'core' or 'outcome'
+#' @param override_project overrides the generated project name
 #'
 #' @return project id to use in central quality control
 #'
 #' @noRd
-du.populate <- local(function(dict_version, cohort_id, data_version, database_name, dict_kind) {
+du.populate <- function(dict_version, cohort_id, data_version, database_name, dict_kind, override_project) {
   message("######################################################")
   message("  Start importing data dictionaries                   ")
   message("######################################################")
 
   project <- paste0("lc_", cohort_id, "_", dict_kind, "_", dict_version)
-
+  if(!is.null(override_project)) project = override_project
+  
   dictionaries <- du.dict.retrieve.tables(ds_upload.globals$api_dict_released_url, dict_kind, dict_version, data_version)
 
   if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
-    armadillo_project <- str_replace_all(cohort_id, "-", "")
-    du.armadillo.create.project(cohort_id)
+    project <- str_replace_all(cohort_id, "-", "")
+    if(!is.null(override_project)) project = override_project
+    du.armadillo.create.project(project)
   }
 
   if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
@@ -34,7 +37,7 @@ du.populate <- local(function(dict_version, cohort_id, data_version, database_na
   message("######################################################")
   message("  Importing data dictionaries has finished            ")
   message("######################################################")
-})
+}
 
 #' Create tables in Opal to import the data for the beta dictionaries
 #'
