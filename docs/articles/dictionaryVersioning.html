@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dsUpload</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">4.4.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.5.1</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../articles/dsUpload.html">Get started</a>
 </li>
@@ -73,7 +69,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/lifecycle-project/ds-upload/">
+  <a href="https://github.com/lifecycle-project/ds-upload/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -88,13 +84,13 @@
 
       
 
-      </header><script src="dictionaryVersioning_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Dictionairy versioning</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/lifecycle-project/ds-upload/blob/master/vignettes/dictionaryVersioning.Rmd"><code>vignettes/dictionaryVersioning.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/lifecycle-project/ds-upload/blob/HEAD/vignettes/dictionaryVersioning.Rmd" class="external-link"><code>vignettes/dictionaryVersioning.Rmd</code></a></small>
       <div class="hidden name"><code>dictionaryVersioning.Rmd</code></div>
 
     </div>
@@ -102,13 +98,13 @@
     
     
 <p>You can add new content and release the dictionaries for all consortia.</p>
-<div id="adding-new-variables" class="section level2">
-<h2 class="hasAnchor">
-<a href="#adding-new-variables" class="anchor"></a>Adding new variables</h2>
+<div class="section level2">
+<h2 id="adding-new-variables">Adding new variables<a class="anchor" aria-label="anchor" href="#adding-new-variables"></a>
+</h2>
 <p>When you need to add new variables you need to perform 2 steps: - Adding the new variables to the dictionaries - Reshaping your data to DataSHIELD backend format</p>
-<div id="adding-new-dictionaries-data-schemes" class="section level3">
-<h3 class="hasAnchor">
-<a href="#adding-new-dictionaries-data-schemes" class="anchor"></a>Adding new dictionaries (data schemes)</h3>
+<div class="section level3">
+<h3 id="adding-new-dictionaries-data-schemes">Adding new dictionaries (data schemes)<a class="anchor" aria-label="anchor" href="#adding-new-dictionaries-data-schemes"></a>
+</h3>
 <p>When you add new dictionaries you need to place them in <code>/dictionaries/core/x_x</code> or <code>/dictionaries/outcome/x_x</code>.</p>
 <p>For WP1 and 3 these 3 tables are namespaces this way:</p>
 <ul>
@@ -126,13 +122,13 @@
 </ul>
 <p>You need to place them into <code>R/data/dictionaries/x_x</code> as well.</p>
 <p>Finally you need to amend the changelogs, check <a href="#changelog">amend changelogs</a></p>
-<p>Please use the pull-request flow. For more information check <a href="https://github.com/lifecycle-project/analysis-tutorials/blob/master/GIT-WORKFLOW.md">GIT workflow</a></p>
+<p>Please use the pull-request flow. For more information check <a href="https://github.com/lifecycle-project/analysis-tutorials/blob/master/GIT-WORKFLOW.md" class="external-link">GIT workflow</a></p>
 </div>
 </div>
-<div id="versioning" class="section level2">
-<h2 class="hasAnchor">
-<a href="#versioning" class="anchor"></a>Versioning</h2>
-<p>We are using an implementation of semantic versioning (<a href="https://semver.org">semantic versioning</a>). A better explanation on using semantic versioning in data can be found here: <a href="https://medium.com/data-architect/semantic-versioning-for-data-products-2b060962093">semantic versioning for data products</a>.</p>
+<div class="section level2">
+<h2 id="versioning">Versioning<a class="anchor" aria-label="anchor" href="#versioning"></a>
+</h2>
+<p>We are using an implementation of semantic versioning (<a href="https://semver.org" class="external-link">semantic versioning</a>). A better explanation on using semantic versioning in data can be found here: <a href="https://medium.com/data-architect/semantic-versioning-for-data-products-2b060962093" class="external-link">semantic versioning for data products</a>.</p>
 <p>We now can distinguish 4 tables for the core variables and 4 tables for the outcome variables. They will be released in 2 sets. One for the core variables and one for the outcome variables.</p>
 <p><strong>Core variables</strong></p>
 <ul>
@@ -158,9 +154,9 @@
 <li>1_1_dict-kind_trimester_rep.xlsx</li>
 <li>1_1_dict-kind_yearly_rep.xlsx</li>
 </ul>
-<div id="dictionary" class="section level3">
-<h3 class="hasAnchor">
-<a href="#dictionary" class="anchor"></a>Dictionary</h3>
+<div class="section level3">
+<h3 id="dictionary">Dictionary<a class="anchor" aria-label="anchor" href="#dictionary"></a>
+</h3>
 <p>We are using semantic versioning in the data dictionary in LifeCycle. The implementation we now use is:</p>
 <ul>
 <li>
@@ -180,17 +176,17 @@
 </ul>
 </div>
 </div>
-<div id="changelog" class="section level2">
-<h2 class="hasAnchor">
-<a href="#changelog" class="anchor"></a>Changelog</h2>
+<div class="section level2">
+<h2 id="changelog">Changelog<a class="anchor" aria-label="anchor" href="#changelog"></a>
+</h2>
 <p>To keep track of all the changed within the different versions of the dictionaries and data releases we need to have changelogs. This way we can trace back what has happened in which release.</p>
-<div id="dictionary-releases" class="section level3">
-<h3 class="hasAnchor">
-<a href="#dictionary-releases" class="anchor"></a>Dictionary releases</h3>
+<div class="section level3">
+<h3 id="dictionary-releases">Dictionary releases<a class="anchor" aria-label="anchor" href="#dictionary-releases"></a>
+</h3>
 <ul>
-<li>Check: <a href="https://github.com/lifecycle-project/ds-dictionaries/blob/master/changelogs/CORE_DICTIONARY_CHANGELOG.md">core dictionary changelog</a>
+<li>Check: <a href="https://github.com/lifecycle-project/ds-dictionaries/blob/master/changelogs/CORE_DICTIONARY_CHANGELOG.md" class="external-link">core dictionary changelog</a>
 </li>
-<li>Check: <a href="https://github.com/lifecycle-project/ds-dictionaries/blob/master/changelogs/OUTCOME_DICTIONARY_CHANGELOG.md">outcome dictionary changelog</a>
+<li>Check: <a href="https://github.com/lifecycle-project/ds-dictionaries/blob/master/changelogs/OUTCOME_DICTIONARY_CHANGELOG.md" class="external-link">outcome dictionary changelog</a>
 </li>
 </ul>
 </div>
@@ -208,11 +204,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Sido Haakma, Angela Pinot de Moira, Maxime Cornet, Sebastian Rauschert.</p>
+  <p></p>
+<p>Developed by Sido Haakma, Angela Pinot de Moira, Maxime Cornet, Sebastian Rauschert.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -220,6 +218,8 @@
 
   
 
+
+  
 
   </body>
 </html>
