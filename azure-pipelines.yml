@@ -25,15 +25,5 @@ jobs:
       env:
         R_LIBS_USER: '$(Agent.BuildDirectory)/R/library'
         CODECOV_TOKEN: $(CODECOV_TOKEN)  
-    - task: Bash@3
-      displayName: Release R-package
-      condition: and(eq(variables['Build.SourceBranch'], 'refs/heads/master'), ne(variables['Build.Reason'], 'PullRequest'))
-      inputs:
-        filePath: .azure/release.bash
-      env:
-        R_LIBS_USER: '$(Agent.BuildDirectory)/R/library'
-        GITHUB_TOKEN: $(GITHUB_TOKEN)
-        NEXUS_PASS: $(NEXUS_PASS)
-        NEXUS_USER: $(NEXUS_USER)
-        REGISTRY: ${REGISTRY}
+
         
