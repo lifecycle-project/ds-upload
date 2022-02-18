@@ -14,6 +14,7 @@ ds_upload.globals <- new.env()
 #' @param action action to be performed, can be 'reshape', 'populate' or 'all'
 #' @param run_mode default = NORMAL, can be TEST and NON_INTERACTIIVE
 #' @param upload do you want to upload the data (true or false) 
+#' @param override_project overrides the generated project name
 #'
 #' @examples
 #' \dontrun{
@@ -29,7 +30,7 @@ ds_upload.globals <- new.env()
 #' @export
 du.upload <- function(dict_version = "2_1", data_version = "1_0", dict_kind = du.enum.dict.kind()$CORE,
                       cohort_id, database_name = "opal_data", data_input_format = du.enum.input.format()$CSV, data_input_path,
-                      action = du.enum.action()$ALL, upload = TRUE, run_mode = du.enum.run.mode()$NORMAL) {
+                      action = du.enum.action()$ALL, upload = TRUE, run_mode = du.enum.run.mode()$NORMAL, override_project = NULL) {
   message("######################################################")
   message("  Start upload data into DataSHIELD backend")
   message("------------------------------------------------------")
@@ -89,7 +90,7 @@ du.upload <- function(dict_version = "2_1", data_version = "1_0", dict_kind = du
       du.check.action(action)
 
       if ((action == du.enum.action()$ALL | action == du.enum.action()$POPULATE) && upload == TRUE) {
-        project <- du.populate(dict_version, cohort_id, data_version, database_name, dict_kind)
+        project <- du.populate(dict_version, cohort_id, data_version, database_name, dict_kind, override_project)
       }
 
       if (action == du.enum.action()$ALL | action == du.enum.action()$RESHAPE) {

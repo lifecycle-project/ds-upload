@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dsUpload</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">4.4.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.5.1</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../articles/dsUpload.html">Get started</a>
 </li>
@@ -73,7 +69,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/lifecycle-project/ds-upload/">
+  <a href="https://github.com/lifecycle-project/ds-upload/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -88,56 +84,56 @@
 
       
 
-      </header><script src="dsUpload_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>dsUpload</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/lifecycle-project/ds-upload/blob/master/vignettes/dsUpload.Rmd"><code>vignettes/dsUpload.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/lifecycle-project/ds-upload/blob/HEAD/vignettes/dsUpload.Rmd" class="external-link"><code>vignettes/dsUpload.Rmd</code></a></small>
       <div class="hidden name"><code>dsUpload.Rmd</code></div>
 
     </div>
 
     
     
-<div id="datashield-upload-tools" class="section level1">
-<h1 class="hasAnchor">
-<a href="#datashield-upload-tools" class="anchor"></a>DataSHIELD upload tools</h1>
-<div id="background" class="section level2">
-<h2 class="hasAnchor">
-<a href="#background" class="anchor"></a>Background</h2>
+<div class="section level2">
+<h2 id="datashield-upload-tools">DataSHIELD upload tools<a class="anchor" aria-label="anchor" href="#datashield-upload-tools"></a>
+</h2>
+<div class="section level3">
+<h3 id="background">Background<a class="anchor" aria-label="anchor" href="#background"></a>
+</h3>
 <p>The aim of the EU Child Cohort Network is to bring together data from existing child cohorts into one open and sustainable, multi-disciplinary network. To ensure sure that the EU Child Cohort Network is both open and sustainable, the consortia are using the data-sharing platform DataSHIELD.</p>
 <p>Participating cohorts must harmonise data, following the data harmonisation manuals. Secondly, perform quality-control checks on their harmonised data. Thirdly, upload descriptions of harmonisation to the cohort catalogue. The last step is uploading the data into the DataSHIELD backends. The guide below guides you through the process.</p>
 </div>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
+<div class="section level3">
+<h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h3>
 <p>Reference documentation:</p>
 <ul>
-<li><a href="https://lifecycle-project.github.io/ds-upload">dsUpload</a></li>
-<li><a href="http://molgenis.github.io/molgenis-r-armadillo">Armadillo</a></li>
-<li><a href="http://opaldoc.obiba.org/en/latest/r-user-guide/datashield.html">Opal</a></li>
+<li><a href="https://lifecycle-project.github.io/ds-upload" class="external-link">dsUpload</a></li>
+<li><a href="http://molgenis.github.io/molgenis-r-armadillo" class="external-link">Armadillo</a></li>
+<li><a href="http://opaldoc.obiba.org/en/latest/r-user-guide/datashield.html" class="external-link">Opal</a></li>
 </ul>
 <p>You can install the package by executing the following command:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"dsUpload"</span>, repos<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'https://registry.molgenis.org/repository/R/'</span>, <span class="st">'https://cran.datashield.org'</span><span class="op">)</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"dsUpload"</span>, repos<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'https://registry.molgenis.org/repository/R/'</span>, <span class="st">'https://cran.datashield.org'</span><span class="op">)</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p>When you want to use it you need to load it.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># load the package</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/lifecycle-project/ds-upload">dsUpload</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/lifecycle-project/ds-upload" class="external-link">dsUpload</a></span><span class="op">)</span>
 <span class="co">#&gt; Loading required package: DSI</span>
 <span class="co">#&gt; Loading required package: progress</span>
 <span class="co">#&gt; Loading required package: R6</span></code></pre></div>
 </div>
-<div id="troubleshooting" class="section level2">
-<h2 class="hasAnchor">
-<a href="#troubleshooting" class="anchor"></a>Troubleshooting</h2>
-<p>Check: <a href="https://github.com/lifecycle-project/ds-upload/blob/master/TROUBLESHOOTING.md">troubleshooting guide</a></p>
+<div class="section level3">
+<h3 id="troubleshooting">Troubleshooting<a class="anchor" aria-label="anchor" href="#troubleshooting"></a>
+</h3>
+<p>Check: <a href="https://github.com/lifecycle-project/ds-upload/blob/master/TROUBLESHOOTING.md" class="external-link">troubleshooting guide</a></p>
 </div>
-<div id="usage" class="section level2">
-<h2 class="hasAnchor">
-<a href="#usage" class="anchor"></a>Usage</h2>
+<div class="section level3">
+<h3 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
+</h3>
 <p>To simplify the upload and importing of data dictionaries this package is written to import and upload the data dictionaries and data in one run. When running the package, you need to specify the data dictionary version and the data input file. When you use data formats other than CSV use need to specify the data format as well</p>
 <p><strong>Prerequisites</strong></p>
 <ul>
@@ -150,12 +146,12 @@
 <p>Merge all the variables that are obtained in the dictionary of the outcome variables. So in general this means merge the data of WP4, WP5 and WP6 into one set.</p>
 </li>
 </ul>
-<div id="using-armadillo" class="section level3">
-<h3 class="hasAnchor">
-<a href="#using-armadillo" class="anchor"></a>Using Armadillo</h3>
+<div class="section level4">
+<h4 id="using-armadillo">Using Armadillo<a class="anchor" aria-label="anchor" href="#using-armadillo"></a>
+</h4>
 <p>Please following the instruction below to upload the core and outcome variables in the Aramdillo.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">login_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>
+<code class="sourceCode R"><span class="va">login_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>
   server <span class="op">=</span> <span class="st">"https://armadillo.test.molgenis.org"</span>, 
   storage <span class="op">=</span> <span class="st">"https://armadillo-minio.test.molgenis.org"</span>, 
   driver <span class="op">=</span> <span class="st">"ArmadilloDriver"</span><span class="op">)</span></code></pre></div>
@@ -381,14 +377,14 @@
 <span id="cb6-106"><a href="#cb6-106" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  * Reinstate default working directory</span></span>
 <span id="cb6-107"><a href="#cb6-107" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  * Cleanup temporary directory</span></span></code></pre></div>
 </div>
-<div id="using-opal" class="section level3">
-<h3 class="hasAnchor">
-<a href="#using-opal" class="anchor"></a>Using Opal</h3>
+<div class="section level4">
+<h4 id="using-opal">Using Opal<a class="anchor" aria-label="anchor" href="#using-opal"></a>
+</h4>
 <p>A video guiding you through the process can be found here:</p>
-<p>Check youtube channel: <a href="https://youtu.be/fUrpbstPCsU">upload data dictionaries and data into Opal</a></p>
+<p>Check youtube channel: <a href="https://youtu.be/fUrpbstPCsU" class="external-link">upload data dictionaries and data into Opal</a></p>
 <p>Alternatively, execute these commands in your R-console:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">login_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>
+<code class="sourceCode R"><span class="va">login_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>
   server <span class="op">=</span> <span class="st">"https://opal.edge.molgenis.org"</span>, 
   user <span class="op">=</span> <span class="st">"administrator"</span>, 
   password <span class="op">=</span> <span class="st">"ouf0uPh6"</span>,
@@ -548,16 +544,16 @@
 <span class="co">#&gt;  * Reinstate default working directory</span>
 <span class="co">#&gt;  * Cleanup temporary directory</span></code></pre></div>
 <blockquote>
-<p><strong>IMPORTANT</strong>: You can run this package for the core variables and for the outcome variables. Each of them requires changing some parameters in the function call. So dict_kind specific ‘core’ or ‘outcome’ variables and dict_version specifies the data dictionary version (check the changelogs here: <a href="https://github.com/lifecycle-project/ds-dictionaries/tree/master/changelogs" class="uri">https://github.com/lifecycle-project/ds-dictionaries/tree/master/changelogs</a>).</p>
+<p><strong>IMPORTANT</strong>: You can run this package for the core variables and for the outcome variables. Each of them requires changing some parameters in the function call. So dict_kind specific ‘core’ or ‘outcome’ variables and dict_version specifies the data dictionary version (check the changelogs here: <a href="https://github.com/lifecycle-project/ds-dictionaries/tree/master/changelogs" class="external-link uri">https://github.com/lifecycle-project/ds-dictionaries/tree/master/changelogs</a>).</p>
 </blockquote>
 <blockquote>
 <p><strong>IMPORTANT</strong> You can specify your upload format! So you do not have to export to CSV first. Supported upload formats are: ‘SPSS’, ‘SAS’, ‘STATA’ and ‘CSV’.</p>
 </blockquote>
-<div id="import-the-data" class="section level4">
-<h4 class="hasAnchor">
-<a href="#import-the-data" class="anchor"></a>Import the data</h4>
+<div class="section level5">
+<h5 id="import-the-data">Import the data<a class="anchor" aria-label="anchor" href="#import-the-data"></a>
+</h5>
 <p>If you run these commands, your data will be uploaded to the DataSHIELD backend. If you use Opal, you can now import these data into the tables manually.</p>
-<p>A video guiding you through the process can be found here: <a href="https://youtu.be/BKDnIAQzpdY">import data into Opal</a></p>
+<p>A video guiding you through the process can be found here: <a href="https://youtu.be/BKDnIAQzpdY" class="external-link">import data into Opal</a></p>
 <p>Alternatively, execute these actions for Opal:</p>
 <ol style="list-style-type: decimal">
 <li>Navigate to the Opal webinterface</li>
@@ -592,11 +588,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Sido Haakma, Angela Pinot de Moira, Maxime Cornet, Sebastian Rauschert.</p>
+  <p></p>
+<p>Developed by Sido Haakma, Angela Pinot de Moira, Maxime Cornet, Sebastian Rauschert.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -604,6 +602,8 @@
 
   
 
+
+  
 
   </body>
 </html>
