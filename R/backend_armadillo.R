@@ -95,8 +95,12 @@ du.armadillo.import <- function(project, data, dict_version, dict_kind, data_ver
   if (!is.null(data)) {
     project_elements <- str_split(project, "_")
 
-    armadillo_project <- str_replace_all(sapply(project_elements, "[[", 2), "-", "")
-
+    if('-' %in% project_elements) {
+      armadillo_project <- str_replace_all(sapply(project_elements, "[[", 2), "-", "")
+    } else {
+      armadillo_project <- project
+    }
+    
     if (dict_kind == du.enum.dict.kind()$BETA) {
       armadillo_project <- str_replace_all(sapply(project_elements, tail, 1), "-", "")
       armadillo_folder <- du.enum.dict.kind()$BETA
