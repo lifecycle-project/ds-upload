@@ -65,7 +65,7 @@ du.reshape <- function(upload = TRUE, project, data_version, input_format, dict_
     }
   }
 
-  if (dict_kind == du.enum.dict.kind()$CORE & dict_version != "1_0") {
+  if ((dict_kind == du.enum.dict.kind()$CORE & dict_version != "1_0") | (dict_kind == du.enum.dict.kind()$CHEMICALS)) {
     file_name_trimester <- paste0(file_prefix, "_", data_version, "_", "trimester_repeated_measures")
     trimester_data <- du.reshape.generate.trimesterly.repeated(
       data, dict_kind
