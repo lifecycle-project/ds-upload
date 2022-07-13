@@ -32,16 +32,19 @@ du.reshape <- function(upload = TRUE, project, data_version, input_format, dict_
   nonrep_data <- du.reshape.generate.non.repeated(
     data, dict_kind
   )
-  if (!is.null(nonrep_data)) {write_csv(nonrep_data, paste0(getwd(), "/", file_name_nonrep, ".csv"), na = "")} 
-  #if (!is.null(nonrep_data)) write_csv(nonrep_data, paste0(getwd(), "/", file_name_nonrep, ".csv"), na = "")
-  #yearlyrep_data <- du.reshape.generate.yearly.repeated(
-  #  data, dict_kind
-  #)
-  #if (!is.null(yearlyrep_data)) write_csv(yearlyrep_data, paste0(getwd(), "/", file_name_yearly, ".csv"), na = "")
+  #if (!is.null(nonrep_data)) {write_csv(nonrep_data, paste0(getwd(), "/", file_name_nonrep, ".csv"), na = "")} 
+  if (!is.null(nonrep_data)) write_csv(nonrep_data, paste0(getwd(), "/", file_name_nonrep, ".csv"), na = "")
+  yearlyrep_data <- du.reshape.generate.yearly.repeated(
+   data, dict_kind
+  )
+  if (!is.null(yearlyrep_data)) write_csv(yearlyrep_data, paste0(getwd(), "/", file_name_yearly, ".csv"), na = "")
   #monthlyrep_data <- du.reshape.generate.monthly.repeated(
-  #  data, dict_kind
+  # data, dict_kind
   #)
   #if (!is.null(monthlyrep_data)) write_csv(monthlyrep_data, paste0(getwd(), "/", file_name_monthly, ".csv"), na = "")
+  if (exists('monthlyrep_data')) {
+    write_csv(monthlyrep_data, paste0(getwd(), "/", file_name_monthly, ".csv"), na = "")
+  }
 
   if (dict_kind == du.enum.dict.kind()$OUTCOME) {
     file_name_weekly <- paste0(file_prefix, "_", data_version, "_", "weekly_repeated_measures")
@@ -91,7 +94,7 @@ du.reshape <- function(upload = TRUE, project, data_version, input_format, dict_
     if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
       if (!is.null(nonrep_data)) du.opal.upload(dict_kind, file_name_nonrep)
       if (!is.null(yearlyrep_data)) du.opal.upload(dict_kind, file_name_yearly)
-      if (!is.null(monthlyrep_data)) du.opal.upload(dict_kind, file_name_monthly)
+      if (exists('monthlyrep_data')){ du.opal.upload(dict_kind, file_name_monthly) }
     }
     if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
       if (!is.null(nonrep_data)) { 
