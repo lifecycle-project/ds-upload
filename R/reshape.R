@@ -94,9 +94,9 @@ du.reshape <- function(upload = TRUE, project, data_version, input_format, dict_
 
   if (upload) {
     if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
-      if (!is.null(nonrep_data)) du.opal.upload(dict_kind, file_name_nonrep)
-      if (!is.null(yearlyrep_data)) du.opal.upload(dict_kind, file_name_yearly)
-      if (exists('monthlyrep_data')){ du.opal.upload(dict_kind, file_name_monthly) }
+      if (exists("nonrep_data")) du.opal.upload(dict_kind, file_name_nonrep)
+      if (exists("yearlyrep_data")) du.opal.upload(dict_kind, file_name_yearly)
+      if (exists("monthlyrep_data")){ du.opal.upload(dict_kind, file_name_monthly) }
     }
     if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
       if (!is.null(nonrep_data)) { 
