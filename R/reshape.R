@@ -53,7 +53,7 @@ du.reshape <- function(upload = TRUE, project, data_version, input_format, dict_
     weeklyrep_data <- du.reshape.generate.weekly.repeated(
       data, dict_kind
     )
-    if (!is.null(weeklyrep_data)) {
+    if (exists("weeklyrep_data")) {
       write_csv(weeklyrep_data, paste0(getwd(), "/", file_name_weekly, ".csv"), na = "")
       weeklyrep_metadata <- du.retrieve.full.dict(du.enum.table.types()$WEEKLY, dict_kind)
       weeklyrep_data <- du.add.metadata(weeklyrep_data, weeklyrep_metadata)
