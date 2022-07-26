@@ -75,7 +75,7 @@ du.reshape <- function(upload = TRUE, project, data_version, input_format, dict_
     trimester_data <- du.reshape.generate.trimesterly.repeated(
       data, dict_kind
     )
-    if (!is.null(trimester_data)) {
+    if (exists("trimester_data")) {
       write_csv(trimester_data, paste0(getwd(), "/", file_name_trimester, ".csv"), na = "")
       trimester_metadata <- du.retrieve.full.dict(du.enum.table.types()$TRIMESTER, dict_kind)
       trimester_data <- du.add.metadata(trimester_data, trimester_metadata)
