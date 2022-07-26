@@ -32,7 +32,6 @@ du.reshape <- function(upload = TRUE, project, data_version, input_format, dict_
   nonrep_data <- du.reshape.generate.non.repeated(
     data, dict_kind
   )
-  #if (!is.null(nonrep_data)) {write_csv(nonrep_data, paste0(getwd(), "/", file_name_nonrep, ".csv"), na = "")} 
   if (!is.null(nonrep_data)) write_csv(nonrep_data, paste0(getwd(), "/", file_name_nonrep, ".csv"), na = "")
   yearlyrep_data <- du.reshape.generate.yearly.repeated(
    data, dict_kind
