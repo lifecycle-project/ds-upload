@@ -46,13 +46,17 @@ du.read.source.file <- function(input_path, input_format) {
 #'
 #' @noRd
 du.data.frame.remove.all.na.rows <- function(dataframe) {
-  df <- dataframe[-c(1)]
+  if(ncol(dataframe) >= 1) {
+    df <- dataframe[-c(1)]
 
-  naLines <- df %>%
-    is.na() %>%
-    apply(MARGIN = 1, FUN = all)
+    naLines <- df %>%
+      is.na() %>%
+      apply(MARGIN = 1, FUN = all)
 
-  return(df[!naLines, ])
+    return(df[!naLines, ])
+  } else {
+    return(list(0,0))
+  }
 }
 #'
 #' Matched the columns in the source data.
