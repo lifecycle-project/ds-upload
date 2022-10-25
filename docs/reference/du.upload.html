@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dsUpload</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.6.1</span>
       </span>
     </div>
 
@@ -29,7 +29,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -72,59 +72,80 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">du.upload</span><span class="op">(</span>
-  dict_version <span class="op">=</span> <span class="st">"2_1"</span>,
-  data_version <span class="op">=</span> <span class="st">"1_0"</span>,
-  dict_kind <span class="op">=</span> <span class="fu">du.enum.dict.kind</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">CORE</span>,
-  <span class="va">cohort_id</span>,
-  database_name <span class="op">=</span> <span class="st">"opal_data"</span>,
-  data_input_format <span class="op">=</span> <span class="fu">du.enum.input.format</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">CSV</span>,
-  <span class="va">data_input_path</span>,
-  action <span class="op">=</span> <span class="fu">du.enum.action</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">ALL</span>,
-  upload <span class="op">=</span> <span class="cn">TRUE</span>,
-  run_mode <span class="op">=</span> <span class="fu">du.enum.run.mode</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">NORMAL</span>,
-  override_project <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">du.upload</span><span class="op">(</span></span>
+<span>  dict_version <span class="op">=</span> <span class="st">"2_1"</span>,</span>
+<span>  data_version <span class="op">=</span> <span class="st">"1_0"</span>,</span>
+<span>  dict_kind <span class="op">=</span> <span class="fu">du.enum.dict.kind</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">CORE</span>,</span>
+<span>  <span class="va">cohort_id</span>,</span>
+<span>  database_name <span class="op">=</span> <span class="st">"opal_data"</span>,</span>
+<span>  data_input_format <span class="op">=</span> <span class="fu">du.enum.input.format</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">CSV</span>,</span>
+<span>  <span class="va">data_input_path</span>,</span>
+<span>  action <span class="op">=</span> <span class="fu">du.enum.action</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">ALL</span>,</span>
+<span>  upload <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  run_mode <span class="op">=</span> <span class="fu">du.enum.run.mode</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">NORMAL</span>,</span>
+<span>  override_project <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>dict_version</dt>
 <dd><p>version of the data dictionary to be used</p></dd>
+
+
 <dt>data_version</dt>
 <dd><p>version of the dataset to be uploaded</p></dd>
+
+
 <dt>dict_kind</dt>
 <dd><p>can be 'core' or 'outcome'</p></dd>
+
+
 <dt>cohort_id</dt>
 <dd><p>cohort name</p></dd>
+
+
 <dt>database_name</dt>
 <dd><p>is the name of the data backend of DataSHIELD, default = opal_data</p></dd>
+
+
 <dt>data_input_format</dt>
 <dd><p>format of the database to be reshaped. Can be 'CSV', 'STATA', 'SAS' or RDS (R)</p></dd>
+
+
 <dt>data_input_path</dt>
 <dd><p>path to the to-be-uploaded data</p></dd>
+
+
 <dt>action</dt>
 <dd><p>action to be performed, can be 'reshape', 'populate' or 'all'</p></dd>
+
+
 <dt>upload</dt>
 <dd><p>do you want to upload the data (true or false)</p></dd>
+
+
 <dt>run_mode</dt>
 <dd><p>default = NORMAL, can be TEST and NON_INTERACTIIVE</p></dd>
+
+
 <dt>override_project</dt>
 <dd><p>overrides the generated project name</p></dd>
+
 </dl></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="fu">du.upload</span><span class="op">(</span></span>
-<span class="r-in">  data_input_format <span class="op">=</span> <span class="st">"CSV"</span>,</span>
-<span class="r-in">  data_input_path <span class="op">=</span> <span class="st">"~/path-to-file/all_measurements_v1_2.csv"</span>,</span>
-<span class="r-in">  data_version <span class="op">=</span> <span class="st">"1_0"</span>,</span>
-<span class="r-in">  dict_version <span class="op">=</span> <span class="st">"2_1"</span>,</span>
-<span class="r-in">  cohort_id <span class="op">=</span> <span class="st">"gecko"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu">du.upload</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data_input_format <span class="op">=</span> <span class="st">"CSV"</span>,</span></span>
+<span class="r-in"><span>  data_input_path <span class="op">=</span> <span class="st">"~/path-to-file/all_measurements_v1_2.csv"</span>,</span></span>
+<span class="r-in"><span>  data_version <span class="op">=</span> <span class="st">"1_0"</span>,</span></span>
+<span class="r-in"><span>  dict_version <span class="op">=</span> <span class="st">"2_1"</span>,</span></span>
+<span class="r-in"><span>  cohort_id <span class="op">=</span> <span class="st">"gecko"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -135,11 +156,11 @@
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Sido Haakma, Angela Pinot de Moira, Maxime Cornet, Sebastian Rauschert.</p>
+  <p></p><p>Developed by Mariska Slofstra, Sido Haakma, Angela Pinot de Moira, Maxime Cornet, Sebastian Rauschert.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

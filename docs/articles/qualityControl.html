@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dsUpload</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.6.1</span>
       </span>
     </div>
 
@@ -46,7 +46,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -101,37 +101,67 @@
 <div class="section level2">
 <h2 id="local-quality-control">Local quality control<a class="anchor" aria-label="anchor" href="#local-quality-control"></a>
 </h2>
-<p>Local quality control is conducted by each cohort after harmonisation, following the quality control instructions and scripts provided by each work package lead. These check:</p>
+<p>Local quality control is conducted by each cohort after
+harmonisation, following the quality control instructions and scripts
+provided by each work package lead. These check:</p>
 <ul>
-<li>that variables match the descriptions provided in the core variable list (name, datatype, values)</li>
+<li>that variables match the descriptions provided in the core variable
+list (name, datatype, values)</li>
 <li>for outliers or improbable values</li>
-<li>for inconsistencies between non-repeated measures (e.g. all mothers coded as not smoking during pregnancy are also coded as smoking zero cigarettes during pregnancy);</li>
-<li>for inconsistencies between repeated measures (e.g. children reducing height over time).</li>
+<li>for inconsistencies between non-repeated measures (e.g. all mothers
+coded as not smoking during pregnancy are also coded as smoking zero
+cigarettes during pregnancy);</li>
+<li>for inconsistencies between repeated measures (e.g. children
+reducing height over time).</li>
 </ul>
-<p>Any inconsistencies identified are investigated on a cases-by-case basis to establish which values are legitimate and which are errors, also in light of the other data available.</p>
+<p>Any inconsistencies identified are investigated on a cases-by-case
+basis to establish which values are legitimate and which are errors,
+also in light of the other data available.</p>
 </div>
 <div class="section level2">
 <h2 id="central-quality-control">Central quality control<a class="anchor" aria-label="anchor" href="#central-quality-control"></a>
 </h2>
-<p>Quality of harmonised data is also assessed at the central level (central quality control), by creating summary statistics for each variable in R/DataSHIELD, and comparing these across cohorts. As in the local quality control, this is to identify outliers and improbable values and inconsistencies in data, but also to identify large inconsistencies between cohorts. Where large inconsistencies are found, these are investigated further in order to establish to what extent these differences are real vs. an artefact of differing methodology. They could, for example, be due to different sampling and recruitment methods or differences in the instruments used to collect data; they could also be due to differences in the harmonisation process itself.</p>
+<p>Quality of harmonised data is also assessed at the central level
+(central quality control), by creating summary statistics for each
+variable in R/DataSHIELD, and comparing these across cohorts. As in the
+local quality control, this is to identify outliers and improbable
+values and inconsistencies in data, but also to identify large
+inconsistencies between cohorts. Where large inconsistencies are found,
+these are investigated further in order to establish to what extent
+these differences are real vs. an artefact of differing methodology.
+They could, for example, be due to different sampling and recruitment
+methods or differences in the instruments used to collect data; they
+could also be due to differences in the harmonisation process
+itself.</p>
 </div>
 <div class="section level2">
 <h2 id="checks">Checks<a class="anchor" aria-label="anchor" href="#checks"></a>
 </h2>
-<p>The central quality control checks are carried out when data are uploaded and imported into a DataSHIELD backend (for example an institute’s DataSHIELD server). These four tables are now supported.</p>
+<p>The central quality control checks are carried out when data are
+uploaded and imported into a DataSHIELD backend (for example an
+institute’s DataSHIELD server). These four tables are now supported.</p>
 <ul>
 <li>non-repeated</li>
 <li>yearly-repeated</li>
 <li>monthly-repeated</li>
 <li>trimester-repeated</li>
 </ul>
-<p>For each of the four tables in the network, means and standard deviations are computed for continuous variables, and frequencies and percentages for categorical variables; these are tabulated over year for yearly- and monthly-repeated variables, and over trimester for trimester repeated variables.</p>
-<p>Once computed, the summary statistics are pushed to a central server which creates a PDF of the combined results. It is possible to view the output from the function by specifying <code>verbose = TRUE</code> in the method signature.</p>
+<p>For each of the four tables in the network, means and standard
+deviations are computed for continuous variables, and frequencies and
+percentages for categorical variables; these are tabulated over year for
+yearly- and monthly-repeated variables, and over trimester for trimester
+repeated variables.</p>
+<p>Once computed, the summary statistics are pushed to a central server
+which creates a PDF of the combined results. It is possible to view the
+output from the function by specifying <code>verbose = TRUE</code> in
+the method signature.</p>
 </div>
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
-<p>The quality control will be executed in the pipeline after uploading and importing the data into a DataSHIELD backend. However you can execute the flow seperatly as well.</p>
+<p>The quality control will be executed in the pipeline after uploading
+and importing the data into a DataSHIELD backend. However you can
+execute the flow seperatly as well.</p>
 <div class="section level3">
 <h3 id="for-armadillo">For Armadillo<a class="anchor" aria-label="anchor" href="#for-armadillo"></a>
 </h3>
@@ -200,7 +230,9 @@
 <span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  Assigned all <span class="fu">table</span> (QC <span class="ot">&lt;-</span> ...) [<span class="sc">==</span><span class="er">=====================================================</span>] <span class="dv">100</span>% <span class="sc">/</span> 1s</span>
 <span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Error: There are some DataSHIELD errors, list them with datashield.errors()</span></span></code></pre></div>
 <blockquote>
-<p>All of the measures are quality control based upon generic algorithems and with the help of the <a href="https://github.com/lifecycle-project/ds-helper" class="external-link">dsHelper</a> package.</p>
+<p>All of the measures are quality control based upon generic
+algorithems and with the help of the <a href="https://github.com/lifecycle-project/ds-helper" class="external-link">dsHelper</a>
+package.</p>
 </blockquote>
 </div>
 </div>
@@ -218,12 +250,12 @@
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by Sido Haakma, Angela Pinot de Moira, Maxime Cornet, Sebastian Rauschert.</p>
+<p>Developed by Mariska Slofstra, Sido Haakma, Angela Pinot de Moira, Maxime Cornet, Sebastian Rauschert.</p>
 </div>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dsUpload</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.6.1</span>
       </span>
     </div>
 
@@ -29,7 +29,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -72,33 +72,46 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">du.upload.beta</span><span class="op">(</span>
-  upload <span class="op">=</span> <span class="cn">TRUE</span>,
-  dict_name <span class="op">=</span> <span class="st">""</span>,
-  action <span class="op">=</span> <span class="fu">du.enum.action</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">ALL</span>,
-  data_input_path <span class="op">=</span> <span class="st">""</span>,
-  data_input_format <span class="op">=</span> <span class="fu">du.enum.input.format</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">CSV</span>,
-  database_name <span class="op">=</span> <span class="st">"opal_data"</span>,
-  run_mode <span class="op">=</span> <span class="fu">du.enum.run.mode</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">NORMAL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">du.upload.beta</span><span class="op">(</span></span>
+<span>  upload <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  dict_name <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  action <span class="op">=</span> <span class="fu">du.enum.action</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">ALL</span>,</span>
+<span>  data_input_path <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  data_input_format <span class="op">=</span> <span class="fu">du.enum.input.format</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">CSV</span>,</span>
+<span>  database_name <span class="op">=</span> <span class="st">"opal_data"</span>,</span>
+<span>  run_mode <span class="op">=</span> <span class="fu">du.enum.run.mode</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">NORMAL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>upload</dt>
 <dd><p>do we need to upload the DataSHIELD backend</p></dd>
+
+
 <dt>dict_name</dt>
 <dd><p>name of the dictionary located on Github usually something like this: diabetes/test_vars_01</p></dd>
+
+
 <dt>action</dt>
 <dd><p>action to be performed, can be 'reshape', 'populate' or 'all'</p></dd>
+
+
 <dt>data_input_path</dt>
 <dd><p>path to the to-be-reshaped data</p></dd>
+
+
 <dt>data_input_format</dt>
 <dd><p>format of the database to be reshaped. Can be 'CSV', 'STATA', or 'SAS'</p></dd>
+
+
 <dt>database_name</dt>
 <dd><p>is the name of the data backend of DataSHIELD, default = opal_data</p></dd>
+
+
 <dt>run_mode</dt>
 <dd><p>default = NORMAL, can be TEST and NON_INTERACTIIVE</p></dd>
+
 </dl></div>
 
   </div>
@@ -109,11 +122,11 @@
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Sido Haakma, Angela Pinot de Moira, Maxime Cornet, Sebastian Rauschert.</p>
+  <p></p><p>Developed by Mariska Slofstra, Sido Haakma, Angela Pinot de Moira, Maxime Cornet, Sebastian Rauschert.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>
