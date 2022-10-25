@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">dsUpload</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.6.1</span>
       </span>
     </div>
 
@@ -29,7 +29,7 @@
   <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -91,20 +91,20 @@
 <h3 id="for-windows-1">For Windows<a class="anchor" aria-label="anchor" href="#for-windows-1"></a></h3>
 <p>Goto <em>Start</em> –&gt; <em>Type ‘R’ within the Run field</em>. Click on <em>R x.x.x</em> to get to the commandline interface</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"installr"</span><span class="op">)</span> 
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://talgalili.github.io/installr/" class="external-link">installr</a></span><span class="op">)</span>
-
-<span class="fu">updateR</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"installr"</span><span class="op">)</span> </span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://talgalili.github.io/installr/" class="external-link">installr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">updateR</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>You will get a wizard, please choose all the defaults and proceed with the installation.</p>
 </div>
 <div class="section level3">
 <h3 id="for-mac-1">For Mac<a class="anchor" aria-label="anchor" href="#for-mac-1"></a></h3>
 <p>You can use <code>updateR</code>. Install it via the following commands:</p>
-<pre><code><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'devtools'</span><span class="op">)</span> <span class="co">#assuming it is not already installed</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span>
-<span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">'andreacirilloac/updateR'</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">updateR</span><span class="op">)</span>
-<span class="fu">updateR</span><span class="op">(</span>admin_password <span class="op">=</span> <span class="st">'Admin user password'</span><span class="op">)</span></code></pre>
+<pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'devtools'</span><span class="op">)</span> <span class="co">#assuming it is not already installed</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">'andreacirilloac/updateR'</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">updateR</span><span class="op">)</span></span>
+<span><span class="fu">updateR</span><span class="op">(</span>admin_password <span class="op">=</span> <span class="st">'Admin user password'</span><span class="op">)</span></span></code></pre>
 <blockquote>
 <p><strong>reference</strong>: for more information check: <a href="http://www.andreacirillo.com/2018/03/10/updater-package-update-r-version-with-a-function-on-mac-osx/" class="external-link uri">http://www.andreacirillo.com/2018/03/10/updater-package-update-r-version-with-a-function-on-mac-osx/</a></p>
 </blockquote>
@@ -152,9 +152,9 @@
 <h4 id="attributes-are-not-identical-across-measure-variables-they-will-be-dropped">Attributes are not identical across measure variables; they will be dropped<a class="anchor" aria-label="anchor" href="#attributes-are-not-identical-across-measure-variables-they-will-be-dropped"></a></h4>
 <p>When this message occurs it means the the types of the vectors concerning the yearly or monthly repeated measures are different. The reshape function will resolve this, but it is wise to check your dataset for these differences.</p>
 <p>For instance:</p>
-<pre><code><span class="va">weight_01</span> <span class="op">==</span> <span class="va">integer</span>
-<span class="va">...</span>
-<span class="va">wieght_04</span> <span class="op">==</span> <span class="va">decimal</span></code></pre>
+<pre><code><span><span class="va">weight_01</span> <span class="op">==</span> <span class="va">integer</span></span>
+<span><span class="va">...</span></span>
+<span><span class="va">wieght_04</span> <span class="op">==</span> <span class="va">decimal</span></span></code></pre>
 <div class="section level5">
 <h5 id="packages-wont-register-within-the-r-environment">Packages won’t register within the R-environment<a class="anchor" aria-label="anchor" href="#packages-wont-register-within-the-r-environment"></a></h5>
 <div class="section level6">
@@ -184,21 +184,21 @@
 <h4 id="the-url-protocol-is-not-set">The URL protocol is not set<a class="anchor" aria-label="anchor" href="#the-url-protocol-is-not-set"></a></h4>
 <p>When you do not specify the protocol in the URL.</p>
 <p>Incorrect:</p>
-<pre><code><span class="va">builder</span> <span class="op">&lt;-</span> <span class="fu">newDSLoginBuilder</span><span class="op">(</span><span class="op">)</span>
-<span class="fu">builder.append</span><span class="op">(</span>server <span class="op">=</span> <span class="st">"opal.cohort-example.org"</span><span class="op">)</span></code></pre>
+<pre><code><span><span class="va">builder</span> <span class="op">&lt;-</span> <span class="fu">newDSLoginBuilder</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">builder.append</span><span class="op">(</span>server <span class="op">=</span> <span class="st">"opal.cohort-example.org"</span><span class="op">)</span></span></code></pre>
 <p>Results in:</p>
 <pre><code>Error in curl::curl_fetch_memory(url, handle = handle) :
 Protocol "" not supported or disabled in libcurl</code></pre>
 <p>Correct:</p>
-<pre><code><span class="va">builder</span> <span class="op">&lt;-</span> <span class="fu">newDSLoginBuilder</span><span class="op">(</span><span class="op">)</span>
-<span class="fu">builder.append</span><span class="op">(</span>server <span class="op">=</span> <span class="st">"https://opal.cohort-example.org"</span><span class="op">)</span></code></pre>
+<pre><code><span><span class="va">builder</span> <span class="op">&lt;-</span> <span class="fu">newDSLoginBuilder</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">builder.append</span><span class="op">(</span>server <span class="op">=</span> <span class="st">"https://opal.cohort-example.org"</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="non-default-database-name">Non-default database name<a class="anchor" aria-label="anchor" href="#non-default-database-name"></a></h4>
 <p>When you receive the error below, you need to specify the <code>database_name</code> in the <code><a href="reference/du.upload.html">du.upload()</a></code> method.</p>
 <pre><code>Error: Client error: (404) Not Found; NoSuchDatabase: opal_data</code></pre>
 <p>Example:</p>
-<pre><code><span class="fu"><a href="reference/du.upload.html">du.upload</a></span><span class="op">(</span>database_name <span class="op">=</span> <span class="st">"example_database_name"</span>, <span class="va">.....</span><span class="op">)</span></code></pre>
+<pre><code><span><span class="fu"><a href="reference/du.upload.html">du.upload</a></span><span class="op">(</span>database_name <span class="op">=</span> <span class="st">"example_database_name"</span>, <span class="va">.....</span><span class="op">)</span></span></code></pre>
 <p>You can check the database name in the “Administration”-tab and then “Databases”. The second database has a name that you need to specify.</p>
 </div>
 <div class="section level4">
@@ -207,8 +207,8 @@ Protocol "" not supported or disabled in libcurl</code></pre>
 <pre><code>Error in read_fun(path = enc2native(normalizePath(path)), sheet_i = sheet,  :
   function 'Rcpp_precious_remove' not provided by package 'Rcpp'</code></pre>
 <p>Reinstalling can be done using the following code:</p>
-<pre><code><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"Rcpp"</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://www.rcpp.org" class="external-link">Rcpp</a></span><span class="op">)</span></code></pre>
+<pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"Rcpp"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.rcpp.org" class="external-link">Rcpp</a></span><span class="op">)</span></span></code></pre>
 </div>
 </div>
 </div>
@@ -224,11 +224,11 @@ Protocol "" not supported or disabled in libcurl</code></pre>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Sido Haakma, Angela Pinot de Moira, Maxime Cornet, Sebastian Rauschert.</p>
+  <p></p><p>Developed by Mariska Slofstra, Sido Haakma, Angela Pinot de Moira, Maxime Cornet, Sebastian Rauschert.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

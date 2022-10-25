@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dsUpload</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.6.1</span>
       </span>
     </div>
 
@@ -46,7 +46,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -97,7 +97,14 @@
 
     
     
-<p>The beta dictionaries are used to be able to initiate creation of dictonaries in the harmonisation process of new variables in a very early stage. As a PI you can manage and create new dictionaries which can be uploaded and tested by involved cohorts in a pilot phase of the project. Dictionaries can be changed and updated at any time and the network will be unaffected. After testing and approving the final beta dictionary the variables will be included in the main dictionaries and released when in the 6 months cycle.</p>
+<p>The beta dictionaries are used to be able to initiate creation of
+dictonaries in the harmonisation process of new variables in a very
+early stage. As a PI you can manage and create new dictionaries which
+can be uploaded and tested by involved cohorts in a pilot phase of the
+project. Dictionaries can be changed and updated at any time and the
+network will be unaffected. After testing and approving the final beta
+dictionary the variables will be included in the main dictionaries and
+released when in the 6 months cycle.</p>
 <div class="section level2">
 <h2 id="how-it-works">How it works<a class="anchor" aria-label="anchor" href="#how-it-works"></a>
 </h2>
@@ -113,14 +120,19 @@
 <div class="section level2">
 <h2 id="working-with-ds-beta-dictionaries">Working with ds-beta-dictionaries<a class="anchor" aria-label="anchor" href="#working-with-ds-beta-dictionaries"></a>
 </h2>
-<p>You need to ‘clone’ the repository on your own workingstation to be able to create new dictionaries. This means you get a copy of the directory on your own system. You can do this by executing the following command:</p>
+<p>You need to ‘clone’ the repository on your own workingstation to be
+able to create new dictionaries. This means you get a copy of the
+directory on your own system. You can do this by executing the following
+command:</p>
 <p><code>git clone https://github.com/lifecycle-project/ds-beta-dictionaries</code></p>
 <p>Now you have your own copy to work in.</p>
 </div>
 <div class="section level2">
 <h2 id="create-dictionaries">Create dictionaries<a class="anchor" aria-label="anchor" href="#create-dictionaries"></a>
 </h2>
-<p>Within the <em>dictionaries</em>-directory of the repository you need to create a dictionary for your study. This will result in a structure like:</p>
+<p>Within the <em>dictionaries</em>-directory of the repository you need
+to create a dictionary for your study. This will result in a structure
+like:</p>
 <ul>
 <li>ds-beta-dictionaries
 <ul>
@@ -145,8 +157,12 @@
 <li>trimester (1-3)</li>
 <li>yearly_rep (0-17)</li>
 </ul>
-<p>Then you need to create a dictionary based upon the variables you want to harmonise. To illustrate how you do this you can use the <a href="https://github.com/lifecycle-project/ds-beta-dictionaries/blob/master/dictionaries/example-dictionary/example-dictionary-non_rep.xlsx?raw=true" class="external-link">example</a> as a reference.</p>
-<p>When you finished writing the dictionary you need to commit and push them to the repository on Github. Please check the <a href="https://github.com/lifecycle-project/analysis-tutorials/blob/master/GIT-WORKFLOW.md" class="external-link">git-workflow</a> document to get the dictionaries exposed.</p>
+<p>Then you need to create a dictionary based upon the variables you
+want to harmonise. To illustrate how you do this you can use the <a href="https://github.com/lifecycle-project/ds-beta-dictionaries/blob/master/dictionaries/example-dictionary/example-dictionary-non_rep.xlsx?raw=true" class="external-link">example</a>
+as a reference.</p>
+<p>When you finished writing the dictionary you need to commit and push
+them to the repository on Github. Please check the <a href="https://github.com/lifecycle-project/analysis-tutorials/blob/master/GIT-WORKFLOW.md" class="external-link">git-workflow</a>
+document to get the dictionaries exposed.</p>
 </div>
 <div class="section level2">
 <h2 id="upload-dictionaries-and-data">Upload dictionaries and data<a class="anchor" aria-label="anchor" href="#upload-dictionaries-and-data"></a>
@@ -159,50 +175,54 @@
 <div class="section level3">
 <h3 id="upload-to-armadillo">Upload to Armadillo<a class="anchor" aria-label="anchor" href="#upload-to-armadillo"></a>
 </h3>
-<p>When a first version of a beta dictionary is available, you can upload it to the Armadillo with the following code:</p>
+<p>When a first version of a beta dictionary is available, you can
+upload it to the Armadillo with the following code:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">login_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>
-  server <span class="op">=</span> <span class="st">"https://armadillo.test.molgenis.org"</span>, 
-  storage <span class="op">=</span> <span class="st">"https://armadillo-minio.test.molgenis.org"</span>, 
-  driver <span class="op">=</span> <span class="st">"ArmadilloDriver"</span>
-<span class="op">)</span>
-
-<span class="fu"><a href="../reference/du.login.html">du.login</a></span><span class="op">(</span><span class="va">login_data</span><span class="op">)</span>
-<span class="co">#&gt;   Login to: "https://armadillo.test.molgenis.org"</span>
-<span class="co">#&gt; [1] "We're opening a browser so you can log in with code 4G79WW"</span>
-<span class="co">#&gt;   Logged on to: "https://armadillo.test.molgenis.org"</span>
-  
-<span class="fu"><a href="../reference/du.upload.beta.html">du.upload.beta</a></span><span class="op">(</span>
-  dict_name <span class="op">=</span> <span class="st">"example-dictionary"</span>, 
-  data_input_path <span class="op">=</span> <span class="st">"/Users/sido/VisualStudioCodeProjects/ds-beta-dictionaries/data/example-dictionary/beta_dict_generated_data.csv"</span>,
-  data_version <span class="op">=</span> <span class="st">"1_0"</span><span class="op">)</span>
-<span class="co">#&gt; Error in du.upload.beta(dict_name = "example-dictionary", data_input_path = "/Users/sido/VisualStudioCodeProjects/ds-beta-dictionaries/data/example-dictionary/beta_dict_generated_data.csv", : unused argument (data_version = "1_0")</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">login_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  server <span class="op">=</span> <span class="st">"https://armadillo.test.molgenis.org"</span>, </span>
+<span>  storage <span class="op">=</span> <span class="st">"https://armadillo-minio.test.molgenis.org"</span>, </span>
+<span>  driver <span class="op">=</span> <span class="st">"ArmadilloDriver"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/du.login.html">du.login</a></span><span class="op">(</span><span class="va">login_data</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   Login to: "https://armadillo.test.molgenis.org"</span></span>
+<span><span class="co">#&gt; [1] "We're opening a browser so you can log in with code 4G79WW"</span></span>
+<span><span class="co">#&gt;   Logged on to: "https://armadillo.test.molgenis.org"</span></span>
+<span>  </span>
+<span><span class="fu"><a href="../reference/du.upload.beta.html">du.upload.beta</a></span><span class="op">(</span></span>
+<span>  dict_name <span class="op">=</span> <span class="st">"example-dictionary"</span>, </span>
+<span>  data_input_path <span class="op">=</span> <span class="st">"/Users/sido/VisualStudioCodeProjects/ds-beta-dictionaries/data/example-dictionary/beta_dict_generated_data.csv"</span>,</span>
+<span>  data_version <span class="op">=</span> <span class="st">"1_0"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in du.upload.beta(dict_name = "example-dictionary", data_input_path = "/Users/sido/VisualStudioCodeProjects/ds-beta-dictionaries/data/example-dictionary/beta_dict_generated_data.csv", : unused argument (data_version = "1_0")</span></span></code></pre></div>
 <p>You will be able to check the data in the Armadillo immediately.</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="upload-to-opal">Upload to Opal<a class="anchor" aria-label="anchor" href="#upload-to-opal"></a>
 </h2>
-<p>When a first version of a beta dictionary is available, you can upload it to Opal with the following code:</p>
+<p>When a first version of a beta dictionary is available, you can
+upload it to Opal with the following code:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">login_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>
-  server <span class="op">=</span> <span class="st">"https://opal.edge.molgenis.org"</span>, 
-  password <span class="op">=</span> <span class="st">"ouf0uPh6"</span>, 
-  driver <span class="op">=</span> <span class="st">"OpalDriver"</span>
-<span class="op">)</span>
-
-<span class="fu"><a href="../reference/du.login.html">du.login</a></span><span class="op">(</span><span class="va">login_data</span><span class="op">)</span>
-<span class="co">#&gt;   Login to: "https://opal.edge.molgenis.org"</span>
-<span class="co">#&gt;   Logged on to: "https://opal.edge.molgenis.org"</span>
-  
-<span class="fu"><a href="../reference/du.upload.beta.html">du.upload.beta</a></span><span class="op">(</span>
-  dict_name <span class="op">=</span> <span class="st">"example-dictionary"</span>, 
-  data_input_path <span class="op">=</span> <span class="st">"/Users/sido/VisualStudioCodeProjects/ds-beta-dictionaries/data/example-dictionary/beta_dict_generated_data.csv"</span>,
-  data_version <span class="op">=</span> <span class="st">"1_0"</span><span class="op">)</span>
-<span class="co">#&gt; Error in du.upload.beta(dict_name = "example-dictionary", data_input_path = "/Users/sido/VisualStudioCodeProjects/ds-beta-dictionaries/data/example-dictionary/beta_dict_generated_data.csv", : unused argument (data_version = "1_0")</span></code></pre></div>
-<p>After this you need to manually upload the data just like you would in a released data upload.</p>
+<code class="sourceCode R"><span><span class="va">login_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  server <span class="op">=</span> <span class="st">"https://opal.edge.molgenis.org"</span>, </span>
+<span>  password <span class="op">=</span> <span class="st">"ouf0uPh6"</span>, </span>
+<span>  driver <span class="op">=</span> <span class="st">"OpalDriver"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/du.login.html">du.login</a></span><span class="op">(</span><span class="va">login_data</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   Login to: "https://opal.edge.molgenis.org"</span></span>
+<span><span class="co">#&gt;   Logged on to: "https://opal.edge.molgenis.org"</span></span>
+<span>  </span>
+<span><span class="fu"><a href="../reference/du.upload.beta.html">du.upload.beta</a></span><span class="op">(</span></span>
+<span>  dict_name <span class="op">=</span> <span class="st">"example-dictionary"</span>, </span>
+<span>  data_input_path <span class="op">=</span> <span class="st">"/Users/sido/VisualStudioCodeProjects/ds-beta-dictionaries/data/example-dictionary/beta_dict_generated_data.csv"</span>,</span>
+<span>  data_version <span class="op">=</span> <span class="st">"1_0"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in du.upload.beta(dict_name = "example-dictionary", data_input_path = "/Users/sido/VisualStudioCodeProjects/ds-beta-dictionaries/data/example-dictionary/beta_dict_generated_data.csv", : unused argument (data_version = "1_0")</span></span></code></pre></div>
+<p>After this you need to manually upload the data just like you would
+in a released data upload.</p>
 <blockquote>
-<p>Be advised: the data is now placed into directories on the target system, in this case a “beta” directory</p>
+<p>Be advised: the data is now placed into directories on the target
+system, in this case a “beta” directory</p>
 </blockquote>
 </div>
   </div>
@@ -219,12 +239,12 @@
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by Sido Haakma, Angela Pinot de Moira, Maxime Cornet, Sebastian Rauschert.</p>
+<p>Developed by Mariska Slofstra, Sido Haakma, Angela Pinot de Moira, Maxime Cornet, Sebastian Rauschert.</p>
 </div>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>

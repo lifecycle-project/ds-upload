@@ -32,19 +32,19 @@ du.reshape <- function(upload = TRUE, project, data_version, input_format, dict_
   nonrep_data <- du.reshape.generate.non.repeated(
     data, dict_kind
   )
-  if (exists("nonrep_data")) {
+  if (!is.null(nonrep_data)) {
     write_csv(nonrep_data, paste0(getwd(), "/", file_name_nonrep, ".csv"), na = "")
   }
   yearlyrep_data <- du.reshape.generate.yearly.repeated(
    data, dict_kind
   )
-  if (exists("yearlyrep_data")) {
+  if (!is.null(yearlyrep_data)) {
     write_csv(yearlyrep_data, paste0(getwd(), "/", file_name_yearly, ".csv"), na = "")
   } 
   monthlyrep_data <- du.reshape.generate.monthly.repeated(
    data, dict_kind
   )
-  if (exists('monthlyrep_data')) {
+  if (!is.null(monthlyrep_data)) {
     write_csv(monthlyrep_data, paste0(getwd(), "/", file_name_monthly, ".csv"), na = "")
   }
 
@@ -53,7 +53,7 @@ du.reshape <- function(upload = TRUE, project, data_version, input_format, dict_
     weeklyrep_data <- du.reshape.generate.weekly.repeated(
       data, dict_kind
     )
-    if (exists("weeklyrep_data")) {
+    if (!is.null(weeklyrep_data)) {
       write_csv(weeklyrep_data, paste0(getwd(), "/", file_name_weekly, ".csv"), na = "")
       weeklyrep_metadata <- du.retrieve.full.dict(du.enum.table.types()$WEEKLY, dict_kind)
       weeklyrep_data <- du.add.metadata(weeklyrep_data, weeklyrep_metadata)
@@ -75,7 +75,7 @@ du.reshape <- function(upload = TRUE, project, data_version, input_format, dict_
     trimester_data <- du.reshape.generate.trimesterly.repeated(
       data, dict_kind
     )
-    if (exists("trimester_data")) {
+    if (!is.null(trimester_data)) {
       write_csv(trimester_data, paste0(getwd(), "/", file_name_trimester, ".csv"), na = "")
       trimester_metadata <- du.retrieve.full.dict(du.enum.table.types()$TRIMESTER, dict_kind)
       trimester_data <- du.add.metadata(trimester_data, trimester_metadata)
@@ -94,9 +94,9 @@ du.reshape <- function(upload = TRUE, project, data_version, input_format, dict_
 
   if (upload) {
     if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
-      if (exists("nonrep_data")) du.opal.upload(dict_kind, file_name_nonrep)
-      if (exists("yearlyrep_data")) du.opal.upload(dict_kind, file_name_yearly)
-      if (exists("monthlyrep_data")){ du.opal.upload(dict_kind, file_name_monthly) }
+      if (!is.null(nonrep_data)) du.opal.upload(dict_kind, file_name_nonrep)
+      if (!is.null(yearlyrep_data)) du.opal.upload(dict_kind, file_name_yearly)
+      if (!is.null(monthlyrep_data)){ du.opal.upload(dict_kind, file_name_monthly) }
     }
     if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
       if (!is.null(nonrep_data)) { 
