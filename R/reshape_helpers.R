@@ -208,7 +208,7 @@ du.reshape.generate.yearly.repeated <- function(data, dict_kind) {
   matched_columns <- du.match.columns(colnames(data), variables_yearly_repeated_dict$name)
   yearly_repeated_measures <- data[matched_columns]
 
-  if (nrow(du.data.frame.remove.all.na.rows(yearly_repeated_measures)) <= 0 || ncol(yearly_repeated_measures) <= 0) {
+  if (ncol(yearly_repeated_measures) <= 0 || nrow(du.data.frame.remove.all.na.rows(yearly_repeated_measures)) <= 0) {
     message("[WARNING] No yearly-repeated measures found in this set")
     return()
   }
@@ -280,7 +280,7 @@ du.reshape.generate.monthly.repeated <- function(data, dict_kind) {
   matched_columns <- du.match.columns(colnames(data), variables_monthly_repeated_dict$name)
   monthly_repeated_measures <- data[, matched_columns]
 
-  if (nrow(du.data.frame.remove.all.na.rows(monthly_repeated_measures)) <= 0 || ncol(monthly_repeated_measures) <= 0) {
+  if (ncol(monthly_repeated_measures) <= 0 || nrow(du.data.frame.remove.all.na.rows(monthly_repeated_measures)) <= 0) {
     message("[WARNING] No monthly-repeated measures found in this set")
     return()
   }
@@ -354,7 +354,7 @@ du.reshape.generate.weekly.repeated <- function(data, dict_kind) {
   matched_columns <- du.match.columns(colnames(data), variables_weekly_repeated_dict$name)
   weekly_repeated_measures <- data[, matched_columns]
 
-  if (nrow(du.data.frame.remove.all.na.rows(weekly_repeated_measures)) <= 0 || ncol(weekly_repeated_measures) <= 0) {
+  if (ncol(weekly_repeated_measures) <= 0 || nrow(du.data.frame.remove.all.na.rows(weekly_repeated_measures)) <= 0) {
     message("[WARNING] No weekly-repeated measures found in this set")
     return()
   }
@@ -433,7 +433,7 @@ du.reshape.generate.trimesterly.repeated <- function(data, dict_kind) {
   matched_columns <- du.match.columns(colnames(data), variables_trimesterly_repeated_dict$name)
   trimesterly_repeated_measures <- data[, matched_columns]
 
-  if (nrow(du.data.frame.remove.all.na.rows(trimesterly_repeated_measures)) <= 0 || ncol(trimesterly_repeated_measures) <= 0) {
+  if (ncol(trimesterly_repeated_measures) <= 0 || nrow(du.data.frame.remove.all.na.rows(trimesterly_repeated_measures)) <= 0) {
     message("[WARNING] No trimesterly-repeated measures found in this set")
     return()
   }
