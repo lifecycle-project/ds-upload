@@ -74,12 +74,19 @@ du.upload <- function(dict_version = "2_1", data_version = "1_0", dict_kind = du
       "Version: [ ", dict_version, " ] is not available in published data dictionaries. Possible dictionaries are: ",
       paste(ds_upload.globals$dictionaries_chemicals, collapse = ", ")
     )
-  } else {
+  } else if (dict_version != "" && dict_kind == du.enum.dict.kind()$OUTCOME_ATH && !(dict_version %in% ds_upload.globals$dictionaries_outcome_ath)) {
+    stop(
+      "Version: [ ", dict_version, " ] is not available in published data dictionaries. Possible dictionaries are: ",
+      paste(ds_upload.globals$dictionaries_chemicals, collapse = ", ")
+    )
+  }else {
     if (dict_version == "" && dict_kind == du.enum.dict.kind()$CORE) {
       dict_version <- "2_1"
     } else if (dict_version == "" && dict_kind == du.enum.dict.kind()$OUTCOME) {
       dict_version <- "1_1"
     } else if (dict_version == "" && dict_kind == du.enum.dict.kind()$CHEMICALS) {
+      dict_version <- "1_0"
+    } else if (dict_version == "" && dict_kind == du.enum.dict.kind()$OUTCOME_ATH) {
       dict_version <- "1_0"
     } else if (dict_version == "" && dict_kind == "") {
       stop("No dictionary version or kind is specified. Program is terminated.")
