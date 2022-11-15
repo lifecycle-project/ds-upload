@@ -110,7 +110,9 @@ du.populate.dict.versions <- function(dict_kind, dict_version) {
     ds_upload.globals$dictionaries_outcome <- versions
   } else if (dict_kind == du.enum.dict.kind()$CHEMICALS) {
     ds_upload.globals$dictionaries_chemicals <- versions
-  } else {
+  } else if (dict_kind == du.enum.dict.kind()$OUTCOME_ATH) {
+    ds_upload.globals$dictionaries_outcome_ath <- versions
+  }else {
     stop("Dictionary not supported.")
   }
 }
