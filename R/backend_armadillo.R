@@ -2,32 +2,20 @@
 #'
 #' @param login_data contains the server credentials to authenticate in Armadillo
 #'
-#' @importFrom MolgenisArmadillo armadillo.get_token armadillo.assume_role_with_web_identity
-#'
 #' @return jwt token to login to Armadillo
 #'
 #' @noRd
 du.armadillo.login <- function(login_data) {
   requireNamespace("MolgenisArmadillo")
-  token <- MolgenisArmadillo::armadillo.get_token(server = as.character(login_data$server))
-  MolgenisArmadillo::armadillo.assume_role_with_web_identity(
-    token = token,
-    server = as.character(login_data$storage)
-  )
+  token <- MolgenisArmadillo::armadillo.login(login_data$server)
   return(token)
 }
 
 #' List projects
 #'
-#' @importFrom MolgenisArmadillo armadillo.list_projects armadillo.assume_role_with_web_identity
-#'
 #' @noRd
 du.armadillo.list.projects <- function() {
   requireNamespace("MolgenisArmadillo")
-  MolgenisArmadillo::armadillo.assume_role_with_web_identity(
-    token = as.character(ds_upload.globals$login_data$token),
-    server = as.character(ds_upload.globals$login_data$storage)
-  )
   projects <- armadillo.list_projects()
   return(projects)
 }
@@ -36,15 +24,9 @@ du.armadillo.list.projects <- function() {
 #'
 #' @param project project to limit the scope
 #'
-#' @importFrom MolgenisArmadillo armadillo.list_tables armadillo.assume_role_with_web_identity
-#'
 #' @noRd
 du.armadillo.list.tables <- function(project) {
   requireNamespace("MolgenisArmadillo")
-  MolgenisArmadillo::armadillo.assume_role_with_web_identity(
-    token = as.character(ds_upload.globals$login_data$token),
-    server = as.character(ds_upload.globals$login_data$storage)
-  )
   tables <- armadillo.list_tables(project)
   return(tables)
 }
@@ -58,11 +40,7 @@ du.armadillo.list.tables <- function(project) {
 #' @noRd
 du.armadillo.create.project <- function(project) {
   requireNamespace("MolgenisArmadillo")
-  MolgenisArmadillo::armadillo.assume_role_with_web_identity(
-    token = as.character(ds_upload.globals$login_data$token),
-    server = as.character(ds_upload.globals$login_data$storage)
-  )
-  
+
   projects <- armadillo.list_projects()
 
   if (project %in% projects) {
@@ -87,11 +65,6 @@ du.armadillo.create.project <- function(project) {
 #' @noRd
 du.armadillo.import <- function(project, data, dict_version, dict_kind, data_version, table_type) {
   requireNamespace("MolgenisArmadillo")
-  MolgenisArmadillo::armadillo.assume_role_with_web_identity(
-    token = as.character(ds_upload.globals$login_data$token),
-    server = as.character(ds_upload.globals$login_data$storage)
-  )
-
   if (!is.null(data)) {
     project_elements <- str_split(project, "_")
 

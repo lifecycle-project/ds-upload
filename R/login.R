@@ -10,8 +10,7 @@ ds_upload.globals <- new.env()
 #' \dontrun{
 #'
 #' login_data <- data.frame(
-#'   server = "https://armadillo.dev.molgenis.org",
-#'   storage = "https://armadillo-minio.dev.molgenis.org",
+#'   server = "https://armadillo.dev.molgenis.org"
 #'   username = "admin",
 #'   password = "admin",
 #'   insecure = FALSE,
@@ -58,7 +57,7 @@ du.login <- function(login_data) {
     login_data$token <- token
   }
   message(paste("  Logged on to: \"", login_data$server, "\"", sep = ""))
-
+  
   ds_upload.globals$login_data <- login_data
 }
 
