@@ -28,7 +28,7 @@ ds_upload.globals <- new.env()
 #' }
 #'
 #' @export
-du.upload <- function(dict_version = "2_1", data_version = "1_0", dict_kind = du.enum.dict.kind()$CORE,
+du.upload <- function(dict_version, data_version = "1_0", dict_kind,
                       cohort_id, database_name = "opal_data", data_input_format = du.enum.input.format()$CSV, data_input_path,
                       action = du.enum.action()$ALL, upload = TRUE, run_mode = du.enum.run.mode()$NORMAL, override_project = NULL) {
   message("######################################################")
@@ -37,7 +37,7 @@ du.upload <- function(dict_version = "2_1", data_version = "1_0", dict_kind = du
   
   du.check.package.version()
   du.check.session(upload)
-  du.populate.dict.versions(dict_kind, dict_version)
+  du.populate.dict.versions()
   
   ds_upload.globals$run_mode <- run_mode
 
@@ -49,7 +49,7 @@ du.upload <- function(dict_version = "2_1", data_version = "1_0", dict_kind = du
   } else {
     if (!(cohort_id %in% du.enum.cohorts()) & run_mode != du.enum.run.mode()$TEST) {
       stop(
-        "Cohort: [ ", cohort_id, " ] is not a known cohort in the netwprk Please choose from: [ ",
+        "Cohort: [ ", cohort_id, " ] is not a known cohort in the network. Please choose from: [ ",
         paste(du.enum.cohorts(), collapse = ", "), " ]"
       )
     }
@@ -59,32 +59,8 @@ du.upload <- function(dict_version = "2_1", data_version = "1_0", dict_kind = du
     data_version <- readline("- Specify version of cohort data upload (e.g. 1_0): ")
   }
 
-  if (dict_version != "" && dict_kind == du.enum.dict.kind()$CORE && !(dict_version %in% ds_upload.globals$dictionaries_core)) {
-    stop(
-      "Version: [ ", dict_version, " ] is not available in published data dictionaries. Possible dictionaries are: ",
-      paste(ds_upload.globals$dictionaries_core, collapse = ", ")
-    )
-  } else if (dict_version != "" && dict_kind == du.enum.dict.kind()$OUTCOME && !(dict_version %in% ds_upload.globals$dictionaries_outcome)) {
-    stop(
-      "Version: [ ", dict_version, " ] is not available in published data dictionaries. Possible dictionaries are: ",
-      paste(ds_upload.globals$dictionaries_outcome, collapse = ", ")
-    )
-  } else if (dict_version != "" && dict_kind == du.enum.dict.kind()$CHEMICALS && !(dict_version %in% ds_upload.globals$dictionaries_chemicals)) {
-    stop(
-      "Version: [ ", dict_version, " ] is not available in published data dictionaries. Possible dictionaries are: ",
-      paste(ds_upload.globals$dictionaries_chemicals, collapse = ", ")
-    )
-  } else {
-    if (dict_version == "" && dict_kind == du.enum.dict.kind()$CORE) {
-      dict_version <- "2_1"
-    } else if (dict_version == "" && dict_kind == du.enum.dict.kind()$OUTCOME) {
-      dict_version <- "1_1"
-    } else if (dict_version == "" && dict_kind == du.enum.dict.kind()$CHEMICALS) {
-      dict_version <- "1_0"
-    } else if (dict_version == "" && dict_kind == "") {
-      stop("No dictionary version or kind is specified. Program is terminated.")
-    }
-  }
+  dict_version <- du.validate.dict.version(dict_kind, dict_version)
+  
   if (data_version == "" || !du.check.version(data_version)) {
     stop("No data version is specified or the data version does not match syntax: 'number_number'! Program is terminated.")
   }
@@ -133,4 +109,25 @@ du.upload <- function(dict_version = "2_1", data_version = "1_0", dict_kind = du
       du.clean.temp.workdir(upload, workdirs)
     }
   )
+}
+
+du.validate.dict.version <- function(dict_kind, dict_version) {
+  if (missing(dict_kind) || du.is.empty(dict_kind)) {
+    stop("You must specify a dictionary kind")
+  }
+  
+  if (!missing(dict_version) && !du.is.empty(dict_version))
+  {
+    if (!(dict_version %in% ds_upload.globals$dictionaries[[dict_kind]])){
+      stop(
+        "Version: [ ", dict_version, " ] is not available in published data dictionaries for [ ", dict_kind, " ]. Possible dictionaries are: ",
+        paste(ds_upload.globals$dictionaries[[dict_kind]], collapse = ", ")
+      )
+    }
+  } else {
+    latest_version_index <- length(ds_upload.globals$dictionaries[[dict_kind]])
+    latest_version <- ds_upload.globals$dictionaries[[dict_kind]][latest_version_index]
+    message(" * No dictionary version specified. Using latest: [ ", latest_version, " ]")
+    latest_version
+  }
 }
