@@ -25,12 +25,19 @@ du.reshape <- function(upload = TRUE, project, data_version, input_format, dict_
   
   if (upload && driver == du.enum.backends()$ARMADILLO) {
     for (table_type in names(reshaped_data)) {
-      du.upload.to.armadillo(project, reshaped_data[[table_type]], dict_kind, dict_version, data_version, table_type)
+      du.upload.to.armadillo(project = project, 
+                             data = reshaped_data[[table_type]], 
+                             dict_kind = dict_kind, 
+                             dict_version = dict_version, 
+                             data_version = data_version, 
+                             table_type = table_type)
     }
   } else if (upload && driver == du.enum.backends()$OPAL) {
     file_names <- du.create.file.names(data_version)
     for (table_type in names(reshaped_data)) {
-      du.upload.to.opal(data = reshaped_data[[table_type]], file_name = file_names[table_type], dict_kind = dict_kind)
+      du.upload.to.opal(data = reshaped_data[[table_type]], 
+                        file_name = file_names[table_type], 
+                        dict_kind = dict_kind)
     }
   } else if (!upload) {
     file_names <- du.create.file.names(data_version)

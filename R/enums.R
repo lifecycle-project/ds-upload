@@ -14,7 +14,7 @@ du.enum.cohorts <- function() {
 #'
 #' @noRd
 du.enum.table.types <- function() {
-  list(NONREP = "non_rep", MONTHLY = "monthly_rep", YEARLY = "yearly_rep", WEEKLY = "weekly_rep", TRIMESTER = "trimesterly_rep")
+  list(NONREP = "non_rep", WEEKLY = "weekly_rep", MONTHLY = "monthly_rep", TRIMESTER = "trimester_rep", YEARLY = "yearly_rep")
 }
 
 #' Supported input formats
