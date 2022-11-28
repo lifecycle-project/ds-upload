@@ -71,13 +71,14 @@ du.reshape.data <- function(data, dict_kind) {
 
 #' @noRd
 du.create.file.names <- function(data_version) {
-  prefix <- format(Sys.time(), "%Y-%m-%d_%H-%M-%S")
+  prefix <- paste0(format(Sys.time(), "%Y-%m-%d_%H-%M-%S"), "_", data_version, "_")
+  
   file_names <- c(
-    paste0(prefix, "_", data_version, "_", "non_repeated_measures"),
-    paste0(prefix, "_", data_version, "_", "weekly_repeated_measures"),
-    paste0(prefix, "_", data_version, "_", "monthly_repeated_measures"),
-    paste0(prefix, "_", data_version, "_", "trimesterly_repeated_measures"),
-    paste0(prefix, "_", data_version, "_", "yearly_repeated_measures")
+    paste0(prefix, "non_repeated_measures"),
+    paste0(prefix, "weekly_repeated_measures"),
+    paste0(prefix, "monthly_repeated_measures"),
+    paste0(prefix, "trimesterly_repeated_measures"),
+    paste0(prefix, "yearly_repeated_measures")
   )
   names(file_names) <- du.enum.table.types()
   
