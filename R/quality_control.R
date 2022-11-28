@@ -36,6 +36,8 @@ du.quality.control <- function(project, tableType = "", data_version = NULL, ver
       token = as.character(ds_upload.globals$login_data$token)
     )
   }
+  
+  if (is.null(data_version)) stop("No data_version provided")
 
   if (!missing(project)) {
     projects <- data.frame(name = project)
@@ -63,25 +65,25 @@ du.quality.control <- function(project, tableType = "", data_version = NULL, ver
             tables_to_assign <- paste0(project, "/", table)
           }
 
-          if (grepl(du.enum.table.types()$NONREP, table) && (!is.null(data_version) & grepl(data_version, table)) & (tableType == du.enum.table.types()$NONREP | tableType == "")) {
+          if (grepl(du.enum.table.types()$NONREP, table) && grepl(data_version, table) && (tableType == du.enum.table.types()$NONREP | tableType == "")) {
             message(paste0(" * Starting with: ", project, " - ", table))
             conns <- DSI::datashield.login(logins = builder$build(), assign = FALSE)
             DSI::datashield.assign.table(conns = conns, table = tables_to_assign, symbol = qc_dataframe_symbol)
             qc.non.repeated(conns, qc_dataframe_symbol, verbose)
             DSI::datashield.logout(conns)
-          } else if(grepl(du.enum.table.types()$YEARLY, table) && (!is.null(data_version) & grepl(data_version, table)) & (tableType == du.enum.table.types()$YEARLY | tableType == "")) {
+          } else if(grepl(du.enum.table.types()$YEARLY, table) && grepl(data_version, table) && (tableType == du.enum.table.types()$YEARLY | tableType == "")) {
             message(paste0(" * Starting with: ", project, " - ", table))
             conns <- DSI::datashield.login(logins = builder$build(), assign = FALSE)
             DSI::datashield.assign.table(conns = conns, table = tables_to_assign, symbol = qc_dataframe_symbol)
             qc.yearly.repeated(conns, qc_dataframe_symbol, verbose)
             DSI::datashield.logout(conns)
-          } else if (grepl(du.enum.table.types()$MONTHLY, table) && (!is.null(data_version) & grepl(data_version, table)) & (tableType == du.enum.table.types()$MONTHLY | tableType == "")) {
+          } else if (grepl(du.enum.table.types()$MONTHLY, table) && grepl(data_version, table) && (tableType == du.enum.table.types()$MONTHLY | tableType == "")) {
             message(paste0(" * Starting with: ", project, " - ", table))
             conns <- DSI::datashield.login(logins = builder$build(), assign = FALSE)
             DSI::datashield.assign.table(conns = conns, table = tables_to_assign, symbol = qc_dataframe_symbol)
             qc.monthly.repeated(conns, qc_dataframe_symbol, verbose)
             DSI::datashield.logout(conns)
-          } else if (grepl(du.enum.table.types()$TRIMESTER, table) && (!is.null(data_version) & grepl(data_version, table)) & (tableType == du.enum.table.types()$TRIMESTER | tableType == "")) {
+          } else if (grepl(du.enum.table.types()$TRIMESTER, table) && grepl(data_version, table) && (tableType == du.enum.table.types()$TRIMESTER | tableType == "")) {
             message(paste0(" * Starting with: ", project, " - ", table))
             conns <- DSI::datashield.login(logins = builder$build(), assign = FALSE)
             DSI::datashield.assign.table(conns = conns, table = tables_to_assign, symbol = qc_dataframe_symbol)
