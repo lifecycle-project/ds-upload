@@ -6,7 +6,7 @@
 \usage{
 du.quality.control(
   project,
-  tableType = du.enum.table.types()$ALL,
+  tableType = "",
   data_version = NULL,
   verbose = FALSE
 )
@@ -14,7 +14,7 @@ du.quality.control(
 \arguments{
 \item{project}{specify project you want to perform quality control on}
 
-\item{tableType}{limit the tables to run (can be non_rep, yearly_rep, monthly_rep, weekly_rep or trimester)}
+\item{tableType}{limit the tables to run (can be non_rep, yearly_rep, monthly_rep, weekly_rep or trimesterly_rep)}
 
 \item{data_version}{data version of the table}
 
