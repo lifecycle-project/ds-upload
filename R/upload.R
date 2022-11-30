@@ -60,7 +60,7 @@ du.upload <- function(dict_version, data_version = "1_0", dict_kind,
   }
 
   dict_version <- du.validate.dict.version(dict_kind, dict_version)
-  
+
   if (data_version == "" || !du.check.version(data_version)) {
     stop("No data version is specified or the data version does not match syntax: 'number_number'! Program is terminated.")
   }

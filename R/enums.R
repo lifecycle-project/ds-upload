@@ -35,7 +35,7 @@ du.enum.action <- function() {
 #'
 #' @noRd
 du.enum.dict.kind <- function() {
-  list(CORE = "core", CHEMICALS = "chemicals_ath", OUTCOME = "outcome", BETA = "beta")
+  list(CORE = "core", CHEMICALS = "chemicals_ath", OUTCOME = "outcome", BETA = "beta", OUTCOME_ATH = "outcome_ath")
 }
 
 #' Projects that are containing dictionaries. Repositories containing these dictionaries should be:

@@ -1,6 +1,6 @@
 Package: dsUpload
 Title: Upload Functions for DataSHIELD Backends
-Version: 4.6.1
+Version: 4.6.2
 Authors@R: 
   c(person(given = "Mariska",
       family = "Slofstra",
@@ -77,4 +77,4 @@ Additional_repositories:
 VignetteBuilder: knitr
 License: GPL-3
 Encoding: UTF-8
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.2

@@ -10,3 +10,5 @@
 ^docs$
 ^pkgdown$
 ^\.gitignore$
+^doc$
+^Meta$
