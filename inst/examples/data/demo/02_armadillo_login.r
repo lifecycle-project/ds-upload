@@ -27,9 +27,8 @@ du.upload(
   dict_kind = "outcome_ath",
   data_version = "1_0",
   data_input_format = "CSV",
-  data_input_path = "/home/gcc/Documents/git/ds-upload/inst/examples/data/demo/demo-athlete-outcome.csv",
+  data_input_path = "demo-athlete-outcome-mod.csv",
   action = "all",
   run_mode = "NORMAL",
-  upload = TRUE,
-  #database_name = "mysqldb/mongodb"
+  upload = TRUE
 )
