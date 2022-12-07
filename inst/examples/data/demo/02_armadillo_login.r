@@ -21,14 +21,28 @@ du.login(login_data = login_data)
 # If everything went as planned you should see the message:
 # 'Device login, Successfully connected device'
 
+# upload the data
+# these are the outcome_ath variables
 du.upload(
   cohort_id = "inma",
   dict_version = "1_0",
   dict_kind = "outcome_ath",
   data_version = "1_0",
   data_input_format = "CSV",
-  data_input_path = "demo-athlete-outcome-mod.csv",
+  data_input_path = "PATH_TO_FILE/demo-athlete-outcome-minimal.csv",
   action = "all",
   run_mode = "NORMAL",
   upload = TRUE
 )
+
+# You see a warning message:
+# [WARNING] Variable dropped because completely missing: [ child_id ] 
+# Ignore this and enter y to proceed
+
+# Hopefully you see this message:
+# ######################################################
+# Converting and import successfully finished         
+# ######################################################
+# Enter n to skip the quality control
+#
+# Your data has been uploaded, next step is to confirm: 04_check_data_armadillo.r
