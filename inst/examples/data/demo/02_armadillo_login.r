@@ -23,13 +23,16 @@ du.login(login_data = login_data)
 
 # upload the data
 # these are the outcome_ath variables
+#
+# See which dictionaries are available:
+# https://github.com/lifecycle-project/ds-dictionaries
 du.upload(
   cohort_id = "inma",
   dict_version = "1_0",
   dict_kind = "outcome_ath",
   data_version = "1_0",
   data_input_format = "CSV",
-  data_input_path = "PATH_TO_FILE/demo-athlete-outcome-minimal.csv",
+  data_input_path = "/PATH-TO_FILE/demo-athlete-outcome.csv",
   action = "all",
   run_mode = "NORMAL",
   upload = TRUE
