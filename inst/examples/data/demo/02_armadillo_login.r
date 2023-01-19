@@ -3,8 +3,8 @@ library(dsUpload)
 # Create a data.frame object 'login_data' that holds the information about the 
 # armadillo server and armadillo minio server (on the latter the data is saved)
 login_data <- data.frame(
-  server = "https://armadillo.test.molgenis.org",
-  storage = "https://armadillo-minio.test.molgenis.org",
+  server = "https://armadillo2-demo.molgenis.net",
+  storage = "https://armadillo2-demo-storage.molgenis.net",
   driver = "ArmadilloDriver"
 )
 # login to the Armadillo server
@@ -32,7 +32,7 @@ du.upload(
   dict_kind = "outcome_ath",
   data_version = "1_0",
   data_input_format = "CSV",
-  data_input_path = "/PATH-TO_FILE/demo-athlete-outcome.csv",
+  data_input_path = "PATH_TO_FILE/demo-athlete-outcome.csv",
   action = "all",
   run_mode = "NORMAL",
   upload = TRUE

@@ -7,7 +7,7 @@ library(dsBaseClient)
 library(DSMolgenisArmadillo)
 
 # specify server url
-armadillo_url <- "https://armadillo.test.molgenis.org"
+armadillo_url <- "https://armadillo2-demo.molgenis.net"
 
 # get token from central authentication server
 token <- DSMolgenisArmadillo::armadillo.get_token(armadillo_url)
@@ -34,15 +34,15 @@ conns <- DSI::datashield.login(
 )
 
 # summary of server-side object
-dsBaseClient::ds.summary("outcome_ath_trimester")
+full_summary <- dsBaseClient::ds.summary("outcome_ath_trimester")
 # calculate the mean
-ds.mean("outcome_ath_trimester$ga_us_t", datasources = conns)
-ds.mean("outcome_ath_trimester$row_id", datasources = conns)
+full_mean_v1 <- ds.mean("outcome_ath_trimester$ga_us_t", datasources = conns)
+full_mean_v2 <- ds.mean("outcome_ath_trimester$row_id", datasources = conns)
 
 # repeat the same with the subset made in 04_subset_data_armadillo.r
 
 # specify server url
-armadillo_url <- "https://armadillo.test.molgenis.org"
+armadillo_url <- "https://armadillo2-demo.molgenis.net"
 
 # get token from central authentication server
 token <- DSMolgenisArmadillo::armadillo.get_token(armadillo_url)
@@ -69,7 +69,31 @@ conns <- DSI::datashield.login(
 )
 
 # summary of server-side object
-dsBaseClient::ds.summary("outcome_ath_trimester")
+subset_summary <- dsBaseClient::ds.summary("outcome_ath_trimester")
 # calculate the mean
-ds.mean("outcome_ath_trimester$ga_us_t", datasources = conns)
-ds.mean("outcome_ath_trimester$row_id", datasources = conns)
+subset_mean_v1 <- ds.mean("outcome_ath_trimester$ga_us_t", datasources = conns)
+subset_mean_v2 <- ds.mean("outcome_ath_trimester$row_id", datasources = conns)
+
+# compare summary
+full_summary
+subset_summary
+
+# compare 1st mean calculation
+full_mean_v1
+subset_mean_v2
+
+# Optional: delete project
+library(MolgenisArmadillo)
+# steps needed to delete project inma
+MolgenisArmadillo::armadillo.list_projects()
+MolgenisArmadillo::armadillo.list_tables("inma")
+MolgenisArmadillo::armadillo.delete_table("inma","1_0_outcome_ath_1_0","non_rep")
+MolgenisArmadillo::armadillo.delete_table("inma","1_0_outcome_ath_1_0","trimester")
+MolgenisArmadillo::armadillo.delete_project("inma")
+
+# steps needed to delete project 
+MolgenisArmadillo::armadillo.list_projects()
+MolgenisArmadillo::armadillo.list_tables("inmasubset1")
+MolgenisArmadillo::armadillo.delete_table("inmasubset1","1_0_outcome_ath_1_0","non_rep")
+MolgenisArmadillo::armadillo.delete_table("inmasubset1","1_0_outcome_ath_1_0","trimester")
+MolgenisArmadillo::armadillo.delete_project("inmasubset1")

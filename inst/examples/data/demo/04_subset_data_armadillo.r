@@ -8,8 +8,8 @@ library(dplyr)
 ?MolgenisArmadillo::armadillo.login
 
 MolgenisArmadillo::armadillo.login(
-  armadillo = "https://armadillo.test.molgenis.org",
-  minio = "https://armadillo-minio.test.molgenis.org")
+  armadillo = "https://armadillo2-demo.molgenis.net",
+  minio = "https://armadillo2-demo-storage.molgenis.net",)
 
 # List the project you have access to
 MolgenisArmadillo::armadillo.list_projects()
