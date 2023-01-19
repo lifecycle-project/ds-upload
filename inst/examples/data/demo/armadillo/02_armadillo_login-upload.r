@@ -32,7 +32,7 @@ du.upload(
   dict_kind = "outcome_ath",
   data_version = "1_0",
   data_input_format = "CSV",
-  data_input_path = "PATH_TO_FILE/demo-athlete-outcome.csv",
+  data_input_path = "<PATH_TO_FILE>/demo-athlete-outcome.csv",
   action = "all",
   run_mode = "NORMAL",
   upload = TRUE
@@ -48,4 +48,5 @@ du.upload(
 # ######################################################
 # Enter n to skip the quality control
 #
-# Your data has been uploaded, next step is to confirm: 04_check_data_armadillo.r
+# Your data has been uploaded, you can check it out on https://armadillo2-demo-storage-console.molgenis.net, 
+# now you can create subsets for specific projects or research questions (optional): 03_subset_data_armadillo.r

@@ -19,7 +19,8 @@ MolgenisArmadillo::armadillo.list_tables("inma")
 
 # We want to create a subset of "1_0_outcome_ath_1_0/non_rep" and "1_0_outcome_ath_1_0/trimester"
 # First we need to create a new project where we will save the subset data
-MolgenisArmadillo::armadillo.create_project("inmasubset1")
+subset_name = "inmasubset2"
+MolgenisArmadillo::armadillo.create_project(subset_name)
 # Check if project is created
 MolgenisArmadillo::armadillo.list_projects()
 
@@ -35,5 +36,6 @@ subset_non_rep <- non_rep %>% select(child_id, CRL_t1)
 subset_tri_rep <- tri_rep %>% filter(age_trimester == 1) %>% select(child_id, ga_us_t)
 
 # upload the subsets to the new (subset) project
-MolgenisArmadillo::armadillo.upload_table("inmasubset1","1_0_outcome_ath_1_0",subset_non_rep,"non_rep")
-MolgenisArmadillo::armadillo.upload_table("inmasubset1","1_0_outcome_ath_1_0",subset_tri_rep,"trimester")
+MolgenisArmadillo::armadillo.upload_table(subset_name,"1_0_outcome_ath_1_0",subset_non_rep,"non_rep")
+MolgenisArmadillo::armadillo.upload_table(subset_name,"1_0_outcome_ath_1_0",subset_tri_rep,"trimester")
+

@@ -39,7 +39,7 @@ full_summary <- dsBaseClient::ds.summary("outcome_ath_trimester")
 full_mean_v1 <- ds.mean("outcome_ath_trimester$ga_us_t", datasources = conns)
 full_mean_v2 <- ds.mean("outcome_ath_trimester$row_id", datasources = conns)
 
-# repeat the same with the subset made in 04_subset_data_armadillo.r
+# repeat the same with the subset made in 03_subset_data_armadillo.r
 
 # specify server url
 armadillo_url <- "https://armadillo2-demo.molgenis.net"
@@ -53,7 +53,7 @@ builder$append(
   server = "armadillo-test-molgenis-subset",
   url = armadillo_url,
   token = token,
-  table = "inmasubset1/1_0_outcome_ath_1_0/trimester",
+  table = "inmasubset2/1_0_outcome_ath_1_0/trimester",
   driver = "ArmadilloDriver"
 )
 
@@ -93,7 +93,7 @@ MolgenisArmadillo::armadillo.delete_project("inma")
 
 # steps needed to delete project 
 MolgenisArmadillo::armadillo.list_projects()
-MolgenisArmadillo::armadillo.list_tables("inmasubset1")
-MolgenisArmadillo::armadillo.delete_table("inmasubset1","1_0_outcome_ath_1_0","non_rep")
-MolgenisArmadillo::armadillo.delete_table("inmasubset1","1_0_outcome_ath_1_0","trimester")
-MolgenisArmadillo::armadillo.delete_project("inmasubset1")
+MolgenisArmadillo::armadillo.list_tables("inmasubset2")
+MolgenisArmadillo::armadillo.delete_table("inmasubset2","1_0_outcome_ath_1_0","non_rep")
+MolgenisArmadillo::armadillo.delete_table("inmasubset2","1_0_outcome_ath_1_0","trimester")
+MolgenisArmadillo::armadillo.delete_project("inmasubset2")

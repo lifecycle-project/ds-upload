@@ -27,7 +27,7 @@ du.upload(
   data_version = "1_0",
   database_name = "mongodb",
   data_input_format = "CSV",
-  data_input_path = "PATH_TO_FILE/demo-athlete-outcome-minimal.csv",
+  data_input_path = "<PATH_TO_FILE>/demo-athlete-outcome.csv",
   action = "all",
   run_mode = "NORMAL"
 )
