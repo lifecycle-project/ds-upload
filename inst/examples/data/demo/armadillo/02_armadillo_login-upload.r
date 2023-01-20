@@ -8,6 +8,15 @@ login_data <- data.frame(
   driver = "ArmadilloDriver"
 )
 # login to the Armadillo server
+#
+# IMPORTANT
+#
+# Follow this link: https://lifecycle-auth.molgenis.org/ and register an account 
+# at Life Science RI (LS) with your institutional account to be able to log on 
+# to our Armadillo server. Note that you will not be able to log on directly, 
+# but when you click the link and register at LS login, we 
+# (molgenis-support@umcg.nl) will make sure that you have the rights to log on.
+
 du.login(login_data = login_data)
 # you should see a message in your terminal and a browser window will open
 #
@@ -48,5 +57,8 @@ du.upload(
 # ######################################################
 # Enter n to skip the quality control
 #
-# Your data has been uploaded, you can check it out on https://armadillo2-demo-storage-console.molgenis.net, 
-# now you can create subsets for specific projects or research questions (optional): 03_subset_data_armadillo.r
+# Your data has been uploaded, you can check it out on:
+# https://armadillo2-demo-storage-console.molgenis.net
+#
+# Next you can create subsets for specific projects or research questions:
+# 03_subset_data_armadillo.r
