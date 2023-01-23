@@ -1,6 +1,6 @@
 # install the following packages or skip if you already did so
 install.packages("DSI")
-install.packages("dsBaseClient", repos = c("http://cran.datashield.org", "https://cloud.r-project.org/"), dependencies = TRUE)
+install.packages('dsBaseClient', repos=c(getOption('repos'), 'http://cran.obiba.org'), dependencies=TRUE)
 install.packages("DSOpal")
 # Load these libraries
 library(dsBaseClient)
