@@ -123,6 +123,8 @@ du.validate.dict.version <- function(dict_kind, dict_version) {
         "Version: [ ", dict_version, " ] is not available in published data dictionaries for [ ", dict_kind, " ]. Possible dictionaries are: ",
         paste(ds_upload.globals$dictionaries[[dict_kind]], collapse = ", ")
       )
+    } else {
+      dict_version
     }
   } else {
     latest_version_index <- length(ds_upload.globals$dictionaries[[dict_kind]])
