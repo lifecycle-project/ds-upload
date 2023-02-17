@@ -117,3 +117,7 @@ du.clean.temp.workdir <- function(upload, workdirs) {
     message(" * Be advised: you need to cleanup the temporary directories yourself now.")
   }
 }
+
+du.is.empty <- function(string) {
+  return (is.null(string) || string == "")
+}

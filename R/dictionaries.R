@@ -86,35 +86,36 @@ du.dict.retrieve.tables <- function(api_url, dict_name, dict_version, data_versi
 
 #' Get the possible dictionary versions from Github
 #'
-#' @param dict_kind dictionary kind (can be 'core' or 'outcome')
-#' @param dict_version dictionary version (can be 'x_x')
-#'
 #' @noRd
-du.populate.dict.versions <- function(dict_kind, dict_version) {
+du.populate.dict.versions <- function() {
   versions <- du.get.response.as.dataframe(ds_upload.globals$api_dict_released_tags_url)
+  all_dicts <- list()
   
-  versions <- versions %>% 
+  versions %>% 
     select("ref") %>%
     pmap(function(ref) {
-      if(grepl(dict_kind, ref, fixed = TRUE)) {
-        without_prefix <- substr(ref, 11, nchar(ref))
-        return(substr(without_prefix, nchar(dict_kind)+2, nchar(without_prefix)))
+      # Remove the "refs/tags/" prefix
+      without_prefix <- substr(ref, 11, nchar(ref))
+      
+      # Split dict and version (e.g. "outcome-1_1")
+      parts <- strsplit(without_prefix, split = "-")[[1]]
+      
+      # Filter out old releases without a specifier (e.g. "1_1")
+      if (length(parts) == 1) return()
+      
+      # Get dict kind and version
+      dict_kind <- parts[1]
+      dict_version <- parts[2]
+      
+      # Add dict version
+      if (dict_kind %in% names(all_dicts)) {
+        all_dicts[[dict_kind]] <<- append(all_dicts[[dict_kind]], dict_version)
+      } else {
+        all_dicts[dict_kind] <<- list(dict_version)
       }
     })
-  
-  versions = versions[-which(sapply(versions, is.null))]
-  
-  if (dict_kind == du.enum.dict.kind()$CORE) {
-    ds_upload.globals$dictionaries_core <- versions
-  } else if (dict_kind == du.enum.dict.kind()$OUTCOME) {
-    ds_upload.globals$dictionaries_outcome <- versions
-  } else if (dict_kind == du.enum.dict.kind()$CHEMICALS) {
-    ds_upload.globals$dictionaries_chemicals <- versions
-  } else if (dict_kind == du.enum.dict.kind()$OUTCOME_ATH) {
-    ds_upload.globals$dictionaries_outcome_ath <- versions
-  }else {
-    stop("Dictionary not supported.")
-  }
+
+  ds_upload.globals$dictionaries <- all_dicts
 }
 
 #'

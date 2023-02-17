@@ -5,9 +5,9 @@
 \title{Upload dictionaries and data into the DataSHIELD backend.}
 \usage{
 du.upload(
-  dict_version = "2_1",
+  dict_version,
   data_version = "1_0",
-  dict_kind = du.enum.dict.kind()$CORE,
+  dict_kind,
   cohort_id,
   database_name = "opal_data",
   data_input_format = du.enum.input.format()$CSV,

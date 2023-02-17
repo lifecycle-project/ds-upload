@@ -19,109 +19,94 @@ du.reshape <- function(upload = TRUE, project, data_version, input_format, dict_
   message("------------------------------------------------------")
   
   data <- du.read.source.file(input_path, input_format)
-  
-
   du.check.variables(dict_kind, colnames(data), run_mode)
-
-  file_prefix <- format(Sys.time(), "%Y-%m-%d_%H-%M-%S")
-
-  file_name_nonrep <- paste0(file_prefix, "_", data_version, "_", "non_repeated_measures")
-  file_name_monthly <- paste0(file_prefix, "_", data_version, "_", "monthly_repeated_measures")
-  file_name_yearly <- paste0(file_prefix, "_", data_version, "_", "yearly_repeated_measures")
-
-  nonrep_data <- du.reshape.generate.non.repeated(
-    data, dict_kind
-  )
-  if (!is.null(nonrep_data)) {
-    write_csv(nonrep_data, paste0(getwd(), "/", file_name_nonrep, ".csv"), na = "")
-  }
-  yearlyrep_data <- du.reshape.generate.yearly.repeated(
-   data, dict_kind
-  )
-  if (!is.null(yearlyrep_data)) {
-    write_csv(yearlyrep_data, paste0(getwd(), "/", file_name_yearly, ".csv"), na = "")
-  } 
-  monthlyrep_data <- du.reshape.generate.monthly.repeated(
-   data, dict_kind
-  )
-  if (!is.null(monthlyrep_data)) {
-    write_csv(monthlyrep_data, paste0(getwd(), "/", file_name_monthly, ".csv"), na = "")
-  }
-
-  if (dict_kind == du.enum.dict.kind()$OUTCOME) {
-    file_name_weekly <- paste0(file_prefix, "_", data_version, "_", "weekly_repeated_measures")
-    weeklyrep_data <- du.reshape.generate.weekly.repeated(
-      data, dict_kind
-    )
-    if (!is.null(weeklyrep_data)) {
-      write_csv(weeklyrep_data, paste0(getwd(), "/", file_name_weekly, ".csv"), na = "")
-      weeklyrep_metadata <- du.retrieve.full.dict(du.enum.table.types()$WEEKLY, dict_kind)
-      weeklyrep_data <- du.add.metadata(weeklyrep_data, weeklyrep_metadata)
-      if (upload) {
-        if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
-          du.armadillo.import(project, weeklyrep_data, dict_version, dict_kind, data_version, du.enum.table.types()$WEEKLY)
-        }
-        if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL & !is.null(weeklyrep_data)) {
-          du.opal.upload(dict_kind, file_name_weekly)
-        }
-      }
-    } else {
-      save(weeklyrep_data, file = paste0(getwd(), "/", file_name_weekly, ".RData"))
+  reshaped_data <- du.reshape.data(data, dict_kind)
+  driver <- ds_upload.globals$login_data$driver
+  
+  if (upload && driver == du.enum.backends()$ARMADILLO) {
+    for (table_type in names(reshaped_data)) {
+      du.upload.to.armadillo(project = project, 
+                             data = reshaped_data[[table_type]], 
+                             dict_kind = dict_kind, 
+                             dict_version = dict_version, 
+                             data_version = data_version, 
+                             table_type = table_type)
     }
-  }
-
-  if ((dict_kind == du.enum.dict.kind()$CORE & dict_version != "1_0") || (dict_kind == du.enum.dict.kind()$CHEMICALS) || (dict_kind == du.enum.dict.kind()$OUTCOME_ATH)) {
-    file_name_trimester <- paste0(file_prefix, "_", data_version, "_", "trimester_repeated_measures")
-    trimester_data <- du.reshape.generate.trimesterly.repeated(
-      data, dict_kind
-    )
-    if (!is.null(trimester_data)) {
-      write_csv(trimester_data, paste0(getwd(), "/", file_name_trimester, ".csv"), na = "")
-      trimester_metadata <- du.retrieve.full.dict(du.enum.table.types()$TRIMESTER, dict_kind)
-      trimester_data <- du.add.metadata(trimester_data, trimester_metadata)
-      if (upload) {
-        if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
-          du.armadillo.import(project, trimester_data, dict_version, dict_kind, data_version, du.enum.table.types()$TRIMESTER)
-        }
-        if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
-          du.opal.upload(dict_kind, file_name_trimester)
-        }
-      } else {
-        save(trimester_data, file = paste0(getwd(), "/", file_name_trimester, ".RData"))
-      }
+  } else if (upload && driver == du.enum.backends()$OPAL) {
+    file_names <- du.create.file.names(data_version)
+    for (table_type in names(reshaped_data)) {
+      du.upload.to.opal(data = reshaped_data[[table_type]], 
+                        file_name = file_names[table_type], 
+                        dict_kind = dict_kind)
     }
-  }
-
-  if (upload) {
-    if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
-      if (!is.null(nonrep_data)) du.opal.upload(dict_kind, file_name_nonrep)
-      if (!is.null(yearlyrep_data)) du.opal.upload(dict_kind, file_name_yearly)
-      if (!is.null(monthlyrep_data)){ du.opal.upload(dict_kind, file_name_monthly) }
-    }
-    if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
-      if (!is.null(nonrep_data)) { 
-        nonrep_metadata <- du.retrieve.full.dict(du.enum.table.types()$NONREP, dict_kind)
-        nonrep_data <- du.add.metadata(nonrep_data, nonrep_metadata)
-        du.armadillo.import(project = project, data = nonrep_data, dict_version, dict_kind, data_version, du.enum.table.types()$NONREP)
-      }
-      if (!is.null(yearlyrep_data)) {
-        yearlyrep_metadata <- du.retrieve.full.dict(du.enum.table.types()$YEARLY, dict_kind)
-        yearlyrep_data <- du.add.metadata(yearlyrep_data, yearlyrep_metadata)
-        du.armadillo.import(project = project, data = yearlyrep_data, dict_version, dict_kind, data_version, du.enum.table.types()$YEARLY)
-      }
-      if (!is.null(monthlyrep_data)) {
-        monthlyrep_metadata <- du.retrieve.full.dict(du.enum.table.types()$MONTHLY, dict_kind)
-        monthlyrep_data <- du.add.metadata(monthlyrep_data, monthlyrep_metadata)
-        du.armadillo.import(project = project, data = monthlyrep_data, dict_version, dict_kind, data_version, du.enum.table.types()$MONTHLY)
-      }
+  } else if (!upload) {
+    file_names <- du.create.file.names(data_version)
+    for (table_type in names(reshaped_data)) {
+      du.save.as.Rdata(reshaped_data[[table_type]], file_names[table_type])
     }
   } else {
-    if (!is.null(nonrep_data)) save(nonrep_data, file = paste0(getwd(), "/", file_name_nonrep, ".RData"))
-    if (!is.null(yearlyrep_data)) save(yearlyrep_data, file = paste0(getwd(), "/", file_name_yearly, ".RData"))
-    if (!is.null(monthlyrep_data)) save(monthlyrep_data, file = paste0(getwd(), "/", file_name_monthly, ".RData"))
+    stop("Unsupported backend: ", driver)
   }
 
   message("######################################################")
   message("  Converting and import successfully finished         ")
   message("######################################################")
+}
+
+
+#' @noRd
+du.reshape.data <- function(data, dict_kind) {
+  reshaped_data <- list(
+    du.reshape.generate.non.repeated(data, dict_kind),
+    du.reshape.generate.weekly.repeated(data, dict_kind),
+    du.reshape.generate.monthly.repeated(data, dict_kind),
+    du.reshape.generate.trimesterly.repeated(data, dict_kind),
+    du.reshape.generate.yearly.repeated(data, dict_kind)
+  )
+  names(reshaped_data) <- du.enum.table.types()
+  
+  reshaped_data
+}
+
+
+#' @noRd
+du.create.file.names <- function(data_version) {
+  prefix <- paste0(format(Sys.time(), "%Y-%m-%d_%H-%M-%S"), "_", data_version, "_")
+  
+  file_names <- c(
+    paste0(prefix, "non_repeated_measures"),
+    paste0(prefix, "weekly_repeated_measures"),
+    paste0(prefix, "monthly_repeated_measures"),
+    paste0(prefix, "trimesterly_repeated_measures"),
+    paste0(prefix, "yearly_repeated_measures")
+  )
+  names(file_names) <- du.enum.table.types()
+  
+  file_names
+}
+
+
+#' @noRd
+du.upload.to.armadillo <- function(project, data, dict_kind, dict_version, data_version, table_type) {
+  if (is.null(data)) return()
+  
+  metadata <- du.retrieve.full.dict(table_type, dict_kind)
+  enriched_data <- du.add.metadata(data, metadata)
+  du.armadillo.import(project = project, data = enriched_data, dict_version, dict_kind, data_version, table_type)
+}
+
+
+#' @noRd
+du.upload.to.opal <- function(data, file_name, dict_kind) {
+  if (is.null(data)) return()
+  
+  write_csv(data, paste0(getwd(), "/", file_name, ".csv"), na = "")
+  du.opal.upload(dict_kind, file_name)
+}
+
+
+#' @noRd
+du.save.as.Rdata <- function(data, file_name) {
+  if (is.null(data)) return()
+  save(nonrep_data, file = paste0(getwd(), "/", file_name_nonrep, ".RData"))
 }
