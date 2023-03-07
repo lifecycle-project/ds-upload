@@ -15,7 +15,7 @@ Please check the [troubleshooting guide](https://github.com/lifecycle-project/ds
 Please check: [adding new variables](https://github.com/lifecycle-project/ds-dictionaries/blob/master/README.md)
 
 ## Armadillo 2
-dsUpload Version 1.4.x is compatible with Armadillo 2. When installing this version of dsUpload, the `install.packages` command might install the newest version (incompatible) of `MolgenisArmadillo`.
+`dsUpload` Version 4.7.x is compatible with Armadillo 2. When installing this version of dsUpload, the `install.packages` command might install the newest version (incompatible) of `MolgenisArmadillo`.
 Run these commands to install the correct version of MolgenisArmadillo:
 ``` r
 unloadNamespace("MolgenisArmadillo")
@@ -23,4 +23,6 @@ remove.packages("MolgenisArmadillo")
 packageurl <- "https://cran.r-project.org/src/contrib/Archive/MolgenisArmadillo/MolgenisArmadillo_1.1.3.tar.gz"
 install.packages(packageurl, repos=NULL, type="source")
 ```
-After that you should be able to load `dsUpload` without any problems. 
+After that you should be able to load `dsUpload` without any problems.
+If you are asked to update `MolgenisArmadillo` to version 2.0.x please skip,
+this in order for dsUpload 4.7.x to work with Armadillo 2.
