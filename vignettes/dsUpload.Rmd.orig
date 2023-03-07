@@ -66,7 +66,6 @@ Please following the instruction below to upload the core and outcome variables 
 ```{r, create Armadillo dataframe}
 login_data <- data.frame(
   server = "https://armadillo.test.molgenis.org", 
-  storage = "https://armadillo-minio.test.molgenis.org", 
   driver = "ArmadilloDriver")
 ```
 
