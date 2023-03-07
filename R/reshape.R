@@ -108,5 +108,5 @@ du.upload.to.opal <- function(data, file_name, dict_kind) {
 #' @noRd
 du.save.as.Rdata <- function(data, file_name) {
   if (is.null(data)) return()
-  save(nonrep_data, file = paste0(getwd(), "/", file_name_nonrep, ".RData"))
+  save(data, file = paste0(getwd(), "/", file_name, ".RData"))
 }
