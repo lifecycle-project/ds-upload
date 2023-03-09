@@ -11,7 +11,6 @@ ds_upload.globals <- new.env()
 #'
 #' login_data <- data.frame(
 #'   server = "https://armadillo.dev.molgenis.org",
-#'   storage = "https://armadillo-minio.dev.molgenis.org",
 #'   username = "admin",
 #'   password = "admin",
 #'   insecure = FALSE,
