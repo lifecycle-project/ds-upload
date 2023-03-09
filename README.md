@@ -4,7 +4,7 @@
 This is a collections of tools used to upload data into DataSHIELD backends. It aids data mangers in the initial stages of uploading data to DataSHIELD backends.
 
 ## Usage
-Please check [uploading to DataSHIELD guide](https://lifecycle-project.github.io/ds-upload
+Please check [uploading to DataSHIELD guide](https://lifecycle-project.github.io/ds-upload)
 
 For detailled function descrptions, please check: [references](https://lifecycle-project.github.io/ds-upload/reference/index.html) and  above.
 
@@ -14,45 +14,64 @@ Please check the [troubleshooting guide](https://github.com/lifecycle-project/ds
 ## Adding new variables
 Please check: [adding new variables](https://github.com/lifecycle-project/ds-dictionaries/blob/master/README.md)
 
+## Armadillo 3
+`dsUpload` Version 5.x.x is compatible with Armadillo 3. You should be able to install [dsUpload](https://lifecycle-project.github.io/ds-upload/articles/dsUpload.html) without specifying any additional versions. To install dsUpload, you have to install devtools first:
+``` r
+install.packages("devtools")
+```
+Then you will be able to install the newest version of dsUpload:
+``` r 
+library(devtools)
+devtools::install_github("lifecycle-project/ds-upload")
+```
+
 ## Armadillo 2
 `dsUpload` Version 4.7.x is compatible with Armadillo 2. When installing this version of dsUpload, the `install.packages` command might install the newest version (incompatible) of `MolgenisArmadillo`.
 Run these commands (Rstudio) to install the correct version of MolgenisArmadillo:
 
 Install devtools:
 
-`install.packages("devtools")`
+``` r
+install.packages("devtools")
+```
 
 Load devtools and install ds-upload 4.7.1
 
-`library(devtools)`
-
-`devtools::install_github("lifecycle-project/ds-upload@4.7.1")`
-
-You will get the following error message
+``` r
+library(devtools)
+devtools::install_github("lifecycle-project/ds-upload@4.7.1")
+```
+You might get the following error message:
 
 `namespace ‘MolgenisArmadillo’ 2.0.0 is being loaded, but == 1.1.3 is required`
 
-Next you need to remove `MolgenisArmadillo`
+To fix this you need to remove the incompatible version of `MolgenisArmadillo`:
 
-`unloadNamespace("MolgenisArmadillo")`
+``` r
+unloadNamespace("MolgenisArmadillo")
+remove.packages("MolgenisArmadillo")
+```
 
-`remove.packages("MolgenisArmadillo")`
+You might have to install these additional packages:
 
-You might have to install these additional packages
+``` r
+install.packages(c("aws.iam", "aws.s3"))
+```
 
-`install.packages(c("aws.iam", "aws.s3"))`
+Next we install a previous version of `MolgenisArmadillo` 1.1.3:
 
-Next we install a previous version of `MolgenisArmadillo` 1.1.3
+``` r
+packageurl <- "https://cran.r-project.org/src/contrib/Archive/MolgenisArmadillo/MolgenisArmadillo_1.1.3.tar.gz"
+install.packages(packageurl, repos=NULL, type="source")
+```
 
-`packageurl <- "https://cran.r-project.org/src/contrib/Archive/MolgenisArmadillo/MolgenisArmadillo_1.1.3.tar.gz"`
+Now we (again) install dsUpload 4.7.1:
 
-`install.packages(packageurl, repos=NULL, type="source")`
+``` r
+devtools::install_github("lifecycle-project/ds-upload@4.7.1")
+```
 
-Now we (again) install dsUpload 4.7.1
-
-`devtools::install_github("lifecycle-project/ds-upload@4.7.1")`
-
-Make sure you do **NOT** update MolgenisArmadillo to another version then 1.1.3, select option **3**
+Make sure you do **NOT** update MolgenisArmadillo to another version then 1.1.3, if prompted, select option **3**
 
 ```
 Downloading GitHub repo lifecycle-project/ds-upload@4.7.1
@@ -70,7 +89,9 @@ Enter one or more numbers, or an empty line to skip updates: 3
 
 After that you should be able to load `dsUpload` without any problems.
 
-`library(dsUpload)`
+``` r
+library(dsUpload)
+```
 
 If you are asked to update `MolgenisArmadillo` to version 2.0.x please skip,
 this in order for dsUpload 4.7.x to work with Armadillo 2.
