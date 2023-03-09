@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">dsUpload</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">5.0.0</span>
       </span>
     </div>
 
@@ -98,7 +98,7 @@
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
-<p>Please check [uploading to DataSHIELD guide](<a href="https://lifecycle-project.github.io/ds-upload" class="external-link uri">https://lifecycle-project.github.io/ds-upload</a></p>
+<p>Please check <a href="https://lifecycle-project.github.io/ds-upload" class="external-link">uploading to DataSHIELD guide</a></p>
 <p>For detailled function descrptions, please check: <a href="https://lifecycle-project.github.io/ds-upload/reference/index.html" class="external-link">references</a> and above.</p>
 </div>
 <div class="section level2">
@@ -112,15 +112,59 @@
 <p>Please check: <a href="https://github.com/lifecycle-project/ds-dictionaries/blob/master/README.md" class="external-link">adding new variables</a></p>
 </div>
 <div class="section level2">
+<h2 id="armadillo-3">Armadillo 3<a class="anchor" aria-label="anchor" href="#armadillo-3"></a>
+</h2>
+<p><code>dsUpload</code> Version 5.x.x is compatible with Armadillo 3. You should be able to install <a href="https://lifecycle-project.github.io/ds-upload/articles/dsUpload.html" class="external-link">dsUpload</a> without specifying any additional versions. To install dsUpload, you have to install devtools first:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span></code></pre></div>
+<p>Then you will be able to install the newest version of dsUpload:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"lifecycle-project/ds-upload"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
 <h2 id="armadillo-2">Armadillo 2<a class="anchor" aria-label="anchor" href="#armadillo-2"></a>
 </h2>
-<p><code>dsUpload</code> Version 4.7.x is compatible with Armadillo 2. When installing this version of dsUpload, the <code>install.packages</code> command might install the newest version (incompatible) of <code>MolgenisArmadillo</code>. Run these commands to install the correct version of MolgenisArmadillo:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<p><code>dsUpload</code> Version 4.7.x is compatible with Armadillo 2. When installing this version of dsUpload, the <code>install.packages</code> command might install the newest version (incompatible) of <code>MolgenisArmadillo</code>. Run these commands (Rstudio) to install the correct version of MolgenisArmadillo:</p>
+<p>Install devtools:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span></code></pre></div>
+<p>Load devtools and install ds-upload 4.7.1</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"lifecycle-project/ds-upload@4.7.1"</span><span class="op">)</span></span></code></pre></div>
+<p>You might get the following error message:</p>
+<p><code>namespace ‘MolgenisArmadillo’ 2.0.0 is being loaded, but == 1.1.3 is required</code></p>
+<p>To fix this you need to remove the incompatible version of <code>MolgenisArmadillo</code>:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">unloadNamespace</a></span><span class="op">(</span><span class="st">"MolgenisArmadillo"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/remove.packages.html" class="external-link">remove.packages</a></span><span class="op">(</span><span class="st">"MolgenisArmadillo"</span><span class="op">)</span></span>
-<span><span class="va">packageurl</span> <span class="op">&lt;-</span> <span class="st">"https://cran.r-project.org/src/contrib/Archive/MolgenisArmadillo/MolgenisArmadillo_1.1.3.tar.gz"</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/remove.packages.html" class="external-link">remove.packages</a></span><span class="op">(</span><span class="st">"MolgenisArmadillo"</span><span class="op">)</span></span></code></pre></div>
+<p>You might have to install these additional packages:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aws.iam"</span>, <span class="st">"aws.s3"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Next we install a previous version of <code>MolgenisArmadillo</code> 1.1.3:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">packageurl</span> <span class="op">&lt;-</span> <span class="st">"https://cran.r-project.org/src/contrib/Archive/MolgenisArmadillo/MolgenisArmadillo_1.1.3.tar.gz"</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="va">packageurl</span>, repos<span class="op">=</span><span class="cn">NULL</span>, type<span class="op">=</span><span class="st">"source"</span><span class="op">)</span></span></code></pre></div>
-<p>After that you should be able to load <code>dsUpload</code> without any problems. If you are asked to update <code>MolgenisArmadillo</code> to version 2.0.x please skip, this in order for dsUpload 4.7.x to work with Armadillo 2.</p>
+<p>Now we (again) install dsUpload 4.7.1:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"lifecycle-project/ds-upload@4.7.1"</span><span class="op">)</span></span></code></pre></div>
+<p>Make sure you do <strong>NOT</strong> update MolgenisArmadillo to another version then 1.1.3, if prompted, select option <strong>3</strong></p>
+<pre><code>Downloading GitHub repo lifecycle-project/ds-upload@4.7.1
+These packages have more recent versions available.
+It is recommended to update all of them.
+Which would you like to update?
+
+1: All                                 
+2: CRAN packages only                  
+3: None                                
+4: MolgenisA... (1.1.3 -&gt; 2.0.0) [CRAN]
+
+Enter one or more numbers, or an empty line to skip updates: 3</code></pre>
+<p>After that you should be able to load <code>dsUpload</code> without any problems.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/lifecycle-project/ds-upload" class="external-link">dsUpload</a></span><span class="op">)</span></span></code></pre></div>
+<p>If you are asked to update <code>MolgenisArmadillo</code> to version 2.0.x please skip, this in order for dsUpload 4.7.x to work with Armadillo 2.</p>
 </div>
 </div>
 
