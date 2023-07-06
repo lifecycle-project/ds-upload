@@ -57,7 +57,7 @@ du.upload(
 # Enter n to skip the quality control
 #
 # Your data has been uploaded, you can check it out on:
-# https://armadillo2-demo-storage-console.molgenis.net
+# https://armadillo-demo.molgenis.net/#/projects
 #
 # Next you can create subsets for specific projects or research questions:
 # 03_subset_data_armadillo.r
