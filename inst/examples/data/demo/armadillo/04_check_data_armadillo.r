@@ -7,7 +7,7 @@ library(dsBaseClient)
 library(DSMolgenisArmadillo)
 
 # specify server url
-armadillo_url <- "https://armadillo2-demo.molgenis.net"
+armadillo_url <- "https://armadillo-demo.molgenis.net"
 
 # get token from central authentication server
 token <- DSMolgenisArmadillo::armadillo.get_token(armadillo_url)
@@ -18,7 +18,7 @@ builder$append(
   server = "armadillo-test-molgenis",
   url = armadillo_url,
   token = token,
-  table = "inma/1_0_outcome_ath_1_0/trimester",
+  table = "inma/1_0_outcome_ath_1_0/trimester_rep",
   driver = "ArmadilloDriver"
 )
 
@@ -42,7 +42,7 @@ full_mean_v2 <- ds.mean("outcome_ath_trimester$row_id", datasources = conns)
 # repeat the same with the subset made in 03_subset_data_armadillo.r
 
 # specify server url
-armadillo_url <- "https://armadillo2-demo.molgenis.net"
+armadillo_url <- "https://armadillo-demo.molgenis.net"
 
 # get token from central authentication server
 token <- DSMolgenisArmadillo::armadillo.get_token(armadillo_url)
@@ -53,7 +53,7 @@ builder$append(
   server = "armadillo-test-molgenis-subset",
   url = armadillo_url,
   token = token,
-  table = "inmasubset2/1_0_outcome_ath_1_0/trimester",
+  table = "inmasubset2/1_0_outcome_ath_1_0/trimester_rep",
   driver = "ArmadilloDriver"
 )
 
@@ -88,12 +88,12 @@ library(MolgenisArmadillo)
 MolgenisArmadillo::armadillo.list_projects()
 MolgenisArmadillo::armadillo.list_tables("inma")
 MolgenisArmadillo::armadillo.delete_table("inma","1_0_outcome_ath_1_0","non_rep")
-MolgenisArmadillo::armadillo.delete_table("inma","1_0_outcome_ath_1_0","trimester")
+MolgenisArmadillo::armadillo.delete_table("inma","1_0_outcome_ath_1_0","trimester_rep")
 MolgenisArmadillo::armadillo.delete_project("inma")
 
 # steps needed to delete project 
 MolgenisArmadillo::armadillo.list_projects()
 MolgenisArmadillo::armadillo.list_tables("inmasubset2")
 MolgenisArmadillo::armadillo.delete_table("inmasubset2","1_0_outcome_ath_1_0","non_rep")
-MolgenisArmadillo::armadillo.delete_table("inmasubset2","1_0_outcome_ath_1_0","trimester")
+MolgenisArmadillo::armadillo.delete_table("inmasubset2","1_0_outcome_ath_1_0","trimester_rep")
 MolgenisArmadillo::armadillo.delete_project("inmasubset2")

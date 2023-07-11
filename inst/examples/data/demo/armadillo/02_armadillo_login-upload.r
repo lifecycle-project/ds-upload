@@ -3,8 +3,7 @@ library(dsUpload)
 # Create a data.frame object 'login_data' that holds the information about the 
 # armadillo server and armadillo minio server (on the latter the data is saved)
 login_data <- data.frame(
-  server = "https://armadillo2-demo.molgenis.net",
-  storage = "https://armadillo2-demo-storage.molgenis.net",
+  server = "https://armadillo-demo.molgenis.net",
   driver = "ArmadilloDriver"
 )
 # login to the Armadillo server
@@ -20,9 +19,9 @@ login_data <- data.frame(
 du.login(login_data = login_data)
 # you should see a message in your terminal and a browser window will open
 #
-#   Login to: "https://armadillo.test.molgenis.org"
+#   Login to: "https://armadillo-demo.molgenis.org"
 #[1] "We're opening a browser so you can log in with code XXXXXX"
-#Logged on to: "https://armadillo.test.molgenis.org"
+#Logged on to: "https://armadillo-demo.molgenis.org"
 #
 # The log in code in the terminal should be the same as in the browser,
 # please click on the button 'LS LOGIN' and login using your institution credentials
@@ -41,7 +40,7 @@ du.upload(
   dict_kind = "outcome_ath",
   data_version = "1_0",
   data_input_format = "CSV",
-  data_input_path = "<PATH_TO_FILE>/demo-athlete-outcome.csv",
+  data_input_path = "<PATH>/ds-upload/inst/examples/data/demo/demo-athlete-outcome.csv",
   action = "all",
   run_mode = "NORMAL",
   upload = TRUE
@@ -58,7 +57,7 @@ du.upload(
 # Enter n to skip the quality control
 #
 # Your data has been uploaded, you can check it out on:
-# https://armadillo2-demo-storage-console.molgenis.net
+# https://armadillo-demo.molgenis.net/#/projects
 #
 # Next you can create subsets for specific projects or research questions:
 # 03_subset_data_armadillo.r
