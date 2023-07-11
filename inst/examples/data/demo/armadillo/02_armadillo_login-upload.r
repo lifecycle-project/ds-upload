@@ -40,7 +40,7 @@ du.upload(
   dict_kind = "outcome_ath",
   data_version = "1_0",
   data_input_format = "CSV",
-  data_input_path = "../demo-athlete-outcome.csv",
+  data_input_path = "<PATH>/ds-upload/inst/examples/data/demo/demo-athlete-outcome.csv",
   action = "all",
   run_mode = "NORMAL",
   upload = TRUE
