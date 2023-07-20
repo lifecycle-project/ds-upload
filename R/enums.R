@@ -4,14 +4,14 @@
 du.enum.cohorts <- function() {
   list(
     ABCD = "abcd", ALSPAC = "alspac", AOF = "aof", BIB = "bib", BISC = "bisc", 
-    CHILD = "child", CHOP = "chop", DNBC = "dnbc", EDEN = "eden", ELFE = "elfe", 
-    ELSPAC = "elspac", ENVIRONAGE = "environage", GECKO = "gecko", 
-    GENESIS = "genesis", GENR = "genr", GENRNEXT = "genrnext", 
+    CHILD = "child", CHOP = "chop", DFBC = "dfbc", DNBC = "dnbc", EDEN = "eden", 
+    ELFE = "elfe", ELSPAC = "elspac", ENVIRONAGE = "environage", 
+    GECKO = "gecko", GENESIS = "genesis", GENR = "genr", GENRNEXT = "genrnext", 
     GENXXI = "genxxi", HBCS = "hbcs", HGS = "hgs", INMA = "inma", 
     ISGLOBAL = "isglobal", KANC = "kanc", MOBA = "moba", NBFC66 = "nfbc66", 
-    NBFC86 = "nfbc86", NINFEA = "ninfea", PELAGIE = "pelagie", RAINE = "raine", 
-    RECETOX = "recetox", RHEA = "rhea", SEPAGES = "sepages", SWS = "sws", 
-    TNG = "tng"
+    NBFC86 = "nfbc86", NINFEA = "ninfea", PCL = "pcl", PELAGIE = "pelagie", 
+    RAINE = "raine", RECETOX = "recetox", RHEA = "rhea", SEPAGES = "sepages", 
+    SWS = "sws", TNG = "tng"
   )
 }
 
