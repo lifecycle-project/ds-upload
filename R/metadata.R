@@ -32,6 +32,9 @@ du.set.datatype <- function(column, metadata, column_name) {
   else if (colmeta$valueType == "text") {
     column <- as.character(column)
   }
+  else if (colmeta$valueType == "boolean") {
+    column <- as.logical(column)
+  }
   attr(column, "label") <- colmeta$label
   return(column)
 }
