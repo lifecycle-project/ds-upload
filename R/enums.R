@@ -3,10 +3,15 @@
 #' @noRd
 du.enum.cohorts <- function() {
   list(
-    DNBC = "dnbc", GECKO = "gecko", ALSPAC = "alspac", GENR = "genr", MOBA = "moba", SWS = "sws", BIB = "bib", CHOP = "chop", ELFE = "elfe",
-    EDEN = "eden", NINFEA = "ninfea", HBCS = "hbcs", INMA = "inma", ISGLOBAL = "isglobal", NBFC66 = "nfbc66", NBFC86 = "nfbc86", RAINE = "raine", RHEA = "rhea",
-    ABCD = "abcd", BISC = "bisc", ENVIRONAGE = "environage", KANC = "kanc", PELAGIE = "pelagie", SEPAGES = "sepages", TNG = "tng", HGS = "hgs", RECETOX = "recetox", 
-    GENXXI = "genxxi", GENESIS = "genesis", CHILD = "child", AOF = "aof"
+    ABCD = "abcd", ALSPAC = "alspac", AOF = "aof", BIB = "bib", BISC = "bisc", 
+    CHILD = "child", CHOP = "chop", DFBC = "dfbc", DNBC = "dnbc", EDEN = "eden", 
+    ELFE = "elfe", ELSPAC = "elspac", ENVIRONAGE = "environage", 
+    GECKO = "gecko", GENESIS = "genesis", GENR = "genr", GENRNEXT = "genrnext", 
+    GENXXI = "genxxi", HBCS = "hbcs", HGS = "hgs", INMA = "inma", 
+    ISGLOBAL = "isglobal", KANC = "kanc", MOBA = "moba", NBFC66 = "nfbc66", 
+    NBFC86 = "nfbc86", NINFEA = "ninfea", PCL = "pcl", PELAGIE = "pelagie", 
+    RAINE = "raine", RECETOX = "recetox", RHEA = "rhea", SEPAGES = "sepages", 
+    SWS = "sws", TNG = "tng"
   )
 }
 
