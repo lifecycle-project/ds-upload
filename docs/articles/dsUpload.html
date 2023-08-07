@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dsUpload</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.7.2</span>
       </span>
     </div>
 
@@ -190,215 +190,215 @@ variables in the Aramdillo.</p>
 <span><span class="co">#&gt;   Login to: "https://armadillo.test.molgenis.org"</span></span>
 <span><span class="co">#&gt; [1] "We're opening a browser so you can log in with code GFL6Q6"</span></span>
 <span><span class="co">#&gt;   Logged on to: "https://armadillo.test.molgenis.org"</span></span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># upload the data into the DataSHIELD backend</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># these are the core variables</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># be advised the default input format is 'CSV'</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># you can use STATA, SPSS, SAS, CSV's or R as source files</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">du.upload</span>(</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">cohort_id =</span> <span class="st">'gecko'</span>, </span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">dict_version =</span> <span class="st">'2_1'</span>, </span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">dict_kind =</span> <span class="st">'core'</span>, </span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">data_version =</span> <span class="st">'1_0'</span>, </span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">data_input_format =</span> <span class="st">'CSV'</span>,</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">data_input_path =</span> <span class="st">'https://github.com/lifecycle-project/ds-upload/blob/master/inst/examples/data/WP1/data/all_measurements_v1_2.csv?raw=true'</span>,</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">run_mode =</span> <span class="st">"non_interactive"</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ***********************************************************************************</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   [</span><span class="al">WARNING</span><span class="co">] You are not running the latest version of the dsUpload-package.</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   [</span><span class="al">WARNING</span><span class="co">] If you want to upgrade to newest version : [ 4.0.6 ],</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   [</span><span class="al">WARNING</span><span class="co">] Please run 'install.packages("dsUpload", repos = "https://registry.molgenis.org/repository/R/")'</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   [</span><span class="al">WARNING</span><span class="co">] Check the release notes here: https://github.com/lifecycle-project/analysis-protocols/releases/tag/4.0.6</span></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ***********************************************************************************</span></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ######################################################</span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Start upload data into DataSHIELD backend</span></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ------------------------------------------------------</span></span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  * Create temporary workdir</span></span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ######################################################</span></span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Start download dictionaries</span></span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ------------------------------------------------------</span></span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Download: [ 2_1_monthly_rep.xlsx ]</span></span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Download: [ 2_1_non_rep.xlsx ]</span></span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Download: [ 2_1_trimester_rep.xlsx ]</span></span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Download: [ 2_1_yearly_rep.xlsx ]</span></span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Successfully downloaded dictionaries</span></span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ######################################################</span></span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Start importing data dictionaries</span></span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ######################################################</span></span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  * Check released dictionaries</span></span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Project : gecko already exists</span></span>
-<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ######################################################</span></span>
-<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Start converting and uploading data</span></span>
-<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ######################################################</span></span>
-<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Setup: load data and set output directory</span></span>
-<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ------------------------------------------------------</span></span>
-<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [</span><span class="al">WARNING</span><span class="co">] This is an unmatched column, it will be dropped : [ art ].</span></span>
-<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Generating: non-repeated measures</span></span>
-<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Generating: yearly-repeated measures</span></span>
-<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Aggregate function missing, defaulting to 'length'</span></span>
-<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Generating: monthly-repeated measures</span></span>
-<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Aggregate function missing, defaulting to 'length'</span></span>
-<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Generating: trimesterly-repeated measures</span></span>
-<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Aggregate function missing, defaulting to 'length'</span></span>
-<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Start importing: 2_1_core_1_0 into project: gecko</span></span>
-<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Compressing...</span></span>
-<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
-<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>  <span class="er">|</span>                                                                        <span class="er">|</span>   <span class="dv">0</span>%</span>
-<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
-<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>  <span class="er">|========================================================================|</span> <span class="dv">100</span>%</span>
-<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Uploaded 2_1_core_1_0/trimester</span></span>
-<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Import finished successfully</span></span>
-<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Start importing: 2_1_core_1_0 into project: gecko</span></span>
-<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Compressing...</span></span>
-<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
-<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a>  <span class="er">|</span>                                                                        <span class="er">|</span>   <span class="dv">0</span>%</span>
-<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
-<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==========</span>                                                              <span class="er">|</span>  <span class="dv">15</span>%</span>
-<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
-<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=====================</span>                                                   <span class="er">|</span>  <span class="dv">29</span>%</span>
-<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
-<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a>  <span class="er">|===============================</span>                                         <span class="er">|</span>  <span class="dv">44</span>%</span>
-<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
-<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==========================================</span>                              <span class="er">|</span>  <span class="dv">58</span>%</span>
-<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
-<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a>  <span class="er">|====================================================</span>                    <span class="er">|</span>  <span class="dv">73</span>%</span>
-<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
-<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a>  <span class="er">|===============================================================</span>         <span class="er">|</span>  <span class="dv">87</span>%</span>
-<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
-<span id="cb6-77"><a href="#cb6-77" aria-hidden="true" tabindex="-1"></a>  <span class="er">|========================================================================|</span> <span class="dv">100</span>%</span>
-<span id="cb6-78"><a href="#cb6-78" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Uploaded 2_1_core_1_0/non_rep</span></span>
-<span id="cb6-79"><a href="#cb6-79" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Import finished successfully</span></span>
-<span id="cb6-80"><a href="#cb6-80" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Start importing: 2_1_core_1_0 into project: gecko</span></span>
-<span id="cb6-81"><a href="#cb6-81" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Compressing...</span></span>
-<span id="cb6-82"><a href="#cb6-82" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb6-83"><a href="#cb6-83" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
-<span id="cb6-84"><a href="#cb6-84" aria-hidden="true" tabindex="-1"></a>  <span class="er">|</span>                                                                        <span class="er">|</span>   <span class="dv">0</span>%</span>
-<span id="cb6-85"><a href="#cb6-85" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
-<span id="cb6-86"><a href="#cb6-86" aria-hidden="true" tabindex="-1"></a>  <span class="er">|========================================================================|</span> <span class="dv">100</span>%</span>
-<span id="cb6-87"><a href="#cb6-87" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Uploaded 2_1_core_1_0/yearly_rep</span></span>
-<span id="cb6-88"><a href="#cb6-88" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Import finished successfully</span></span>
-<span id="cb6-89"><a href="#cb6-89" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Start importing: 2_1_core_1_0 into project: gecko</span></span>
-<span id="cb6-90"><a href="#cb6-90" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Compressing...</span></span>
-<span id="cb6-91"><a href="#cb6-91" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb6-92"><a href="#cb6-92" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
-<span id="cb6-93"><a href="#cb6-93" aria-hidden="true" tabindex="-1"></a>  <span class="er">|</span>                                                                        <span class="er">|</span>   <span class="dv">0</span>%</span>
-<span id="cb6-94"><a href="#cb6-94" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
-<span id="cb6-95"><a href="#cb6-95" aria-hidden="true" tabindex="-1"></a>  <span class="er">|========================================================================|</span> <span class="dv">100</span>%</span>
-<span id="cb6-96"><a href="#cb6-96" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Uploaded 2_1_core_1_0/monthly_rep</span></span>
-<span id="cb6-97"><a href="#cb6-97" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Import finished successfully</span></span>
-<span id="cb6-98"><a href="#cb6-98" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ######################################################</span></span>
-<span id="cb6-99"><a href="#cb6-99" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Converting and import successfully finished</span></span>
-<span id="cb6-100"><a href="#cb6-100" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ######################################################</span></span>
-<span id="cb6-101"><a href="#cb6-101" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  * Reinstate default working directory</span></span>
-<span id="cb6-102"><a href="#cb6-102" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  * Cleanup temporary directory</span></span></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># upload the outcome variables</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">du.upload</span>(</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">cohort_id =</span> <span class="st">'gecko'</span>, </span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">dict_version =</span> <span class="st">'1_1'</span>, </span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">dict_kind =</span> <span class="st">'outcome'</span>, </span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data_version =</span> <span class="st">'1_0'</span>, </span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">data_input_format =</span> <span class="st">'CSV'</span>,</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">data_input_path =</span> <span class="st">'https://github.com/lifecycle-project/ds-upload/blob/master/inst/examples/data/WP6/nd_data_wp6.csv?raw=true'</span>,</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">run_mode =</span> <span class="st">"non_interactive"</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ***********************************************************************************</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   [</span><span class="al">WARNING</span><span class="co">] You are not running the latest version of the dsUpload-package.</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   [</span><span class="al">WARNING</span><span class="co">] If you want to upgrade to newest version : [ 4.0.6 ],</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   [</span><span class="al">WARNING</span><span class="co">] Please run 'install.packages("dsUpload", repos = "https://registry.molgenis.org/repository/R/")'</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   [</span><span class="al">WARNING</span><span class="co">] Check the release notes here: https://github.com/lifecycle-project/analysis-protocols/releases/tag/4.0.6</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ***********************************************************************************</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ######################################################</span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Start upload data into DataSHIELD backend</span></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ------------------------------------------------------</span></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  * Create temporary workdir</span></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ######################################################</span></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Start download dictionaries</span></span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ------------------------------------------------------</span></span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Download: [ 1_1_monthly_rep.xlsx ]</span></span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Download: [ 1_1_non_rep.xlsx ]</span></span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Download: [ 1_1_weekly_rep.xlsx ]</span></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Download: [ 1_1_yearly_rep.xlsx ]</span></span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Successfully downloaded dictionaries</span></span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ######################################################</span></span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Start importing data dictionaries</span></span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ######################################################</span></span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  * Check released dictionaries</span></span>
-<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Project : gecko already exists</span></span>
-<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ######################################################</span></span>
-<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Start converting and uploading data</span></span>
-<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ######################################################</span></span>
-<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Setup: load data and set output directory</span></span>
-<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ------------------------------------------------------</span></span>
-<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Generating: non-repeated measures</span></span>
-<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Generating: yearly-repeated measures</span></span>
-<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Generating: monthly-repeated measures</span></span>
-<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Generating: weekly-repeated measures</span></span>
-<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Start importing: 1_1_outcome_1_0 into project: gecko</span></span>
-<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Compressing...</span></span>
-<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
-<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>  <span class="er">|</span>                                                                        <span class="er">|</span>   <span class="dv">0</span>%</span>
-<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
-<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>  <span class="er">|========================================================================|</span> <span class="dv">100</span>%</span>
-<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Uploaded 1_1_outcome_1_0/weekly_rep</span></span>
-<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Import finished successfully</span></span>
-<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Start importing: 1_1_outcome_1_0 into project: gecko</span></span>
-<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Compressing...</span></span>
-<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
-<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>  <span class="er">|</span>                                                                        <span class="er">|</span>   <span class="dv">0</span>%</span>
-<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
-<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a>  <span class="er">|========================================================================|</span> <span class="dv">100</span>%</span>
-<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Uploaded 1_1_outcome_1_0/non_rep</span></span>
-<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Import finished successfully</span></span>
-<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Start importing: 1_1_outcome_1_0 into project: gecko</span></span>
-<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Compressing...</span></span>
-<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
-<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a>  <span class="er">|</span>                                                                        <span class="er">|</span>   <span class="dv">0</span>%</span>
-<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
-<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a>  <span class="er">|======</span>                                                                  <span class="er">|</span>   <span class="dv">8</span>%</span>
-<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
-<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a>  <span class="er">|===========</span>                                                             <span class="er">|</span>  <span class="dv">16</span>%</span>
-<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
-<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=================</span>                                                       <span class="er">|</span>  <span class="dv">24</span>%</span>
-<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
-<span id="cb7-73"><a href="#cb7-73" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=======================</span>                                                 <span class="er">|</span>  <span class="dv">31</span>%</span>
-<span id="cb7-74"><a href="#cb7-74" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
-<span id="cb7-75"><a href="#cb7-75" aria-hidden="true" tabindex="-1"></a>  <span class="er">|============================</span>                                            <span class="er">|</span>  <span class="dv">39</span>%</span>
-<span id="cb7-76"><a href="#cb7-76" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
-<span id="cb7-77"><a href="#cb7-77" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==================================</span>                                      <span class="er">|</span>  <span class="dv">47</span>%</span>
-<span id="cb7-78"><a href="#cb7-78" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
-<span id="cb7-79"><a href="#cb7-79" aria-hidden="true" tabindex="-1"></a>  <span class="er">|========================================</span>                                <span class="er">|</span>  <span class="dv">55</span>%</span>
-<span id="cb7-80"><a href="#cb7-80" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
-<span id="cb7-81"><a href="#cb7-81" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=============================================</span>                           <span class="er">|</span>  <span class="dv">63</span>%</span>
-<span id="cb7-82"><a href="#cb7-82" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
-<span id="cb7-83"><a href="#cb7-83" aria-hidden="true" tabindex="-1"></a>  <span class="er">|===================================================</span>                     <span class="er">|</span>  <span class="dv">71</span>%</span>
-<span id="cb7-84"><a href="#cb7-84" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
-<span id="cb7-85"><a href="#cb7-85" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=========================================================</span>               <span class="er">|</span>  <span class="dv">79</span>%</span>
-<span id="cb7-86"><a href="#cb7-86" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
-<span id="cb7-87"><a href="#cb7-87" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==============================================================</span>          <span class="er">|</span>  <span class="dv">86</span>%</span>
-<span id="cb7-88"><a href="#cb7-88" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
-<span id="cb7-89"><a href="#cb7-89" aria-hidden="true" tabindex="-1"></a>  <span class="er">|====================================================================</span>    <span class="er">|</span>  <span class="dv">94</span>%</span>
-<span id="cb7-90"><a href="#cb7-90" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
-<span id="cb7-91"><a href="#cb7-91" aria-hidden="true" tabindex="-1"></a>  <span class="er">|========================================================================|</span> <span class="dv">100</span>%</span>
-<span id="cb7-92"><a href="#cb7-92" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Uploaded 1_1_outcome_1_0/yearly_rep</span></span>
-<span id="cb7-93"><a href="#cb7-93" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Import finished successfully</span></span>
-<span id="cb7-94"><a href="#cb7-94" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Start importing: 1_1_outcome_1_0 into project: gecko</span></span>
-<span id="cb7-95"><a href="#cb7-95" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Compressing...</span></span>
-<span id="cb7-96"><a href="#cb7-96" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb7-97"><a href="#cb7-97" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
-<span id="cb7-98"><a href="#cb7-98" aria-hidden="true" tabindex="-1"></a>  <span class="er">|</span>                                                                        <span class="er">|</span>   <span class="dv">0</span>%</span>
-<span id="cb7-99"><a href="#cb7-99" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
-<span id="cb7-100"><a href="#cb7-100" aria-hidden="true" tabindex="-1"></a>  <span class="er">|========================================================================|</span> <span class="dv">100</span>%</span>
-<span id="cb7-101"><a href="#cb7-101" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Uploaded 1_1_outcome_1_0/monthly_rep</span></span>
-<span id="cb7-102"><a href="#cb7-102" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; * Import finished successfully</span></span>
-<span id="cb7-103"><a href="#cb7-103" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ######################################################</span></span>
-<span id="cb7-104"><a href="#cb7-104" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Converting and import successfully finished</span></span>
-<span id="cb7-105"><a href="#cb7-105" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ######################################################</span></span>
-<span id="cb7-106"><a href="#cb7-106" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  * Reinstate default working directory</span></span>
-<span id="cb7-107"><a href="#cb7-107" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  * Cleanup temporary directory</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># upload the data into the DataSHIELD backend</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="co"># these are the core variables</span></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="co"># be advised the default input format is 'CSV'</span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co"># you can use STATA, SPSS, SAS, CSV's or R as source files</span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="fu">du.upload</span>(</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>  <span class="at">cohort_id =</span> <span class="st">'gecko'</span>, </span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>  <span class="at">dict_version =</span> <span class="st">'2_1'</span>, </span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>  <span class="at">dict_kind =</span> <span class="st">'core'</span>, </span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>  <span class="at">data_version =</span> <span class="st">'1_0'</span>, </span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>  <span class="at">data_input_format =</span> <span class="st">'CSV'</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>  <span class="at">data_input_path =</span> <span class="st">'https://github.com/lifecycle-project/ds-upload/blob/master/inst/examples/data/WP1/data/all_measurements_v1_2.csv?raw=true'</span>,</span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>  <span class="at">run_mode =</span> <span class="st">"non_interactive"</span></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>)</span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="co">#&gt; ***********************************************************************************</span></span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="co">#&gt;   [</span><span class="al">WARNING</span><span class="co">] You are not running the latest version of the dsUpload-package.</span></span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="co">#&gt;   [</span><span class="al">WARNING</span><span class="co">] If you want to upgrade to newest version : [ 4.0.6 ],</span></span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a><span class="co">#&gt;   [</span><span class="al">WARNING</span><span class="co">] Please run 'install.packages("dsUpload", repos = "https://registry.molgenis.org/repository/R/")'</span></span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="co">#&gt;   [</span><span class="al">WARNING</span><span class="co">] Check the release notes here: https://github.com/lifecycle-project/analysis-protocols/releases/tag/4.0.6</span></span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a><span class="co">#&gt; ***********************************************************************************</span></span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a><span class="co">#&gt; ######################################################</span></span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a><span class="co">#&gt;   Start upload data into DataSHIELD backend</span></span>
+<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a><span class="co">#&gt; ------------------------------------------------------</span></span>
+<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a><span class="co">#&gt;  * Create temporary workdir</span></span>
+<span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a><span class="co">#&gt; ######################################################</span></span>
+<span id="cb6-25"><a href="#cb6-25" tabindex="-1"></a><span class="co">#&gt;   Start download dictionaries</span></span>
+<span id="cb6-26"><a href="#cb6-26" tabindex="-1"></a><span class="co">#&gt; ------------------------------------------------------</span></span>
+<span id="cb6-27"><a href="#cb6-27" tabindex="-1"></a><span class="co">#&gt; * Download: [ 2_1_monthly_rep.xlsx ]</span></span>
+<span id="cb6-28"><a href="#cb6-28" tabindex="-1"></a><span class="co">#&gt; * Download: [ 2_1_non_rep.xlsx ]</span></span>
+<span id="cb6-29"><a href="#cb6-29" tabindex="-1"></a><span class="co">#&gt; * Download: [ 2_1_trimester_rep.xlsx ]</span></span>
+<span id="cb6-30"><a href="#cb6-30" tabindex="-1"></a><span class="co">#&gt; * Download: [ 2_1_yearly_rep.xlsx ]</span></span>
+<span id="cb6-31"><a href="#cb6-31" tabindex="-1"></a><span class="co">#&gt;   Successfully downloaded dictionaries</span></span>
+<span id="cb6-32"><a href="#cb6-32" tabindex="-1"></a><span class="co">#&gt; ######################################################</span></span>
+<span id="cb6-33"><a href="#cb6-33" tabindex="-1"></a><span class="co">#&gt;   Start importing data dictionaries</span></span>
+<span id="cb6-34"><a href="#cb6-34" tabindex="-1"></a><span class="co">#&gt; ######################################################</span></span>
+<span id="cb6-35"><a href="#cb6-35" tabindex="-1"></a><span class="co">#&gt;  * Check released dictionaries</span></span>
+<span id="cb6-36"><a href="#cb6-36" tabindex="-1"></a><span class="co">#&gt; * Project : gecko already exists</span></span>
+<span id="cb6-37"><a href="#cb6-37" tabindex="-1"></a><span class="co">#&gt; ######################################################</span></span>
+<span id="cb6-38"><a href="#cb6-38" tabindex="-1"></a><span class="co">#&gt;   Start converting and uploading data</span></span>
+<span id="cb6-39"><a href="#cb6-39" tabindex="-1"></a><span class="co">#&gt; ######################################################</span></span>
+<span id="cb6-40"><a href="#cb6-40" tabindex="-1"></a><span class="co">#&gt; * Setup: load data and set output directory</span></span>
+<span id="cb6-41"><a href="#cb6-41" tabindex="-1"></a><span class="co">#&gt; ------------------------------------------------------</span></span>
+<span id="cb6-42"><a href="#cb6-42" tabindex="-1"></a><span class="co">#&gt; [</span><span class="al">WARNING</span><span class="co">] This is an unmatched column, it will be dropped : [ art ].</span></span>
+<span id="cb6-43"><a href="#cb6-43" tabindex="-1"></a><span class="co">#&gt; * Generating: non-repeated measures</span></span>
+<span id="cb6-44"><a href="#cb6-44" tabindex="-1"></a><span class="co">#&gt; * Generating: yearly-repeated measures</span></span>
+<span id="cb6-45"><a href="#cb6-45" tabindex="-1"></a><span class="co">#&gt; Aggregate function missing, defaulting to 'length'</span></span>
+<span id="cb6-46"><a href="#cb6-46" tabindex="-1"></a><span class="co">#&gt; * Generating: monthly-repeated measures</span></span>
+<span id="cb6-47"><a href="#cb6-47" tabindex="-1"></a><span class="co">#&gt; Aggregate function missing, defaulting to 'length'</span></span>
+<span id="cb6-48"><a href="#cb6-48" tabindex="-1"></a><span class="co">#&gt; * Generating: trimesterly-repeated measures</span></span>
+<span id="cb6-49"><a href="#cb6-49" tabindex="-1"></a><span class="co">#&gt; Aggregate function missing, defaulting to 'length'</span></span>
+<span id="cb6-50"><a href="#cb6-50" tabindex="-1"></a><span class="co">#&gt; * Start importing: 2_1_core_1_0 into project: gecko</span></span>
+<span id="cb6-51"><a href="#cb6-51" tabindex="-1"></a><span class="co">#&gt; Compressing...</span></span>
+<span id="cb6-52"><a href="#cb6-52" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-53"><a href="#cb6-53" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
+<span id="cb6-54"><a href="#cb6-54" tabindex="-1"></a>  <span class="er">|</span>                                                                        <span class="er">|</span>   <span class="dv">0</span>%</span>
+<span id="cb6-55"><a href="#cb6-55" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
+<span id="cb6-56"><a href="#cb6-56" tabindex="-1"></a>  <span class="er">|========================================================================|</span> <span class="dv">100</span>%</span>
+<span id="cb6-57"><a href="#cb6-57" tabindex="-1"></a><span class="co">#&gt; Uploaded 2_1_core_1_0/trimester</span></span>
+<span id="cb6-58"><a href="#cb6-58" tabindex="-1"></a><span class="co">#&gt; * Import finished successfully</span></span>
+<span id="cb6-59"><a href="#cb6-59" tabindex="-1"></a><span class="co">#&gt; * Start importing: 2_1_core_1_0 into project: gecko</span></span>
+<span id="cb6-60"><a href="#cb6-60" tabindex="-1"></a><span class="co">#&gt; Compressing...</span></span>
+<span id="cb6-61"><a href="#cb6-61" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-62"><a href="#cb6-62" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
+<span id="cb6-63"><a href="#cb6-63" tabindex="-1"></a>  <span class="er">|</span>                                                                        <span class="er">|</span>   <span class="dv">0</span>%</span>
+<span id="cb6-64"><a href="#cb6-64" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
+<span id="cb6-65"><a href="#cb6-65" tabindex="-1"></a>  <span class="er">|==========</span>                                                              <span class="er">|</span>  <span class="dv">15</span>%</span>
+<span id="cb6-66"><a href="#cb6-66" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
+<span id="cb6-67"><a href="#cb6-67" tabindex="-1"></a>  <span class="er">|=====================</span>                                                   <span class="er">|</span>  <span class="dv">29</span>%</span>
+<span id="cb6-68"><a href="#cb6-68" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
+<span id="cb6-69"><a href="#cb6-69" tabindex="-1"></a>  <span class="er">|===============================</span>                                         <span class="er">|</span>  <span class="dv">44</span>%</span>
+<span id="cb6-70"><a href="#cb6-70" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
+<span id="cb6-71"><a href="#cb6-71" tabindex="-1"></a>  <span class="er">|==========================================</span>                              <span class="er">|</span>  <span class="dv">58</span>%</span>
+<span id="cb6-72"><a href="#cb6-72" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
+<span id="cb6-73"><a href="#cb6-73" tabindex="-1"></a>  <span class="er">|====================================================</span>                    <span class="er">|</span>  <span class="dv">73</span>%</span>
+<span id="cb6-74"><a href="#cb6-74" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
+<span id="cb6-75"><a href="#cb6-75" tabindex="-1"></a>  <span class="er">|===============================================================</span>         <span class="er">|</span>  <span class="dv">87</span>%</span>
+<span id="cb6-76"><a href="#cb6-76" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
+<span id="cb6-77"><a href="#cb6-77" tabindex="-1"></a>  <span class="er">|========================================================================|</span> <span class="dv">100</span>%</span>
+<span id="cb6-78"><a href="#cb6-78" tabindex="-1"></a><span class="co">#&gt; Uploaded 2_1_core_1_0/non_rep</span></span>
+<span id="cb6-79"><a href="#cb6-79" tabindex="-1"></a><span class="co">#&gt; * Import finished successfully</span></span>
+<span id="cb6-80"><a href="#cb6-80" tabindex="-1"></a><span class="co">#&gt; * Start importing: 2_1_core_1_0 into project: gecko</span></span>
+<span id="cb6-81"><a href="#cb6-81" tabindex="-1"></a><span class="co">#&gt; Compressing...</span></span>
+<span id="cb6-82"><a href="#cb6-82" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-83"><a href="#cb6-83" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
+<span id="cb6-84"><a href="#cb6-84" tabindex="-1"></a>  <span class="er">|</span>                                                                        <span class="er">|</span>   <span class="dv">0</span>%</span>
+<span id="cb6-85"><a href="#cb6-85" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
+<span id="cb6-86"><a href="#cb6-86" tabindex="-1"></a>  <span class="er">|========================================================================|</span> <span class="dv">100</span>%</span>
+<span id="cb6-87"><a href="#cb6-87" tabindex="-1"></a><span class="co">#&gt; Uploaded 2_1_core_1_0/yearly_rep</span></span>
+<span id="cb6-88"><a href="#cb6-88" tabindex="-1"></a><span class="co">#&gt; * Import finished successfully</span></span>
+<span id="cb6-89"><a href="#cb6-89" tabindex="-1"></a><span class="co">#&gt; * Start importing: 2_1_core_1_0 into project: gecko</span></span>
+<span id="cb6-90"><a href="#cb6-90" tabindex="-1"></a><span class="co">#&gt; Compressing...</span></span>
+<span id="cb6-91"><a href="#cb6-91" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-92"><a href="#cb6-92" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
+<span id="cb6-93"><a href="#cb6-93" tabindex="-1"></a>  <span class="er">|</span>                                                                        <span class="er">|</span>   <span class="dv">0</span>%</span>
+<span id="cb6-94"><a href="#cb6-94" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
+<span id="cb6-95"><a href="#cb6-95" tabindex="-1"></a>  <span class="er">|========================================================================|</span> <span class="dv">100</span>%</span>
+<span id="cb6-96"><a href="#cb6-96" tabindex="-1"></a><span class="co">#&gt; Uploaded 2_1_core_1_0/monthly_rep</span></span>
+<span id="cb6-97"><a href="#cb6-97" tabindex="-1"></a><span class="co">#&gt; * Import finished successfully</span></span>
+<span id="cb6-98"><a href="#cb6-98" tabindex="-1"></a><span class="co">#&gt; ######################################################</span></span>
+<span id="cb6-99"><a href="#cb6-99" tabindex="-1"></a><span class="co">#&gt;   Converting and import successfully finished</span></span>
+<span id="cb6-100"><a href="#cb6-100" tabindex="-1"></a><span class="co">#&gt; ######################################################</span></span>
+<span id="cb6-101"><a href="#cb6-101" tabindex="-1"></a><span class="co">#&gt;  * Reinstate default working directory</span></span>
+<span id="cb6-102"><a href="#cb6-102" tabindex="-1"></a><span class="co">#&gt;  * Cleanup temporary directory</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># upload the outcome variables</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="fu">du.upload</span>(</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>  <span class="at">cohort_id =</span> <span class="st">'gecko'</span>, </span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>  <span class="at">dict_version =</span> <span class="st">'1_1'</span>, </span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>  <span class="at">dict_kind =</span> <span class="st">'outcome'</span>, </span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>  <span class="at">data_version =</span> <span class="st">'1_0'</span>, </span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>  <span class="at">data_input_format =</span> <span class="st">'CSV'</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>  <span class="at">data_input_path =</span> <span class="st">'https://github.com/lifecycle-project/ds-upload/blob/master/inst/examples/data/WP6/nd_data_wp6.csv?raw=true'</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>  <span class="at">run_mode =</span> <span class="st">"non_interactive"</span></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>)</span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="co">#&gt; ***********************************************************************************</span></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a><span class="co">#&gt;   [</span><span class="al">WARNING</span><span class="co">] You are not running the latest version of the dsUpload-package.</span></span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a><span class="co">#&gt;   [</span><span class="al">WARNING</span><span class="co">] If you want to upgrade to newest version : [ 4.0.6 ],</span></span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a><span class="co">#&gt;   [</span><span class="al">WARNING</span><span class="co">] Please run 'install.packages("dsUpload", repos = "https://registry.molgenis.org/repository/R/")'</span></span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a><span class="co">#&gt;   [</span><span class="al">WARNING</span><span class="co">] Check the release notes here: https://github.com/lifecycle-project/analysis-protocols/releases/tag/4.0.6</span></span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a><span class="co">#&gt; ***********************************************************************************</span></span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a><span class="co">#&gt; ######################################################</span></span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a><span class="co">#&gt;   Start upload data into DataSHIELD backend</span></span>
+<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a><span class="co">#&gt; ------------------------------------------------------</span></span>
+<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a><span class="co">#&gt;  * Create temporary workdir</span></span>
+<span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a><span class="co">#&gt; ######################################################</span></span>
+<span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a><span class="co">#&gt;   Start download dictionaries</span></span>
+<span id="cb7-23"><a href="#cb7-23" tabindex="-1"></a><span class="co">#&gt; ------------------------------------------------------</span></span>
+<span id="cb7-24"><a href="#cb7-24" tabindex="-1"></a><span class="co">#&gt; * Download: [ 1_1_monthly_rep.xlsx ]</span></span>
+<span id="cb7-25"><a href="#cb7-25" tabindex="-1"></a><span class="co">#&gt; * Download: [ 1_1_non_rep.xlsx ]</span></span>
+<span id="cb7-26"><a href="#cb7-26" tabindex="-1"></a><span class="co">#&gt; * Download: [ 1_1_weekly_rep.xlsx ]</span></span>
+<span id="cb7-27"><a href="#cb7-27" tabindex="-1"></a><span class="co">#&gt; * Download: [ 1_1_yearly_rep.xlsx ]</span></span>
+<span id="cb7-28"><a href="#cb7-28" tabindex="-1"></a><span class="co">#&gt;   Successfully downloaded dictionaries</span></span>
+<span id="cb7-29"><a href="#cb7-29" tabindex="-1"></a><span class="co">#&gt; ######################################################</span></span>
+<span id="cb7-30"><a href="#cb7-30" tabindex="-1"></a><span class="co">#&gt;   Start importing data dictionaries</span></span>
+<span id="cb7-31"><a href="#cb7-31" tabindex="-1"></a><span class="co">#&gt; ######################################################</span></span>
+<span id="cb7-32"><a href="#cb7-32" tabindex="-1"></a><span class="co">#&gt;  * Check released dictionaries</span></span>
+<span id="cb7-33"><a href="#cb7-33" tabindex="-1"></a><span class="co">#&gt; * Project : gecko already exists</span></span>
+<span id="cb7-34"><a href="#cb7-34" tabindex="-1"></a><span class="co">#&gt; ######################################################</span></span>
+<span id="cb7-35"><a href="#cb7-35" tabindex="-1"></a><span class="co">#&gt;   Start converting and uploading data</span></span>
+<span id="cb7-36"><a href="#cb7-36" tabindex="-1"></a><span class="co">#&gt; ######################################################</span></span>
+<span id="cb7-37"><a href="#cb7-37" tabindex="-1"></a><span class="co">#&gt; * Setup: load data and set output directory</span></span>
+<span id="cb7-38"><a href="#cb7-38" tabindex="-1"></a><span class="co">#&gt; ------------------------------------------------------</span></span>
+<span id="cb7-39"><a href="#cb7-39" tabindex="-1"></a><span class="co">#&gt; * Generating: non-repeated measures</span></span>
+<span id="cb7-40"><a href="#cb7-40" tabindex="-1"></a><span class="co">#&gt; * Generating: yearly-repeated measures</span></span>
+<span id="cb7-41"><a href="#cb7-41" tabindex="-1"></a><span class="co">#&gt; * Generating: monthly-repeated measures</span></span>
+<span id="cb7-42"><a href="#cb7-42" tabindex="-1"></a><span class="co">#&gt; * Generating: weekly-repeated measures</span></span>
+<span id="cb7-43"><a href="#cb7-43" tabindex="-1"></a><span class="co">#&gt; * Start importing: 1_1_outcome_1_0 into project: gecko</span></span>
+<span id="cb7-44"><a href="#cb7-44" tabindex="-1"></a><span class="co">#&gt; Compressing...</span></span>
+<span id="cb7-45"><a href="#cb7-45" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-46"><a href="#cb7-46" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
+<span id="cb7-47"><a href="#cb7-47" tabindex="-1"></a>  <span class="er">|</span>                                                                        <span class="er">|</span>   <span class="dv">0</span>%</span>
+<span id="cb7-48"><a href="#cb7-48" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
+<span id="cb7-49"><a href="#cb7-49" tabindex="-1"></a>  <span class="er">|========================================================================|</span> <span class="dv">100</span>%</span>
+<span id="cb7-50"><a href="#cb7-50" tabindex="-1"></a><span class="co">#&gt; Uploaded 1_1_outcome_1_0/weekly_rep</span></span>
+<span id="cb7-51"><a href="#cb7-51" tabindex="-1"></a><span class="co">#&gt; * Import finished successfully</span></span>
+<span id="cb7-52"><a href="#cb7-52" tabindex="-1"></a><span class="co">#&gt; * Start importing: 1_1_outcome_1_0 into project: gecko</span></span>
+<span id="cb7-53"><a href="#cb7-53" tabindex="-1"></a><span class="co">#&gt; Compressing...</span></span>
+<span id="cb7-54"><a href="#cb7-54" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-55"><a href="#cb7-55" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
+<span id="cb7-56"><a href="#cb7-56" tabindex="-1"></a>  <span class="er">|</span>                                                                        <span class="er">|</span>   <span class="dv">0</span>%</span>
+<span id="cb7-57"><a href="#cb7-57" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
+<span id="cb7-58"><a href="#cb7-58" tabindex="-1"></a>  <span class="er">|========================================================================|</span> <span class="dv">100</span>%</span>
+<span id="cb7-59"><a href="#cb7-59" tabindex="-1"></a><span class="co">#&gt; Uploaded 1_1_outcome_1_0/non_rep</span></span>
+<span id="cb7-60"><a href="#cb7-60" tabindex="-1"></a><span class="co">#&gt; * Import finished successfully</span></span>
+<span id="cb7-61"><a href="#cb7-61" tabindex="-1"></a><span class="co">#&gt; * Start importing: 1_1_outcome_1_0 into project: gecko</span></span>
+<span id="cb7-62"><a href="#cb7-62" tabindex="-1"></a><span class="co">#&gt; Compressing...</span></span>
+<span id="cb7-63"><a href="#cb7-63" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-64"><a href="#cb7-64" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
+<span id="cb7-65"><a href="#cb7-65" tabindex="-1"></a>  <span class="er">|</span>                                                                        <span class="er">|</span>   <span class="dv">0</span>%</span>
+<span id="cb7-66"><a href="#cb7-66" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
+<span id="cb7-67"><a href="#cb7-67" tabindex="-1"></a>  <span class="er">|======</span>                                                                  <span class="er">|</span>   <span class="dv">8</span>%</span>
+<span id="cb7-68"><a href="#cb7-68" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
+<span id="cb7-69"><a href="#cb7-69" tabindex="-1"></a>  <span class="er">|===========</span>                                                             <span class="er">|</span>  <span class="dv">16</span>%</span>
+<span id="cb7-70"><a href="#cb7-70" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
+<span id="cb7-71"><a href="#cb7-71" tabindex="-1"></a>  <span class="er">|=================</span>                                                       <span class="er">|</span>  <span class="dv">24</span>%</span>
+<span id="cb7-72"><a href="#cb7-72" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
+<span id="cb7-73"><a href="#cb7-73" tabindex="-1"></a>  <span class="er">|=======================</span>                                                 <span class="er">|</span>  <span class="dv">31</span>%</span>
+<span id="cb7-74"><a href="#cb7-74" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
+<span id="cb7-75"><a href="#cb7-75" tabindex="-1"></a>  <span class="er">|============================</span>                                            <span class="er">|</span>  <span class="dv">39</span>%</span>
+<span id="cb7-76"><a href="#cb7-76" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
+<span id="cb7-77"><a href="#cb7-77" tabindex="-1"></a>  <span class="er">|==================================</span>                                      <span class="er">|</span>  <span class="dv">47</span>%</span>
+<span id="cb7-78"><a href="#cb7-78" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
+<span id="cb7-79"><a href="#cb7-79" tabindex="-1"></a>  <span class="er">|========================================</span>                                <span class="er">|</span>  <span class="dv">55</span>%</span>
+<span id="cb7-80"><a href="#cb7-80" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
+<span id="cb7-81"><a href="#cb7-81" tabindex="-1"></a>  <span class="er">|=============================================</span>                           <span class="er">|</span>  <span class="dv">63</span>%</span>
+<span id="cb7-82"><a href="#cb7-82" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
+<span id="cb7-83"><a href="#cb7-83" tabindex="-1"></a>  <span class="er">|===================================================</span>                     <span class="er">|</span>  <span class="dv">71</span>%</span>
+<span id="cb7-84"><a href="#cb7-84" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
+<span id="cb7-85"><a href="#cb7-85" tabindex="-1"></a>  <span class="er">|=========================================================</span>               <span class="er">|</span>  <span class="dv">79</span>%</span>
+<span id="cb7-86"><a href="#cb7-86" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
+<span id="cb7-87"><a href="#cb7-87" tabindex="-1"></a>  <span class="er">|==============================================================</span>          <span class="er">|</span>  <span class="dv">86</span>%</span>
+<span id="cb7-88"><a href="#cb7-88" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
+<span id="cb7-89"><a href="#cb7-89" tabindex="-1"></a>  <span class="er">|====================================================================</span>    <span class="er">|</span>  <span class="dv">94</span>%</span>
+<span id="cb7-90"><a href="#cb7-90" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
+<span id="cb7-91"><a href="#cb7-91" tabindex="-1"></a>  <span class="er">|========================================================================|</span> <span class="dv">100</span>%</span>
+<span id="cb7-92"><a href="#cb7-92" tabindex="-1"></a><span class="co">#&gt; Uploaded 1_1_outcome_1_0/yearly_rep</span></span>
+<span id="cb7-93"><a href="#cb7-93" tabindex="-1"></a><span class="co">#&gt; * Import finished successfully</span></span>
+<span id="cb7-94"><a href="#cb7-94" tabindex="-1"></a><span class="co">#&gt; * Start importing: 1_1_outcome_1_0 into project: gecko</span></span>
+<span id="cb7-95"><a href="#cb7-95" tabindex="-1"></a><span class="co">#&gt; Compressing...</span></span>
+<span id="cb7-96"><a href="#cb7-96" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-97"><a href="#cb7-97" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
+<span id="cb7-98"><a href="#cb7-98" tabindex="-1"></a>  <span class="er">|</span>                                                                        <span class="er">|</span>   <span class="dv">0</span>%</span>
+<span id="cb7-99"><a href="#cb7-99" tabindex="-1"></a>  <span class="sc">|</span>                                                                              </span>
+<span id="cb7-100"><a href="#cb7-100" tabindex="-1"></a>  <span class="er">|========================================================================|</span> <span class="dv">100</span>%</span>
+<span id="cb7-101"><a href="#cb7-101" tabindex="-1"></a><span class="co">#&gt; Uploaded 1_1_outcome_1_0/monthly_rep</span></span>
+<span id="cb7-102"><a href="#cb7-102" tabindex="-1"></a><span class="co">#&gt; * Import finished successfully</span></span>
+<span id="cb7-103"><a href="#cb7-103" tabindex="-1"></a><span class="co">#&gt; ######################################################</span></span>
+<span id="cb7-104"><a href="#cb7-104" tabindex="-1"></a><span class="co">#&gt;   Converting and import successfully finished</span></span>
+<span id="cb7-105"><a href="#cb7-105" tabindex="-1"></a><span class="co">#&gt; ######################################################</span></span>
+<span id="cb7-106"><a href="#cb7-106" tabindex="-1"></a><span class="co">#&gt;  * Reinstate default working directory</span></span>
+<span id="cb7-107"><a href="#cb7-107" tabindex="-1"></a><span class="co">#&gt;  * Cleanup temporary directory</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="using-opal">Using Opal<a class="anchor" aria-label="anchor" href="#using-opal"></a>
