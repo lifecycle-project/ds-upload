@@ -18,30 +18,6 @@ du.num.extract <- local(function(input_string) {
   str_extract(input_string, "\\d*$")
 })
 
-#' This function creates a summary table
-#'
-#' @param df data frame to summarise
-#' @param .var variable to summarise
-#'
-#' @importFrom dplyr summarise n
-#' @importFrom rlang sym
-#' @importFrom stats median
-#'
-#' @return a summary of the data
-#'
-#' @noRd
-du.summarize <- local(function(df, .var) {
-  .var <- sym(.var)
-
-  data_summary <- df %>% summarise(
-    variable = paste(.var), min = min(!!.var, na.rm = TRUE),
-    max = max(!!.var, na.rm = TRUE), median = median(!!.var, na.rm = TRUE), mean = mean(!!.var,
-      na.rm = TRUE
-    ), n = n(), missing = sum(is.na(!!.var))
-  )
-  return(data_summary)
-})
-
 #'
 #' Check if the given version matches the syntax number . underscore . number
 #'

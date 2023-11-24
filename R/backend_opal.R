@@ -36,53 +36,6 @@ du.opal.upload <- function(dict_kind, file_name) {
   unlink(paste0(getwd(), "/", file_name, ".csv"))
 }
 
-#' Importing generated data files
-#'
-#' @param project project to import the data into
-#' @param dict_kind can be 'core' or 'outcome'
-#' @param file_name name of the data file
-#'
-#' @importFrom readr read_csv
-#' @importFrom opalr opal.post
-#' @importFrom opalr opal.projects
-#' @importFrom opalr opal.tables
-#' @importFrom jsonlite toJSON
-#'
-#' @noRd
-du.opal.data.import <- function(project, dict_kind, file_name) {
-  requireNamespace("opalr")
-  message("------------------------------------------------------")
-  message("  Start importing data files")
-
-  file_ext <- ".csv"
-
-  projects <- opal.projects(ds_upload.globals$conn)
-  project <- readline(paste0("Which project you want to upload into: [ ", paste0(projects$name, collapse = ", "), " ]: "))
-
-  if (!(project %in% projects$name)) {
-    stop(paste("Invalid projectname: [ ", project, " ]", sep = ""))
-  }
-
-  tables <- opal.tables(ds_upload.globals$conn, project)
-
-  table_name <- ""
-  if (file_name %in% tables$name) {
-    table <- tables$name
-  }
-
-  data <- read_csv(paste0(getwd(), "/", dict_kind, "/", file_name))
-
-  message(paste0("* Import: ", paste0(getwd(), "/", dict_kind, "/", file_name)))
-  opal.post(ds_upload.globals$conn, "datasource", ds_upload.globals$project, "table",
-    table_name, "variables",
-    body = toJSON(data), contentType = "application/x-protobuf+json"
-  )
-
-  unlink(paste0(getwd(), "/", dict_kind, "/", file_name))
-
-  message("  Succesfully imported the files")
-}
-
 #' Create the project with data dictionary version in between
 #'
 #' @param project prpject resource in Opal
