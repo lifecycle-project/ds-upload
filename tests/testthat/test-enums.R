@@ -42,3 +42,10 @@ test_that("dict kind", {
   expect_equal(typeof(du.enum.dict.kind()), "list")
   expect_length(du.enum.dict.kind(), 5)
 })
+
+test_that("backends", {
+  x <- list(OPAL = "OpalDriver", ARMADILLO = "ArmadilloDriver")
+  expect_equal(du.enum.backends(), x)
+  expect_equal(typeof(du.enum.backends()), "list")
+  expect_length(du.enum.backends(), 2)
+})
