@@ -12,26 +12,6 @@ du.armadillo.login <- function(login_data) {
   return(token)
 }
 
-#' List projects
-#'
-#' @noRd
-du.armadillo.list.projects <- function() {
-  requireNamespace("MolgenisArmadillo")
-  projects <- armadillo.list_projects()
-  return(projects)
-}
-
-#' List tables
-#'
-#' @param project project to limit the scope
-#'
-#' @noRd
-du.armadillo.list.tables <- function(project) {
-  requireNamespace("MolgenisArmadillo")
-  tables <- armadillo.list_tables(project)
-  return(tables)
-}
-
 #' Create projects in Armadillo
 #'
 #' @param project the target project where the data should be put into
