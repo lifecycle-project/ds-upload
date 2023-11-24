@@ -49,3 +49,10 @@ test_that("backends", {
   expect_equal(typeof(du.enum.backends()), "list")
   expect_length(du.enum.backends(), 2)
 })
+
+test_that("run mode", {
+  x <- list(NORMAL = "normal", NON_INTERACTIVE = "non_interactive", TEST = "test")
+  expect_equal(du.enum.run.mode(), x)
+  expect_equal(typeof(du.enum.run.mode()), "list")
+  expect_length(du.enum.run.mode(), 3)
+})
