@@ -21,3 +21,10 @@ test_that("table types", {
   expect_equal(typeof(du.enum.table.types()), "list")
   expect_length(du.enum.table.types(), 5)
 })
+
+test_that("input format", {
+  x <- list(CSV = "CSV", STATA = "STATA", SPSS = "SPSS", SAS = "SAS", R = "R")
+  expect_equal(du.enum.input.format(), x)
+  expect_equal(typeof(du.enum.input.format()), "list")
+  expect_length(du.enum.input.format(), 5)
+})
