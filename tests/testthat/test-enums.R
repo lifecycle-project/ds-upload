@@ -28,3 +28,10 @@ test_that("input format", {
   expect_equal(typeof(du.enum.input.format()), "list")
   expect_length(du.enum.input.format(), 5)
 })
+
+test_that("action", {
+  x <- list(ALL = "all", RESHAPE = "reshape", POPULATE = "populate")
+  expect_equal(du.enum.action(), x)
+  expect_equal(typeof(du.enum.action()), "list")
+  expect_length(du.enum.action(), 3)
+})
