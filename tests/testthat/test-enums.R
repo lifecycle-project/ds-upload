@@ -14,3 +14,10 @@ test_that("cohorts", {
   expect_equal(typeof(du.enum.cohorts()), "list")
   expect_length(du.enum.cohorts(), 35)
 })
+
+test_that("table types", {
+  x <- list(NONREP = "non_rep", WEEKLY = "weekly_rep", MONTHLY = "monthly_rep", TRIMESTER = "trimester_rep", YEARLY = "yearly_rep")
+  expect_equal(du.enum.table.types(), x)
+  expect_equal(typeof(du.enum.table.types()), "list")
+  expect_length(du.enum.table.types(), 5)
+})
