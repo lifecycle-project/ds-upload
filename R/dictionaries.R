@@ -1,6 +1,6 @@
 #' Download all released data dictionaries
 #'
-#' @param dict_name used for beta dictionaries
+#' @param dict_name used for dictionaries
 #' @param dict_version dictionary version
 #' @param dict_kind dictionary kind (possible kinds are 'core' or 'outcome')
 #'
@@ -16,14 +16,14 @@ du.dict.download <- function(dict_name, dict_version, dict_kind) {
 
   dir.create(dict_kind)
 
-  if (!missing(dict_name)) {
-    api_url <- paste0(ds_upload.globals$api_dict_beta_url, "dictionaries/", dict_name)
-  } else {
+#  if (!missing(dict_name)) {
+#    api_url <- paste0(ds_upload.globals$api_dict_beta_url, "dictionaries/", dict_name)
+#  } else {
     api_url <- paste0(
       ds_upload.globals$api_dict_released_url, "dictionaries/",
       dict_kind, "/", dict_version, "?ref=", dict_kind, "-", dict_version
     )
-  }
+#  }
 
   dictionaries <- du.get.response.as.dataframe(api_url)
 
@@ -54,13 +54,13 @@ du.dict.download <- function(dict_name, dict_version, dict_kind) {
 #'
 #' @noRd
 du.dict.retrieve.tables <- function(api_url, dict_name, dict_version, data_version) {
-  beta <- TRUE
+  #beta <- TRUE
   api_url_path <- paste0(api_url, "dictionaries/", dict_name)
 
   if (!missing(dict_version) && !missing(data_version)) {
     message(" * Check released dictionaries")
     api_url_path <- paste0(api_url, "dictionaries/", dict_name, "/", dict_version, "?ref=", dict_name, "-", dict_version)
-    beta <- FALSE
+    #beta <- FALSE
   }
 
   dictionaries <- du.get.response.as.dataframe(api_url_path)
@@ -72,12 +72,12 @@ du.dict.retrieve.tables <- function(api_url, dict_name, dict_version, data_versi
   tables <- dictionaries %>%
     select("name") %>%
     pmap(function(name) {
-      if (!beta) {
+#      if (!beta) {
         canonical_table_name <- strsplit(name, "_")
         table <- paste0(data_version, "_", canonical_table_name[[1]][3], "_rep")
-      } else {
-        table <- path_ext_remove(name)
-      }
+#      } else {
+#        table <- path_ext_remove(name)
+#      }
       return(data.frame(table = table, file_name = name))
     })
 
