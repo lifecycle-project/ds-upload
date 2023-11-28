@@ -70,7 +70,8 @@ Suggests:
     dsHelper,
     knitr,
     rmarkdown,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    tidyverse
 Additional_repositories:
   https://registry.molgenis.org/repository/R
   https://cran.obiba.org
