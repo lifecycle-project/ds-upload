@@ -3,7 +3,6 @@ ds_upload.globals <- new.env()
 
 ds_upload.globals$api_dict_released_url <- "https://api.github.com/repos/lifecycle-project/ds-dictionaries/contents/"
 ds_upload.globals$api_dict_released_tags_url <- "https://api.github.com/repos/lifecycle-project/ds-dictionaries/git/refs/tags/"
-ds_upload.globals$api_dict_beta_url <- "https://api.github.com/repos/lifecycle-project/ds-beta-dictionaries/contents/"
 
 #' Numerical extraction function
 #' Number at the end of the string: Indicates year. We need to extract this to create the age_years variable.
