@@ -2,7 +2,7 @@
 #' Involves only the core variables
 #'
 #' @param dict_version dictionary version
-#' @param cohort_id cohort identifier (possible values are: 'dnbc', 'gecko', 'alspac', 'genr', 'moba', 'sws', 'bib', 'chop', 'elfe', 'eden', 'ninfea', 'hbcs', 'inma', 'isglobal', 'nfbc66', 'nfbc86', 'raine', 'rhea')
+#' @param cohort_id cohort identifier (possible values are: [du.enum.cohorts])
 #' @param data_version version of the data (specific to the cohort)
 #' @param database_name the database name specified in your Opal instance (defaults to 'opal_data')
 #' @param dict_kind dictionnary kind, can be 'core' or 'outcome'
