@@ -1,6 +1,6 @@
 #' Read the input file from different sources
 #'
-#' @param input_format possible formats are CSV,STATA,SPSS or SAS (default = CSV)
+#' @param input_format possible formats are [du.enum.input.format] (default = CSV)
 #' @param input_path path for importfile
 #'
 #' @importFrom readr read_csv cols col_double
