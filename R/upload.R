@@ -34,7 +34,6 @@ du.upload <- function(dict_version, data_version = "1_0", dict_kind,
   message("  Start upload data into DataSHIELD backend")
   message("------------------------------------------------------")
   
-  du.check.package.version()
   du.check.session(upload)
   du.populate.dict.versions()
   

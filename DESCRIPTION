@@ -56,7 +56,6 @@ Imports:
   readr,
   stats,
   readxl,
-  rlang,
   stringr,
   tidyr,
   utils,

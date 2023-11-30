@@ -54,7 +54,7 @@ du.opal.project.create <- function(project, database_name) {
   message("------------------------------------------------------")
   message(paste0("  Start creating project: [ ", project, " ]"))
 
-  projects <- opal.projects(ds_upload.globals$conn)
+  projects <- opalr::opal.projects(ds_upload.globals$conn)
 
   if (!(project %in% projects$name)) {
     json <- sprintf(
@@ -87,7 +87,7 @@ du.opal.dict.import <- function(project, dictionaries, dict_kind) {
   dictionaries %>%
     map(function(dict) {
       json_table <- sprintf("{\"entityType\":\"Participant\",\"name\":\"%s\"}", dict$table)
-      tables <- opal.tables(ds_upload.globals$conn, project)
+      tables <- opalr::opal.tables(ds_upload.globals$conn, project)
       if (!(dict$table %in% tables$name)) {
         message(paste("* Create table: [ ", dict$table, " ]", sep = ""))
         url <- paste0("datasource/", project, "/tables")
@@ -147,6 +147,6 @@ du.opal.dict.match.categories <- function(project, dict_kind, table, file_name) 
 
   url <- paste0("datasource/", project, "/table/", table, "/variables")
   opal.post(ds_upload.globals$conn, url,
-    body = toJSON(variables), contentType = "application/x-protobuf+json"
+    body = jsonlite::toJSON(variables), contentType = "application/x-protobuf+json"
   )
 }
