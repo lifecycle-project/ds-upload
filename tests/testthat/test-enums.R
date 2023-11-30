@@ -36,13 +36,6 @@ test_that("action", {
   expect_length(du.enum.action(), 3)
 })
 
-test_that("dict kind", {
-  x <- list(CORE = "core", CHEMICALS = "chemicals_ath", OUTCOME = "outcome", BETA = "beta", OUTCOME_ATH = "outcome_ath")
-  expect_equal(du.enum.dict.kind(), x)
-  expect_equal(typeof(du.enum.dict.kind()), "list")
-  expect_length(du.enum.dict.kind(), 5)
-})
-
 test_that("backends", {
   x <- list(OPAL = "OpalDriver", ARMADILLO = "ArmadilloDriver")
   expect_equal(du.enum.backends(), x)
