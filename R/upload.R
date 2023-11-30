@@ -6,14 +6,13 @@ ds_upload.globals <- new.env()
 #' @param dict_version version of the data dictionary to be used
 #' @param data_version version of the dataset to be uploaded
 #' @param dict_kind can be 'core' or 'outcome'
-#' @param cohort_id cohort name
+#' @param cohort_id cohort name: [du.enum.cohorts]
 #' @param database_name is the name of the data backend of DataSHIELD, default = opal_data
-#' @param data_input_format format of the database to be reshaped. Can be 'CSV', 'STATA', 'SAS' or RDS (R)
-#' @param upload directly upload the reshaped database to the logged in DataSHIELD server
+#' @param data_input_format format of the database to be reshaped. Can be [du.enum.input.format]
+#' @param upload directly upload the reshaped database to the logged in DataSHIELD server, TRUE or FALSE
 #' @param data_input_path path to the to-be-uploaded data
-#' @param action action to be performed, can be 'reshape', 'populate' or 'all'
-#' @param run_mode default = NORMAL, can be TEST and NON_INTERACTIIVE
-#' @param upload do you want to upload the data (true or false) 
+#' @param action action to be performed, can be [du.enum.action]
+#' @param run_mode default = NORMAL, [du.enum.run.mode]
 #' @param override_project overrides the generated project name
 #'
 #' @examples
@@ -35,7 +34,6 @@ du.upload <- function(dict_version, data_version = "1_0", dict_kind,
   message("  Start upload data into DataSHIELD backend")
   message("------------------------------------------------------")
   
-  du.check.package.version()
   du.check.session(upload)
   du.populate.dict.versions()
   
@@ -47,7 +45,7 @@ du.upload <- function(dict_version, data_version = "1_0", dict_kind,
   if (cohort_id == "") {
     stop("No cohort identifier is specified! Program is terminated.")
   } else {
-    if (!(cohort_id %in% du.enum.cohorts()) & run_mode != du.enum.run.mode()$TEST) {
+    if (!(cohort_id %in% du.enum.cohorts())) {
       stop(
         "Cohort: [ ", cohort_id, " ] is not a known cohort in the network. Please choose from: [ ",
         paste(du.enum.cohorts(), collapse = ", "), " ]"
@@ -89,20 +87,6 @@ du.upload <- function(dict_version, data_version = "1_0", dict_kind,
           upload, project, data_version, data_input_format, dict_version,
           dict_kind, data_input_path, run_mode
         )
-      }
-
-      if (run_mode != du.enum.run.mode()$NON_INTERACTIVE) {
-        run_cqc <- readline("- Do you want to run quality control (make sure you imported the data!)? (y/n): ")
-      } else {
-        run_cqc <- "n"
-      }
-      if (run_cqc == "y") {
-        if (ds_upload.globals$login_data$driver == du.enum.backends()$OPAL) {
-          du.quality.control(project = project, data_version = data_version)
-        }
-        if (ds_upload.globals$login_data$driver == du.enum.backends()$ARMADILLO) {
-          du.quality.control(project = cohort_id, data_version = data_version)
-        }
       }
     },
     finally = {

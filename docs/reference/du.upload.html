@@ -35,16 +35,10 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/betaDictionaries.html">Beta dictionaries</a>
-    </li>
-    <li>
       <a href="../articles/dataVersioning.html">Data versioning</a>
     </li>
     <li>
       <a href="../articles/dictionaryVersioning.html">Dictionairy versioning</a>
-    </li>
-    <li>
-      <a href="../articles/qualityControl.html">Quality control</a>
     </li>
   </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
@@ -102,7 +96,7 @@
 
 
 <dt>cohort_id</dt>
-<dd><p>cohort name</p></dd>
+<dd><p>cohort name: [du.enum.cohorts]</p></dd>
 
 
 <dt>database_name</dt>
@@ -110,7 +104,7 @@
 
 
 <dt>data_input_format</dt>
-<dd><p>format of the database to be reshaped. Can be 'CSV', 'STATA', 'SAS' or RDS (R)</p></dd>
+<dd><p>format of the database to be reshaped. Can be [du.enum.input.format]</p></dd>
 
 
 <dt>data_input_path</dt>
@@ -118,15 +112,15 @@
 
 
 <dt>action</dt>
-<dd><p>action to be performed, can be 'reshape', 'populate' or 'all'</p></dd>
+<dd><p>action to be performed, can be [du.enum.action]</p></dd>
 
 
 <dt>upload</dt>
-<dd><p>do you want to upload the data (true or false)</p></dd>
+<dd><p>directly upload the reshaped database to the logged in DataSHIELD server, TRUE or FALSE</p></dd>
 
 
 <dt>run_mode</dt>
-<dd><p>default = NORMAL, can be TEST and NON_INTERACTIIVE</p></dd>
+<dd><p>default = NORMAL, [du.enum.run.mode]</p></dd>
 
 
 <dt>override_project</dt>

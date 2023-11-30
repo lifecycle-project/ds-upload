@@ -43,8 +43,6 @@ du.login <- function(login_data) {
     password <- readline("- Password: ")
   }
 
-  du.check.package.version()
-
   if (is.null(login_data$insecure)) {
     login_data$options <- data.frame(ssl.verifyhost = FALSE, ssl.verifypeer = FALSE)
   }
@@ -59,33 +57,6 @@ du.login <- function(login_data) {
   message(paste("  Logged on to: \"", login_data$server, "\"", sep = ""))
 
   ds_upload.globals$login_data <- login_data
-}
-
-#'
-#' Check the package version
-#'
-#' @importFrom jsonlite fromJSON
-#' @importFrom utils packageVersion packageName
-#'
-#' @noRd
-du.check.package.version <- function() {
-  url <- paste0("https://registry.molgenis.org/service/rest/v1/search?repository=r-hosted&name=", packageName())
-  result <- fromJSON(txt = url)
-  currentVersion <- packageVersion(packageName())
-  if (any(result$items$version > currentVersion)) {
-    message(paste0("***********************************************************************************"))
-    message(paste0("  [WARNING] You are not running the latest version of the ", packageName(), "-package."))
-    message(paste0(
-      "  [WARNING] If you want to upgrade to newest version : [ ", max(result$items$version),
-      " ],"
-    ))
-    message(paste0("  [WARNING] Please run 'install.packages(\"", packageName(), "\", repos = \"https://registry.molgenis.org/repository/R/\")'"))
-    message(paste0(
-      "  [WARNING] Check the release notes here: https://github.com/lifecycle-project/analysis-protocols/releases/tag/",
-      max(result$items$version)
-    ))
-    message(paste0("***********************************************************************************"))
-  }
 }
 
 #' Check if there is an active session with a DataSHIELD backend

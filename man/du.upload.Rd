@@ -25,19 +25,19 @@ du.upload(
 
 \item{dict_kind}{can be 'core' or 'outcome'}
 
-\item{cohort_id}{cohort name}
+\item{cohort_id}{cohort name: [du.enum.cohorts]}
 
 \item{database_name}{is the name of the data backend of DataSHIELD, default = opal_data}
 
-\item{data_input_format}{format of the database to be reshaped. Can be 'CSV', 'STATA', 'SAS' or RDS (R)}
+\item{data_input_format}{format of the database to be reshaped. Can be [du.enum.input.format]}
 
 \item{data_input_path}{path to the to-be-uploaded data}
 
-\item{action}{action to be performed, can be 'reshape', 'populate' or 'all'}
+\item{action}{action to be performed, can be [du.enum.action]}
 
-\item{upload}{do you want to upload the data (true or false)}
+\item{upload}{directly upload the reshaped database to the logged in DataSHIELD server, TRUE or FALSE}
 
-\item{run_mode}{default = NORMAL, can be TEST and NON_INTERACTIIVE}
+\item{run_mode}{default = NORMAL, [du.enum.run.mode]}
 
 \item{override_project}{overrides the generated project name}
 }

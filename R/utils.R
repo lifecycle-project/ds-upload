@@ -3,7 +3,6 @@ ds_upload.globals <- new.env()
 
 ds_upload.globals$api_dict_released_url <- "https://api.github.com/repos/lifecycle-project/ds-dictionaries/contents/"
 ds_upload.globals$api_dict_released_tags_url <- "https://api.github.com/repos/lifecycle-project/ds-dictionaries/git/refs/tags/"
-ds_upload.globals$api_dict_beta_url <- "https://api.github.com/repos/lifecycle-project/ds-beta-dictionaries/contents/"
 
 #' Numerical extraction function
 #' Number at the end of the string: Indicates year. We need to extract this to create the age_years variable.
@@ -16,30 +15,6 @@ ds_upload.globals$api_dict_beta_url <- "https://api.github.com/repos/lifecycle-p
 #' @noRd
 du.num.extract <- local(function(input_string) {
   str_extract(input_string, "\\d*$")
-})
-
-#' This function creates a summary table
-#'
-#' @param df data frame to summarise
-#' @param .var variable to summarise
-#'
-#' @importFrom dplyr summarise n
-#' @importFrom rlang sym
-#' @importFrom stats median
-#'
-#' @return a summary of the data
-#'
-#' @noRd
-du.summarize <- local(function(df, .var) {
-  .var <- sym(.var)
-
-  data_summary <- df %>% summarise(
-    variable = paste(.var), min = min(!!.var, na.rm = TRUE),
-    max = max(!!.var, na.rm = TRUE), median = median(!!.var, na.rm = TRUE), mean = mean(!!.var,
-      na.rm = TRUE
-    ), n = n(), missing = sum(is.na(!!.var))
-  )
-  return(data_summary)
 })
 
 #'
