@@ -12,26 +12,6 @@ du.armadillo.login <- function(login_data) {
   return(token)
 }
 
-#' List projects
-#'
-#' @noRd
-du.armadillo.list.projects <- function() {
-  requireNamespace("MolgenisArmadillo")
-  projects <- armadillo.list_projects()
-  return(projects)
-}
-
-#' List tables
-#'
-#' @param project project to limit the scope
-#'
-#' @noRd
-du.armadillo.list.tables <- function(project) {
-  requireNamespace("MolgenisArmadillo")
-  tables <- armadillo.list_tables(project)
-  return(tables)
-}
-
 #' Create projects in Armadillo
 #'
 #' @param project the target project where the data should be put into
@@ -75,12 +55,7 @@ du.armadillo.import <- function(project, data, dict_version, dict_kind, data_ver
       armadillo_project <- project
     }
     
-    if (dict_kind == du.enum.dict.kind()$BETA) {
-      armadillo_project <- str_replace_all(sapply(project_elements, tail, 1), "-", "")
-      armadillo_folder <- du.enum.dict.kind()$BETA
-    } else {
-      armadillo_folder <- paste0(dict_version, "_", dict_kind, "_", data_version)
-    }
+    armadillo_folder <- paste0(dict_version, "_", dict_kind, "_", data_version)
 
     message(paste0("* Start importing: ", armadillo_folder, " into project: ", armadillo_project))
     armadillo.upload_table(project = armadillo_project, folder = armadillo_folder, table = data, name = table_type)

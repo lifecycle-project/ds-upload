@@ -2,11 +2,11 @@
 #'
 #' @param upload do you want automatically upload the files to your opal (default = true)
 #' @param data_version version of the data you are going to upload into Opal
-#' @param input_format possible formats are CSV,STATA,SPSS or SAS (default = CSV)
+#' @param input_format possible formats are [du.enum.input.format] (default = CSV)
 #' @param dict_version version of the dictionary
 #' @param dict_kind kind of data to reshape (default = core)
 #' @param input_path path for import file
-#' @param run_mode default = NORMAL, can be TEST and NON_INTERACTIIVE
+#' @param run_mode default = NORMAL, can be [du.enum.action]
 #'
 #' @importFrom readxl read_xlsx
 #'

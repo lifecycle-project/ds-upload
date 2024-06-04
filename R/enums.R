@@ -36,23 +36,6 @@ du.enum.action <- function() {
   list(ALL = "all", RESHAPE = "reshape", POPULATE = "populate")
 }
 
-#' Dictionary kinds
-#'
-#' @noRd
-du.enum.dict.kind <- function() {
-  list(CORE = "core", CHEMICALS = "chemicals_ath", OUTCOME = "outcome", BETA = "beta", OUTCOME_ATH = "outcome_ath")
-}
-
-#' Projects that are containing dictionaries. Repositories containing these dictionaries should be:
-#'
-#' - ds-dictionaries
-#' - ds-beta-dictionaries
-#'
-#' @noRd
-du.enum.projects <- function() {
-  list(LIFECYCLE = "lifecycle-project")
-}
-
 #' Possible DataSHIELD backends
 #'
 #' @noRd
