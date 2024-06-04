@@ -43,7 +43,7 @@ Description: We supply standardised ways to upload and import versioned data dic
 URL: https://github.com/lifecycle-project/ds-upload
 BugReports: https://github.com/lifecycle-project/ds-upload/issues
 Depends: 
-  R (>= 4.0)
+  R (>= 4.4)
 Imports:
   dplyr (>= 1.0.7),
   opalr (>= 3.1.1),
@@ -77,5 +77,5 @@ Additional_repositories:
 VignetteBuilder: knitr
 License: GPL-3
 Encoding: UTF-8
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Config/testthat/edition: 3
