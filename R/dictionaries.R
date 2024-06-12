@@ -9,7 +9,7 @@
 #' @importFrom utils download.file packageVersion
 #'
 #' @noRd
-du.dict.download <- function(dict_name, dict_version, dict_kind) {
+du.dict.download <- function(dict_name, dict_version, dict_kind, download_method = "libcurl") {
   message("######################################################")
   message("  Start download dictionaries")
   message("------------------------------------------------------")
@@ -26,7 +26,7 @@ du.dict.download <- function(dict_name, dict_version, dict_kind) {
     select("name", "download_url") %>%
     pmap(function(name, download_url) {
       message(paste0("* Download: [ ", name, " ]"))
-      download.file(url = download_url, destfile = paste0(dict_kind, "/", name), mode = "wb", method = "libcurl", quiet = TRUE)
+      download.file(url = download_url, destfile = paste0(dict_kind, "/", name), mode = "wb", method = download_method, quiet = TRUE)
     })
 
   message("  Successfully downloaded dictionaries")
