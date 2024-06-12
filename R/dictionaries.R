@@ -3,13 +3,14 @@
 #' @param dict_name used for dictionaries
 #' @param dict_version dictionary version
 #' @param dict_kind dictionary kind (possible kinds are 'core' or 'outcome')
+#' @param download_method method to be passed to `method` argument of download.file.
 #'
 #' @importFrom purrr pmap
 #' @importFrom dplyr select %>%
 #' @importFrom utils download.file packageVersion
 #'
 #' @noRd
-du.dict.download <- function(dict_name, dict_version, dict_kind, download_method = "libcurl") {
+du.dict.download <- function(dict_name, dict_version, dict_kind, download_method) {
   message("######################################################")
   message("  Start download dictionaries")
   message("------------------------------------------------------")

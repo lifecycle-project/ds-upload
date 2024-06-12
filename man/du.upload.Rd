@@ -15,7 +15,8 @@ du.upload(
   action = du.enum.action()$ALL,
   upload = TRUE,
   run_mode = du.enum.run.mode()$NORMAL,
-  override_project = NULL
+  override_project = NULL,
+  download_method = "libcurl"
 )
 }
 \arguments{
@@ -40,6 +41,8 @@ du.upload(
 \item{run_mode}{default = NORMAL, [du.enum.run.mode]}
 
 \item{override_project}{overrides the generated project name}
+
+\item{download_method}{method to be passed to `method` argument of download.file. Default is "libcurl".}
 }
 \description{
 Upload dictionaries and data into the DataSHIELD backend.
