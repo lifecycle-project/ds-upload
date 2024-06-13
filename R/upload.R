@@ -14,6 +14,7 @@ ds_upload.globals <- new.env()
 #' @param action action to be performed, can be [du.enum.action]
 #' @param run_mode default = NORMAL, [du.enum.run.mode]
 #' @param override_project overrides the generated project name
+#' @param download_method method to be passed to `method` argument of download.file. Default is "libcurl".
 #'
 #' @examples
 #' \dontrun{
@@ -29,7 +30,8 @@ ds_upload.globals <- new.env()
 #' @export
 du.upload <- function(dict_version, data_version = "1_0", dict_kind,
                       cohort_id, database_name = "opal_data", data_input_format = du.enum.input.format()$CSV, data_input_path,
-                      action = du.enum.action()$ALL, upload = TRUE, run_mode = du.enum.run.mode()$NORMAL, override_project = NULL) {
+                      action = du.enum.action()$ALL, upload = TRUE, run_mode = du.enum.run.mode()$NORMAL, override_project = NULL, 
+                      download_method = "libcurl") {
   message("######################################################")
   message("  Start upload data into DataSHIELD backend")
   message("------------------------------------------------------")
@@ -67,7 +69,7 @@ du.upload <- function(dict_version, data_version = "1_0", dict_kind,
   tryCatch(
     {
       workdirs <- du.create.temp.workdir()
-      du.dict.download(dict_version = dict_version, dict_kind = dict_kind)
+      du.dict.download(dict_version = dict_version, dict_kind = dict_kind, download_method = download_method)
       du.check.action(action)
 
       if ((action == du.enum.action()$ALL | action == du.enum.action()$POPULATE) && upload == TRUE) {
